@@ -33,7 +33,7 @@ class AddonModel extends Model
     {
         $this->_getFileAddons();
         // 获取数据库中的所有插件
-        $map ['is_weixin'] = intval($_GET ['is_weixin']);
+        $map['is_weixin'] = 0;
         $databaseAddons = $this->where($map)->findAll();
         $this->_validAddons($databaseAddons);
 
@@ -392,9 +392,9 @@ class AddonModel extends Model
         $addons = $this->getAddonsAdmin();
         $r = array();
         foreach ($addons as $value) {
-            $r [$value [0]] = U('admin/Addons/admin', array(
-                    'pluginid' => $value [1],
-                    'is_weixin' => intval($_GET ['is_weixin']),
+            $r[$value [0]] = U('admin/Addons/admin', array(
+                'pluginid' => $value [1],
+                'is_weixin' => 0,
             ));
         }
 

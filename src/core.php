@@ -64,7 +64,7 @@ tsdefine('CONF_PATH', SITE_PATH.'/config');
 tsdefine('APPS_PATH', SITE_PATH.'/apps');
 tsdefine('APPS_URL', SITE_URL.'/apps');    # 应用内部图标 等元素
 
-tsdefine('ADDON_PATH', SITE_PATH.'/src/old/addons');
+tsdefine('ADDON_PATH', dirname(__FILE__).'/addons');
 
 tsdefine('DATA_PATH', SITE_PATH.'/data');
 tsdefine('DATA_URL', SITE_URL.'/data');

@@ -2,10 +2,8 @@
 /**
  * ThinkPHP内置模板引擎类
  * 支持XML标签和普通标签的模板解析
- * 编译型模板引擎 支持动态缓存.
- *
+ * 编译型模板引擎 支持动态缓存
  * @author liu21st <liu21st@gmail.com>
- *
  * @version  $Id$
  */
 class Template
@@ -13,18 +11,17 @@ class Template
     //类定义开始
 
     // 模板页面中引入的标签库列表
-    protected $tagLib = [];
+    protected $tagLib = array();
     // 当前模板文件
     protected $templateFile = '';
     // 模板变量
-    public $tVar = [];
-    public $config = [];
-    private $literal = [];
+    public $tVar = array();
+    public $config = array();
+    private $literal = array();
 
     /**
      * 取得模板实例对象
-     * 静态方法.
-     *
+     * 静态方法
      * @return ThinkTemplate
      */
     public static function getInstance()
@@ -33,8 +30,7 @@ class Template
     }
 
     /**
-     * 架构函数.
-     *
+     * 架构函数
      * @param array $config 模板引擎配置数组
      */
     public function __construct()
@@ -53,18 +49,17 @@ class Template
     }
 
     /**
-     * 转义处理.
+     * 转义处理
      */
     private function stripPreg($str)
     {
-        $str = str_replace(['{', '}', '(', ')', '|', '[', ']'], ['\{', '\}', '\(', '\)', '\|', '\[', '\]'], $str);
+        $str = str_replace(array('{', '}', '(', ')', '|', '[', ']'), array('\{', '\}', '\(', '\)', '\|', '\[', '\]'), $str);
 
         return $str;
     }
 
     /**
-     * 模板变量的获取.
-     *
+     * 模板变量的获取
      * @return mixed 模板变量值
      */
     public function get($name)
@@ -77,7 +72,7 @@ class Template
     }
 
     /**
-     * 模板变量的设置.
+     * 模板变量的设置
      */
     public function set($name, $value)
     {
@@ -105,14 +100,11 @@ class Template
     }
 
     /**
-     * 加载主模板并缓存.
-     *
-     * @param string $tmplTemplateFile 模板文件
-     * @param string $varPrefix        模板变量前缀
-     *
-     * @throws ThinkExecption
-     *
+     * 加载主模板并缓存
+     * @param  string         $tmplTemplateFile 模板文件
+     * @param  string         $varPrefix        模板变量前缀
      * @return string
+     * @throws ThinkExecption
      */
     public function loadTemplate($tmplTemplateFile = '')
     {
@@ -156,10 +148,8 @@ class Template
     }
 
     /**
-     * 编译模板文件内容.
-     *
+     * 编译模板文件内容
      * @param  mixed  $tmplContent 模板内容
-     *
      * @return string
      */
     protected function compiler($tmplContent)
@@ -185,10 +175,8 @@ class Template
 
     /**
      * 模板解析入口
-     * 支持普通标签和TagLib解析 支持自定义标签库.
-     *
+     * 支持普通标签和TagLib解析 支持自定义标签库
      * @param  string $content 要解析的模板内容
-     *
      * @return string
      */
     public function parse($content)
@@ -314,10 +302,8 @@ class Template
     }
 
     /**
-     * 分析XML属性.
-     *
-     * @param string $attrs XML属性字符串
-     *
+     * 分析XML属性
+     * @param  string $attrs XML属性字符串
      * @return array
      */
     private function parseXmlAttrs($attrs)
@@ -334,10 +320,8 @@ class Template
     }
 
     /**
-     * 替换页面中的literal标签.
-     *
+     * 替换页面中的literal标签
      * @param  string       $content 模板内容
-     *
      * @return string|false
      */
     private function parseLiteral($content)
@@ -354,10 +338,8 @@ class Template
     }
 
     /**
-     * 还原被替换的literal标签.
-     *
-     * @param string $tag literal标签序号
-     *
+     * 还原被替换的literal标签
+     * @param  string       $tag literal标签序号
      * @return string|false
      */
     private function restoreLiteral($tag)
@@ -372,13 +354,11 @@ class Template
 
     /**
      * 搜索模板页面中包含的TagLib库
-     * 并返回列表.
-     *
+     * 并返回列表
      * @param  string       $content 模板内容
-     *
      * @return string|false
      */
-    public function getIncludeTagLib(&$content)
+    public function getIncludeTagLib(& $content)
     {
         //搜索是否有TagLib标签
         $find = preg_match('/'.$this->config['taglib_begin'].'taglib\s(.+?)(\s*?)\/'.$this->config['taglib_end'].'\W/is', $content, $matches);
@@ -389,15 +369,15 @@ class Template
             $array = $this->parseXmlAttrs($matches[1]);
             $this->tagLib = explode(',', $array['name']);
         }
+
+        return;
     }
 
     /**
-     * TagLib库解析.
-     *
+     * TagLib库解析
      * @param string $tagLib 要解析的标签库
      * @param  string $content 要解析的模板内容
-     * @param boolen $hide 是否隐藏标签库前缀
-     *
+     * @param  boolen $hide 是否隐藏标签库前缀
      * @return string
      */
     public function parseTagLib($tagLib, &$content, $hide = false)
@@ -479,13 +459,11 @@ class Template
 
     /**
      * 解析标签库的标签
-     * 需要调用对应的标签库文件解析类.
-     *
+     * 需要调用对应的标签库文件解析类
      * @param string $tagLib 标签库名称
      * @param string $tag    标签名
      * @param string $attr   标签属性
      * @param  string       $content 标签内容
-     *
      * @return string|false
      */
     public function parseXmlTag($tagLib, $tag, $attr, $content)
@@ -508,10 +486,8 @@ class Template
 
     /**
      * 模板标签解析
-     * 格式： {TagName:args [|content] }.
-     *
+     * 格式： {TagName:args [|content] }
      * @param  string $tagStr 标签内容
-     *
      * @return string
      */
     public function parseTag($tagStr)
@@ -610,10 +586,8 @@ class Template
     /**
      * 加载js或者css文件
      * {load:__PUBLIC__/Js/Think/ThinkAjax.js} 加载js文件
-     * {load:__PUBLIC__/Css/style.css} 加载css文件.
-     *
-     * @param string $params 参数
-     *
+     * {load:__PUBLIC__/Css/style.css} 加载css文件
+     * @param  string $params 参数
      * @return string
      */
     public function parseLoad($str)
@@ -631,16 +605,14 @@ class Template
 
     /**
      * 模板变量解析,支持使用函数
-     * 格式： {$varname|function1|function2=arg1,arg2}.
-     *
-     * @param string $varStr 变量数据
-     *
+     * 格式： {$varname|function1|function2=arg1,arg2}
+     * @param  string $varStr 变量数据
      * @return string
      */
     public function parseVar($varStr)
     {
         $varStr = trim($varStr);
-        static $_varParseList = [];
+        static $_varParseList = array();
         //如果已经解析过该变量字串，则直接返回变量值
         if (isset($_varParseList[$varStr])) {
             return $_varParseList[$varStr];
@@ -701,11 +673,9 @@ class Template
 
     /**
      * 对模板变量使用函数
-     * 格式 {$varname|function1|function2=arg1,arg2}.
-     *
-     * @param string $name     变量名
-     * @param array  $varArray 函数列表
-     *
+     * 格式 {$varname|function1|function2=arg1,arg2}
+     * @param  string $name     变量名
+     * @param  array  $varArray 函数列表
      * @return string
      */
     public function parseVarFunction($name, $varArray)
@@ -714,7 +684,7 @@ class Template
         $length = count($varArray);
         //取得模板禁止使用函数列表
         $template_deny_funs = explode(',', C('TMPL_DENY_FUNC_LIST'));
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length ; $i++) {
             $args = explode('=', $varArray[$i], 2);
             //模板函数过滤
             $fun = strtolower(trim($args[0]));
@@ -743,10 +713,8 @@ class Template
 
     /**
      * 特殊模板变量解析
-     * 格式 以 $Think. 打头的变量属于特殊模板变量.
-     *
-     * @param string $varStr 变量字符串
-     *
+     * 格式 以 $Think. 打头的变量属于特殊模板变量
+     * @param  string $varStr 变量字符串
      * @return string
      */
     public function parseThinkVar($varStr)
@@ -820,14 +788,12 @@ class Template
     }
 
     /**
-     * 加载公共模板并缓存 和当前模板在同一路径，否则使用相对路径.
-     *
+     * 加载公共模板并缓存 和当前模板在同一路径，否则使用相对路径
      * @param  string $tmplPublicName 公共模板文件名
-     * @param array $vars 要传递的变量列表
-     *
+     * @param  array  $vars 要传递的变量列表
      * @return string
      */
-    private function parseIncludeItem($tmplPublicName, $vars = [])
+    private function parseIncludeItem($tmplPublicName, $vars = array())
     {
         //thinksns修改: 2009-5-28 可以导入风格模板目录下的模板文件，写的比较死，以后再优化
         if (substr($tmplPublicName, 0, 9) == '__THEME__') {
@@ -854,7 +820,7 @@ class Template
             $tmplPublicName = trim($tmplPublicName);
             if (strpos($tmplPublicName, '@')) {
                 // 引入其它模块的操作模板
-                $tmplTemplateFile = dirname(dirname(dirname($this->templateFile))).'/'.str_replace(['@', ':'], '/', $tmplPublicName);
+                $tmplTemplateFile = dirname(dirname(dirname($this->templateFile))).'/'.str_replace(array('@', ':'), '/', $tmplPublicName);
             } elseif (strpos($tmplPublicName, ':')) {
                 // 引入其它模块的操作模板
                 $tmplTemplateFile = dirname(dirname($this->templateFile)).'/'.str_replace(':', '/', $tmplPublicName);

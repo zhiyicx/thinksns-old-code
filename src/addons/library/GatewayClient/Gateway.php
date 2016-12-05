@@ -8,29 +8,24 @@
  *
  * @author walkor<walkor@workerman.net>
  * @copyright walkor<walkor@workerman.net>
- *
  * @link http://www.workerman.net/
- *
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 require_once __DIR__.'/Config/Store.php';
 /**
- * Gateway/Worker推送客户端.
- *
+ * Gateway/Worker推送客户端
  * @author walkor <walkor@workerman.net>
  */
 class Gateway
 {
     /**
-     * gateway实例.
-     *
+     * gateway实例
      * @var object
      */
     protected static $businessWorker = null;
 
     /**
-     * 向所有客户端(或者client_id_array指定的客户端)广播消息.
-     *
+     * 向所有客户端(或者client_id_array指定的客户端)广播消息
      * @param string $message         向客户端发送的消息（可以是二进制数据）
      * @param array  $client_id_array 客户端id数组
      */
@@ -41,7 +36,7 @@ class Gateway
         $gateway_data['body'] = $message;
 
         if ($client_id_array) {
-            $params = array_merge(['N*'], $client_id_array);
+            $params = array_merge(array('N*'), $client_id_array);
             $gateway_data['ext_data'] = call_user_func_array('pack', $params);
         } elseif (empty($client_id_array) && is_array($client_id_array)) {
             return;
@@ -66,8 +61,7 @@ class Gateway
     }
 
     /**
-     * 向某个客户端发消息.
-     *
+     * 向某个客户端发消息
      * @param int    $client_id
      * @param string $message
      */
@@ -78,9 +72,7 @@ class Gateway
 
     /**
      * 判断某个客户端是否在线
-     *
-     * @param int $client_id
-     *
+     * @param  int $client_id
      * @return 0/1
      */
     public static function isOnline($client_id)
@@ -97,8 +89,7 @@ class Gateway
     }
 
     /**
-     * 获取在线状态，目前返回一个在线client_id数组.
-     *
+     * 获取在线状态，目前返回一个在线client_id数组
      * @return array
      */
     public static function getOnlineStatus()
@@ -108,7 +99,7 @@ class Gateway
         $gateway_buffer = GatewayProtocol::encode($gateway_data);
 
         $all_addresses = Store::instance('gateway')->get('GLOBAL_GATEWAY_ADDRESS');
-        $client_array = $status_data = [];
+        $client_array = $status_data = array();
         // 批量向所有gateway进程发送CMD_GET_ONLINE_STATUS命令
         foreach ($all_addresses as $address) {
             $client = stream_socket_client("udp://$address", $errno, $errmsg);
@@ -122,7 +113,7 @@ class Gateway
         $time_start = microtime(true);
         // 批量接收请求
         while (count($client_array) > 0) {
-            $write = $except = [];
+            $write = $except = array();
             $read = $client_array;
             if (@stream_select($read, $write, $except, $time_out)) {
                 foreach ($read as $client) {
@@ -143,8 +134,7 @@ class Gateway
     }
 
     /**
-     * 关闭某个客户端.
-     *
+     * 关闭某个客户端
      * @param int    $client_id
      * @param string $message
      */
@@ -159,8 +149,7 @@ class Gateway
     }
 
     /**
-     * 更新session,框架自动调用，开发者不要调用.
-     *
+     * 更新session,框架自动调用，开发者不要调用
      * @param int    $client_id
      * @param string $session_str
      */
@@ -175,12 +164,10 @@ class Gateway
     }
 
     /**
-     * 想某个用户网关发送命令和消息.
-     *
-     * @param int    $client_id
-     * @param int    $cmd
-     * @param string $message
-     *
+     * 想某个用户网关发送命令和消息
+     * @param  int    $client_id
+     * @param  int    $cmd
+     * @param  string $message
      * @return bool
      */
     protected static function sendCmdAndMessageToClient($client_id, $cmd, $message)
@@ -203,11 +190,9 @@ class Gateway
     }
 
     /**
-     * 发送udp数据并返回.
-     *
-     * @param int    $address
-     * @param string $message
-     *
+     * 发送udp数据并返回
+     * @param  int    $address
+     * @param  string $message
      * @return bool
      */
     protected static function sendUdpAndRecv($address, $data)
@@ -230,8 +215,7 @@ class Gateway
     }
 
     /**
-     * 发送数据到网关.
-     *
+     * 发送数据到网关
      * @param string $address
      * @param string $buffer
      */
@@ -253,8 +237,7 @@ class Gateway
     }
 
     /**
-     * 踢掉某个网关的socket.
-     *
+     * 踢掉某个网关的socket
      * @param string $local_ip
      * @param int    $local_port
      * @param int    $client_id
@@ -271,8 +254,7 @@ class Gateway
     }
 
     /**
-     * 设置gateway实例.
-     *
+     * 设置gateway实例
      * @param Bootstrap/Gateway $gateway_instance
      */
     public static function setBusinessWorker($business_worker_instance)
@@ -281,48 +263,39 @@ class Gateway
     }
 }
 /**
- * 上下文 包含当前用户uid， 内部通信local_ip local_port socket_id ，以及客户端client_ip client_port.
- *
+ * 上下文 包含当前用户uid， 内部通信local_ip local_port socket_id ，以及客户端client_ip client_port
  * @author walkor
  */
 class Context
 {
     /**
-     * 内部通讯id.
-     *
+     * 内部通讯id
      * @var string
      */
     public static $local_ip;
     /**
-     * 内部通讯端口.
-     *
+     * 内部通讯端口
      * @var int
      */
     public static $local_port;
     /**
-     * 客户端ip.
-     *
+     * 客户端ip
      * @var string
      */
     public static $client_ip;
     /**
-     * 客户端端口.
-     *
+     * 客户端端口
      * @var int
      */
     public static $client_port;
     /**
-     * 用户id.
-     *
+     * 用户id
      * @var int
      */
     public static $client_id;
-
     /**
-     * 编码session.
-     *
-     * @param mixed $session_data
-     *
+     * 编码session
+     * @param  mixed  $session_data
      * @return string
      */
     public static function sessionEncode($session_data = '')
@@ -333,21 +306,17 @@ class Context
 
         return '';
     }
-
     /**
-     * 解码session.
-     *
-     * @param string $session_buffer
-     *
+     * 解码session
+     * @param  string $session_buffer
      * @return mixed
      */
     public static function sessionDecode($session_buffer)
     {
         return unserialize($session_buffer);
     }
-
     /**
-     * 清除上下文.
+     * 清除上下文
      */
     public static function clear()
     {
@@ -355,7 +324,7 @@ class Context
     }
 }
 /**
- * Gateway与Worker间通讯的二进制协议.
+ * Gateway与Worker间通讯的二进制协议
  *
  * struct GatewayProtocol
  * {
@@ -398,29 +367,26 @@ class GatewayProtocol
     // 包体是标量
     const FLAG_BODY_IS_SCALAR = 0x01;
     /**
-     * 包头长度.
-     *
+     * 包头长度
      * @var int
      */
     const HEAD_LEN = 26;
-    public static $empty = [
-        'cmd'         => 0,
-        'local_ip'    => '0.0.0.0',
-        'local_port'  => 0,
-        'client_ip'   => '0.0.0.0',
+    public static $empty = array(
+        'cmd' => 0,
+        'local_ip' => '0.0.0.0',
+        'local_port' => 0,
+        'client_ip' => '0.0.0.0',
         'client_port' => 0,
-        'client_id'   => 0,
-        'flag'        => 0,
-        'ext_data'    => '',
-        'body'        => '',
-    ];
+        'client_id' => 0,
+        'flag' => 0,
+        'ext_data' => '',
+        'body' => '',
+    );
 
     /**
-     * 返回包长度.
-     *
-     * @param string $buffer
-     *
-     * @return int return current package length
+     * 返回包长度
+     * @param  string $buffer
+     * @return int    return current package length
      */
     public static function input($buffer)
     {
@@ -431,12 +397,9 @@ class GatewayProtocol
 
         return $data['pack_len'];
     }
-
     /**
-     * 获取整个包的buffer.
-     *
-     * @param array $data
-     *
+     * 获取整个包的buffer
+     * @param  array  $data
      * @return string
      */
     public static function encode($data)
@@ -454,12 +417,9 @@ class GatewayProtocol
             $data['client_port'], $data['client_id'],
             $ext_len, $flag).$data['ext_data'].$data['body'];
     }
-
     /**
-     * 从二进制数据转换为数组.
-     *
-     * @param string $buffer
-     *
+     * 从二进制数据转换为数组
+     * @param  string $buffer
      * @return array
      */
     public static function decode($buffer)
@@ -488,24 +448,19 @@ class GatewayProtocol
 }
 /**
  * 存储类
- * 这里用memcache实现.
- *
+ * 这里用memcache实现
  * @author walkor <walkor@workerman.net>
  */
 class Store
 {
     /**
-     * 实例数组.
-     *
+     * 实例数组
      * @var array
      */
-    protected static $instance = [];
-
+    protected static $instance = array();
     /**
-     * 获取实例.
-     *
-     * @param string $config_name
-     *
+     * 获取实例
+     * @param  string     $config_name
      * @throws \Exception
      */
     public static function instance($config_name)
@@ -517,9 +472,9 @@ class Store
             }
             if (!isset(self::$instance[$config_name])) {
                 if (extension_loaded('Memcached')) {
-                    self::$instance[$config_name] = new \Memcached();
+                    self::$instance[$config_name] = new \Memcached;
                 } elseif (extension_loaded('Memcache')) {
-                    self::$instance[$config_name] = new \Memcache();
+                    self::$instance[$config_name] = new \Memcache;
                 } else {
                     sleep(2);
                     exit("extension memcached is not installed\n");
@@ -561,23 +516,23 @@ class Store
     }
 }
 /**
- * 这里用php数组文件来存储数据，
- * 为了获取高性能需要用类似memcache的存储.
  *
+ * 这里用php数组文件来存储数据，
+ * 为了获取高性能需要用类似memcache的存储
  * @author walkor <walkor@workerman.net>
+ *
  */
 class FileStore
 {
     // 为了避免频繁读取磁盘，增加了缓存机制
-    protected $dataCache = [];
+    protected $dataCache = array();
     // 上次缓存时间
     protected $lastCacheTime = 0;
     // 打开文件的句柄
     protected $dataFileHandle = null;
 
     /**
-     * 构造函数.
-     *
+     * 构造函数
      * @param 配置名 $config_name
      */
     public function __construct($config_name)
@@ -598,12 +553,10 @@ class FileStore
     }
 
     /**
-     * 设置.
-     *
-     * @param string $key
-     * @param mixed  $value
-     * @param int    $ttl
-     *
+     * 设置
+     * @param  string $key
+     * @param  mixed  $value
+     * @param  int    $ttl
      * @return number
      */
     public function set($key, $value, $ttl = 0)
@@ -612,11 +565,9 @@ class FileStore
     }
 
     /**
-     * 读取.
-     *
-     * @param string $key
-     * @param bool   $use_cache
-     *
+     * 读取
+     * @param  string   $key
+     * @param  bool     $use_cache
      * @return Ambigous <NULL, multitype:>
      */
     public function get($key, $use_cache = true)
@@ -627,10 +578,8 @@ class FileStore
     }
 
     /**
-     * 删除.
-     *
-     * @param string $key
-     *
+     * 删除
+     * @param  string $key
      * @return number
      */
     public function delete($key)
@@ -639,10 +588,8 @@ class FileStore
     }
 
     /**
-     * 自增.
-     *
-     * @param string $key
-     *
+     * 自增
+     * @param  string          $key
      * @return bool|multitype:
      */
     public function increment($key)
@@ -657,7 +604,7 @@ class FileStore
     }
 
     /**
-     * 清零销毁存储数据.
+     * 清零销毁存储数据
      */
     public function destroy()
     {

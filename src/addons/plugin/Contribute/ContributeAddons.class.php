@@ -1,8 +1,8 @@
 <?php
 /**
- * 投稿插件.
- *
+ * 投稿插件
  * @author Stream
+ *
  */
 class ContributeAddons extends NormalAddons
 {
@@ -13,10 +13,9 @@ class ContributeAddons extends NormalAddons
     protected $pluginName = '分享投稿';
     protected $sqlfile = '暂无';
     protected $tsVersion = '3.0';
-
     public function getHooksInfo()
     {
-        $hooks['list'] = ['ContributeHooks'];
+        $hooks['list'] = array('ContributeHooks');
 
         return $hooks;
     }

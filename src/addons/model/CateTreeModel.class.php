@@ -1,7 +1,6 @@
 <?php
 /**
- * 无限级分类控制模型 - 业务逻辑模型.
- *
+ * 无限级分类控制模型 - 业务逻辑模型
  * @example
  * 说明：利用此分类模型，需要指定数据表，相关模型字段
  * 必须属性：
@@ -14,29 +13,26 @@
  * $ctree = model('CateTree', $table);		表名必须指定
  * $ctree = $ctree->setField($param);		不指定字段名，将使用默认字段
  * $data = $ctree->getTree();				获取树形结构
- *
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class CateTreeModel
 {
-    private static $tree = [];                // 树
-    private static $hash = [];                // 树的HASH表
+    private static $tree = array();                // 树
+    private static $hash = array();                // 树的HASH表
     public $cacheKey = '';                            // 缓存Key
     private $cacheKeyPrefix = 'CateTree_';        // 缓存前缀
     private $_table = '';                            // 默认表
-    private $defaultField = [
-                                'id'   => 'id',        // 主键字段名
-                                'pid'  => 'pid',    // 上级节点ID字段名
+    private $defaultField = array(
+                                'id' => 'id',        // 主键字段名
+                                'pid' => 'pid',    // 上级节点ID字段名
                                 'name' => 'name',    // 分类名称字段名
                                 'sort' => 'sort',   // 排序字段名
-                            ];
-    private $tempHashData = [];                // 临时Hash数据
+                            );
+    private $tempHashData = array();                // 临时Hash数据
 
     /**
      * 初始化无限极树形模型对象
-     *
      * @param string $table 资源表名
      */
     public function __construct($table = '')
@@ -50,10 +46,8 @@ class CateTreeModel
     }
 
     /**
-     * 设置树形数据缓存Key.
-     *
-     * @param string $key 用户自定义Key值
-     *
+     * 设置树形数据缓存Key
+     * @param  string $key 用户自定义Key值
      * @return object 无限树形模型对象
      */
     public function setCacheKey($key)
@@ -65,12 +59,10 @@ class CateTreeModel
 
     /**
      * 设置字段值
-     *
-     * @param array $field 用户自定义字段值
-     *
+     * @param  array  $field 用户自定义字段值
      * @return object 无限树形模型对象
      */
-    public function setField(array $field = [])
+    public function setField(array $field = array())
     {
         if (empty($field)) {
             return $this;
@@ -83,10 +75,8 @@ class CateTreeModel
     }
 
     /**
-     * 获取一个树形结构数据.
-     *
-     * @param int $rootId 根目录ID
-     *
+     * 获取一个树形结构数据
+     * @param  int   $rootId 根目录ID
      * @return array 树形结构
      */
     public function getTree($rootId = '0')
@@ -108,8 +98,7 @@ class CateTreeModel
     }
 
     /**
-     * 获取所有分类的以主键为Key的Hash数组.
-     *
+     * 获取所有分类的以主键为Key的Hash数组
      * @return arrat 分类的Hash数组
      */
     public function getAllHash()
@@ -128,10 +117,8 @@ class CateTreeModel
     }
 
     /**
-     * 获取指定分类ID下的所有子集ID.
-     *
-     * @param int $id 分类ID
-     *
+     * 获取指定分类ID下的所有子集ID
+     * @param  int   $id 分类ID
      * @return array 指定分类ID下的所有子集ID
      */
     public function getChildHash($id)
@@ -139,14 +126,13 @@ class CateTreeModel
         $data = $this->getTree($id);
         $this->_getChildHash($data);
         $r = $this->tempHashData;
-        $this->tempHashData = [];
+        $this->tempHashData = array();
 
         return $r;
     }
 
     /**
-     * 递归方法获取树形结构下的所有子集ID.
-     *
+     * 递归方法获取树形结构下的所有子集ID
      * @param array $data 子集数据
      */
     private function _getChildHash($data)
@@ -160,16 +146,14 @@ class CateTreeModel
     }
 
     /**
-     * 移动一个树形节点，即更改一个节点的父节点，移动规则：父节点不能移动到自己的子树下面.
-     *
+     * 移动一个树形节点，即更改一个节点的父节点，移动规则：父节点不能移动到自己的子树下面
      * @param int $id      节点ID
      * @param int $newPid  新的父节点ID
      * @param int $newSort 新的排序值
      * @param  array $data    表示其他需要保存的字段，由实现此model的类完成
-     *
      * @return bool 是否移动成功
      */
-    public function moveTree($id, $newPid, $newSort = '255', $data = [])
+    public function moveTree($id, $newPid, $newSort = '255', $data = array())
     {
         // 参数验证
         if (!$id || (!$newPid && $newPid != 0)) {
@@ -191,15 +175,13 @@ class CateTreeModel
 
     /**
      * 批量移动树的节点，移动规则：父节点不能移动到自己的子树下面
-     * ids，newPids的Key值必须对应.
-     *
-     * @param array $ids      节点ID数组
-     * @param array $newPids  新的父节点ID数组
-     * @param array $newSorts 新的排序值数组
-     *
-     * @return bool 是否移动成功
+     * ids，newPids的Key值必须对应
+     * @param  array $ids      节点ID数组
+     * @param  array $newPids  新的父节点ID数组
+     * @param  array $newSorts 新的排序值数组
+     * @return bool  是否移动成功
      */
-    public function moveTreeByArr($ids, $newPids, $newSorts = [])
+    public function moveTreeByArr($ids, $newPids, $newSorts = array())
     {
         foreach ($ids as $k => $v) {
             $sort = isset($newSorts[$k]) && !empty($newSorts[$k]) ? $newSorts[$k] : 255;
@@ -211,15 +193,14 @@ class CateTreeModel
     }
 
     /**
-     * 清除树形结构的缓存，不允许删除单个子树，由于一棵树是缓存在一个缓存里面.
-     *
+     * 清除树形结构的缓存，不允许删除单个子树，由于一棵树是缓存在一个缓存里面
      * @return bool 是否清除成功
      */
     public function cleanCache()
     {
         unset(self::$tree[$this->cacheKey]);
         unset(self::$tree[$this->cacheKey.'_hash']);
-        self::$tree = [];
+        self::$tree = array();
         model('Cache')->rm($this->cacheKey);
         model('Cache')->rm($this->cacheKey.'_hash');
 
@@ -227,24 +208,23 @@ class CateTreeModel
     }
 
     /*** 私有方法 ***/
-
     /**
-     * 双数组生成整棵树，缓存操作.
+     * 双数组生成整棵树，缓存操作
      */
     private function createTree()
     {
         // 从数据库取树的数据
         $data = $this->_getTreeData();
         if (empty($data)) {
-            return [];
+            return array();
         }
-        $tree = [];        // 临时树
-        $child = [];        // 所有节点的子节点
-        $hash = [];        // Hash缓存数组
+        $tree = array();        // 临时树
+        $child = array();        // 所有节点的子节点
+        $hash = array();        // Hash缓存数组
         foreach ($data as $dv) {
             $hash[$dv[$this->defaultField['id']]] = $dv;
             $tree[$dv[$this->defaultField['id']]] = $dv;
-            !isset($child[$dv[$this->defaultField['id']]]) && $child[$dv[$this->defaultField['id']]] = [];
+            !isset($child[$dv[$this->defaultField['id']]]) && $child[$dv[$this->defaultField['id']]] = array();
             $tree[$dv[$this->defaultField['id']]]['_child'] = &$child[$dv[$this->defaultField['id']]];
             $child[$dv[$this->defaultField['pid']]][] = &$tree[$dv[$this->defaultField['id']]];
         }
@@ -259,8 +239,7 @@ class CateTreeModel
     }
 
     /**
-     * 获取树形数据，从数据库中取出.
-     *
+     * 获取树形数据，从数据库中取出
      * @return array 所有分类的数据
      */
     private function _getTreeData()

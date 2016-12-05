@@ -1,8 +1,8 @@
 <?php
 /**
- * DIY模块dao类.
- *
+ * DIY模块dao类
  * @author Stream
+ *
  */
 class DiyWidgetModel extends Model
 {
@@ -32,12 +32,9 @@ class DiyWidgetModel extends Model
             }
         }
     }
-
     /**
-     * 返回模块参数.
-     *
-     * @param string $sign
-     *
+     * 返回模块参数
+     * @param  string $sign
      * @return mixed
      */
     public function getTagInfo($sign)
@@ -52,20 +49,17 @@ class DiyWidgetModel extends Model
 
         return $result;
     }
-
     /**
-     * 返回模块参数  $sign是数组.
-     *
-     * @param array $sign
-     *
+     * 返回模块参数  $sign是数组
+     * @param  array $sign
      * @return mixed
      */
     public function getTagInofs(array $sign)
     {
-        $map['pluginId'] = ['in', $sign];
+        $map['pluginId'] = array('in', $sign);
         $res = implode("','", $sign);
         $data = $this->query("select pluginId,tagLib,content,ext,status from {$this->tablePrefix}diy_widget where pluginId in ('".$res."')");
-        $result = [];
+        $result = array();
         foreach ($data as $value) {
             $ext = unserialize($value['ext']);
             $result[$value['pluginId']]['tagName'] = $ext['tagInfo']['name'];
@@ -78,7 +72,7 @@ class DiyWidgetModel extends Model
     }
 
     /**
-     * 通过id获取到该widget的tagName.
+     * 通过id获取到该widget的tagName
      */
     public function getTagName($widgetId)
     {
@@ -91,6 +85,7 @@ class DiyWidgetModel extends Model
     /**
      * 通过id获取到该widget的模板
      */
+
     public function getTemplateByPluginId($pluginId)
     {
         $map['pluginId'] = $pluginId;
@@ -109,7 +104,6 @@ class DiyWidgetModel extends Model
 
         return empty($content) ? false : $content;
     }
-
     /**
      * 通过Id更新该widget的样式模板
      */
@@ -135,12 +129,9 @@ class DiyWidgetModel extends Model
         $save['mTime'] = time();
         $result = $this->where($map)->save($save);
     }
-
     /**
-     * 是否存在相同的模块.
-     *
-     * @param unknown_type $sign
-     *
+     * 是否存在相同的模块
+     * @param  unknown_type $sign
      * @return bool
      */
     public function checkHasWidget($sign)

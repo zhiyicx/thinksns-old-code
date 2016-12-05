@@ -1,38 +1,34 @@
 <?php
 /**
- * 系统分享类.
- *
+ * 系统分享类
  * @author Stream
+ *
  */
 class DiyWeibo extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签.
-     *
+     * 是否是封闭的标签
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
 
-    public $config = [];
+    public $config = array();
 
     public function __construct()
     {
     }
-
     public function getTagStatus()
     {
         return self::$TAG_CLOSED;
     }
-
     /**
-     * 返回模板文件.
-     *
+     * 返回模板文件
      * @see TagsAbstract::getTemplateFile()
      */
     public function getTemplateFile($tpl = '')
     {
         //返回需要渲染的模板
-        $file = $this->attr['style'];
+        $file = $this->attr ['style'];
         if (!empty($tpl)) {
             $file = $tpl;
         }
@@ -41,8 +37,7 @@ class DiyWeibo extends TagsAbstract
     }
 
     /**
-     * 参数处理.
-     *
+     * 参数处理
      * @see TagsAbstract::replace()
      */
     public function replace()
@@ -66,13 +61,13 @@ class DiyWeibo extends TagsAbstract
         switch ($attr['source']) {
             case 'user'://指定用户分享
                 if (!empty($attr['user'])) {
-                    $map['uid'] = ['in', explode(',', $attr['user'])];
+                    $map['uid'] = array('in', explode(',', $attr['user']));
                 }
                 break;
             case 'topic'://指定话题分享
                 if (!empty($attr['topic'])) {
                     $fids = model('FeedTopic')->getFeedIdByTopic($attr['topic']);
-                    $map['feed_id'] = ['in', $fids];
+                    $map['feed_id'] = array('in', $fids);
                 }
                 break;
         }

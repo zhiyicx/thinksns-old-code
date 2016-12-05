@@ -5,17 +5,17 @@
 
 function getAlipayConfig(array $alipayConfig = null)
 {
-    $config = [
-        'partner'           => '',
-        'seller_email'      => '',
-        'key'               => '',
-        'sign_type'         => 'MD5',
-        'input_charset'     => 'utf-8',
-        'cacert'            => dirname(__FILE__).'/cacert.pem',
-        'transport'         => 'http',
-        'private_key_path'  => '',
+    $config = array(
+        'partner' => '',
+        'seller_email' => '',
+        'key' => '',
+        'sign_type' => 'MD5',
+        'input_charset' => 'utf-8',
+        'cacert' => dirname(__FILE__).'/cacert.pem',
+        'transport' => 'http',
+        'private_key_path' => '',
         'alipay_public_key' => '',
-    ];
+    );
     if ($alipayConfig) {
         $config = array_merge($config, $alipayConfig);
     }
@@ -28,22 +28,22 @@ function createAlipayUrl(array $alipayConfig, array $parameter, $type = 1)
     $alipayConfig = getAlipayConfig($alipayConfig);
 
     if ($type != 3) {//调用官方sdk 参数需指定传入
-        $parameter = array_merge([
-        'service'           => 'create_direct_pay_by_user',
-        'partner'           => trim($alipayConfig['partner']),
-        'seller_email'      => trim($alipayConfig['seller_email']),
-        'payment_type'      => 1,
-        'notify_url'        => '',
-        'return_url'        => '',
-        'out_trade_no'      => time(),
-        'subject'           => '支付订单',
-        'total_fee'         => 0.01,
-        'body'              => '',
-        'show_url'          => '',
+        $parameter = array_merge(array(
+        'service' => 'create_direct_pay_by_user',
+        'partner' => trim($alipayConfig['partner']),
+        'seller_email' => trim($alipayConfig['seller_email']),
+        'payment_type' => 1,
+        'notify_url' => '',
+        'return_url' => '',
+        'out_trade_no' => time(),
+        'subject' => '支付订单',
+        'total_fee' => 0.01,
+        'body' => '',
+        'show_url' => '',
         'anti_phishing_key' => '',
-        'exter_invoke_ip'   => '',
-        '_input_charset'    => trim(strtolower($alipayConfig['input_charset'])),
-        ], $parameter);
+        'exter_invoke_ip' => '',
+        '_input_charset' => trim(strtolower($alipayConfig['input_charset'])),
+        ), $parameter);
     }
 
     $alipaySubmit = new AlipaySubmit($alipayConfig);
@@ -54,7 +54,7 @@ function createAlipayUrl(array $alipayConfig, array $parameter, $type = 1)
         $parameter['seller_id'] = trim($alipayConfig['partner']);
 
         $url = $alipaySubmit->alipay_client_url;
-        $url .= urlencode(json_encode(['requestType' => 'SafePay', 'fromAppUrlScheme' => 'com.zhiyiThinkSNS4', 'dataString' => $alipaySubmit->buildRequestParaToString($parameter)])); //带客户端协议的参数拼接
+        $url .= urlencode(json_encode(array('requestType' => 'SafePay', 'fromAppUrlScheme' => 'com.zhiyiThinkSNS4', 'dataString' => $alipaySubmit->buildRequestParaToString($parameter)))); //带客户端协议的参数拼接
     } elseif ($type == 3) {
         $url = $alipaySubmit->buildRequestParaToString($parameter);
     }
@@ -78,6 +78,7 @@ function alipaytest($param, $config)
     return createRsaLinkstring($param);
 }
 
+
 function verifyAlipayReturn(array $alipayConfig)
 {
     $alipayConfig = getAlipayConfig($alipayConfig);
@@ -97,8 +98,7 @@ function verifyAlipayNotify(array $alipayConfig)
     return $verifyResult;
 }
 /**
- * RSA解密.
- *
+ * RSA解密
  * @param $content 需要解密的内容，密文
  * @param $private_key_path 商户私钥文件路径
  * return 解密后内容，明文
@@ -122,8 +122,7 @@ function rsaDecrypt($content, $private_key_path)
 }
 
 /**
- * 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串.
- *
+ * 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
  * @param $para 需要拼接的数组
  * return 拼接完成以后的字符串
  */

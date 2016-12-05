@@ -2,14 +2,12 @@
 /**
  * 文件上传
  * 主要由core.uploadFile完成前端ajaxpost功能
- * 要自定义回调显示则需要自定义回调函数.
- *
+ * 要自定义回调显示则需要自定义回调函数
  * @example {:W('Upload',array('callback'=>'callback','uploadType'=>'file','inputname'=>'inputname','urlquery'=>'a=aaa&b=bb','attachIds'=>'1,2,3,4'))}
- *
  * @author jason
- *
  * @version TS3.0
  */
+
 class UploadWidget extends Widget
 {
     private static $rand = 1;
@@ -23,7 +21,7 @@ class UploadWidget extends Widget
      */
     public function render($data)
     {
-        $var = [];
+        $var = array();
         $var['callback'] = "''";
         $var['uploadType'] = 'file';
         $var['inputname'] = 'attach';
@@ -33,7 +31,7 @@ class UploadWidget extends Widget
 
         is_array($data) && $var = array_merge($var, $data);
 
-        $uploadType = in_array($var['uploadType'], ['image', 'file', 'cloudimage', 'cloudfile']) ? t($var['uploadType']) : 'file';
+        $uploadType = in_array($var['uploadType'], array('image', 'file', 'cloudimage', 'cloudfile')) ? t($var['uploadType']) : 'file';
         $uploadTemplate = $uploadType.'upload.html';
 
         if (!empty($var['attachIds'])) {
@@ -61,8 +59,7 @@ class UploadWidget extends Widget
     }
 
     /**
-     * 附件上传.
-     *
+     * 附件上传
      * @return array 上传的附件的信息
      */
     public function save()
@@ -97,15 +94,15 @@ class UploadWidget extends Widget
             }
 
             $data['extension'] = strtolower($data['extension']);
-            $return = ['status' => 1, 'data' => $data];
+            $return = array('status' => 1, 'data' => $data);
         } else {
-            $return = ['status' => 0, 'data' => $info['info']];
+            $return = array('status' => 0, 'data' => $info['info']);
         }
 
         $isAjaxUrl = isset($_REQUEST['isAjaxUrl']) ? true : false;
         if ($isAjaxUrl) {
             $editorId = t($_REQUEST['editorid']);
-            $ajaxInfo = [];
+            $ajaxInfo = array();
             if ($thumb == 1) {
                 $ajaxInfo['url'] = getImageUrl($return['data']['save_path'].$return['data']['save_name'], $width, $height, $cut);
             } else {
@@ -121,7 +118,7 @@ class UploadWidget extends Widget
 
             $ajaxInfo['state'] = 'SUCCESS';
             //echo $ajaxInfo['url'];
-            echo "<script>parent.EditorList['".$editorId."'].getWidgetCallback('image')('".$ajaxInfo['url']."','".$ajaxInfo['state']."')</script>";
+            echo "<script>parent.EditorList['".$editorId."'].getWidgetCallback('image')('".$ajaxInfo[ 'url' ]."','".$ajaxInfo[ 'state' ]."')</script>";
             // exit(getImageUrl($return['data']['save_path'].$return['data']['save_name']));
         } else {
             echo json_encode($return);
@@ -130,8 +127,7 @@ class UploadWidget extends Widget
     }
 
     /**
-     * 编辑器图片上传.
-     *
+     * 编辑器图片上传
      * @return array 上传图片的路径及错误信息
      */
     public function saveEditorImg()
@@ -142,17 +138,16 @@ class UploadWidget extends Widget
         if ($info['status']) {
             $data = $info['info'][0];
             $data['src'] = getImageUrl($data['save_path'].$data['save_name']);
-            $return = ['error' => 0, 'url' => $data['src']];
+            $return = array('error' => 0, 'url' => $data['src']);
         } else {
-            $return = ['error' => 1, 'message' => $info['info']];
+            $return = array('error' => 1, 'message' => $info['info']);
         }
         echo json_encode($return);
         exit();
     }
 
     /**
-     * 编辑器文件上传.
-     *
+     * 编辑器文件上传
      * @return array 上传文件的信息
      */
     public function saveEditorFile()
@@ -164,16 +159,16 @@ class UploadWidget extends Widget
             $data = $info['info'][0];
             $data['src'] = getImageUrl($data['save_path'].$data['save_name'], 100, 100, true);
             $data['extension'] = strtolower($data['extension']);
-            $return = ['status' => 1, 'data' => $data];
+            $return = array('status' => 1, 'data' => $data);
         } else {
-            $return = ['status' => 0, 'data' => $info['info']];
+            $return = array('status' => 0, 'data' => $info['info']);
         }
         echo json_encode($return);
         exit();
     }
 
     /**
-     * 附件下载.
+     * 附件下载
      */
     public function down()
     {
@@ -210,7 +205,6 @@ class UploadWidget extends Widget
             }
         }
     }
-
     public function uploadVideo()
     {
         // dump($_FILES);

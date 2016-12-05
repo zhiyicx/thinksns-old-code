@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpThumb Library Definition File.
+ * PhpThumb Library Definition File
  *
  * This file contains the definitions for the PhpThumbFactory class.
  * It also includes the other required base class files.
@@ -20,12 +20,10 @@
  *
  * @author Ian Selby <ian@gen-x-design.com>
  * @copyright Copyright (c) 2009 Gen X Design
- *
  * @link http://phpthumb.gxdlabs.com
- *
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
- *
  * @version 3.0
+ * @package PhpThumb
  * @filesource
  */
 
@@ -35,20 +33,20 @@ define('THUMBLIB_PLUGIN_PATH', THUMBLIB_BASE_PATH.'/thumb_plugins/');
 define('DEFAULT_THUMBLIB_IMPLEMENTATION', 'gd');
 
 /**
- * Include the PhpThumb Class.
+ * Include the PhpThumb Class
  */
 require_once THUMBLIB_BASE_PATH.'/PhpThumb.inc.php';
 /**
- * Include the ThumbBase Class.
+ * Include the ThumbBase Class
  */
 require_once THUMBLIB_BASE_PATH.'/ThumbBase.inc.php';
 /**
- * Include the GdThumb Class.
+ * Include the GdThumb Class
  */
 require_once THUMBLIB_BASE_PATH.'/GdThumb.inc.php';
 
 /**
- * PhpThumbFactory Object.
+ * PhpThumbFactory Object
  *
  * This class is responsible for making sure everything is set up and initialized properly,
  * and returning the appropriate thumbnail class instance.  It is the only recommended way
@@ -61,11 +59,14 @@ require_once THUMBLIB_BASE_PATH.'/GdThumb.inc.php';
  * <code>$thumb = PhpThumbFactory::create('/path/to/file.png');</code>
  *
  * Refer to the documentation for the create function for more information
+ *
+ * @package PhpThumb
+ * @subpackage Core
  */
 class PhpThumbFactory
 {
     /**
-     * Which implemenation of the class should be used by default.
+     * Which implemenation of the class should be used by default
      *
      * Currently, valid options are:
      *  - imagick
@@ -77,7 +78,7 @@ class PhpThumbFactory
      */
     public static $defaultImplemenation = DEFAULT_THUMBLIB_IMPLEMENTATION;
     /**
-     * Where the plugins can be loaded from.
+     * Where the plugins can be loaded from
      *
      * Note, it's important that this path is properly defined.  It is very likely that you'll
      * have to change this, as the assumption here is based on a relative path.
@@ -87,7 +88,7 @@ class PhpThumbFactory
     public static $pluginPath = THUMBLIB_PLUGIN_PATH;
 
     /**
-     * Factory Function.
+     * Factory Function
      *
      * This function returns the correct thumbnail object, augmented with any appropriate plugins.
      * It does so by doing the following:
@@ -98,19 +99,17 @@ class PhpThumbFactory
      *  - Returning the GD implemenation if the default isn't available
      *  - Throwing an exception if no required libraries are present
      *
-     * @uses PhpThumb
-     *
-     * @param string $filename The path and file to load [optional]
-     *
      * @return GdThumb
+     * @uses PhpThumb
+     * @param string $filename The path and file to load [optional]
      */
-    public static function create($filename = null, $options = [], $isDataStream = false)
+    public static function create($filename = null, $options = array(), $isDataStream = false)
     {
         // map our implementation to their class names
-        $implementationMap = [
+        $implementationMap = array(
             'imagick' => 'ImagickThumb',
-            'gd'      => 'GdThumb',
-        ];
+            'gd' => 'GdThumb',
+        );
 
         // grab an instance of PhpThumb
         $pt = PhpThumb::getInstance();

@@ -1,9 +1,7 @@
 <?php
 /**
- * 部门模型 - 数据对象模型.
- *
+ * 部门模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class DepartmentModel extends Model
@@ -12,26 +10,24 @@ class DepartmentModel extends Model
     const FIELD_KEY = 'department';            // 部门的字段KEY
 
     protected $tableName = 'department';
-    protected $fields = [0 => 'department_id', 1 => 'title', 2 => 'parent_dept_id', 3 => 'display_order', 4 => 'ctime'];
+    protected $fields = array(0 => 'department_id', 1 => 'title', 2 => 'parent_dept_id', 3 => 'display_order', 4 => 'ctime');
 
     protected $treeDo;                    // 分类树模型
 
     /**
-     * 初始化方法，生成部门的树形对象模型.
+     * 初始化方法，生成部门的树形对象模型
      */
     public function _initialize()
     {
-        $field = ['id' => 'department_id', 'name' => 'title', 'pid' => 'parent_dept_id', 'sort' => 'display_order'];
+        $field = array('id' => 'department_id', 'name' => 'title', 'pid' => 'parent_dept_id', 'sort' => 'display_order');
 
         $this->treeDo = new CateTreeModel('department');
         $this->treeDo->setField($field);
     }
 
     /**
-     * 获取部门信息的树形结构.
-     *
-     * @param int $pid 父级ID，默认为0
-     *
+     * 获取部门信息的树形结构
+     * @param  int   $pid 父级ID，默认为0
      * @return array 部门信息的树形结构
      */
     public function getDepartment($pid = 0)
@@ -42,8 +38,7 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 获取部门全部分类的Hash数组.
-     *
+     * 获取部门全部分类的Hash数组
      * @return array 部门分类的Hash数组
      */
     public function getAllHash()
@@ -52,18 +47,16 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 获取指定子树的部门Hash数组.
-     *
+     * 获取指定子树的部门Hash数组
      * @param int $pid 父级ID
      * @param int $sid 资源节点ID
      * @param  int   $nosid 是否包含资源节点ID，默认为0
-     *
      * @return array 指定子树的部门Hash数组
      */
     public function getHashDepartment($pid = 0, $sid = '', $nosid = 0)
     {
         $treeHash = $this->treeDo->getAllHash();
-        $pid == 0 && $optHash[0] = L('PUBLIC_TOP_DEPARTMENT');            // 顶级部门
+        $pid == 0 && $optHash[0] = L('PUBLIC_TOP_DEPARTMENT') ;            // 顶级部门
         foreach ($treeHash as $k => $v) {
             if ($nosid == 1 && !empty($sid) && $k == $sid) {
                 continue;
@@ -75,7 +68,7 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 清除部门缓存.
+     * 清除部门缓存
      */
     public function cleanCache()
     {
@@ -83,10 +76,8 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 添加一个部门信息.
-     *
+     * 添加一个部门信息
      * @param  array $data 新部门相关信息
-     *
      * @return bool 是否添加成功
      */
     public function addDepart($data)
@@ -113,10 +104,8 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 获取指定分类的上级ID.
-     *
+     * 获取指定分类的上级ID
      * @param  array $data 指定分类的相关数据
-     *
      * @return int 指定分类的上级ID
      */
     public function _getParent_dept($data)
@@ -132,11 +121,9 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 删除指定部门操作.
-     *
-     * @param int $id  指定分类ID
-     * @param int $pid 父级分类ID
-     *
+     * 删除指定部门操作
+     * @param  int  $id  指定分类ID
+     * @param  int  $pid 父级分类ID
      * @return bool 是否删除成功
      */
     public function delDepart($id, $pid = 0)
@@ -151,7 +138,7 @@ class DepartmentModel extends Model
                 return false;
             }
         }
-        $map = [];
+        $map = array();
         $map['department_id'] = $id;
         // 获取子节点
         $tree = $this->treeDo->getTree($id);
@@ -172,7 +159,7 @@ class DepartmentModel extends Model
         if ($this->where($map)->delete()) {
             $this->editUserProfile();
             // 移动子集
-            $upmap = [];
+            $upmap = array();
             $upmap['parent_dept_id'] = $id;
             $save['parent_dept_id'] = $pid;
             $this->where($upmap)->save($save);
@@ -180,7 +167,7 @@ class DepartmentModel extends Model
             $fieldids = D('user_profile_setting')->where("form_type='selectDepart'")->field('field_id')->findAll();
             $fids = getSubByKey($fieldids, 'field_id');
             $profilemap['field_data'] = $id;
-            $profilemap['field_id'] = ['in', $fids];
+            $profilemap['field_id'] = array('in', $fids);
             D('user_profile')->setField('field_data', $pid, $profilemap);
 
             $this->cleanCache();
@@ -192,11 +179,9 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 移动部门，将某个部门移动到新部门下面.
-     *
-     * @param int $id  预移动部门ID
-     * @param int $pid 移动到的父级ID
-     *
+     * 移动部门，将某个部门移动到新部门下面
+     * @param  int  $id  预移动部门ID
+     * @param  int  $pid 移动到的父级ID
      * @return bool 是否移动成功
      */
     public function moveDepart($id, $pid = 0)
@@ -212,14 +197,14 @@ class DepartmentModel extends Model
                 return false;
             }
         }
-        $map = [];
+        $map = array();
         $map['department_id'] = $id;
         $save['parent_dept_id'] = $pid;
         $oldTreeName = $this->getTreeName($id);
 
         if ($this->where($map)->save($save)) {
             $curName = $oldTreeName[count($oldTreeName) - 1];
-            $newtreeName = [];
+            $newtreeName = array();
             if ($pid != 0) {
                 $newTreeName = $this->getTreeName($pid);
             }
@@ -238,29 +223,25 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 获取多个用户的部门信息.
-     *
-     * @param array $uids 用户ID数组
-     *
+     * 获取多个用户的部门信息
+     * @param  array $uids 用户ID数组
      * @return array 多个用户的部门信息
      */
     public function getUserDepart($uids)
     {
         !is_array($uids) && $uids = explode(',', $uids);
         if (empty($uids)) {
-            return [];
+            return array();
         }
-        $map['uid'] = ['IN', $uids];
+        $map['uid'] = array('IN', $uids);
         $map['field_id'] = self::FIELD_ID;
 
         return D('user_profile')->where($map)->getHashList('uid', 'field_data');
     }
 
     /**
-     * 获取指定用户的部门ID.
-     *
-     * @param int $uid 用户ID
-     *
+     * 获取指定用户的部门ID
+     * @param  int $uid 用户ID
      * @return int 指定用户的部门ID
      */
     public function getUserDepartId($uid)
@@ -278,8 +259,7 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 更新部门为departMentTree的用户的关联表信息.
-     *
+     * 更新部门为departMentTree的用户的关联表信息
      * @param string $treeName      树结构的名称
      * @param array  $departmentIds 部门ID数组
      */
@@ -303,8 +283,7 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 更新指定用户的部门信息.
-     *
+     * 更新指定用户的部门信息
      * @param int $uid             用户ID
      * @param int $newDepartmentId 新的部门ID
      */
@@ -342,24 +321,20 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 根据部门ID获取该部门的路径.
-     *
-     * @param int   $id    部门ID
-     * @param array $names 部门名称
-     *
+     * 根据部门ID获取该部门的路径
+     * @param  int   $id    部门ID
+     * @param  array $names 部门名称
      * @return array 返回部门路径名称数组
      */
-    public function getTreeName($id, $names = [])
+    public function getTreeName($id, $names = array())
     {
         return array_reverse($this->_getTreeName($id, $names));
     }
 
     /**
-     * 递归方法获取父级部门名称.
-     *
-     * @param int   $id    部门ID
-     * @param array $names 部门名称
-     *
+     * 递归方法获取父级部门名称
+     * @param  int   $id    部门ID
+     * @param  array $names 部门名称
      * @return array 返回部门路径名称数组
      */
     private function _getTreeName($id, $names)
@@ -374,14 +349,12 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 获取从顶级到该级的父亲节点数组.
-     *
-     * @param int   $id  当前节点的ID
-     * @param array $ids 附加的节点ID
-     *
+     * 获取从顶级到该级的父亲节点数组
+     * @param  int   $id  当前节点的ID
+     * @param  array $ids 附加的节点ID
      * @return array 从顶级到该级的父亲节点数组
      */
-    public function getTreeId($id, $ids = [])
+    public function getTreeId($id, $ids = array())
     {
         $ids[] = $id;
         $data = $this->treeDo->getTree($id);
@@ -393,14 +366,12 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 获取从顶级到该级的父亲节点数组，查询数据库.
-     *
-     * @param int   $id  当前节点的ID
-     * @param array $ids 附加的节点ID
-     *
+     * 获取从顶级到该级的父亲节点数组，查询数据库
+     * @param  int   $id  当前节点的ID
+     * @param  array $ids 附加的节点ID
      * @return array 从顶级到该级的父亲节点数组
      */
-    public function getTreeIdBySql($id, $ids = [])
+    public function getTreeIdBySql($id, $ids = array())
     {
         $ids[] = $id;
         $map['department_id'] = $id;
@@ -413,12 +384,10 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 批量修改部门名字，需要传入旧部门名称Tree和新名称Tree数组.
-     *
-     * @param array $oldTreeName 旧部门名称Tree
-     * @param array $newTreeName 新部门名称Tree
-     *
-     * @return mix 修改失败返回false，修改成功返回1
+     * 批量修改部门名字，需要传入旧部门名称Tree和新名称Tree数组
+     * @param  array $oldTreeName 旧部门名称Tree
+     * @param  array $newTreeName 新部门名称Tree
+     * @return mix   修改失败返回false，修改成功返回1
      */
     public function editUserProfile($oldTreeName, $newTreeName)
     {
@@ -430,8 +399,7 @@ class DepartmentModel extends Model
     }
 
     /**
-     * 测试使用.
-     *
+     * 测试使用
      * @return string 插入数据的SQL语句
      */
     public function initDepartMent()

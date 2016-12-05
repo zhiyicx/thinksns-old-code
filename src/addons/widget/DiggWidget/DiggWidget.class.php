@@ -1,14 +1,12 @@
 <?php
 /**
- * 赞Widget.
- *
+ * 赞Widget
  * @version TS3.0
  */
 class DiggWidget extends Widget
 {
     /**
-     * 渲染赞页面.
-     *
+     * 渲染赞页面
      * @return string 赞HTML相关信息
      */
     public function render($data)

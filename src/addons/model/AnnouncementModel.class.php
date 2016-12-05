@@ -1,21 +1,17 @@
 <?php
 /**
- * 公告模型 - 数据对象模型.
- *
+ * 公告模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class AnnouncementModel extends Model
 {
     protected $tableName = 'announcement';
-    protected $fields = ['id', 'title', 'uid', 'mtime', 'sort', 'content', 'attach', '_pk' => 'id'];
+    protected $fields = array('id', 'title', 'uid', 'mtime', 'sort', 'content', 'attach', '_pk' => 'id');
 
     /**
-     * 保存公告数据.
-     *
+     * 保存公告数据
      * @param  array $data 公告所需数据，用户UID、公告标题、公告内容、相关附件、创建时间
-     *
      * @return int   返回成功的公告ID
      */
     public function saveAnnoun($data)
@@ -43,10 +39,8 @@ class AnnouncementModel extends Model
     }
 
     /**
-     * 删除公告.
-     *
+     * 删除公告
      * @param  int $id 公告ID
-     *
      * @return int 是否删除成功
      */
     public function delannoun($id)
@@ -58,7 +52,7 @@ class AnnouncementModel extends Model
             return false;
         }
 
-        $map['id'] = is_array($id) ? ['IN', $id] : intval($id);
+        $map['id'] = is_array($id) ? array('IN', $id) : intval($id);
 
         return $this->where($map)->delete();
     }

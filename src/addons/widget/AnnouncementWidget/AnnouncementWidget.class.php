@@ -1,9 +1,7 @@
 <?php
 /**
- * 公告展示 wigdet.
- *
+ * 公告展示 wigdet
  * @example  {:W('Announcement',array('type'=>1, 'limit' =>3))}
- *
  * @version  TS3.0
  */
 class AnnouncementWidget extends Widget

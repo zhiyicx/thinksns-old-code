@@ -14,13 +14,15 @@
 import('TagLib');
 
 /**
- * CX标签库解析类.
+ +------------------------------------------------------------------------------
+ * CX标签库解析类
  +------------------------------------------------------------------------------
  * @category   Think
- *
+ * @package  Think
+ * @subpackage  Template
  * @author    liu21st <liu21st@gmail.com>
- *
  * @version   $Id$
+ +------------------------------------------------------------------------------
  */
 class TagLibCx extends TagLib
 {
@@ -38,12 +40,14 @@ class TagLibCx extends TagLib
     }
 
     /**
-     * comment标签解析.
+     +----------------------------------------------------------
+     * comment标签解析
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _comment($attr)
     {
@@ -51,13 +55,15 @@ class TagLibCx extends TagLib
     }
 
     /**
-     * php标签解析.
+     +----------------------------------------------------------
+     * php标签解析
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _php($attr, $content)
     {
@@ -67,22 +73,24 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * iterator标签解析 循环输出iterator变量的值
      * 格式：
      * <iterate name="userList" id="user" empty="" >
      * {user.username}
      * {user.email}
-     * </iterate>.
+     * </iterate>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _iterate($attr, $content)
     {
-        static $_iterateParseCache = [];
+        static $_iterateParseCache = array();
         //如果已经解析过，则直接返回变量值
         $cacheIterateId = md5($attr.$content);
         if (isset($_iterateParseCache[$cacheIterateId])) {
@@ -120,6 +128,8 @@ class TagLibCx extends TagLib
         if (!empty($parseStr)) {
             return $parseStr;
         }
+
+        return ;
     }
 
     public function _volist($attr, $content)
@@ -139,7 +149,7 @@ class TagLibCx extends TagLib
 
     public function _foreach($attr, $content)
     {
-        static $_iterateParseCache = [];
+        static $_iterateParseCache = array();
         //如果已经解析过，则直接返回变量值
         $cacheIterateId = md5($attr.$content);
         if (isset($_iterateParseCache[$cacheIterateId])) {
@@ -161,6 +171,8 @@ class TagLibCx extends TagLib
         if (!empty($parseStr)) {
             return $parseStr;
         }
+
+        return ;
     }
 
     public function _subeach($attr, $content)
@@ -211,19 +223,21 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * if标签解析
      * 格式：
      * <if condition=" $a eq 1" >
      * <elseif condition="$a eq 2" />
      * <else />
      * </if>
-     * 表达式支持 eq neq gt egt lt elt == > >= < <= or and || &&.
+     * 表达式支持 eq neq gt egt lt elt == > >= < <= or and || &&
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _if($attr, $content)
     {
@@ -235,14 +249,16 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * else标签解析
-     * 格式：见if标签.
+     * 格式：见if标签
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _elseif($attr, $content)
     {
@@ -254,12 +270,14 @@ class TagLibCx extends TagLib
     }
 
     /**
-     * else标签解析.
+     +----------------------------------------------------------
+     * else标签解析
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _else($attr)
     {
@@ -269,19 +287,21 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * switch标签解析
      * 格式：
      * <switch name="$a.name" >
      * <case value="1" break="false">1</case>
      * <case value="2" >2</case>
      * <default />other
-     * </switch>.
+     * </switch>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _switch($attr, $content)
     {
@@ -299,13 +319,15 @@ class TagLibCx extends TagLib
     }
 
     /**
-     * case标签解析 需要配合switch才有效.
+     +----------------------------------------------------------
+     * case标签解析 需要配合switch才有效
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _case($attr, $content)
     {
@@ -337,14 +359,16 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * default标签解析 需要配合switch才有效
-     * 使用： <default />ddfdf.
+     * 使用： <default />ddfdf
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _default($attr)
     {
@@ -354,15 +378,17 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * compare标签解析
      * 用于值的比较 支持 eq neq gt lt egt elt heq nheq 默认是eq
-     * 格式： <compare name="" type="eq" value="" >content</compare>.
+     * 格式： <compare name="" type="eq" value="" >content</compare>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _compare($attr, $content, $type = 'eq')
     {
@@ -438,15 +464,17 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * present标签解析
      * 如果某个变量已经设置 则输出内容
-     * 格式： <present name="" >content</present>.
+     * 格式： <present name="" >content</present>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _present($attr, $content)
     {
@@ -459,15 +487,17 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * notpresent标签解析
      * 如果某个变量没有设置，则输出内容
-     * 格式： <notpresent name="" >content</notpresent>.
+     * 格式： <notpresent name="" >content</notpresent>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _notpresent($attr, $content)
     {
@@ -480,15 +510,17 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * session标签解析
      * 如果某个session变量已经设置 则输出内容
-     * 格式： <session name="" >content</session>.
+     * 格式： <session name="" >content</session>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _session($attr, $content)
     {
@@ -518,15 +550,17 @@ class TagLibCx extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * notsession标签解析
      * 如果某个session变量没有设置 则输出内容
-     * 格式： <notsession name="" >content</notsession>.
+     * 格式： <notsession name="" >content</notsession>
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      * @param string $content 标签内容
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _nosession($attr, $content)
     {

@@ -1,11 +1,8 @@
 <?php
 /**
- * 分享发布框.
- *
+ * 分享发布框
  * @example W('Share',array('sid'=>14983,'stable'=>'contact','appname'=>'contact','nums'=>10,'initHTML'=>'这里是默认的话'))
- *
  * @author jason
- *
  * @version TS3.0
  */
 class ShareWidget extends Widget
@@ -19,7 +16,7 @@ class ShareWidget extends Widget
      */
     public function render($data)
     {
-        $var = [];
+        $var = array();
         $var['appname'] = 'public';
         $var['cancomment'] = intval(CheckPermission('core_normal', 'feed_comment'));
         $var['feed_type'] = 'repost';

@@ -1,17 +1,15 @@
 <?php
 /**
- * 多语言模型 - 数据对象模型.
- *
+ * 多语言模型 - 数据对象模型
  * @author zivss <guolee226@gmail.com>
- *
  * @version TS3.0
  */
 class LangModel extends Model
 {
     protected $tableName = 'lang';
-    protected $fields = [0 => 'lang_id', 1 => 'key', 2 => 'appname', 3 => 'filetype', 4 => 'zh-cn', 5 => 'en', 6 => 'zh-tw', '_autoinc' => true, '_pk' => 'id'];
+    protected $fields = array(0 => 'lang_id', 1 => 'key', 2 => 'appname', 3 => 'filetype', 4 => 'zh-cn', 5 => 'en', 6 => 'zh-tw', '_autoinc' => true, '_pk' => 'id');
 
-    protected $langType = [];            // 默认的语言类型设置
+    protected $langType = array();            // 默认的语言类型设置
 
     /**
      * 初始化方法，设置默认语言
@@ -22,8 +20,7 @@ class LangModel extends Model
     }
 
     /**
-     * 获取当前系统的语设置.
-     *
+     * 获取当前系统的语设置
      * @return string 当前系统的语设置
      */
     public function getLangType()
@@ -33,25 +30,21 @@ class LangModel extends Model
     }
 
     /**
-     * 获取语言配置内容列表.
-     *
+     * 获取语言配置内容列表
      * @param array $map 查询条件
-     *
      * @return array 语言配置内容列表
      */
     public function getLangContent($map)
     {
-        empty($map) && $map = [];
+        empty($map) && $map = array();
         $data = $this->where($map)->findPage(20);
 
         return $data;
     }
 
     /**
-     * 获取单条语言配置内容.
-     *
+     * 获取单条语言配置内容
      * @param int $sid 语言资源ID
-     *
      * @return array 单条语言配置内容
      */
     public function getLangSetInfo($sid)
@@ -62,11 +55,9 @@ class LangModel extends Model
     }
 
     /**
-     * 更改语言配置内容.
-     *
+     * 更改语言配置内容
      * @param  array $data 语言配置内容
-     * @param int $sid 语言资源ID
-     *
+     * @param  int $sid 语言资源ID
      * @return int 是否更改成功，1表示成功；0表示失败
      */
     public function updateLangData($data, $sid)
@@ -100,23 +91,20 @@ class LangModel extends Model
     }
 
     /**
-     * 删除指定的语言配置内容.
-     *
-     * @param int $sid 语言资源ID
-     *
+     * 删除指定的语言配置内容
+     * @param  int $sid 语言资源ID
      * @return mix 删除失败返回false，删除成功返回删除的语言资源ID
      */
     public function deleteLangData($sid)
     {
-        $map['lang_id'] = ['IN', $sid];
+        $map['lang_id'] = array('IN', $sid);
         $result = $this->where($map)->delete();
 
         return $result;
     }
 
     /**
-     * 创建语言缓存文件.
-     *
+     * 创建语言缓存文件
      * @param string $app  应用名称
      * @param bool   $isJs 是否是Js文件
      */
@@ -141,8 +129,7 @@ class LangModel extends Model
     }
 
     /**
-     * 写入PHP语言文件.
-     *
+     * 写入PHP语言文件
      * @param string $app    应用名称
      * @param array  $fields 语言类型字段
      * @param array  $data   语言的相关数据
@@ -171,8 +158,7 @@ class LangModel extends Model
     }
 
     /**
-     * 写入JavaScript语言文件.
-     *
+     * 写入JavaScript语言文件
      * @param string $app    应用名称
      * @param array  $fields 语言类型字段
      * @param array  $data   语言的相关数据
@@ -198,11 +184,11 @@ class LangModel extends Model
     }
 
     /**
-     * 初始化整站的语言包.
+     * 初始化整站的语言包
      */
     public function initSiteLang()
     {
-        $dirArray = [];
+        $dirArray = array();
         //取apps目录下的应用包名
         if (false != ($handle = opendir(APPS_PATH))) {
             while (false !== ($file = readdir($handle))) {

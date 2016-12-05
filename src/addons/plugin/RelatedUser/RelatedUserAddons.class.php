@@ -12,7 +12,7 @@ class RelatedUserAddons extends NormalAddons
 
     public function getHooksInfo()
     {
-        $hooks['list'] = ['RelatedUserHooks'];
+        $hooks['list'] = array('RelatedUserHooks');
 
         return $hooks;
     }

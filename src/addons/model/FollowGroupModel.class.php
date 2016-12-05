@@ -1,9 +1,7 @@
 <?php
 /**
- * 用户关注分组模型 - 数据对象模型.
- *
+ * 用户关注分组模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class FollowGroupModel extends Model
@@ -11,13 +9,11 @@ class FollowGroupModel extends Model
     const CACHE_PREFIX = 'follow';
 
     protected $tableName = 'user_follow_group';
-    protected $fields = [0 => 'follow_group_id', 1 => 'title', 2 => 'uid', 3 => 'ctime'];
+    protected $fields = array(0 => 'follow_group_id', 1 => 'title', 2 => 'uid', 3 => 'ctime');
 
     /**
-     * 获取指定用户所有的关组分组.
-     *
+     * 获取指定用户所有的关组分组
      * @param int $uid 用户ID
-     *
      * @return array 指定用户所有的关组分组
      */
     public function getGroupList($uid)
@@ -26,7 +22,7 @@ class FollowGroupModel extends Model
         if (false == ($follow_group_list = S(self::CACHE_PREFIX.'list_'.$uid))) {
             $follow_group_list = $this->where("uid={$uid}")->order('ctime ASC')->findAll();
             if (empty($follow_group_list)) {
-                S(self::CACHE_PREFIX.'list_'.$uid, []);
+                S(self::CACHE_PREFIX.'list_'.$uid, array());
             } else {
                 S(self::CACHE_PREFIX.'list_'.$uid, $follow_group_list);
             }
@@ -34,13 +30,10 @@ class FollowGroupModel extends Model
 
         return $follow_group_list;
     }
-
     /**
-     * 获取指定用户指定关注用户的所在分组信息.
-     *
+     * 获取指定用户指定关注用户的所在分组信息
      * @param int $uid 用户ID
      * @param  int   $fid 关注用户ID
-     *
      * @return array 关注用户所在分组的信息
      */
     public function getGroupStatus($uid, $fid)
@@ -55,7 +48,7 @@ class FollowGroupModel extends Model
                                         ->order('group.follow_group_id ASC')
                                         ->findAll();
             if (empty($follow_group_status)) {
-                $follow_group_status[0] = ['gid' => 0, 'title' => L('PUBLIC_UNGROUP')];            // 未分组
+                $follow_group_status[0] = array('gid' => 0, 'title' => L('PUBLIC_UNGROUP'));            // 未分组
             }
 
             return $follow_group_status;
@@ -63,13 +56,10 @@ class FollowGroupModel extends Model
             return false;
         }
     }
-
     /**
-     * 获取指定用户与多个指定关注用户的所在分组信息.
-     *
+     * 获取指定用户与多个指定关注用户的所在分组信息
      * @param int $uid 用户ID
      * @param  string $fids 关注用户ID，多个用“,”分割
-     *
      * @return array  指定用户与多个指定关注用户的所在分组信息
      */
     public function getGroupStatusByFids($uid, $fids)
@@ -79,20 +69,18 @@ class FollowGroupModel extends Model
                                     ->where("link.uid={$uid} AND link.fid IN (".implode(',', $fids).") AND group.uid={$uid}")
                                     ->order('group.follow_group_id ASC')
                                     ->findAll();
-        $_follow_group_status = [];
+        $_follow_group_status = array();
         foreach ($follow_group_status as $f_g_s_k => $f_g_s_v) {
             $_follow_group_status[$f_g_s_v['uid']][$f_g_s_v['fid']][] = $f_g_s_v;
         }
         foreach ($fids as $fid) {
-            empty($_follow_group_status[$uid][$fid]) && $_follow_group_status[$uid][$fid][] = ['gid' => 0, 'title' => L('PUBLIC_UNGROUP')];            // 未分组
+            empty($_follow_group_status[$uid][$fid]) && $_follow_group_status[$uid][$fid][] = array('gid' => 0, 'title' => L('PUBLIC_UNGROUP'));            // 未分组
         }
 
         return $_follow_group_status[$uid];
     }
-
     /**
      * 设置好友的分组状态
-     *
      * @param int $uid 操作用户ID
      * @param int $fid 被操作用户ID
      * @param int    $gid    关注分组ID
@@ -102,12 +90,12 @@ class FollowGroupModel extends Model
     {
         S(self::CACHE_PREFIX.'list_'.$uid, null);
         S(self::CACHE_PREFIX."usergroup_{$uid}_{$gid}", null);
-        $map = ['uid' => intval($uid), 'fid' => intval($fid)];
+        $map = array('uid' => intval($uid), 'fid' => intval($fid));
         $follow_id = D('UserFollow')->getField('follow_id', $map);
         $gid = $this->getField('follow_group_id', "uid={$map['uid']} AND follow_group_id={$gid}");
         if ($follow_id && $gid) {
             $linkModel = D('UserFollowGroupLink');
-            $data = ['follow_group_id' => $gid, 'follow_id' => $follow_id, 'fid' => $map['fid'], 'uid' => $map['uid']];
+            $data = array('follow_group_id' => $gid, 'follow_id' => $follow_id, 'fid' => $map['fid'], 'uid' => $map['uid']);
             if ($action == null) {
                 $linkModel->where($data)->delete() || $linkModel->add($data);
             } elseif ($action == 'add') {
@@ -119,8 +107,7 @@ class FollowGroupModel extends Model
     }
 
     /**
-     * 清除关注分组缓存操作.
-     *
+     * 清除关注分组缓存操作
      * @param int $uid 用户ID
      * @param int $gid 关注分组ID
      */
@@ -131,14 +118,11 @@ class FollowGroupModel extends Model
             S(self::CACHE_PREFIX."usergroup_{$uid}_{$gid}", null);
         }
     }
-
     /**
-     * 添加，修改制定用户的分组.
-     *
+     * 添加，修改制定用户的分组
      * @param int    $uid   用户ID
      * @param string $title 分组名称
      * @param  int    $gid   关注分组ID
-     *
      * @return int 是否添加或修改成功
      */
     public function setGroup($uid, $title, $gid = null)
@@ -151,11 +135,11 @@ class FollowGroupModel extends Model
             return 0;
         }
         // 验证分组是否存在
-        $map = ['uid' => $uid, 'title' => $title];
+        $map = array('uid' => $uid, 'title' => $title);
         $_gid = $this->getField('follow_group_id', $map);
         if (!$_gid) {
             if ($gid == null) {
-                $data = ['uid' => $uid, 'title' => $title, 'ctime' => time()];
+                $data = array('uid' => $uid, 'title' => $title, 'ctime' => time());
                 $gid = $this->add($data);
 
                 return $gid;
@@ -164,7 +148,7 @@ class FollowGroupModel extends Model
                 if (!$gid) {
                     return 0;
                 }
-                $data = ['follow_group_id' => $gid, 'uid' => $uid, 'title' => $title];
+                $data = array('follow_group_id' => $gid, 'uid' => $uid, 'title' => $title);
                 $res = $this->save($data);
 
                 return 1;
@@ -175,13 +159,10 @@ class FollowGroupModel extends Model
             return 0;
         }
     }
-
     /**
-     * 删除指定用户的指定关注分组.
-     *
-     * @param int $uid 用户ID
-     * @param int $gid 分组ID
-     *
+     * 删除指定用户的指定关注分组
+     * @param  int $uid 用户ID
+     * @param  int $gid 分组ID
      * @return int 是否删除成功
      */
     public function deleteGroup($uid, $gid)
@@ -200,13 +181,10 @@ class FollowGroupModel extends Model
             return 0;
         }
     }
-
     /**
-     * 获取指定用户指定分组下的关注用户ID.
-     *
+     * 获取指定用户指定分组下的关注用户ID
      * @param int $uid 用户ID
      * @param  int   $gid 关注分组ID
-     *
      * @return array 指定用户指定分组下的关注用户ID
      */
     public function getUsersByGroup($uid, $gid)
@@ -227,13 +205,10 @@ class FollowGroupModel extends Model
 
         return $_fid;
     }
-
     /**
-     * 获取指定用户指定分组下的关注用户ID - 分页型.
-     *
+     * 获取指定用户指定分组下的关注用户ID - 分页型
      * @param int $uid 用户ID
      * @param  int   $gid 关注分组ID
-     *
      * @return array 指定用户指定分组下的关注用户ID
      */
     public function getUsersByGroupPage($uid, $gid)
@@ -251,12 +226,9 @@ class FollowGroupModel extends Model
 
         return $data;
     }
-
     /**
-     * 获取指定用户的未分组用户ID - 分页型.
-     *
-     * @param int $uid 用户ID
-     *
+     * 获取指定用户的未分组用户ID - 分页型
+     * @param  int   $uid 用户ID
      * @return array 指定用户的未分组用户ID
      */
     public function getDefaultGroupByPage($uid)
@@ -270,12 +242,9 @@ class FollowGroupModel extends Model
 
         return $data;
     }
-
     /**
-     * 获取指定用户的未分组用户ID - 所有.
-     *
-     * @param int $uid 用户ID
-     *
+     * 获取指定用户的未分组用户ID - 所有
+     * @param  int   $uid 用户ID
      * @return array 指定用户的未分组用户ID
      */
     public function getDefaultGroupByAll($uid)

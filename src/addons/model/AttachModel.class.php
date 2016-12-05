@@ -1,23 +1,20 @@
 <?php
 /**
- * 附件模型 - 数据对象模型.
- *
+ * 附件模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
+
 class AttachModel extends Model
 {
     protected $tableName = 'attach';
 
-    protected $fields = ['attach_id', 'app_name', 'table', 'row_id', 'attach_type', 'uid', 'ctime', 'name', 'type', 'size', 'extension', 'hash', 'private', 'is_del', 'save_path', 'save_name', 'save_domain', 'from', 'width', 'height'];
+    protected $fields = array('attach_id', 'app_name', 'table', 'row_id', 'attach_type', 'uid', 'ctime', 'name', 'type', 'size', 'extension', 'hash', 'private', 'is_del', 'save_path', 'save_name', 'save_domain', 'from', 'width', 'height');
 
     /**
-     * 通过附件ID获取附件数据 - 不分页型.
-     *
+     * 通过附件ID获取附件数据 - 不分页型
      * @param array $ids 附件ID数组
      * @param  string $field 附件数据显示字段，默认为显示全部
-     *
      * @return array  相关附件数据
      */
     public function getAttachByIds($ids, $field = '*')
@@ -29,7 +26,7 @@ class AttachModel extends Model
             }
         }
         if (empty($ids)) {
-            return;
+            return null;
         }
 
         $name = 'attach_ids_'.md5(json_encode($ids).$field);
@@ -44,7 +41,7 @@ class AttachModel extends Model
             /* # sql注入，ID过滤 */
             array_map('intval', $ids);
 
-            $map['attach_id'] = ['IN', $ids];
+            $map['attach_id'] = array('IN', $ids);
             $data = $this->where($map)->field($field)->order('attach_id asc')->findAll();
             S($name, $data);
         }
@@ -53,10 +50,8 @@ class AttachModel extends Model
     }
 
     /**
-     * 通过单个附件ID获取其附件信息.
-     *
-     * @param int $id 附件ID
-     *
+     * 通过单个附件ID获取其附件信息
+     * @param  int   $id 附件ID
      * @return array 指定附件ID的附件信息
      */
     public function getAttachById($id)
@@ -80,7 +75,7 @@ class AttachModel extends Model
             if (empty($sc)) {
                 $map['attach_id'] = $id;
                 $sc = $this->where($map)->find();
-                empty($sc) && $sc = [];
+                empty($sc) && $sc = array();
                 model('Cache')->set('Attach_'.$id, $sc, 3600);
             }
             static_cache('attach_infoHash_'.$id, $sc);
@@ -91,14 +86,12 @@ class AttachModel extends Model
     }
 
     /**
-     * 获取附件列表 - 分页型.
-     *
-     * @param array  $map   查询条件
-     * @param string $field 显示字段
-     * @param string $order 排序条件，默认为id DESC
-     * @param int    $limit 结果集个数，默认为20
-     *
-     * @return array 附件列表数据
+     * 获取附件列表 - 分页型
+     * @param  array  $map   查询条件
+     * @param  string $field 显示字段
+     * @param  string $order 排序条件，默认为id DESC
+     * @param  int    $limit 结果集个数，默认为20
+     * @return array  附件列表数据
      */
     public function getAttachList($map, $field = '*', $order = 'id DESC', $limit = 20)
     {
@@ -109,21 +102,19 @@ class AttachModel extends Model
     }
 
     /**
-     * 删除附件信息，提供假删除功能.
-     *
-     * @param int    $id    附件ID
-     * @param string $type  操作类型，若为delAttach则进行假删除操作，deleteAttach则进行彻底删除操作
-     * @param string $title ???
-     *
-     * @return array 返回操作结果信息
+     * 删除附件信息，提供假删除功能
+     * @param  int    $id    附件ID
+     * @param  string $type  操作类型，若为delAttach则进行假删除操作，deleteAttach则进行彻底删除操作
+     * @param  string $title ???
+     * @return array  返回操作结果信息
      */
     public function doEditAttach($id, $type, $title)
     {
-        $return = ['status' => '0', 'data' => L('PUBLIC_ADMIN_OPRETING_ERROR')];        // 操作失败
+        $return = array('status' => '0', 'data' => L('PUBLIC_ADMIN_OPRETING_ERROR'));        // 操作失败
         if (empty($id)) {
             $return['data'] = L('PUBLIC_ATTACHMENT_ID_NOEXIST');            // 附件ID不能为空
         } else {
-            $map['attach_id'] = is_array($id) ? ['IN', $id] : intval($id);
+            $map['attach_id'] = is_array($id) ? array('IN', $id) : intval($id);
             $save['is_del'] = ($type == 'delAttach') ? 1 : 0;        //TODO:1 为用户uid 临时为1
             if ($type == 'deleteAttach') {
                 // 彻底删除操作
@@ -135,7 +126,7 @@ class AttachModel extends Model
             }
             if ($res) {
                 //TODO:是否记录知识，以及后期缓存处理
-                $return = ['status' => 1, 'data' => L('PUBLIC_ADMIN_OPRETING_SUCCESS')];        // 操作成功
+                $return = array('status' => 1, 'data' => L('PUBLIC_ADMIN_OPRETING_SUCCESS'));        // 操作成功
             }
         }
 
@@ -143,8 +134,7 @@ class AttachModel extends Model
     }
 
     /**
-     * 获取所有附件的扩展名.
-     *
+     * 获取所有附件的扩展名
      * @return array 扩展名数组
      */
     public function getAllExtensions()
@@ -161,12 +151,10 @@ class AttachModel extends Model
     }
 
     /**
-     * 上传附件.
-     *
+     * 上传附件
      * @param  array $data          附件相关信息
      * @param  array $input_options 配置选项[不推荐修改, 默认使用后台的配置]
-     * @param bool $thumb 是否启用缩略图
-     *
+     * @param  bool  $thumb 是否启用缩略图
      * @return array 上传的附件的信息
      */
     public function upload($data = null, $input_options = null, $thumb = false)
@@ -189,7 +177,7 @@ class AttachModel extends Model
         }
 
         // 载入默认规则
-        $default_options = [];
+        $default_options = array();
         $default_options['custom_path'] = date($system_default['attach_path_rule']);                    // 应用定义的上传目录规则：'Y/md/H/'
         $default_options['max_size'] = floatval($system_default['attach_max_size']) * 1024 * 1024;        // 单位: 兆
         $default_options['allow_exts'] = $system_default['attach_allow_extension'];                    // 'jpg,gif,png,jpeg,bmp,zip,rar,doc,xls,ppt,docx,xlsx,pptx,pdf'
@@ -317,17 +305,17 @@ class AttachModel extends Model
 
     private function saveInfo($upload_info, $options)
     {
-        $data = [
-            'table'       => t($data['table']),
-            'row_id'      => $data['row_id'] ? intval($data['row_id']) : 0,
-            'app_name'    => t($data['app_name']),
+        $data = array(
+            'table' => t($data['table']),
+            'row_id' => $data['row_id'] ? intval($data['row_id']) : 0,
+            'app_name' => t($data['app_name']),
             'attach_type' => t($options['attach_type']),
-            'uid'         => (int) $data['uid'] ? $data['uid'] : $GLOBALS['ts']['mid'],
-            'ctime'       => time(),
-            'private'     => $data['private'] > 0 ? 1 : 0,
-            'is_del'      => 0,
-            'from'        => isset($data['from']) ? intval($data['from']) : getVisitorClient(),
-        ];
+            'uid' => (int) $data['uid'] ? $data['uid'] : $GLOBALS['ts']['mid'],
+            'ctime' => time(),
+            'private' => $data['private'] > 0 ? 1 : 0,
+            'is_del' => 0,
+            'from' => isset($data['from']) ? intval($data['from']) : getVisitorClient(),
+        );
         if ($options['save_to_db']) {
             foreach ($upload_info as $u) {
                 $name = t($u['name']);
@@ -338,7 +326,7 @@ class AttachModel extends Model
                 $data['hash'] = $u['hash'];
                 $data['save_path'] = $options['custom_path'];
                 $data['save_name'] = $u['savename'];
-                if (in_array(strtolower($u['extension']), ['jpg', 'gif', 'png', 'jpeg', 'bmp']) && !in_array($options['attach_type'], ['feed_file', 'weiba_attach'])) {
+                if (in_array(strtolower($u['extension']), array('jpg', 'gif', 'png', 'jpeg', 'bmp')) && !in_array($options['attach_type'], array('feed_file', 'weiba_attach'))) {
                     list($width, $height) = getImageInfo($data['save_path'].$data['save_name']);
                     $data['width'] = $width;
                     $data['height'] = $height;
@@ -376,11 +364,11 @@ class AttachModel extends Model
 
     public function saveAttach($file)
     {
-        // code...
+        # code...
     }
 
     /**
-     * 更新附件图片，保存图片的宽度和高度.
+     * 更新附件图片，保存图片的宽度和高度
      */
     public function upImageAttach($page = 1, $count = 100)
     {

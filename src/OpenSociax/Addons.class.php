@@ -1,20 +1,17 @@
 <?php
 /**
- * ThinkSNS插件调度类，由该对象调度插件的运行逻辑.
- *
+ * ThinkSNS插件调度类，由该对象调度插件的运行逻辑
  * @author SamPeng <penglingjun@zhishisoft.com>
- *
  * @version TS v4
  */
 class Addons
 {
-    private static $validHooks = [];       // 有效的插件数组
-    private static $addonsObj = [];        // 插件对象
-    private static $hooksObj = [];         // 钩子对象
+    private static $validHooks = array();       // 有效的插件数组
+    private static $addonsObj = array();        // 插件对象
+    private static $hooksObj = array();         // 钩子对象
 
     /**
-     * 获取有效的插件列表.
-     *
+     * 获取有效的插件列表
      * @return array 有效的插件列表
      */
     public static function getValidHooks()
@@ -23,12 +20,11 @@ class Addons
     }
 
     /**
-     * 调用插件Hook.
-     *
+     * 调用插件Hook
      * @param string $name 钩子名称
      * @param array  $param 相关参数
      */
-    public static function hook($name, $param = [])
+    public static function hook($name, $param = array())
     {
         // 验证钩子是否能够请求
         $hasValid = self::requireHooks($name);
@@ -81,14 +77,13 @@ class Addons
     }
 
     /**
-     * 单个调用钩子.
-     *
+     * 单个调用钩子
      * @param string $addonsName 插件名称
      * @param string $name       钩子名称
      * @param array  $param      相关参数
      * @param bool $admin 是否是管理员
      */
-    public static function addonsHook($addonsName, $name, $param = [], $admin = false)
+    public static function addonsHook($addonsName, $name, $param = array(), $admin = false)
     {
         if (!$addonsName) {
             return;
@@ -99,7 +94,7 @@ class Addons
         $path = $dirName.'/'.$addonsName;
         $addonUrl = $urlDir.'/'.$addonsName;
 
-        $adminHooks = [];
+        $adminHooks = array();
         if (isset(self::$addonsObj[$addonsName])) {
             $obj = self::$addonsObj[$addonsName];
         } else {
@@ -142,7 +137,7 @@ class Addons
     }
 
     /**
-     * 加载所有有效的插件.
+     * 加载所有有效的插件
      */
     public static function loadAllValidAddons()
     {
@@ -154,12 +149,10 @@ class Addons
     }
 
     /**
-     * 是否能请求钩子操作.
-     *
-     * @param string $hookname 钩子名称
-     * @param object $addon    钩子对象
-     *
-     * @return bool 是否能请求钩子操作
+     * 是否能请求钩子操作
+     * @param  string $hookname 钩子名称
+     * @param  object $addon    钩子对象
+     * @return bool   是否能请求钩子操作
      */
     public static function requireHooks($hookname, $addon = null)
     {
@@ -169,38 +162,32 @@ class Addons
     }
 
     /**
-     * 用于生成插件后台管理页面的URL.
-     *
+     * 用于生成插件后台管理页面的URL
      * @param string $page 管理页面或操作
      * @param  array  $param 相关参数
-     *
      * @return string 插件后台管理页面的URL
      */
     public static function adminPage($page, $param = null)
     {
-        return U('admin/Addons/admin', ['pluginid' => intval($_GET['pluginid']), 'page' => $page] + (array) $param);
+        return U('admin/Addons/admin', array('pluginid' => intval($_GET['pluginid']), 'page' => $page) + (array) $param);
     }
 
     /**
-     * [adminUrl description].
-     *
-     * @param string $page
-     * @param array  $param
-     *
+     * [adminUrl description]
+     * @param  string $page
+     * @param  array  $param
      * @return [type] [description]
      */
     public static function adminUrl($page, $param = null)
     {
-        return U('admin/Addons/doAdmin', ['pluginid' => intval($_GET['pluginid']), 'page' => $page] + (array) $param);
+        return U('admin/Addons/doAdmin', array('pluginid' => intval($_GET['pluginid']), 'page' => $page) + (array) $param);
     }
 
     /**
-     * [createAddonUrl description].
-     *
-     * @param [type] $name  [description]
-     * @param [type] $hooks [description]
-     * @param [type] $param [description]
-     *
+     * [createAddonUrl description]
+     * @param  [type] $name  [description]
+     * @param  [type] $hooks [description]
+     * @param  [type] $param [description]
      * @return [type] [description]
      */
     public static function createAddonUrl($name, $hooks, $param = null)
@@ -213,8 +200,7 @@ class Addons
 
     /**
      * createAddonShow
-     * 为插件的展示页快速创建一个链接.
-     *
+     * 为插件的展示页快速创建一个链接
      * @param mixed $name
      * @param mixed $hooks
      * @param mixed $param

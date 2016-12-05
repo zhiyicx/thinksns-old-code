@@ -1,13 +1,13 @@
 <?php
 /**
- * 发布分享Widget.
+ * 发布分享Widget
  *
  * @author daniel <desheng.young@gmail.com>
  */
 class WeiboWidget extends Widget
 {
     /**
-     * 发布分享Widget, 用法包括分享等.
+     * 发布分享Widget, 用法包括分享等
      *
      * $data接受的参数:
      * <code>

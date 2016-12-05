@@ -15,7 +15,7 @@ class FeedTopHomeModel extends Model
         $data['ctime'] = time();
         $result = $this->add($data);
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function delFeedTopHome($uid, $feedId)
@@ -28,13 +28,13 @@ class FeedTopHomeModel extends Model
         $map['feed_id'] = $feedId;
         $result = $this->where($map)->delete();
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function getFeedTopHome($uid)
     {
         if (empty($uid)) {
-            return [];
+            return array();
         }
         $map['a.uid'] = $uid;
         $map['b.is_del'] = 0;

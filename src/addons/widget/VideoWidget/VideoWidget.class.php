@@ -1,8 +1,8 @@
 <?php
 /**
- * 视频模块.
- *
+ * 视频模块
  * @author Stream
+ *
  */
 class VideoWidget extends Widget
 {
@@ -11,7 +11,9 @@ class VideoWidget extends Widget
     }
 
     /**
-     * 上传视频接受处理.
+     *
+     * 上传视频接受处理
+     *
      */
     public function paramUrl()
     {

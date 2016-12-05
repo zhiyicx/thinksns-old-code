@@ -1,22 +1,18 @@
 <?php
 /**
- * 黑名单模型 - 数据对象模型.
- *
+ * 黑名单模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class UserBlacklistModel extends Model
 {
     protected $tableName = 'user_blacklist';
-    protected $fields = [0 => 'uid', 1 => 'fid', 2 => 'ctime'];
-    public static $blackHash = [];
+    protected $fields = array(0 => 'uid', 1 => 'fid', 2 => 'ctime');
+    public static $blackHash = array();
 
     /**
-     * 获取指定用户的黑名单列表.
-     *
-     * @param int $uid 用户UID
-     *
+     * 获取指定用户的黑名单列表
+     * @param  int   $uid 用户UID
      * @return array 指定用户的黑名单列表
      */
     public function getUserBlackList($uid)
@@ -39,11 +35,9 @@ class UserBlacklistModel extends Model
     }
 
     /**
-     * 指定用户添加黑名单.
-     *
-     * @param int $uid 指定用户UID
-     * @param int $fid 黑名单用户UID
-     *
+     * 指定用户添加黑名单
+     * @param  int  $uid 指定用户UID
+     * @param  int  $fid 黑名单用户UID
      * @return bool 是否添加成功
      */
     public function addUser($uid, $fid)
@@ -61,7 +55,7 @@ class UserBlacklistModel extends Model
 
             return false;
         }
-        $blackList[$fid] = ['uid' => $uid, 'fid' => $fid, 'ctime' => time()];
+        $blackList[$fid] = array('uid' => $uid, 'fid' => $fid, 'ctime' => time());
         if ($this->add($blackList[$fid])) {
             model('Follow')->unFollow($uid, $fid);
             model('Follow')->unFollow($fid, $uid);
@@ -74,11 +68,9 @@ class UserBlacklistModel extends Model
     }
 
     /**
-     * 指定用户取消黑名单.
-     *
-     * @param int $uid 指定用户UID
-     * @param int $fid 黑名单用户UID
-     *
+     * 指定用户取消黑名单
+     * @param  int  $uid 指定用户UID
+     * @param  int  $fid 黑名单用户UID
      * @return bool 是否移除成功
      */
     public function removeUser($uid, $fid)
@@ -109,10 +101,8 @@ class UserBlacklistModel extends Model
     }
 
     /**
-     * 清除用户的黑名单缓存信息.
-     *
+     * 清除用户的黑名单缓存信息
      * @param array $uids 用户UID数组
-     *
      * @return bool  缓存是否清除成功
      */
     public function cleanCache($uids)

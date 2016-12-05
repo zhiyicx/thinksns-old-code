@@ -1,11 +1,8 @@
 <?php
 /**
- * 标签选择.
- *
+ * 标签选择
  * @example W('Tag', array('width'=>'500px', 'appname'=>'support','apptable'=>'support','row_id'=>0,'tpl'=>'show','tag_url'=>'aaa','name'=>'public'))
- *
  * @author zhishisoft
- *
  * @version TS3.0
  */
 class TagWidget extends Widget
@@ -21,7 +18,7 @@ class TagWidget extends Widget
      */
     public function render($data)
     {
-        $var = [];
+        $var = array();
         $var['width'] = '200px';
         $var['appname'] = 'public';
         $var['apptable'] = 'user';
@@ -32,13 +29,13 @@ class TagWidget extends Widget
         is_array($data) && $var = array_merge($var, $data);
         // 清除缓存
         model('Cache')->rm('temp_'.$var['apptable'].$GLOBALS['ts']['mid']);
-        $var['add_url'] = U('widget/Tag/addTag', ['appname' => $var['appname'], 'apptable' => $var['apptable'], 'row_id' => $var['row_id']]);
-        $var['delete_url'] = U('widget/Tag/deleteTag', ['appname' => $var['appname'], 'apptable' => $var['apptable'], 'row_id' => $var['row_id']]);
+        $var['add_url'] = U('widget/Tag/addTag', array('appname' => $var['appname'], 'apptable' => $var['apptable'], 'row_id' => $var['row_id']));
+        $var['delete_url'] = U('widget/Tag/deleteTag', array('appname' => $var['appname'], 'apptable' => $var['apptable'], 'row_id' => $var['row_id']));
         // 获取标签
         $tags = model('Tag')->setAppName($var['appname'])->setAppTable($var['apptable'])->getAppTags($var['row_id'], $var['isUserTag']);
         $var['tags'] = $tags;
         // 以选中ID
-        $map['row_id'] = ['IN', $var['row_id']];
+        $map['row_id'] = array('IN', $var['row_id']);
         $map['table'] = $var['apptable'];
         $app_tags = D('app_tag')->where($map)->findAll();
         $tag_ids = getSubByKey($app_tags, 'tag_id');
@@ -74,7 +71,7 @@ class TagWidget extends Widget
         $_POST['name'] = t($_POST['name']);
         // 判断是否为空
         if (empty($_POST['name'])) {
-            exit(json_encode(['status' => 0, 'info' => L('PUBLIC_TAG_NOEMPTY')]));
+            exit(json_encode(array('status' => 0, 'info' => L('PUBLIC_TAG_NOEMPTY'))));
         }
         // 其他相关参数
         $appName = t($_REQUEST['appname']);
@@ -108,7 +105,7 @@ class TagWidget extends Widget
     }
 
     /**
-     * 获取标签的ID.
+     * 获取标签的ID
      */
     public function getTagId()
     {

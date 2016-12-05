@@ -1,20 +1,16 @@
 <?php
 /**
- * 不同类型的话题列表.
- *
+ * 不同类型的话题列表
  * @author zivss <guolee226@gmail.com>
- *
  * @version TS3.0
  */
 class HotPostWidget extends Widget
 {
     /**
-     * 渲染话题列表页面.
-     *
+     * 渲染话题列表页面
      * @param array $data 配置相关数据
      * @param int type 话题类型 1:推荐话题   2:精华话题
      * @param int limit 列表条数
-     *
      * @return string 渲染页面的HTML
      */
     public function render($data)

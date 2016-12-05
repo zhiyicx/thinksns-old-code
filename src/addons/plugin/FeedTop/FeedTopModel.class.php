@@ -1,33 +1,26 @@
 <?php
 /**
- * 分享置顶插件模型 - 数据对象模型.
- *
+ * 分享置顶插件模型 - 数据对象模型
  * @author feebas <reedgu@163.com>
- *
  * @version TS3.0
  */
 class FeedTopModel extends Model
 {
     protected $tableName = 'feed_top';
     protected $_error;
-
     /**
-     * 添加分享置顶数据.
-     *
+     * 添加分享置顶数据
      * @param  array $data 广告位相关数据
-     *
      * @return bool  是否插入成功
      */
     public function doAddFeedTop($data)
     {
         $res = $this->add($data);
 
-        return (bool) $res;
+        return (boolean) $res;
     }
-
     /**
-     * 获取分享置顶数据.
-     *
+     * 获取分享置顶数据
      * @return array 广告位列表数据
      */
     public function getFeedTopList($type)
@@ -42,7 +35,6 @@ class FeedTopModel extends Model
 
         return $data;
     }
-
     public function doEditFeedTop($id, $data)
     {
         if (empty($id)) {
@@ -51,15 +43,12 @@ class FeedTopModel extends Model
         $map['id'] = $id;
         $res = $this->where($map)->save($data);
 
-        return (bool) $res;
+        return (boolean) $res;
     }
-
     /**
-     * 删除分享置顶操作.
-     *
-     * @param string|array $ids 广告位ID
-     *
-     * @return bool 是否删除广告位成功
+     * 删除分享置顶操作
+     * @param  string|array $ids 广告位ID
+     * @return bool         是否删除广告位成功
      */
     public function doDelFeedTop($id)
     {
@@ -71,9 +60,8 @@ class FeedTopModel extends Model
         $data['status'] = 1;
         $res = $this->where($map)->save($data);
 
-        return (bool) $res;
+        return (boolean) $res;
     }
-
     public function doFeedTop($id)
     {
         if (empty($id)) {
@@ -84,9 +72,8 @@ class FeedTopModel extends Model
         $data['status'] = 0;
         $res = $this->where($map)->save($data);
 
-        return (bool) $res;
+        return (boolean) $res;
     }
-
     public function doDel($id)
     {
         if (empty($id)) {
@@ -95,7 +82,7 @@ class FeedTopModel extends Model
         $map['id'] = $id;
         $res = $this->where($map)->delete();
 
-        return (bool) $res;
+        return (boolean) $res;
     }
 
     public function checkedFeedTop($uid, $feedId)
@@ -128,7 +115,7 @@ class FeedTopModel extends Model
         $data['ctime'] = time();
         $result = $this->add($data);
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function delFeedTop($uid, $feedId)
@@ -140,6 +127,6 @@ class FeedTopModel extends Model
         $map['feed_id'] = $feedId;
         $result = $this->where($map)->delete();
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 }

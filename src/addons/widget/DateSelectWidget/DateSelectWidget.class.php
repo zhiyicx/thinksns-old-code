@@ -1,11 +1,8 @@
 <?php
 /**
- * 日期选择.
- *
+ * 日期选择
  * @example 调用方法：W('DateSelect',array('name'=>'dateSelect','class'=>'s-txt','id'=>'dateSelectId','value'=>'','dtype'=>'full'))
- *
  * @author  jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class DateSelectWidget extends Widget
@@ -23,7 +20,7 @@ class DateSelectWidget extends Widget
     {
         !isset($data['width']) && $data['width'] = 200;
 
-        $var = [];
+        $var = array();
 
         is_array($data) && $var = array_merge($var, $data);
 

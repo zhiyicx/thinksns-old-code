@@ -1,7 +1,6 @@
 <?php
 /**
- * 话题模型.
- *
+ * 话题模型
  * @version TS3.0
  */
 class FeedTopicModel extends Model
@@ -9,12 +8,12 @@ class FeedTopicModel extends Model
     public $tableName = 'feed_topic';
 
     //添加话题
-    public function addTopic($content, $feedId, $type)
+    public function addTopic($content, $feedId = false, $type)
     {
         $content = str_replace('＃', '#', $content);
         preg_match_all("/#([^#]*[^#^\s][^#]*)#/is", $content, $arr);
         $arr = array_unique($arr[1]);
-        $topicIds = [];
+        $topicIds = array();
         foreach ($arr as $v) {
             // $topicIds[] = $this->addKey($v, $feedId, $type);
             array_push($topicIds, $this->addKey($v, $feedId, $type));
@@ -121,9 +120,8 @@ class FeedTopicModel extends Model
         // }
         // return $topic;
     }
-
     /**
-     *返回与话题相关的分享ID.
+     *返回与话题相关的分享ID
      */
     public function getFeedIdByTopic($topic)
     {
@@ -132,13 +130,10 @@ class FeedTopicModel extends Model
 
         return getSubByKey($feeds, 'fid');
     }
-
     /**
-     * 获取给定话题名的话题ID.
-     *
-     * @param string $name 话题名
-     *
-     * @return int 话题ID
+     * 获取给定话题名的话题ID
+     * @param  string $name 话题名
+     * @return int    话题ID
      */
     public function getTopicId($topic_name, $add = true)
     {
@@ -154,11 +149,11 @@ class FeedTopicModel extends Model
 
         // # 添加话题
         } elseif ($add) {
-            return $this->add([
+            return $this->add(array(
                 'topic_name' => $topic_name,
-                'count'      => '0',
-                'ctime'      => time(),
-            ]);
+                'count' => '0',
+                'ctime' => time(),
+            ));
         }
 
         return 0;

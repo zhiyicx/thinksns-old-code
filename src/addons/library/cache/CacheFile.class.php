@@ -11,18 +11,18 @@
 // +----------------------------------------------------------------------
 
 /**
- * 文件类型缓存类.
- *
+ * 文件类型缓存类
  * @category   Think
- *
+ * @package  Think
+ * @subpackage  Driver.Cache
  * @author    liu21st <liu21st@gmail.com>
  */
 class CacheFile extends Cache
 {
     /**
-     * 架构函数.
+     * 架构函数
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         if (!empty($options)) {
             $this->options = $options;
@@ -38,8 +38,7 @@ class CacheFile extends Cache
     }
 
     /**
-     * 初始化检查.
-     *
+     * 初始化检查
      * @return boolen
      */
     private function init()
@@ -57,10 +56,8 @@ class CacheFile extends Cache
     }
 
     /**
-     * 取得变量的存储文件名.
-     *
-     * @param string $name 缓存变量名
-     *
+     * 取得变量的存储文件名
+     * @param  string $name 缓存变量名
      * @return string
      */
     private function filename($name)
@@ -70,7 +67,7 @@ class CacheFile extends Cache
             // 使用子目录
             $dir = '';
             for ($i = 0; $i < C('DATA_PATH_LEVEL'); $i++) {
-                $dir .= $name[$i]
+                $dir .= $name{$i}
                 .'/';
             }
             if (!is_dir($this->options['temp'].$dir)) {
@@ -85,10 +82,8 @@ class CacheFile extends Cache
     }
 
     /**
-     * 读取缓存.
-     *
-     * @param string $name 缓存变量名
-     *
+     * 读取缓存
+     * @param  string $name 缓存变量名
      * @return mixed
      */
     public function get($name)
@@ -131,12 +126,10 @@ class CacheFile extends Cache
     }
 
     /**
-     * 写入缓存.
-     *
+     * 写入缓存
      * @param string $name  缓存变量名
      * @param mixed  $value 存储数据
      * @param  int    $expire 有效时间 0为永久
-     *
      * @return boolen
      */
     public function set($name, $value, $expire = null)
@@ -173,10 +166,8 @@ class CacheFile extends Cache
     }
 
     /**
-     * 删除缓存.
-     *
-     * @param string $name 缓存变量名
-     *
+     * 删除缓存
+     * @param  string $name 缓存变量名
      * @return boolen
      */
     public function rm($name)
@@ -187,10 +178,8 @@ class CacheFile extends Cache
     }
 
     /**
-     * 清除缓存.
-     *
-     * @param string $name 缓存变量名
-     *
+     * 清除缓存
+     * @param  string $name 缓存变量名
      * @return boolen
      */
     public function clear()

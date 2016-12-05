@@ -1,9 +1,7 @@
 <?php
 /**
- * ThinkSNS 知识处理类.
- *
+ * ThinkSNS 知识处理类
  * @author    liu21st <liu21st@gmail.com>
- *
  * @version   $Id: Log.class.php 2425 2011-12-17 07:57:00Z liu21st $
  */
 class Log
@@ -26,16 +24,14 @@ class Log
     const FILE = 3;
 
     // 知识信息
-    public static $log = [];
+    public static $log = array();
 
     // 日期格式
     public static $format = '[ c ]';
 
     /**
-     * 记录知识 并且会过滤未经设置的级别.
-     *
+     * 记录知识 并且会过滤未经设置的级别
      * @static
-     *
      * @param string $message 知识信息
      * @param string $level   知识级别
      * @param bool   $record  是否强制记录
@@ -49,10 +45,8 @@ class Log
     }
 
     /**
-     * 知识保存.
-     *
+     * 知识保存
      * @static
-     *
      * @param int $type 知识记录方式
      * @param string $destination 写入目标
      * @param string $extra 额外参数
@@ -76,10 +70,8 @@ class Log
     }
 
     /**
-     * 知识直接写入.
-     *
+     * 知识直接写入
      * @static
-     *
      * @param string $message 知识信息
      * @param string $level   知识级别
      * @param int    $type    知识记录方式

@@ -1,20 +1,19 @@
 <?php
 /**
- * 分享赞模型.
- *
+ * 分享赞模型
  * @version TS3.0
  */
 class FeedDiggModel extends Model
 {
     public $tableName = 'feed_digg';
-    protected $fields = [
-            0     => 'id',
-            1     => 'uid',
-            2     => 'feed_id',
-            3     => 'fid',
-            4     => 'cTime',
+    protected $fields = array(
+            0 => 'id',
+            1 => 'uid',
+            2 => 'feed_id',
+            3 => 'fid',
+            4 => 'cTime',
             '_pk' => 'id',
-    ];
+    );
 
     public function addDigg($feed_id, $mid)
     {
@@ -32,10 +31,10 @@ class FeedDiggModel extends Model
         // }
 
         $mid or $this->mid;
-        $data = [
-            'uid'     => $mid,
+        $data = array(
+            'uid' => $mid,
             'feed_id' => $feed_id,
-        ];
+        );
 
         if (!$data['uid']) {
             $this->error = '未登录';
@@ -57,7 +56,7 @@ class FeedDiggModel extends Model
 
         // $feed = model ( 'Source' )->getSourceInfo ( 'feed', $feed_id );
         // $data ['fid'] = $feed['uid'];
-        $data['cTime'] = time();
+        $data ['cTime'] = time();
         $res = $this->add($data);
         //dump($res);dump($this->getLastSql());
         if ($res) {
@@ -106,14 +105,11 @@ class FeedDiggModel extends Model
 
         return $res;
     }
-
     /**
-     * 返回赞列表.
-     *
-     * @param unknown_type $map
-     * @param unknown_type $page  -- 是否分页
-     * @param unknown_type $limit --分页代表每页条数 不分页表示查询条数
-     *
+     * 返回赞列表
+     * @param  unknown_type $map
+     * @param  unknown_type $page  -- 是否分页
+     * @param  unknown_type $limit --分页代表每页条数 不分页表示查询条数
      * @return unknown
      */
     public function getDiggList($map, $page = true, $limit = 20)
@@ -151,7 +147,6 @@ class FeedDiggModel extends Model
 
         return $list;
     }
-
     public function getDiggListPage($map, $limit = 20)
     {
         $list = $this->where($map)->order('id desc')->findPage($limit);
@@ -174,7 +169,7 @@ class FeedDiggModel extends Model
     }
 
     /**
-     * 返回赞过的用户列表.
+     * 返回赞过的用户列表
      */
     public function getDiggUser($map, $page = true, $limit = 20)
     {
@@ -191,19 +186,17 @@ class FeedDiggModel extends Model
     }
 
     /**
-     * 返回指定用户是否赞了指定的分享.
-     *
-     * @var 指定的分享数组
-     * @var $uid                  指定的用户
-     *
+     * 返回指定用户是否赞了指定的分享
+     * @var    $feed_ids 指定的分享数组
+     * @var    $uid      指定的用户
      * @return array
      */
     public function checkIsDigg($feed_ids, $uid)
     {
-        if (!is_array($feed_ids)) {
-            $feed_ids = [
+        if (! is_array($feed_ids)) {
+            $feed_ids = array(
                     $feed_ids,
-            ];
+            );
         }
 
         $feed_ids = array_filter($feed_ids);
@@ -211,7 +204,7 @@ class FeedDiggModel extends Model
         $digg = S('user_digg_'.$uid);
 
         if ($digg === false) {
-            $map['feed_id'] = ['IN', $feed_ids];
+            $map['feed_id'] = array('IN', $feed_ids);
 
             if (!$feed_ids) {
                 unset($map['feed_id']);
@@ -220,7 +213,7 @@ class FeedDiggModel extends Model
             $map['uid'] = $uid;
             $list = $this->where($map)->field('feed_id')->findAll();
             foreach ($list as $v) {
-                $res[$v['feed_id']] = 1;
+                $res [$v ['feed_id']] = 1;
             }
             $this->setDiggCache($uid, $v['feed_id']);
         } else {

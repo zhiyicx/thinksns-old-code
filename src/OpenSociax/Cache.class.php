@@ -11,37 +11,33 @@
 // +----------------------------------------------------------------------
 
 /**
- * 缓存管理类.
- *
+ * 缓存管理类
  * @category   Think
- *
+ * @package  Think
+ * @subpackage  Core
  * @author    liu21st <liu21st@gmail.com>
  */
 class Cache
 {
     /**
-     * 操作句柄.
-     *
+     * 操作句柄
      * @var string
      */
-    protected $handler;
+    protected $handler    ;
 
     /**
-     * 缓存连接参数.
-     *
+     * 缓存连接参数
      * @var int
      */
-    protected $options = [];
+    protected $options = array();
 
     /**
-     * 连接缓存.
-     *
+     * 连接缓存
      * @param string $type 缓存类型
      * @param  array  $options 配置数组
-     *
      * @return object
      */
-    public function connect($type = '', $options = [])
+    public function connect($type = '', $options = array())
     {
         if (empty($type)) {
             $type = C('DATA_CACHE_TYPE');
@@ -71,7 +67,6 @@ class Cache
     {
         $this->rm($name);
     }
-
     public function setOptions($name, $value)
     {
         $this->options[$name] = $value;
@@ -83,10 +78,8 @@ class Cache
     }
 
     /**
-     * 取得缓存类实例.
-     *
+     * 取得缓存类实例
      * @static
-     *
      * @return mixed
      */
     public static function getInstance()
@@ -97,25 +90,23 @@ class Cache
     }
 
     /**
-     * 队列缓存.
-     *
-     * @param string $key 队列名
-     *
+     * 队列缓存
+     * @param  string $key 队列名
      * @return mixed
      */
     protected function queue($key)
     {
-        static $_handler = [
-            'file'   => ['F', 'F'],
-            'xcache' => ['xcache_get', 'xcache_set'],
-            'apc'    => ['apc_fetch', 'apc_store'],
-        ];
+        static $_handler = array(
+            'file' => array('F', 'F'),
+            'xcache' => array('xcache_get', 'xcache_set'),
+            'apc' => array('apc_fetch', 'apc_store'),
+        );
         $queue = isset($this->options['queue']) ? $this->options['queue'] : 'file';
         $fun = isset($_handler[$queue]) ? $_handler[$queue] : $_handler['file'];
         $queue_name = isset($this->options['queue_name']) ? $this->options['queue_name'] : 'think_queue';
         $value = $fun[0]($queue_name);
         if (!$value) {
-            $value = [];
+            $value = array();
         }
         // 进列
         if (false === array_search($key, $value)) {
@@ -139,7 +130,7 @@ class Cache
     {
         //调用缓存类型自己的方法
         if (method_exists($this->handler, $method)) {
-            return call_user_func_array([$this->handler, $method], $args);
+            return call_user_func_array(array($this->handler, $method), $args);
         } else {
             throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
 

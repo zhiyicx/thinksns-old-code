@@ -1,8 +1,8 @@
 <?php
 /**
- * 勋章列表前台展示.
- *
+ * 勋章列表前台展示
  * @author Stream
+ *
  */
 class MedalListWidget extends Widget
 {
@@ -19,13 +19,13 @@ class MedalListWidget extends Widget
             return;
         }
         $medalids = getSubByKey($medals, 'id');
-        $map['medal_id'] = ['in', $medalids];
+        $map['medal_id'] = array('in', $medalids);
         //加入缓存 如果勋章数目有变化的话 重新获取在缓存
         $key = 'medal_user_'.$map['uid'].'_'.count($medalids);
         $usermedal = model('Cache')->get($key);
         if (!$usermedal) {
             $umedal = D('medal_user')->where($map)->field('medal_id,`desc`,ctime')->findAll();
-            $usermedal = [];
+            $usermedal = array();
             foreach ($umedal as $u) {
                 $usermedal[$u['medal_id']]['desc'] = $u['desc'];
                 $usermedal[$u['medal_id']]['ctime'] = $u['ctime'];

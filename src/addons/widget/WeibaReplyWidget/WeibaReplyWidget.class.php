@@ -1,11 +1,8 @@
 <?php
 /**
-  * 评论发布/显示框.
-  *
+  * 评论发布/显示框
   * @example W('Comment',array('tpl'=>'detail','row_id'=>72,'order'=>'DESC','app_uid'=>'14983','cancomment'=>1,'cancomment_old'=>0,'showlist'=>1,'canrepost'=>1))
-  *
   * @author jason <yangjs17@yeah.net>
-  *
   * @version TS3.0
   */
 class WeibaReplyWidget extends Widget
@@ -24,7 +21,7 @@ class WeibaReplyWidget extends Widget
      */
     public function render($data)
     {
-        $var = [];
+        $var = array();
         //默认配置数据
          $var['cancomment'] = 1;  //是否可以评论
         // $var['canrepost']   = 1;  //是否允许转发
@@ -37,7 +34,7 @@ class WeibaReplyWidget extends Widget
         $var['order'] = 'ASC';
         $var['initNums'] = model('Xdata')->getConfig('weibo_nums', 'feed');
         $map['weiba_id'] = $data['weiba_id'];
-        $map['level'] = ['gt', 1];
+        $map['level'] = array('gt', 1);
         $var['weiba_admin'] = getSubByKey(D('weiba_follow', 'weiba')->where($map)->findAll(), 'follower_uid');
 
         $_REQUEST['p'] = $_GET['p'] ? $_GET['p'] : $_POST['p'];
@@ -53,7 +50,7 @@ class WeibaReplyWidget extends Widget
             $var['order'] = 'ASC';
         }
         if ($var['showlist'] == 1) { //默认只取出前10条
-            $map = [];
+            $map = array();
             $map['post_id'] = intval($var['post_id']);   //必须存在
             if (!empty($map['post_id'])) {
                 //分页形式数据
@@ -64,28 +61,27 @@ class WeibaReplyWidget extends Widget
             $var['diggArr'] = D('WeibaReplyDigg', 'weiba')->checkIsDigg($row_ids, $GLOBALS['ts']['mid']);
         }//渲染模版x
         $content = $this->renderFile(dirname(__FILE__).'/'.$var['tpl'].'.html', $var);
-        self::$rand++;
+        self::$rand ++;
         $ajax = $var['isAjax'];
         unset($var, $data);
         //输出数据
-        $return = ['status' => 1, 'data' => $content];
+        $return = array('status' => 1, 'data' => $content);
 
         return $ajax == 1 ? json_encode($return) : $return['data'];
     }
 
     /**
-     * 添加帖子回复的操作.
-     *
+     * 添加帖子回复的操作
      * @return array 评论添加状态和提示信息
      */
     public function addReply()
     {
         //检测用户是否被禁言
         if ($isDisabled = model('DisableUser')->isDisableUser($this->mid, 'post')) {
-            exit(json_encode([
+            exit(json_encode(array(
                 'status' => 0,
-                'data'   => '您已经被禁言了',
-            ]));
+                'data' => '您已经被禁言了',
+            )));
         }
         //   echo $_POST['post_id'];exit;
          if (!$this->mid || !CheckPermission('weiba_normal', 'weiba_reply')) {
@@ -97,7 +93,7 @@ class WeibaReplyWidget extends Widget
             $return['data'] = '您是黑名单用户没有发帖权限！';
             exit(json_encode($return));
         }
-        $return = ['status' => 0, 'data' => L('PUBLIC_CONCENT_IS_ERROR')];
+        $return = array('status' => 0, 'data' => L('PUBLIC_CONCENT_IS_ERROR'));
         $data['weiba_id'] = intval($_POST['weiba_id']);
         $data['post_id'] = intval($_POST['post_id']);
         $data['post_uid'] = intval($_POST['post_uid']);
@@ -110,7 +106,7 @@ class WeibaReplyWidget extends Widget
 
         $filterContentStatus = filter_words($data['content']);
         if (!$filterContentStatus['status']) {
-            exit(json_encode(['status' => 0, 'data' => $filterContentStatus['data']]));
+            exit(json_encode(array('status' => 0, 'data' => $filterContentStatus['data'])));
         }
         $data['content'] = $filterContentStatus['data'];
 
@@ -137,14 +133,14 @@ class WeibaReplyWidget extends Widget
 
             $map['last_reply_uid'] = $this->mid;
             $map['last_reply_time'] = $data['ctime'];
-            $map['reply_count'] = [
+            $map ['reply_count'] = array(
                     'exp',
                     'reply_count+1',
-            ];
-            $map['reply_all_count'] = [
+            );
+            $map ['reply_all_count'] = array(
                     'exp',
                     'reply_all_count+1',
-            ];
+            );
             D('weiba_post', 'weiba')->where('post_id='.$data['post_id'])->save($map);
             //同步到分享评论
             //$feed_id = intval($_POST['feed_id']);
@@ -181,15 +177,15 @@ class WeibaReplyWidget extends Widget
                 // 根据评论的对象获取原来的内容
                 $s['sid'] = $data['post_id'];
                 $s['app_name'] = 'weiba';
-                if (!empty($data['to_comment_id'])) {
-                    $replyInfo = model('Comment')->init($data['app'], $data['table'])->getCommentInfo($data['to_comment_id'], false);
-                    $data['content'] .= $replyInfo['content'];
+                if (!empty($data ['to_comment_id'])) {
+                    $replyInfo = model('Comment')->init($data ['app'], $data ['table'])->getCommentInfo($data ['to_comment_id'], false);
+                    $data ['content'] .= $replyInfo ['content'];
                 }
-                $s['body'] = $data['content'];
+                $s ['body'] = $data ['content'];
                 $s['type'] = 'weiba_post';
                 $s['comment'] = $data['comment_old'];
                 // 去掉回复用户@
-                $lessUids = [];
+                $lessUids = array();
                 if (!empty($data['to_uid'])) {
                     $lessUids[] = $data['to_uid'];
                 }
@@ -208,7 +204,7 @@ class WeibaReplyWidget extends Widget
             if ($data['attach_info']['attach_type'] == 'weiba_comment_image' || $data['attach_info']['attach_type'] == 'feed_image') {
                 $data['attach_info']['attach_url'] = getImageUrl($data['attach_info']['save_path'].$data['attach_info']['save_name'], 590);
             }
-            $return['status'] = 1;
+            $return['status'] = 1 ;
             $return['data'] = $this->parseReply($data);
         }
         echo json_encode($return);
@@ -216,8 +212,7 @@ class WeibaReplyWidget extends Widget
     }
 
     /**
-     * 删除回复(在分享评论删除中同步删除微吧回复).
-     *
+     * 删除回复(在分享评论删除中同步删除微吧回复)
      * @return bool true or false
      */
     public function delReply()
@@ -246,7 +241,7 @@ class WeibaReplyWidget extends Widget
     }
 
     /**
-     * 渲染评论页面 在addcomment方法中调用.
+     * 渲染评论页面 在addcomment方法中调用
      */
     public function parseReply($data)
     {
@@ -259,7 +254,7 @@ class WeibaReplyWidget extends Widget
     }
 
     /**
-     * 评论帖子回复.
+     * 评论帖子回复
      */
     public function reply_reply()
     {

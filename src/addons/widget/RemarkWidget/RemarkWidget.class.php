@@ -1,16 +1,13 @@
 <?php
 
 /**
- * 备注 Widget.
- *
+ * 备注 Widget
  * @example W('Remark',array('uid'=>1000,'remark'=>'TS3.0','showonly'=>0))
- *
  * @version TS3.0
  */
 class RemarkWidget extends Widget
 {
     private static $rand = 1;
-
     /**
      * @param int uid 目标用户的UID
      * @param string remark 用户已经被设置的备注名称
@@ -18,7 +15,7 @@ class RemarkWidget extends Widget
      */
     public function render($data)
     {
-        $var = [];
+        $var = array();
         $var['uid'] = $GLOBALS['ts']['uid'];
         $var['remark'] = '';
         is_array($data) && $var = array_merge($var, $data);
@@ -30,7 +27,7 @@ class RemarkWidget extends Widget
         // $content = $this->renderFile(dirname(__FILE__)."/remark.html",$var);
         $content = $this->renderData($var);
 
-        self::$rand++;
+        self::$rand ++;
 
         unset($var, $data);
 
@@ -55,8 +52,7 @@ class RemarkWidget extends Widget
     }
 
     /**
-     * 渲染备注编辑弹框.
-     *
+     * 渲染备注编辑弹框
      * @return string 修改后的备注内容
      */
     public function edit()

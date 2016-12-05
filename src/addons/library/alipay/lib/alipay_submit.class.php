@@ -16,7 +16,7 @@ class AlipaySubmit
 {
     public $alipay_config;
     /**
-     *支付宝网关地址（新）.
+     *支付宝网关地址（新）
      */
     public $alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';
     /*
@@ -28,15 +28,13 @@ class AlipaySubmit
     {
         $this->alipay_config = $alipay_config;
     }
-
     public function AlipaySubmit($alipay_config)
     {
         $this->__construct($alipay_config);
     }
 
     /**
-     * 生成签名结果.
-     *
+     * 生成签名结果
      * @param $para_sort 已排序要签名的数组
      * return 签名结果字符串
      */
@@ -61,10 +59,8 @@ class AlipaySubmit
     }
 
     /**
-     * 生成要请求给支付宝的参数数组.
-     *
+     * 生成要请求给支付宝的参数数组
      * @param $para_temp 请求前的参数数组
-     *
      * @return 要请求的参数数组
      */
     public function buildRequestPara($para_temp)
@@ -100,10 +96,8 @@ class AlipaySubmit
     }
 
     /**
-     * 生成要请求给支付宝的参数数组.
-     *
+     * 生成要请求给支付宝的参数数组
      * @param $para_temp 请求前的参数数组
-     *
      * @return 要请求的参数数组字符串
      */
     public function buildRequestParaToString($para_temp)
@@ -118,12 +112,10 @@ class AlipaySubmit
     }
 
     /**
-     * 建立请求，以表单HTML形式构造（默认）.
-     *
+     * 建立请求，以表单HTML形式构造（默认）
      * @param $para_temp 请求参数数组
      * @param $method 提交方式。两个值可选：post、get
      * @param $button_name 确认按钮显示文字
-     *
      * @return 提交表单HTML文本
      */
     public function buildRequestForm($para_temp, $method, $button_name)
@@ -145,10 +137,8 @@ class AlipaySubmit
     }
 
     /**
-     * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果.
-     *
+     * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果
      * @param $para_temp 请求参数数组
-     *
      * @return 支付宝处理结果
      */
     public function buildRequestHttp($para_temp)
@@ -165,12 +155,10 @@ class AlipaySubmit
     }
 
     /**
-     * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果，带文件上传功能.
-     *
+     * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果，带文件上传功能
      * @param $para_temp 请求参数数组
      * @param $file_para_name 文件类型的参数名
      * @param $file_name 文件完整绝对路径
-     *
      * @return 支付宝返回处理结果
      */
     public function buildRequestHttpInFile($para_temp, $file_para_name, $file_name)
@@ -189,7 +177,7 @@ class AlipaySubmit
     /**
      * 用于防钓鱼，调用接口query_timestamp来获取时间戳的处理函数
      * 注意：该功能PHP5环境及以上支持，因此必须服务器、本地电脑中装有支持DOMDocument、SSL的PHP配置环境。建议本地调试时使用PHP开发软件
-     * return 时间戳字符串.
+     * return 时间戳字符串
      */
     public function query_timestamp()
     {

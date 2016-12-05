@@ -7,14 +7,15 @@
  **************************************************************************/
 
 /**
+ * @package	Baidu
  * @author	zhujianting(zhujianting@baidu.com)
- *
  * @version	v1.0.0
  */
 class BaiduException extends Exception
 {
     /**
      * Constructor: initialize the BaiduException instance.
+     *
      */
     public function __construct($message, $code = 0)
     {

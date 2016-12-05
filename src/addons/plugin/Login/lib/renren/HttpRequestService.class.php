@@ -15,36 +15,36 @@
 
  class HttpRequestService
  {
-     //cURL Object
+     #cURL Object
     private $ch;
-  //Contains the last HTTP status code returned.
+  #Contains the last HTTP status code returned.
     public $http_code;
-  //Contains the last API call.
+  #Contains the last API call.
     private $http_url;
-  //Set up the API root URL.
+  #Set up the API root URL.
     public $api_url;
-  //Set timeout default.
+  #Set timeout default.
     public $timeout = 10;
-  //Set connect timeout.
+  #Set connect timeout.
     public $connecttimeout = 30;
-  //Verify SSL Cert.
+  #Verify SSL Cert.
     public $ssl_verifypeer = false;
-  //Response format.
+  #Response format.
     public $format = ''; // Only support json & xml for extension
     public $decodeFormat = 'json'; //default is json
     public $_encode = 'utf-8';
-  //Decode returned json data.
+  #Decode returned json data.
     //public $decode_json = true;
-  //Contains the last HTTP headers returned.
-    public $http_info = [];
-     public $http_header = [];
+  #Contains the last HTTP headers returned.
+    public $http_info = array();
+     public $http_header = array();
      private $contentType;
      private $postFields;
-     private static $paramsOnUrlMethod = ['GET', 'DELETE'];
-     private static $supportExtension = ['json', 'xml'];
-  //For tmpFile
+     private static $paramsOnUrlMethod = array('GET', 'DELETE');
+     private static $supportExtension = array('json', 'xml');
+  #For tmpFile
     private $file = null;
-  //Set the useragnet.
+  #Set the useragnet.
     private static $userAgent = 'Timescode_RESTClient v0.0.1-alpha';
 
      public function __construct()
@@ -57,22 +57,20 @@
          curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
          curl_setopt($this->ch, CURLOPT_AUTOREFERER, true);
          curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
-         curl_setopt($this->ch, CURLOPT_HTTPHEADER, ['Expect:']);
+         curl_setopt($this->ch, CURLOPT_HTTPHEADER, array('Expect:'));
          curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-         curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, [$this, 'getHeader']);
+         curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
          curl_setopt($this->ch, CURLOPT_HEADER, false);
      }
 
     /**
-     * Execute calls.
-     *
+     * Execute calls
      * @param $url String
      * @param $method String
      * @param $postFields String
      * @param $username String
      * @param $password String
      * @param $contentType String
-     *
      * @return RESTClient
      */
     public function call($url, $method, $postFields = null, $username = null, $password = null, $contentType = null)
@@ -102,7 +100,7 @@
           case 'PUT':
             curl_setopt($this->ch, CURLOPT_PUT, true);
             if ($this->postFields != null) {
-                $this->file = tmpfile();
+                $this->file = tmpFile();
                 fwrite($this->file, $this->postFields);
                 fseek($this->file, 0);
                 curl_setopt($this->ch, CURLOPT_INFILE, $this->file);
@@ -112,7 +110,7 @@
         }
 
         $this->setAuthorizeInfo($username, $password);
-        $this->contentType != null && curl_setopt($this->ch, CURLOPT_HTTPHEADER, ['Content-type:'.$this->contentType]);
+        $this->contentType != null && curl_setopt($this->ch, CURLOPT_HTTPHEADER, array('Content-type:'.$this->contentType));
 
         curl_setopt($this->ch, CURLOPT_URL, $url);
 
@@ -124,7 +122,6 @@
 
         return $response;
     }
-
      public function call_fopen($url, $method, $postFields = null, $username = null, $password = null, $contentType = null)
      {
          if (strrpos($url, 'https://') !== 0 && strrpos($url, 'http://') !== 0 && !empty($this->format)) {
@@ -136,11 +133,11 @@
          $this->postFields = $postFields;
 
          $url = in_array($method, self::$paramsOnUrlMethod) ? $this->to_url() : $this->get_http_url();
-         $params = ['http' => [
-               'method'  => 'POST',
-               'header'  => 'Content-type: application/x-www-form-urlencoded'."\r\n",
+         $params = array('http' => array(
+               'method' => 'POST',
+               'header' => 'Content-type: application/x-www-form-urlencoded'."\r\n",
                'content' => $this->create_post_body($this->postFields),
-            ]];
+            ));
          $ctx = stream_context_create($params);
          $fp = fopen($url, 'rb', false, $ctx);
 
@@ -163,7 +160,6 @@
 
          return $this;
      }
-
      public static function convertEncoding($source, $in, $out)
      {
          $in = strtoupper($in);
@@ -186,13 +182,10 @@
 
          return $source;
      }
-
     /**
-     * POST wrapper，不基于curl函数，环境可以不支持curl函数.
-     *
+     * POST wrapper，不基于curl函数，环境可以不支持curl函数
      * @param method String
      * @param parameters Array
-     *
      * @return mixed
      */
     public function do_post_request($url, $postdata, $files)
@@ -217,11 +210,11 @@
             $data .= "--$boundary--\r\n";
         }
 
-        $params = ['http' => [
-               'method'  => 'POST',
-               'header'  => 'Content-Type: multipart/form-data; boundary='.$boundary,
+        $params = array('http' => array(
+               'method' => 'POST',
+               'header' => 'Content-Type: multipart/form-data; boundary='.$boundary,
                'content' => $data,
-            ]];
+            ));
 
         $ctx = stream_context_create($params);
         $fp = fopen($url, 'rb', false, $ctx);
@@ -238,16 +231,13 @@
 
         return $response;
     }
-
      /**
-      * POST wrapper for insert data.
-      *
+      * POST wrapper for insert data
       * @param $url String
       * @param $params mixed
       * @param $username String
       * @param $password String
       * @param $contentType String
-      *
       * @return RESTClient
       */
      public function _POST($url, $params = null, $username = null, $password = null, $contentType = null)
@@ -263,14 +253,12 @@
 
          return $this->json_foreach($this->parseResponse($response));
      }
-
      public function _photoUpload($url, $postdata, $files)
      {
          $response = $this->do_post_request($url, $postdata, $files);
 
          return $this->json_foreach($this->parseResponse($response));
      }
-
      //将stdclass object转换成数组，并转换编码
      public function json_foreach($jsonArr)
      {
@@ -291,16 +279,13 @@
 
          return $jsonArr;
      }
-
      /**
-      * PUT wrapper for update data.
-      *
+      * PUT wrapper for update data
       * @param $url String
       * @param $params mixed
       * @param $username String
       * @param $password String
       * @param $contentType String
-      *
       * @return RESTClient
       */
      public function _PUT($url, $params = null, $username = null, $password = null, $contentType = null)
@@ -309,10 +294,9 @@
 
          return $this->parseResponse($this->convertEncoding($response, 'utf-8', $this->_encode));
      }
-
      public function create_post_body($post_params)
      {
-         $params = [];
+         $params = array();
          foreach ($post_params as $key => &$val) {
              if (is_array($val)) {
                  $val = implode(',', $val);
@@ -322,15 +306,12 @@
 
          return implode('&', $params);
      }
-
      /**
-      * GET wrapper for get data.
-      *
+      * GET wrapper for get data
       * @param $url String
       * @param $params mixed
       * @param $username String
       * @param $password String
-      *
       * @return RESTClient
       */
      public function _GET($url, $params = null, $username = null, $password = null)
@@ -341,18 +322,16 @@
      }
 
      /**
-      * DELETE wrapper for delete data.
-      *
+      * DELETE wrapper for delete data
       * @param $url String
       * @param $params mixed
       * @param $username String
       * @param $password String
-      *
       * @return RESTClient
       */
      public function _DELETE($url, $params = null, $username = null, $password = null)
      {
-         //Modified by Edison tsai on 09:50 2010/11/26 for missing part
+         #Modified by Edison tsai on 09:50 2010/11/26 for missing part
          $response = $this->call($url, 'DELETE', $params, $username, $password);
 
          return $this->parseResponse($response);
@@ -398,7 +377,7 @@
 
       /**
        * parses the url and rebuilds it to be
-       * scheme://host/path.
+       * scheme://host/path
        */
       public function get_http_url()
       {
@@ -420,7 +399,7 @@
       }
 
       /**
-       * builds a url usable for a GET request.
+       * builds a url usable for a GET request
        */
       public function to_url()
       {
@@ -434,7 +413,7 @@
       }
 
       /**
-       * builds the data one would send in a POST request.
+       * builds the data one would send in a POST request
        */
       public function to_postdata()
       {
@@ -442,8 +421,7 @@
       }
 
      /**
-      * Settings that won't follow redirects.
-      *
+      * Settings that won't follow redirects
       * @return RESTClient
       */
      public function setNotFollow()
@@ -455,7 +433,7 @@
      }
 
      /**
-      * Closes the connection and release resources.
+      * Closes the connection and release resources
       */
      public function close()
      {
@@ -466,8 +444,7 @@
      }
 
      /**
-      * Sets the URL to be Called.
-      *
+      * Sets the URL to be Called
       * @param $url String
       */
      public function setURL($url)
@@ -476,10 +453,8 @@
      }
 
      /**
-      * Sets the format type to be extension.
-      *
+      * Sets the format type to be extension
       * @param $format String
-      *
       * @return bool
       */
      public function setFormat($format = null)
@@ -493,10 +468,8 @@
      }
 
      /**
-      * Sets the format type to be decoded.
-      *
+      * Sets the format type to be decoded
       * @param $format String
-      *
       * @return bool
       */
      public function setDecodeFormat($format = null)
@@ -511,8 +484,7 @@
 
      /**
       * Set the Content-Type of the request to be send
-      * Format like "application/json" or "application/xml" or "text/plain" or other.
-      *
+      * Format like "application/json" or "application/xml" or "text/plain" or other
       * @param string $contentType
       */
      public function setContentType($contentType)
@@ -521,22 +493,20 @@
      }
 
      /**
-      * Set the authorize info for Basic Authentication.
-      *
+      * Set the authorize info for Basic Authentication
       * @param $username String
       * @param $password String
       */
      public function setAuthorizeInfo($username, $password)
      {
-         if ($username != null) { //The password might be blank
+         if ($username != null) { #The password might be blank
              curl_setopt($this->ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
              curl_setopt($this->ch, CURLOPT_USERPWD, "{$username}:{$password}");
          }
      }
 
      /**
-      * Set the Request HTTP Method.
-      *
+      * Set the Request HTTP Method
       * @param $method String
       */
      public function setMethod($method)
@@ -548,8 +518,7 @@
       * Set Parameters to be send on the request
       * It can be both a key/value par array (as in array("key"=>"value"))
       * or a string containing the body of the request, like a XML, JSON or other
-      * Proper content-type should be set for the body if not a array.
-      *
+      * Proper content-type should be set for the body if not a array
       * @param $params mixed
       */
      public function setParameters($params)

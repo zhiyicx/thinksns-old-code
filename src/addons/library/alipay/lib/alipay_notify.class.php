@@ -32,15 +32,12 @@ class AlipayNotify
     {
         $this->alipay_config = $alipay_config;
     }
-
     public function AlipayNotify($alipay_config)
     {
         $this->__construct($alipay_config);
     }
-
     /**
-     * 针对notify_url验证消息是否是支付宝发出的合法消息.
-     *
+     * 针对notify_url验证消息是否是支付宝发出的合法消息
      * @return 验证结果
      */
     public function verifyNotify()
@@ -53,7 +50,7 @@ class AlipayNotify
             $isSign = $this->getSignVeryfy($_POST, $_POST['sign']);
             //获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
             $responseTxt = 'true';
-            if (!empty($_POST['notify_id'])) {
+            if (! empty($_POST['notify_id'])) {
                 $responseTxt = $this->getResponse($_POST['notify_id']);
             }
 
@@ -80,8 +77,7 @@ class AlipayNotify
     }
 
     /**
-     * 针对return_url验证消息是否是支付宝发出的合法消息.
-     *
+     * 针对return_url验证消息是否是支付宝发出的合法消息
      * @return 验证结果
      */
     public function verifyReturn()
@@ -94,7 +90,7 @@ class AlipayNotify
             $isSign = $this->getSignVeryfy($_GET, $_GET['sign']);
             //获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
             $responseTxt = 'true';
-            if (!empty($_GET['notify_id'])) {
+            if (! empty($_GET['notify_id'])) {
                 $responseTxt = $this->getResponse($_GET['notify_id']);
             }
 
@@ -121,11 +117,9 @@ class AlipayNotify
     }
 
     /**
-     * 获取返回时的签名验证结果.
-     *
+     * 获取返回时的签名验证结果
      * @param $para_temp 通知返回来的参数数组
      * @param $sign 返回的签名结果
-     *
      * @return 签名验证结果
      */
     public function getSignVeryfy($para_temp, $sign)
@@ -157,10 +151,8 @@ class AlipayNotify
     }
 
     /**
-     * 获取远程服务器ATN结果,验证返回URL.
-     *
+     * 获取远程服务器ATN结果,验证返回URL
      * @param $notify_id 通知校验ID
-     *
      * @return 服务器ATN结果
      *                            验证结果集：
      *                            invalid命令参数不对 出现这个错误，请检测返回处理中partner和key是否为空

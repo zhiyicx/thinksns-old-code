@@ -1,26 +1,20 @@
 <?php
 /**
- * 调整关注用户分组Widget.
- *
+ * 调整关注用户分组Widget
  * @example {:W('FollowGroup', array('uid'=>$_following['uid'], 'fid'=>$_following['fid'], 'follow_group_status' => $follow_group_status)}
- *
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class FollowGroupWidget extends Widget
 {
     /**
      * 渲染关注用户分组调整模板
-     *
      * @example
      * $data['uid'] integer 用户ID
      * $data['fid'] integer 关注用户ID
      * $data['follow_group_status'] array 指定关注用户的分组信息
      * @data['tpl'] string 模板字段
-     *
      * @param  array  $data 配置的相关信息
-     *
      * @return string 渲染后的模板数据
      */
     public function render($data)
@@ -48,7 +42,7 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 渲染添加分组页面.
+     * 渲染添加分组页面
      */
     public function addgroup()
     {
@@ -56,8 +50,7 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 添加分组.
-     *
+     * 添加分组
      * @return array 添加分组状态和提示信息
      */
     public function doaddGroup()
@@ -65,7 +58,7 @@ class FollowGroupWidget extends Widget
         // 验证是否超出个数
         $count = model('FollowGroup')->where('uid='.$GLOBALS['ts']['mid'])->count();
         if ($count >= 5) {
-            $return = ['status' => 0, 'data' => '最多只能创建5个分组'];
+            $return = array('status' => 0, 'data' => '最多只能创建5个分组');
             exit(json_encode($return));
         }
 
@@ -74,22 +67,22 @@ class FollowGroupWidget extends Widget
         $followGroup = model('FollowGroup')->getGroupList($GLOBALS['ts']['mid']);
         foreach ($followGroup as $v) {
             if ($v['title'] === $groupname) {
-                $return = ['status' => 0, 'data' => L('PUBLIC_USER_GROUP_EXIST')];
+                $return = array('status' => 0, 'data' => L('PUBLIC_USER_GROUP_EXIST'));
                 exit(json_encode($return));
             }
         }
         // 插入数据
         $res = model('FollowGroup')->setGroup($GLOBALS['ts']['mid'], $groupname);
         if ($res == 0) {
-            $return = ['status' => 0, 'data' => L('PUBLIC_ADD_GROUP_NAME_ERROR')];
+            $return = array('status' => 0, 'data' => L('PUBLIC_ADD_GROUP_NAME_ERROR'));
         } else {
-            $return = ['status' => 1, 'data' => $res];
+            $return = array('status' => 1, 'data' => $res);
         }
         exit(json_encode($return));
     }
 
     /**
-     * 渲染编辑分组页面.
+     * 渲染编辑分组页面
      */
     public function editgroup()
     {
@@ -103,8 +96,7 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 验证分组个数.
-     *
+     * 验证分组个数
      * @return mixed 验证分组状态和提示信息
      */
     public function checkGroup()
@@ -112,7 +104,7 @@ class FollowGroupWidget extends Widget
         $map['uid'] = $this->mid;
         $nums = model('FollowGroup')->where($map)->count();
         if ($nums >= 10) {
-            $return = ['data' => L('PUBLIC_CRETAE_GROUP_MAX_TIPES', ['num' => 10]), 'status' => 0];
+            $return = array('data' => L('PUBLIC_CRETAE_GROUP_MAX_TIPES', array('num' => 10)), 'status' => 0);
             echo json_encode($return);
             exit();
         }

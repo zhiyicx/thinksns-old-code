@@ -1,18 +1,17 @@
 <?php
 /**
  * 标准插件抽象。该插件具备插件的标准行为。
- * 获取信息，以及该插件拥有的管理操作.
- *
+ * 获取信息，以及该插件拥有的管理操作
  * @author sampeng
+ *
  */
 abstract class SimpleAddons extends AbstractAddons
 {
     private $name;
-    private $hooklist = [];
-
+    private $hooklist = array();
     /**
      * getHooksList
-     * 获取该插件的所有钩子列表.
+     * 获取该插件的所有钩子列表
      */
     public function getHooksList($name)
     {
@@ -25,7 +24,7 @@ abstract class SimpleAddons extends AbstractAddons
     //管理面板
     public function adminMenu()
     {
-        return [];
+        return array();
     }
 
     //注册hook位该执行的方法

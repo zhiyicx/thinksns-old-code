@@ -10,7 +10,7 @@ class SensitiveWordModel extends Model
 
     protected $tableName = 'sensitive_word';
 
-    private $_type = [1, 2, 3];
+    private $_type = array(1, 2, 3);
 
     public function setSensitiveWord($word, $replace, $type, $cid, $uid, $id = null)
     {
@@ -33,7 +33,7 @@ class SensitiveWordModel extends Model
             $result = $this->where($map)->save($data);
         }
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function rmSensitiveWord($id)
@@ -44,10 +44,10 @@ class SensitiveWordModel extends Model
         $map['sensitive_word_id'] = $id;
         $result = $this->where($map)->delete();
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
-    public function getSensitiveWordList($map = [], $limit = 20)
+    public function getSensitiveWordList($map = array(), $limit = 20)
     {
         $list = $this->where($map)->findPage($limit);
 
@@ -61,7 +61,7 @@ class SensitiveWordModel extends Model
         $map['sensitive_word_id'] = $id;
         $data = $this->where($map)->find();
 
-        $data = $this->_formatData([$data]);
+        $data = $this->_formatData(array($data));
         $data = array_shift($data);
 
         return $data;
@@ -96,9 +96,9 @@ class SensitiveWordModel extends Model
     {
         $list = $this->field('`word`,`type`,`replace`')->findAll();
 
-        $ban = [];
-        $replace = [];
-        $audit = [];
+        $ban = array();
+        $replace = array();
+        $audit = array();
 
         foreach ($list as $value) {
             switch ($value['type']) {
@@ -115,15 +115,15 @@ class SensitiveWordModel extends Model
         }
 
         if (!empty($ban) && strlen(strtr($content, $ban)) < strlen($content)) {
-            return ['status' => false, 'type' => 1, 'data' => '内容中包含禁止词汇'];
+            return array('status' => false, 'type' => 1, 'data' => '内容中包含禁止词汇');
         }
 
         !empty($replace) && $content = strtr($content, $replace);
 
         if (!empty($audit) && strlen(strtr($content, $audit)) < strlen($content)) {
-            return ['status' => true, 'type' => 2, 'data' => $content];
+            return array('status' => true, 'type' => 2, 'data' => $content);
         }
 
-        return ['status' => true, 'type' => 3, 'data' => $content];
+        return array('status' => true, 'type' => 3, 'data' => $content);
     }
 }

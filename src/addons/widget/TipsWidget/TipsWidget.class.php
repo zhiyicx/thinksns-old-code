@@ -1,11 +1,8 @@
 <?php
 /**
- * 渲染顶操作页面Widget.
- *
+ * 渲染顶操作页面Widget
  * @example W('Tips',array('source_id'=>$source_id,'source_table'=>$source_table,'type'=>0,'display_text'=>'顶','count'=>10,'uid'=>11860))
- *
  * @author zivss
- *
  * @version TS3.0
  **/
 class TipsWidget extends Widget
@@ -39,8 +36,7 @@ class TipsWidget extends Widget
     }
 
     /**
-     * 执行顶或踩的操作.
-     *
+     * 执行顶或踩的操作
      * @return ajax� 送信息 0（添加失败）、1（添加成功）、2（已经添加）
      */
     public function doExec()

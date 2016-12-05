@@ -1,29 +1,25 @@
 <?php
 /**
- * 用户认证模型 - 数据对象模型.
- *
+ * 用户认证模型 - 数据对象模型
  * @author zivss <guolee226@gmail.com>
- *
  * @version TS3.0
  */
 class UserVerifiedModel extends Model
 {
     protected $tableName = 'user_verified';
-    protected $fields = ['id', 'uid', 'usergroup_id', 'user_verified_category_id', 'company', 'realname', 'idcard', 'phone', 'info', 'verified', 'attach_id'];
+    protected $fields = array('id', 'uid', 'usergroup_id', 'user_verified_category_id', 'company', 'realname', 'idcard', 'phone', 'info', 'verified', 'attach_id');
 
     /**
-     * 获取指定用户的认证信息.
-     *
-     * @param array $uids 用户ID
-     *
+     * 获取指定用户的认证信息
+     * @param  array $uids 用户ID
      * @return array 指定用户的认证信息
      */
     public function getUserVerifiedInfo($uids)
     {
         if (empty($uids)) {
-            return [];
+            return array();
         }
-        $map['uid'] = ['IN', $uids];
+        $map['uid'] = array('IN', $uids);
         $map['verified'] = 1;
         $data = $this->where($map)->getHashList('uid', 'info');
 
@@ -41,7 +37,7 @@ class UserVerifiedModel extends Model
 
         // $this->cleanCache($uids);
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function isVerify($uid)
@@ -53,7 +49,7 @@ class UserVerifiedModel extends Model
         $map['verified'] = 1;
         $data = $this->where($map)->find();
 
-        return (bool) $data;
+        return (boolean) $data;
     }
 
     public function cleanCache($uids)

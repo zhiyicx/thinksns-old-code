@@ -1,12 +1,10 @@
 <?php
 /**
  * BlogCategoryModel
- * 知识分类model.
- *
+ * 知识分类model
  * @uses Model
- *
+ * @package
  * @version $id$
- *
  * @copyright 2009-2011 SamPeng
  * @author SamPeng <sampeng87@gmail.com>
  * @license PHP Version 5.2 {@link www.sampeng.cn}
@@ -15,14 +13,14 @@ class BlogCategoryModel extends BaseModel
 {
     /**
      * getCategory
-     * 获取所有分类.
+     * 获取所有分类
      */
     public function getCategory($uid = 0)
     {
         //先从缓存里面获取
         $result = $this->where("`uid`=$uid".' and pid=0')->field('name,uid,id,pid')->findAll();
         //重组数据集结构
-        $newresult = [];
+        $newresult = array();
         foreach ($result as $value) {
             $newresult[$value['id']]['id'] = $value['id'];
             $newresult[$value['id']]['name'] = $value['name'];
@@ -36,8 +34,8 @@ class BlogCategoryModel extends BaseModel
     public function isCategoryExist($name, $uid = 0, $gid = 0)
     {
         $map['name'] = $name;
-        $map['uid'] = ['in', "$uid,0"];
-        $map['id'] = ['neq', $gid];
+        $map['uid'] = array('in', "$uid,0");
+        $map['id'] = array('neq', $gid);
 
         return $this->where($map)->find() ? true : false;
     }
@@ -49,8 +47,7 @@ class BlogCategoryModel extends BaseModel
 
     /**
      * addCategory
-     * 增加分类.
-     *
+     * 增加分类
      * @param mixed $map
      */
     public function addCategory($map, $dao = null)
@@ -72,7 +69,6 @@ class BlogCategoryModel extends BaseModel
             $this->__equalTrueEchoMsg($value['name'] == $data['name'], -2);
         }
     }
-
     private function __equalTrueEchoMsg($query, $msg)
     {
         if (true === $query) {
@@ -93,8 +89,7 @@ class BlogCategoryModel extends BaseModel
 
     /**
      * deleteCategory
-     * 删除分类.
-     *
+     * 删除分类
      * @param mixed $map
      */
     public function deleteCategory($map, $formCate = null, $obj = null)
@@ -118,7 +113,6 @@ class BlogCategoryModel extends BaseModel
         //删除分类
         return $this->where($map)->delete();
     }
-
     public function deleteCategoryForId($map)
     {
         //先判断合法性
@@ -138,11 +132,9 @@ class BlogCategoryModel extends BaseModel
         //删除分类
         return $this->where($map)->delete();
     }
-
     /**
      * editCategory
-     * 编辑分类.
-     *
+     * 编辑分类
      * @param mixed $map
      */
     public function editCategory($data)
@@ -164,8 +156,7 @@ class BlogCategoryModel extends BaseModel
 
     /**
      * getCategoryName
-     * 通过id获得名字.
-     *
+     * 通过id获得名字
      * @param mixed $id
      */
     public function getCategoryName($id)
@@ -178,13 +169,12 @@ class BlogCategoryModel extends BaseModel
 
     /**
      * getUserCategory
-     * 获得用户的分类.
-     *
+     * 获得用户的分类
      * @param mixed $uid
      */
     public function getUserCategory($uid)
     {
-        $map['uid'] = ['in', "$uid,0"];
+        $map['uid'] = array('in', "$uid,0");
         $result = $this->where($map)->field('name,id,uid')->order('`uid` ASC, id ASC')->findAll();
 
         return $result;

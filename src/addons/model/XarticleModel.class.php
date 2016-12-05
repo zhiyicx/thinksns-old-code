@@ -1,21 +1,17 @@
 <?php
 /**
- * 内置文章模型 - 数据对象模型.
- *
+ * 内置文章模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class XarticleModel extends Model
 {
     protected $tableName = 'x_article';
-    protected $fields = ['id', 'title', 'uid', 'mtime', 'sort', 'content', 'attach', 'type'];
+    protected $fields = array('id', 'title', 'uid', 'mtime', 'sort', 'content', 'attach', 'type');
 
     /**
-     * 保存公告数据.
-     *
+     * 保存公告数据
      * @param  array    $data 公告相关数据
-     *
      * @return bool|int 若成功返回公告ID，失败返回false
      */
     public function saveArticle($data)
@@ -53,10 +49,8 @@ class XarticleModel extends Model
     }
 
     /**
-     * 删除指定公告操作.
-     *
+     * 删除指定公告操作
      * @param  int $id 公告ID
-     *
      * @return int 0表示删除失败，1表示删除成功
      */
     public function delArticle($id)
@@ -65,7 +59,7 @@ class XarticleModel extends Model
             $this->error = L('PUBLIC_ID_NOEXIST');            // ID不能为空
             return false;
         }
-        $map['id'] = is_array($id) ? ['IN', $id] : intval($id);
+        $map['id'] = is_array($id) ? array('IN', $id) : intval($id);
 
         return $this->where($map)->delete();
     }

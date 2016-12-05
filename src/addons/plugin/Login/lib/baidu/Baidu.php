@@ -6,29 +6,27 @@
  **************************************************************************/
 
 /**
- * @author zhujianting(zhujianting@baidu.com)
  *
+ * @package Baidu
+ * @author zhujianting(zhujianting@baidu.com)
  * @version v2.0.0
  */
 class BaiduAPI
 {
     /**
      * The client_id of the app or access_key of the developer.
-     *
      * @var string
      */
     protected $clientId;
 
     /**
      * The client_secret of the app or secret_key of the developer.
-     *
      * @var string
      */
     protected $clientSecret;
 
     /**
      * Redirect uri of the app, where we will redirect to after user authorization.
-     *
      * @var string
      */
     protected $redirectUri;
@@ -48,7 +46,6 @@ class BaiduAPI
 
     /**
      * User session info.
-     *
      * @var array
      */
     protected $session = null;
@@ -59,7 +56,7 @@ class BaiduAPI
     protected $oauth2 = null;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param string     $clientId     The client_id of the app or access_key of the developer.
      * @param string     $clientSecret The client_secret of the app or secret_key of the developer.
@@ -73,7 +70,6 @@ class BaiduAPI
         $this->redirectUri = $redirectUri;
         $this->setStore($store ? $store : new BaiduCookieStore($clientId));
     }
-
     /**
      * Get an instance of BaiduOAuth2 class.
      *
@@ -92,8 +88,7 @@ class BaiduAPI
     /**
      * Get an instance of BaiduApiClient class.
      *
-     * @param string $accessToken Access token for api calls.
-     *
+     * @param  string         $accessToken Access token for api calls.
      * @return BaiduApiClient
      */
     public function getBaiduApiClientService()
@@ -149,7 +144,7 @@ class BaiduAPI
         // if it's not, we should clear all the persistent data and to
         // get an access token again.
         if (isset($_REQUEST['bd_sig']) && isset($_REQUEST['bd_user'])) {
-            $params = ['bd_user' => $_REQUEST['bd_user']];
+            $params = array('bd_user' => $_REQUEST['bd_user']);
             $sig = BaiduUtils::generateSign($params, $this->clientSecret, 'bd_sig');
             if ($sig != $_REQUEST['bd_sig'] || $user['uid'] != $_REQUEST['bd_user']) {
                 $this->store->remove('session');
@@ -166,9 +161,8 @@ class BaiduAPI
      * assumed. If you are using the generated URL with a window.open() call in
      * JavaScript, you can pass in display=popup as part of the $params.
      *
-     * @param string $scope   blank space separated list of requested extended perms
-     * @param string $display Authorization page style, 'page', 'popup', 'touch' or 'mobile'
-     *
+     * @param  string $scope   blank space separated list of requested extended perms
+     * @param  string $display Authorization page style, 'page', 'popup', 'touch' or 'mobile'
      * @return string the URL for the login flow
      */
     public function getLoginUrl($scope = '', $display = 'page')
@@ -209,8 +203,7 @@ class BaiduAPI
     /**
      * Set user session.
      *
-     * @param array $session User session info.
-     *
+     * @param  array $session User session info.
      * @return Baidu
      */
     public function setSession($session)
@@ -234,7 +227,7 @@ class BaiduAPI
     {
         $session = $this->getSession();
         if (is_array($session) && isset($session['uid']) && isset($session['uname'])) {
-            return ['uid' => $session['uid'], 'uname' => $session['uname']];
+            return array('uid' => $session['uid'], 'uname' => $session['uname']);
         } else {
             return false;
         }
@@ -243,8 +236,7 @@ class BaiduAPI
     /**
      * Set the session data storage instance.
      *
-     * @param BaiduStore $store
-     *
+     * @param  BaiduStore $store
      * @return Baidu
      */
     protected function setStore($store)
@@ -310,7 +302,6 @@ class BaiduAPI
 
         return $session;
     }
-
     /**
      * Get the authorization code from the query parameters, if it exists,
      * otherwise return false to signal no authorization code was discoverable.
@@ -336,9 +327,9 @@ class BaiduAPI
 
         return false;
     }
-
     /**
      * Lays down a CSRF state token for this process.
+     *
      */
     protected function establishCSRFTokenState()
     {

@@ -1,18 +1,15 @@
 <?php
 /**
- * 自定义任务Dao类.
- *
+ * 自定义任务Dao类
  * @author Stream
+ *
  */
 class TaskCustomModel extends Model
 {
     protected $tableName = 'task_custom';
-
     /**
-     * 返回自定义任务列表.
-     *
-     * @param unknown_type $map
-     *
+     * 返回自定义任务列表
+     * @param  unknown_type $map
      * @return unknown
      */
     public function getList($map)
@@ -85,13 +82,10 @@ class TaskCustomModel extends Model
 
         return $list;
     }
-
     /**
-     * 判断是否完成.
-     *
-     * @param unknown_type $key
-     * @param unknown_type $value
-     *
+     * 判断是否完成
+     * @param  unknown_type $key
+     * @param  unknown_type $value
      * @return bool
      */
     private function iscomplete($key, $value)
@@ -130,13 +124,10 @@ class TaskCustomModel extends Model
                 break;
         }
     }
-
     /**
-     * 领取任务奖励.
-     *
-     * @param unknown_type $id
-     * @param unknown_type $uid
-     *
+     * 领取任务奖励
+     * @param  unknown_type $id
+     * @param  unknown_type $uid
      * @return bool
      */
     public function completeTask($id, $uid)

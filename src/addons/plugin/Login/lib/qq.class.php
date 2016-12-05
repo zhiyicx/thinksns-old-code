@@ -6,7 +6,7 @@ class qq
 
     private function getCallback($type = '', $do = 'login')
     {
-        $callbackurl = Addons::createAddonShow('Login', 'no_register_display', ['type' => $type, 'do' => $do]);
+        $callbackurl = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type, 'do' => $do));
 
         return urlencode($callbackurl);
     }
@@ -111,9 +111,9 @@ class qq
     //发布一条分享
     public function update($text, $opt)
     {
-        $params = [
+        $params = array(
             'content' => $text,
-        ];
+        );
 
         return Tencent::api('t/add_pic_url', $params, 'POST');
     }
@@ -122,10 +122,10 @@ class qq
     public function upload($text, $opt, $pic)
     {
         if (file_exists($pic)) {
-            $params = [
+            $params = array(
                 'content' => $text,
-            ];
-            $multi = ['pic' => $pic];
+            );
+            $multi = array('pic' => $pic);
 
             return Tencent::api('t/add_pic', $params, 'POST', $multi);
         } else {
@@ -138,7 +138,6 @@ class qq
     {
         return true;
     }
-
     //保存数据
     public function saveData($data)
     {

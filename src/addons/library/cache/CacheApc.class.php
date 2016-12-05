@@ -11,20 +11,19 @@
 // +----------------------------------------------------------------------
 
 /**
- * Apc缓存驱动.
- *
+ * Apc缓存驱动
  * @category   Extend
- *
+ * @package  Extend
+ * @subpackage  Driver.Cache
  * @author    liu21st <liu21st@gmail.com>
  */
 class CacheApc extends Cache
 {
     /**
-     * 架构函数.
-     *
+     * 架构函数
      * @param array $options 缓存参数
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         if (!function_exists('apc_cache_info')) {
             throw_exception(L('_NOT_SUPPERT_').':Apc');
@@ -35,10 +34,8 @@ class CacheApc extends Cache
     }
 
      /**
-      * 读取缓存.
-      *
+      * 读取缓存
       * @param string $name 缓存变量名
-      *
       * @return mixed
       */
      public function get($name)
@@ -49,12 +46,10 @@ class CacheApc extends Cache
      }
 
      /**
-      * 写入缓存.
-      *
+      * 写入缓存
       * @param string $name 缓存变量名
       * @param mixed $value  存储数据
       * @param int $expire  有效时间（秒）
-      *
       * @return boolen
       */
      public function set($name, $value, $expire = null)
@@ -75,10 +70,8 @@ class CacheApc extends Cache
      }
 
      /**
-      * 删除缓存.
-      *
+      * 删除缓存
       * @param string $name 缓存变量名
-      *
       * @return boolen
       */
      public function rm($name)
@@ -87,8 +80,7 @@ class CacheApc extends Cache
      }
 
     /**
-     * 清除缓存.
-     *
+     * 清除缓存
      * @return boolen
      */
     public function clear()

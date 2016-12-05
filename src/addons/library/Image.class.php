@@ -1,20 +1,23 @@
 <?php
 
 /**
- * 图像操作类库.
+ +------------------------------------------------------------------------------
+ * 图像操作类库
  +------------------------------------------------------------------------------
  * @category   ORG
- *
+ * @package  ORG
+ * @subpackage  Util
  * @author    liu21st <liu21st@gmail.com>
- *
  * @version   $Id$
+ +------------------------------------------------------------------------------
  */
 class Image
 {
     //类定义开始
 
     /**
-     * 取得图像信息.
+     +----------------------------------------------------------
+     * 取得图像信息
      *
      +----------------------------------------------------------
      * @static
@@ -22,6 +25,7 @@ class Image
      * @param string $image 图像文件名
      +----------------------------------------------------------
      * @return mixed
+     +----------------------------------------------------------
      */
     public static function getImageInfo($img)
     {
@@ -29,13 +33,13 @@ class Image
         if ($imageInfo !== false) {
             $imageType = strtolower(substr(image_type_to_extension($imageInfo[2]), 1));
             $imageSize = filesize($img);
-            $info = [
-                'width'  => $imageInfo[0],
+            $info = array(
+                'width' => $imageInfo[0],
                 'height' => $imageInfo[1],
-                'type'   => $imageType,
-                'size'   => $imageSize,
-                'mime'   => $imageInfo['mime'],
-            ];
+                'type' => $imageType,
+                'size' => $imageSize,
+                'mime' => $imageInfo['mime'],
+            );
 
             return $info;
         } else {
@@ -44,8 +48,9 @@ class Image
     }
 
     /**
+     +----------------------------------------------------------
      * 显示服务器图像文件
-     * 支持URL方式.
+     * 支持URL方式
      +----------------------------------------------------------
      * @static
      +----------------------------------------------------------
@@ -53,11 +58,13 @@ class Image
      * @param string $text    文字字符串
      * @param string $width   图像宽度
      * @param string $height  图像高度
+     +----------------------------------------------------------
+     +----------------------------------------------------------
      */
     public static function showImg($imgFile, $text = '', $width = 80, $height = 30)
     {
         //获取图像文件信息
-        $info = self::getImageInfo($imgFile);
+        $info = Image::getImageInfo($imgFile);
         if ($info !== false) {
             $createFun = str_replace('/', 'createfrom', $info['mime']);
             $im = $createFun($imgFile);
@@ -75,7 +82,7 @@ class Image
                 $ImageFun($im);
                 imagedestroy($im);
 
-                return;
+                return ;
             }
         }
         //获取或者创建图像文件失败则生成空白PNG图片
@@ -84,11 +91,13 @@ class Image
         $tc = imagecolorallocate($im, 0, 0, 0);
         imagefilledrectangle($im, 0, 0, 150, 30, $bgc);
         imagestring($im, 4, 5, 5, 'NO PIC', $tc);
-        self::output($im);
+        Image::output($im);
+
+        return ;
     }
 
     /**
-     * 切割图片.
+     * 切割图片
      +----------------------------------------------------------
      * @static
      +----------------------------------------------------------
@@ -96,12 +105,13 @@ class Image
      * @param string $cutfile   切割后的图片
      * @param int    $cutWidth
      * @param int    $cutHeight
+     +----------------------------------------------------------
      */
     public static function cut($image, $filename, $maxWidth = '', $maxHeight = '')
     {
 
         // 获取原图信息
-        $info = self::getImageInfo($image);
+        $info = Image::getImageInfo($image);
         //dump($image);
         if ($info !== false) {
             $srcWidth = $info['width'];
@@ -149,11 +159,11 @@ class Image
             }
             // 复制图片
             if (function_exists('ImageCopyResampled')) {
-                imagecopyresampled($thumbImg, $srcImg, 0, 0, $x, $y, $maxWidth, $maxHeight, $width, $height);
+                ImageCopyResampled($thumbImg, $srcImg, 0, 0, $x, $y, $maxWidth, $maxHeight, $width, $height);
             } else {
-                imagecopyresized($thumbImg, $srcImg, 0, 0, $x, $y, $maxWidth, $maxHeight, $width, $height);
+                ImageCopyResized($thumbImg, $srcImg, 0, 0, $x, $y, $maxWidth, $maxHeight, $width, $height);
             }
-            imagedestroy($srcImg);
+            ImageDestroy($srcImg);
 
             // 对jpeg图形设置隔行扫描
             if ('jpg' == $type || 'jpeg' == $type) {
@@ -166,17 +176,17 @@ class Image
             $filename = empty($filename) ? substr($image, 0, strrpos($image, '.')).$suffix.'.'.$type : $filename;
 
             $imageFun($thumbImg, $filename);
-            imagedestroy($thumbImg);
+            ImageDestroy($thumbImg);
 
             return $filename;
         }
 
         return false;
     }
-
     /**
 
-     * 生成缩略图.
+     +----------------------------------------------------------
+     * 生成缩略图
      +----------------------------------------------------------
      * @static
      +----------------------------------------------------------
@@ -187,11 +197,13 @@ class Image
      * @param string $maxHeight 高度
      * @param string $position  缩略图保存目录
      * @param bool   $interlace 启用隔行扫描
+     +----------------------------------------------------------
+     +----------------------------------------------------------
      */
     public static function thumb($image, $thumbname, $type = '', $maxWidth = 200, $maxHeight = 'auto', $interlace = true)
     {
         // 获取原图信息
-        $info = self::getImageInfo($image);
+        $info = Image::getImageInfo($image);
         if ($info !== false) {
             $srcWidth = $info['width'];
             $srcHeight = $info['height'];
@@ -268,7 +280,8 @@ class Image
     }
 
     /**
-     * 根据给定的字符串生成图像.
+     +----------------------------------------------------------
+     * 根据给定的字符串生成图像
      +----------------------------------------------------------
      * @static
      +----------------------------------------------------------
@@ -280,8 +293,9 @@ class Image
      * @param bool   $border  是否加边框 array(color)
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
-    public static function buildString($string, $rgb = [], $filename = '', $type = 'png', $disturb = 1, $border = true)
+    public static function buildString($string, $rgb = array(), $filename = '', $type = 'png', $disturb = 1, $border = true)
     {
         if (is_string($size)) {
             $size = explode(',', $size);
@@ -325,10 +339,11 @@ class Image
                 }
             }
         }
-        self::output($im, $type, $filename);
+        Image::output($im, $type, $filename);
     }
 
     /**
+     +----------------------------------------------------------
      * 生成图像验证码
      +----------------------------------------------------------
      * @static
@@ -340,6 +355,7 @@ class Image
      * @param string $height 高度
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public static function buildImageVerify($length = 4, $mode = 1, $type = 'png', $width = 48, $height = 22, $verifyName = 'verify')
     {
@@ -352,9 +368,9 @@ class Image
         } else {
             $im = @imagecreate($width, $height);
         }
-        $r = [225, 255, 255, 223];
-        $g = [225, 236, 237, 255];
-        $b = [225, 236, 166, 125];
+        $r = array(225, 255, 255, 223);
+        $g = array(225, 236, 237, 255);
+        $b = array(225, 236, 166, 125);
         $key = mt_rand(0, 3);
 
         $backColor = imagecolorallocate($im, $r[$key], $g[$key], $b[$key]);    //背景色（随机）
@@ -374,10 +390,10 @@ class Image
             imagesetpixel($im, mt_rand(0, $width), mt_rand(0, $height), $pointColor);
         }
         for ($i = 0; $i < $length; $i++) {
-            imagestring($im, 5, $i * 10 + 5, mt_rand(1, 8), $randval[$i], $stringColor);
+            imagestring($im, 5, $i * 10 + 5, mt_rand(1, 8), $randval{$i}, $stringColor);
         }
 //        @imagestring($im, 5, 5, 3, $randval, $stringColor);
-        self::output($im, $type);
+        Image::output($im, $type);
     }
 
     // 中文验证码
@@ -408,11 +424,12 @@ class Image
             $codex = StringTool::msubstr($code, $i, 1);
             imagettftext($im, mt_rand(16, 20), mt_rand(-60, 60), 40 * $i + 20, mt_rand(30, 35), $fontcolor, $fontface, $codex);
         }
-        self::output($im, $type);
+        Image::output($im, $type);
     }
 
     /**
-     * 把图像转换成字符显示.
+     +----------------------------------------------------------
+     * 把图像转换成字符显示
      +----------------------------------------------------------
      * @static
      +----------------------------------------------------------
@@ -420,10 +437,11 @@ class Image
      * @param string $type  图像类型，默认自动获取
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public static function showASCIIImg($image, $string = '', $type = '')
     {
-        $info = self::getImageInfo($image);
+        $info = Image::getImageInfo($image);
         if ($info !== false) {
             $type = empty($type) ? $info['type'] : $type;
             unset($info);
@@ -454,6 +472,7 @@ class Image
     }
 
     /**
+     +----------------------------------------------------------
      * 生成高级图像验证码
      +----------------------------------------------------------
      * @static
@@ -463,6 +482,7 @@ class Image
      * @param string $height 高度
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public static function showAdvVerify($type = 'png', $width = 180, $height = 40, $verifyName = 'verifyCode')
     {
@@ -472,9 +492,9 @@ class Image
         $letter = implode(' ', $verifyCode);
         $_SESSION[$verifyName] = $verifyCode;
         $im = imagecreate($width, $height);
-        $r = [225, 255, 255, 223];
-        $g = [225, 236, 237, 255];
-        $b = [225, 236, 166, 125];
+        $r = array(225, 255, 255, 223);
+        $g = array(225, 236, 237, 255);
+        $b = array(225, 236, 166, 125);
         $key = mt_rand(0, 3);
         $backColor = imagecolorallocate($im, $r[$key], $g[$key], $b[$key]);
         $borderColor = imagecolorallocate($im, 100, 100, 100);                    //边框色
@@ -494,10 +514,11 @@ class Image
         }*/
         imagestring($im, 5, 5, 1, '0 1 2 3 4 5 6 7 8 9', $numberColor);
         imagestring($im, 5, 5, 20, $letter, $stringColor);
-        self::output($im, $type);
+        Image::output($im, $type);
     }
 
     /**
+     +----------------------------------------------------------
      * 生成UPC-A条形码
      +----------------------------------------------------------
      * @static
@@ -508,13 +529,14 @@ class Image
      * @param string $hi 条码高度
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public static function UPCA($code, $type = 'png', $lw = 2, $hi = 100)
     {
-        static $Lencode = ['0001101', '0011001', '0010011', '0111101', '0100011',
-                         '0110001', '0101111', '0111011', '0110111', '0001011', ];
-        static $Rencode = ['1110010', '1100110', '1101100', '1000010', '1011100',
-                         '1001110', '1010000', '1000100', '1001000', '1110100', ];
+        static $Lencode = array('0001101', '0011001', '0010011', '0111101', '0100011',
+                         '0110001', '0101111', '0111011', '0110111', '0001011', );
+        static $Rencode = array('1110010', '1100110', '1101100', '1000010', '1011100',
+                         '1001110', '1010000', '1000100', '1001000', '1110100', );
         $ends = '101';
         $center = '01010';
         /* UPC-A Must be 11 digits, we compute the checksum. */
@@ -550,9 +572,9 @@ class Image
         } else {
             $im = imagecreate($lw * 95 + 30, $hi + 30);
         }
-        $fg = imagecolorallocate($im, 0, 0, 0);
-        $bg = imagecolorallocate($im, 255, 255, 255);
-        imagefilledrectangle($im, 0, 0, $lw * 95 + 30, $hi + 30, $bg);
+        $fg = ImageColorAllocate($im, 0, 0, 0);
+        $bg = ImageColorAllocate($im, 255, 255, 255);
+        ImageFilledRectangle($im, 0, 0, $lw * 95 + 30, $hi + 30, $bg);
         $shift = 10;
         for ($x = 0; $x < strlen($bars); $x++) {
             if (($x < 10) || ($x >= 45 && $x < 50) || ($x >= 85)) {
@@ -565,17 +587,17 @@ class Image
             } else {
                 $color = $bg;
             }
-            imagefilledrectangle($im, ($x * $lw) + 15, 5, ($x + 1) * $lw + 14, $hi + 5 + $sh, $color);
+            ImageFilledRectangle($im, ($x * $lw) + 15, 5, ($x + 1) * $lw + 14, $hi + 5 + $sh, $color);
         }
         /* Add the Human Readable Label */
-        imagestring($im, 4, 5, $hi - 5, $code[0], $fg);
+        ImageString($im, 4, 5, $hi - 5, $code[0], $fg);
         for ($x = 0; $x < 5; $x++) {
-            imagestring($im, 5, $lw * (13 + $x * 6) + 15, $hi + 5, $code[$x + 1], $fg);
-            imagestring($im, 5, $lw * (53 + $x * 6) + 15, $hi + 5, $code[$x + 6], $fg);
+            ImageString($im, 5, $lw * (13 + $x * 6) + 15, $hi + 5, $code[$x + 1], $fg);
+            ImageString($im, 5, $lw * (53 + $x * 6) + 15, $hi + 5, $code[$x + 6], $fg);
         }
-        imagestring($im, 4, $lw * 95 + 17, $hi - 5, $code[11], $fg);
+        ImageString($im, 4, $lw * 95 + 17, $hi - 5, $code[11], $fg);
         /* Output the Header and Content. */
-        self::output($im, $type);
+        Image::output($im, $type);
     }
 
     public static function output($im, $type = 'png', $filename = '')
@@ -619,7 +641,7 @@ if (!function_exists('ImageCreateFrombmp')) {
         case 4:
             $colorset = unpack('L*', substr($buf, 54, 64));
             for ($y = 0; $y < $info_header['biHeight']; $y++) {
-                $colors = [];
+                $colors = array();
                 $y_pos = $y * $line_len + $file_header['bfOffBits'];
                 for ($x = 0; $x < $info_header['biWidth']; $x++) {
                     if ($x % 2) {
@@ -635,7 +657,7 @@ if (!function_exists('ImageCreateFrombmp')) {
         case 8:
             $colorset = unpack('L*', substr($buf, 54, 1024));
             for ($y = 0; $y < $info_header['biHeight']; $y++) {
-                $colors = [];
+                $colors = array();
                 $y_pos = $y * $line_len + $file_header['bfOffBits'];
                 for ($x = 0; $x < $info_header['biWidth']; $x++) {
                     $colors[] = $colorset[ord($buf[$y_pos + $x]) + 1];
@@ -646,7 +668,7 @@ if (!function_exists('ImageCreateFrombmp')) {
             break;
         case 16:
             for ($y = 0; $y < $info_header['biHeight']; $y++) {
-                $colors = [];
+                $colors = array();
                 $y_pos = $y * $line_len + $file_header['bfOffBits'];
                 for ($x = 0; $x < $info_header['biWidth']; $x++) {
                     $i = $x * 2;
@@ -659,7 +681,7 @@ if (!function_exists('ImageCreateFrombmp')) {
             break;
         case 24:
             for ($y = 0; $y < $info_header['biHeight']; $y++) {
-                $colors = [];
+                $colors = array();
                 $y_pos = $y * $line_len + $file_header['bfOffBits'];
                 for ($x = 0; $x < $info_header['biWidth']; $x++) {
                     $i = $x * 3;
@@ -678,7 +700,7 @@ if (!function_exists('ImageCreateFrombmp')) {
     }
     function imagebmp(&$im, $filename = '', $bit = 8, $compression = 0)
     {
-        if (!in_array($bit, [1, 4, 8, 16, 24, 32])) {
+        if (!in_array($bit, array(1, 4, 8, 16, 24, 32))) {
             $bit = 8;
         } elseif ($bit == 32) {
             // todo:32 bit
@@ -697,7 +719,7 @@ if (!function_exists('ImageCreateFrombmp')) {
         if ($bit <= 8) {
             // 颜色索引
         $rgb_quad = '';
-            for ($i = 0; $i < $colors_num; $i++) {
+            for ($i = 0; $i < $colors_num; $i ++) {
                 $colors = imagecolorsforindex($im, $i);
                 $rgb_quad .= chr($colors['blue']).chr($colors['green']).chr($colors['red'])."\0";
             }
@@ -707,7 +729,7 @@ if (!function_exists('ImageCreateFrombmp')) {
 
         // 非压缩
         if ($compression == 0 || $bit < 8) {
-            if (!in_array($bit, [1, 4, 8])) {
+            if (!in_array($bit, array(1, 4, 8))) {
                 $bit = 8;
             }
 
@@ -721,7 +743,7 @@ if (!function_exists('ImageCreateFrombmp')) {
                 $extra = str_repeat("\0", $padding);
             }
 
-            for ($j = $height - 1; $j >= 0; $j--) {
+            for ($j = $height - 1; $j >= 0; $j --) {
                 $i = 0;
                 while ($i < $width) {
                     $bin = 0;
@@ -730,7 +752,7 @@ if (!function_exists('ImageCreateFrombmp')) {
                     for ($k = 8 - $bit; $k >= $limit; $k -= $bit) {
                         $index = imagecolorat($im, $i, $j);
                         $bin |= $index << $k;
-                        $i++;
+                        $i ++;
                     }
 
                     $bmp_data .= chr($bin);
@@ -741,10 +763,10 @@ if (!function_exists('ImageCreateFrombmp')) {
         }
                 // RLE8 压缩
                 elseif ($compression == 1 && $bit == 8) {
-                    for ($j = $height - 1; $j >= 0; $j--) {
+                    for ($j = $height - 1; $j >= 0; $j --) {
                         $last_index = "\0";
                         $same_num = 0;
-                        for ($i = 0; $i <= $width; $i++) {
+                        for ($i = 0; $i <= $width; $i ++) {
                             $index = imagecolorat($im, $i, $j);
                             if ($index !== $last_index || $same_num > 255) {
                                 if ($same_num != 0) {
@@ -754,7 +776,7 @@ if (!function_exists('ImageCreateFrombmp')) {
                                 $last_index = $index;
                                 $same_num = 1;
                             } else {
-                                $same_num++;
+                                $same_num ++;
                             }
                         }
 
@@ -777,8 +799,8 @@ if (!function_exists('ImageCreateFrombmp')) {
                                     // 位图数据
                                     $bmp_data = '';
 
-            for ($j = $height - 1; $j >= 0; $j--) {
-                for ($i = 0; $i < $width; $i++) {
+            for ($j = $height - 1; $j >= 0; $j --) {
+                for ($i = 0; $i < $width; $i ++) {
                     $index = imagecolorat($im, $i, $j);
                     $colors = imagecolorsforindex($im, $index);
 

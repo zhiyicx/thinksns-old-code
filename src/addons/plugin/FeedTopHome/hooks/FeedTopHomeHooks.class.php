@@ -15,7 +15,7 @@ class FeedTopHomeHooks extends Hooks
 
     public function check_feed_manage($params)
     {
-        $data = [];
+        $data = array();
         if ($this->mid == $params['uid']) {
             $data['status'] = true;
         } else {
@@ -43,10 +43,10 @@ class FeedTopHomeHooks extends Hooks
         $uid = intval($_POST['uid']);
         $feedId = intval($_POST['feed_id']);
         if (empty($uid) || empty($feedId)) {
-            exit(json_encode(['status' => 0, 'info' => '设置失败']));
+            exit(json_encode(array('status' => 0, 'info' => '设置失败')));
         }
         $result = $this->model('FeedTopHome')->setFeedTopHome($uid, $feedId);
-        $res = [];
+        $res = array();
         if ($result) {
             $res['status'] = 1;
             $res['info'] = '设置成功';
@@ -62,10 +62,10 @@ class FeedTopHomeHooks extends Hooks
         $uid = intval($_POST['uid']);
         $feedId = intval($_POST['feed_id']);
         if (empty($uid) || empty($feedId)) {
-            exit(json_encode(['status' => 0, 'info' => '设置失败']));
+            exit(json_encode(array('status' => 0, 'info' => '设置失败')));
         }
         $result = $this->model('FeedTopHome')->delFeedTopHome($uid, $feedId);
-        $res = [];
+        $res = array();
         if ($result) {
             $res['status'] = 1;
             $res['info'] = '设置成功';
@@ -101,23 +101,23 @@ class FeedTopHomeHooks extends Hooks
         $diggArr = model('FeedDigg')->checkIsDigg($feed_ids, $this->mid);
         $this->assign('diggArr', $diggArr);
 
-        $cancomment_old_type = [
+        $cancomment_old_type = array(
             'post', 'repost', 'postimage', 'postfile',
             'weiba_post', 'weiba_repost',
             'blog_post', 'blog_repost',
             'event_post', 'event_repost',
             'vote_post', 'vote_repost',
-            'photo_post', 'photo_repost', ];
+            'photo_post', 'photo_repost', );
         $this->assign('cancomment_old_type', $cancomment_old_type);
 
-        $uids = [];
+        $uids = array();
         foreach ($list as $item) {
             $uids[] = $item['feed_info']['uid'];
         }
         if (!empty($uids)) {
-            $map = [];
+            $map = array();
             $map['uid'] = $GLOBALS['ts']['mid'];
-            $map['fid'] = ['in', $uids];
+            $map['fid'] = array('in', $uids);
             $followUids = model('Follow')->where($map)->getAsFieldArray('fid');
             $this->assign('followUids', $followUids);
 

@@ -10,20 +10,19 @@
  * like state & authorization code for oauth2.0, access token &
  * refresh token for current user.
  *
+ * @package Baidu
  * @author zhujianting(zhujianting@baidu.com)
- *
  * @version v2.0.0
  */
 abstract class BaiduStore
 {
     /**
      * Supported variable key name.
-     *
      * @var array
      */
-    protected static $supportedKeys = [
+    protected static $supportedKeys = array(
         'state', 'code', 'session',
-    ];
+    );
 
     protected $clientId;
 
@@ -36,11 +35,10 @@ abstract class BaiduStore
      * Get the variable value specified by the variable key name for
      * current session user from the storage system.
      *
-     * @param string $key     Variable key name
-     * @param mix    $default Default value if the key couldn't be found
-     *
-     * @return mix Returns the value for the specified key if it exists,
-     *             otherwise return $default value
+     * @param  string $key     Variable key name
+     * @param  mix    $default Default value if the key couldn't be found
+     * @return mix    Returns the value for the specified key if it exists,
+     *                        otherwise return $default value
      */
     abstract public function get($key, $default = false);
 
@@ -48,11 +46,10 @@ abstract class BaiduStore
      * Save the variable item specified by the variable key name into
      * the storage system for current session user.
      *
-     * @param string $key   Variable key name
-     * @param mix    $value Variable value
-     *
-     * @return bool Returns true if the saving operation is success,
-     *              otherwise returns false
+     * @param  string $key   Variable key name
+     * @param  mix    $value Variable value
+     * @return bool   Returns true if the saving operation is success,
+     *                      otherwise returns false
      */
     abstract public function set($key, $value);
 
@@ -60,9 +57,8 @@ abstract class BaiduStore
      * Remove the stored variable item specified by the variable key name
      * from the storage system for current session user.
      *
-     * @param string $key Variable key name
-     *
-     * @return bool Returns true if remove success, otherwise returns false
+     * @param  string $key Variable key name
+     * @return bool   Returns true if remove success, otherwise returns false
      */
     abstract public function remove($key);
 
@@ -77,13 +73,12 @@ abstract class BaiduStore
     /**
      * Get the actual key name for current storage engine.
      *
-     * @param string $key The original key name
-     *
+     * @param  string $key The original key name
      * @return string
      */
     protected function getKeyForStore($key)
     {
-        return implode('_', ['bds', $this->clientId, $key]);
+        return implode('_', array('bds', $this->clientId, $key));
     }
 }
 /**
@@ -93,14 +88,12 @@ class BaiduCookieStore extends BaiduStore
 {
     /**
      * The domain where to save the session cookie.
-     *
      * @var string
      */
     protected $domain;
 
     /**
-     * Consturctor.
-     *
+     * Consturctor
      * @param string $clientId App's client id.
      * @param string $domain   The domain where to save the session cookie.
      */
@@ -234,15 +227,13 @@ class BaiduSessionStore extends BaiduStore
 class BaiduMemcachedStore extends BaiduStore
 {
     /**
-     * Memcache instance.
-     *
+     * Memcache instance
      * @var Memcache
      */
     protected $memcache;
 
     /**
      * Session ID for current user to distinguish with other users.
-     *
      * @var string
      */
     protected $sessionId;
@@ -304,7 +295,7 @@ class BaiduMemcachedStore extends BaiduStore
 
     protected function getKeyForStore($key)
     {
-        return implode('_', ['bds', $this->clientId, $this->sessionId, $key]);
+        return implode('_', array('bds', $this->clientId, $this->sessionId, $key));
     }
 }
 /* vim: set expandtab ts=4 sw=4 sts=4 tw=100: */

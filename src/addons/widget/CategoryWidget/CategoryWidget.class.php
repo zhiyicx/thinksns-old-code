@@ -1,11 +1,8 @@
 <?php
 /**
- * 分类 widget.
- *
+ * 分类 widget
  * @example W('Category',array('app_name'=>'support','model_name'=>'SupportCategory','method'=>'getEnCate','tpl'=>'select','id'=>4,'inputname'=>'category_en'))
- *
  * @author Jason
- *
  * @version TS3.0
  */
 class CategoryWidget extends Widget

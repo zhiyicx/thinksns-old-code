@@ -1,22 +1,20 @@
 <?php
 /**
- * 感兴趣的人模型 - 业务逻辑模型.
- *
+ * 感兴趣的人模型 - 业务逻辑模型
  * @author zivss <guolee226@gmail.com>
- *
  * @version TS3.0
  */
 class RelatedUserModel extends Model
 {
     private $_uid = 0;                    // 查询用户ID
-    private $_exclude_uids = [];    // 排除用户ID数组
+    private $_exclude_uids = array();    // 排除用户ID数组
     private $_user_model;                // 用户模型对象
     private $_user_follow;                // 用户关注对象
     private $_error = '';                // 存储最后的错误信息
     private $user_sql_where = ' and is_active=1 and is_audit=1 and is_init=1 AND is_del = 0 ';  //过滤掉未激活，未审核，未初始化的用户
 
     /**
-     * 初始化.
+     * 初始化
      */
     public function _initialize()
     {
@@ -26,8 +24,7 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 设置关联用户.
-     *
+     * 设置关联用户
      * @param int $uid 用户ID
      */
     public function setUid($uid)
@@ -38,8 +35,7 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取最后的错误信息.
-     *
+     * 获取最后的错误信息
      * @return string 最后的错误信息
      */
     public function getLastError()
@@ -48,8 +44,7 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 可能感兴趣的人.
-     *
+     * 可能感兴趣的人
      * @example
      * 1.一周以内新注册的用户，最新注册用户推荐
      * 2.好友的好友推荐，XX（我关注的人）也关注了TA
@@ -58,10 +53,8 @@ class RelatedUserModel extends Model
      * 5.职业信息推荐，TA跟你的职业信息相同
      * 6.地区信息推荐，TA与你在同一个地方，只实现三级匹配
      * 7.随机推荐
-     *
      * @param int $show  显示个数，默认为4
      * @param int $limit 查询缓存个数，默认为100
-     *
      * @return array 可能感兴趣的人数组
      */
     public function getRelatedUser($show = 4, $limit = 100)
@@ -75,7 +68,7 @@ class RelatedUserModel extends Model
                 $this->_getExcludeUids($nowrelated);
             }
             //添加查询用户ID
-            $this->_getExcludeUids([$this->_uid]);
+            $this->_getExcludeUids(array($this->_uid));
             $fids = $this->_user_follow->where('uid='.$this->_uid)->getAsFieldArray('fid');
             //过滤掉未激活，未审核，未初始化的用户
             $notin = model('User')->where('is_active=0 or is_audit=0 or is_init=0 or is_del = 1')->field('uid')->findAll();
@@ -84,7 +77,7 @@ class RelatedUserModel extends Model
             $this->_getExcludeUids($fids);
 
             //过滤掉自己
-            $this->_getExcludeUids([$this->_uid]);
+            $this->_getExcludeUids(array($this->_uid));
 
             //过滤掉已关注的用户
             $already = D('UserFollow')->where('uid='.$GLOBALS['ts']['mid'])->field('fid')->findAll();
@@ -92,7 +85,7 @@ class RelatedUserModel extends Model
             $this->_getExcludeUids($alreadys);
 
             // 用户关联信息
-            $relatedUseInfo = [];
+            $relatedUseInfo = array();
             // 获取用户权重
             $weightsNum['following'] = 6;
             $weightsNum['friend'] = 6;
@@ -157,8 +150,7 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 可能感兴趣的人.
-     *
+     * 可能感兴趣的人
      * @example
      * 1.一周以内新注册的用户，最新注册用户推荐
      * 2.好友的好友推荐，XX（我关注的人）也关注了TA
@@ -167,10 +159,8 @@ class RelatedUserModel extends Model
      * 5.职业信息推荐，TA跟你的职业信息相同
      * 6.地区信息推荐，TA与你在同一个地方，只实现三级匹配
      * 7.随机推荐
-     *
      * @param int $show  显示个数，默认为4
      * @param int $limit 查询缓存个数，默认为100
-     *
      * @return array 可能感兴趣的人数组
      */
     public function getRelatedUserSquare($show = 4, $limit = 100)
@@ -246,17 +236,15 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取指定类型的关联用户.
-     *
+     * 获取指定类型的关联用户
      * @param string $type  类型字符串
      * @param int    $limit 显示个数
-     *
      * @return array  指定类型的关联用户
      */
     public function getRelatedUserByType($type, $limit)
     {
         // 添加查询用户ID
-        $this->_getExcludeUids([$this->_uid]);
+        $this->_getExcludeUids(array($this->_uid));
         //过滤掉未激活，未审核，未初始化的用户
         $notin = model('User')->where('is_active=0 or is_audit=0 or is_init=0 or is_del = 1')->field('uid')->findAll();
         $notinids = getSubByKey($notin, 'uid');
@@ -264,7 +252,7 @@ class RelatedUserModel extends Model
         $fids = $this->_user_follow->where('uid='.$this->_uid)->getAsFieldArray('fid');
         $this->_getExcludeUids($fids);
         // 用户关联信息
-        $relatedUseInfo = [];
+        $relatedUseInfo = array();
         for ($i = 0; $i < $limit; $i++) {
             switch ($type) {
                 case 1:
@@ -293,19 +281,17 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 注册用户推荐.
-     *
-     * @param int $limit 查询用户个数，默认为20
-     *
+     * 注册用户推荐
+     * @param  int   $limit 查询用户个数，默认为20
      * @return array 推荐用户ID数组
      */
     public function getRelatedUserWithLogin($limit = 20)
     {
-        $this->_getExcludeUids([$this->_uid]);
+        $this->_getExcludeUids(array($this->_uid));
         $fids = $this->_user_follow->where('uid='.$this->_uid)->getAsFieldArray('fid');
         !empty($fids) && $this->_getExcludeUids($fids);
         // 用户ID
-        $relatedUids = [];
+        $relatedUids = array();
         for ($i = 0; $i < $limit; $i++) {
             $random = rand(1, 4);
             switch ($random) {
@@ -325,7 +311,7 @@ class RelatedUserModel extends Model
             $relatedUids = array_merge($relatedUids, $data);
         }
         // 用户结果集合
-        $result = [];
+        $result = array();
         foreach ($relatedUids as $value) {
             $result[] = $value['userInfo']['uid'];
         }
@@ -334,13 +320,11 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 设置排除用户ID.
-     *
-     * @param array $uids 排除用户ID数组
-     *
+     * 设置排除用户ID
+     * @param  array $uids 排除用户ID数组
      * @return array 排除用户ID
      */
-    private function _getExcludeUids($uids = [])
+    private function _getExcludeUids($uids = array())
     {
         if (!empty($uids)) {
             $this->_exclude_uids = array_merge($this->_exclude_uids, $uids);
@@ -348,15 +332,13 @@ class RelatedUserModel extends Model
             $this->_exclude_uids = array_unique($this->_exclude_uids);
         }
         if (empty($this->_exclude_uids)) {
-            $this->_exclude_uids = [0];
+            $this->_exclude_uids = array(0);
         }
     }
 
     /**
-     * 新注册用户推荐.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 新注册用户推荐
+     * @param  int   $limit 查询个数，默认为1
      * @return array 新注册用户信息
      */
     private function _getRelatedUserFromNew($num = 1, $limit = 100)
@@ -377,7 +359,7 @@ class RelatedUserModel extends Model
         }
         $data && $data = $this->_data_array_rand($data, $num);
         if (empty($data)) {
-            return [];
+            return array();
         }
         // 用户基本信息
         $userInfos = $this->_user_model->getUserInfoByUids($data);
@@ -390,7 +372,7 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             $data[$key]['info']['msg'] = '最新注册用户推荐';
             $data[$key]['info']['extendMsg'] = '';
@@ -400,10 +382,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 好友的好友用户推荐.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 好友的好友用户推荐
+     * @param  int   $limit 查询个数，默认为1
      * @return array 好友的好友用户信息
      */
     private function _getRelatedUserFromFriend($num = 1, $limit = 100)
@@ -412,7 +392,7 @@ class RelatedUserModel extends Model
         $friendUids = $this->_user_follow->getFriendsData($this->_uid);
         $friendUids = getSubByKey($friendUids, 'fid');
         if (empty($friendUids)) {
-            return [];
+            return array();
         }
         // 获取好友关注的用户
         $limit = $limit * 10;
@@ -431,7 +411,7 @@ class RelatedUserModel extends Model
         }
         $data && $data = $this->_data_array_rand($data, $num);
         if (empty($data)) {
-            return [];
+            return array();
         }
         // 用户基本信息
         $userInfos = $this->_user_model->getUserInfoByUids($data);
@@ -444,10 +424,10 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             // 获取相关用户
-            $relatedUids = [];
+            $relatedUids = array();
             foreach ($friendData as $val) {
                 if ($val['fid'] == $value) {
                     $relatedUids[] = $val['uid'];
@@ -463,10 +443,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取有共同好友的用户推荐.
-     *
+     * 获取有共同好友的用户推荐
      * @param int $limit 查询个人，默认为1
-     *
      * @return array 有共同好友的用户推荐
      */
     public function _getRelatedUserFromFollowing($limit = 2)
@@ -475,7 +453,7 @@ class RelatedUserModel extends Model
         $followFids = $this->_user_follow->where('uid='.$this->_uid)->getAsFieldArray('fid');
         // 获取关注用户所关注的用户
         if (empty($followFids)) {
-            return [];
+            return array();
         }
         // 获取有共同好友的用户推荐  TODO 待过滤不合格的用户
         $sql = "SELECT `uid`, `fid` FROM `{$this->tablePrefix}user_follow` WHERE `uid` IN (".implode(',', $followFids).') ';
@@ -492,11 +470,11 @@ class RelatedUserModel extends Model
         }
         $count = array_keys($count);
         if (empty($count)) {
-            return [];
+            return array();
         }
         if (count($count) > $limit) {
             $data = $this->_data_array_rand($count, $limit);
-            count($data) == 1 && $data = [$data];
+            count($data) == 1 && $data = array($data);
         } else {
             $data = $count;
         }
@@ -511,10 +489,10 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             // 获取相关用户
-            $relatedUids = [];
+            $relatedUids = array();
             foreach ($followData as $val) {
                 if ($val['fid'] == $value) {
                     $relatedUids[] = $val['uid'];
@@ -531,10 +509,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取相同的用户标签用户.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 获取相同的用户标签用户
+     * @param  int   $limit 查询个数，默认为1
      * @return array 相同的用户标签用户数据
      */
     private function _getRelatedUserFromTag($num = 1, $limit = 100)
@@ -547,7 +523,7 @@ class RelatedUserModel extends Model
         $tagInfo = D('app_tag')->where($maps)->findAll();
         $tagIds = getSubByKey($tagInfo, 'tag_id');
         if (empty($tagIds)) {
-            return [];
+            return array();
         }
 
         // 获取具有相同标签信息的用户
@@ -555,7 +531,7 @@ class RelatedUserModel extends Model
         $sql = "SELECT `row_id`, `tag_id` FROM `{$this->tablePrefix}app_tag` AS a WHERE `tag_id` IN (".implode(',', $tagIds).") group by `row_id` LIMIT {$limit}";
         $tagData = D()->query($sql);
         // Tag Hash数组
-        $tagHash = [];
+        $tagHash = array();
         foreach ($tagData as $tag) {
             $tagHash[$tag['row_id']] = $tag['tag_id'];
         }
@@ -577,7 +553,7 @@ class RelatedUserModel extends Model
         }
         $data && $data = $this->_data_array_rand($data, $num);
         if (empty($data)) {
-            return [];
+            return array();
         }
 
         // 用户基本信息
@@ -592,7 +568,7 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             // 获取标签信息
             $tag_id = 0;
@@ -612,10 +588,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取相同地区的用户.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 获取相同地区的用户
+     * @param  int   $limit 查询个数，默认为1
      * @return array 相同地区的用户数据
      */
     private function _getRelatedUserFromCity($num = 1, $limit = 100)
@@ -628,7 +602,7 @@ class RelatedUserModel extends Model
         $areaprovince = $areaInfo['province'];
         // 获取地区信息
         if (empty($areaId) && empty($areainput)) {
-            return [];
+            return array();
         }
         // 获取相同地区的用户
         if (!empty($areaId)) {
@@ -655,10 +629,10 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             // 获取地区信息
-            $map['area_id'] = ['IN', [$areaInfo['city'], $areaInfo['area']]];
+            $map['area_id'] = array('IN', array($areaInfo['city'], $areaInfo['area']));
             $areaName = model('Area')->where($map)->getAsFieldArray('title');
             $areaName = implode(' ', $areaName);
             $data[$key]['info']['msg'] = 'TA与你在同一个地方';
@@ -670,10 +644,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取后台推荐用户.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 获取后台推荐用户
+     * @param  int   $limit 查询个数，默认为1
      * @return array 相同的用户标签用户数据
      */
     private function _getRelatedUserFromRecommend($num = 1, $limit = 100)
@@ -684,7 +656,7 @@ class RelatedUserModel extends Model
         $recommendUids = $RegisterConfig['interester_recommend'];
         // 获取地区信息
         if (empty($recommendUids)) {
-            return [];
+            return array();
         }
         // 获取相同地区的用户
         $limit = $limit * 10;
@@ -712,7 +684,7 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             $data[$key]['info']['msg'] = '后台推荐用户';
             $data[$key]['uid'] = $value;
@@ -722,10 +694,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取随机用户.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 获取随机用户
+     * @param  int   $limit 查询个数，默认为1
      * @return array 随机用户信息
      */
     private function _getRelatedUserFromRandom($num = 1, $limit = 100)
@@ -755,7 +725,7 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             $data[$key]['info']['msg'] = '系统推荐';
             $data[$key]['info']['extendMsg'] = '';
@@ -763,7 +733,6 @@ class RelatedUserModel extends Model
 
         return $data;
     }
-
     private function _data_array_rand($data, $num)
     {
         shuffle($data);
@@ -772,10 +741,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取相同年龄的用户.
-     *
-     * @param int $limit 查询个数，默认为1
-     *
+     * 获取相同年龄的用户
+     * @param  int   $limit 查询个数，默认为1
      * @return array 相同地区的用户数据
      */
     private function _getRelatedUserFromAge($num = 1, $limit = 100)
@@ -786,11 +753,11 @@ class RelatedUserModel extends Model
 
         // 获取地区信息
         if (empty($birthday['birthday'])) {
-            return [];
+            return array();
         }
         // 获取相同地区的用户
         $limit = $limit * 10;
-        $map['birthday'] = ['BETWEEN', [$ret['sdate'], $ret['edate']]];
+        $map['birthday'] = array('BETWEEN', array($ret['sdate'], $ret['edate']));
         $user = $this->_user_model->field('uid')->where($map)->limit($limit)->findAll();
         $data = getSubByKey($user, 'uid');
         $data = array_diff($data, $this->_exclude_uids);
@@ -809,10 +776,10 @@ class RelatedUserModel extends Model
                 unset($data[$key]);
                 continue;
             }
-            $data[$key] = ['userInfo' => $userInfos[$value]];
+            $data[$key] = array('userInfo' => $userInfos[$value]);
             $data[$key]['followState'] = $userStates[$value];
             // 获取地区信息
-            $map['area_id'] = ['IN', [$areaInfo['city'], $areaInfo['area']]];
+            $map['area_id'] = array('IN', array($areaInfo['city'], $areaInfo['area']));
             $areaName = model('Area')->where($map)->getAsFieldArray('title');
             $areaName = implode(' ', $areaName);
             $data[$key]['info']['msg'] = 'TA与你年龄相同';

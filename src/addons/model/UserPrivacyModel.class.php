@@ -1,21 +1,17 @@
 <?php
 /**
- * 用户隐私模型 - 数据对象模型.
- *
+ * 用户隐私模型 - 数据对象模型
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class UserPrivacyModel extends Model
 {
     protected $tableName = 'user_privacy';
-    protected $fields = [0 => 'uid', 1 => 'key', 2 => 'value'];
+    protected $fields = array(0 => 'uid', 1 => 'key', 2 => 'value');
 
     /**
-     * 获取指定用户的隐私设置.
-     *
-     * @param int $uid 用户UID
-     *
+     * 获取指定用户的隐私设置
+     * @param  int   $uid 用户UID
      * @return array 指定用户的隐私设置信息
      */
     public function getUserSet($uid)
@@ -35,11 +31,9 @@ class UserPrivacyModel extends Model
     }
 
     /**
-     * 保存指定用户的隐私配置.
-     *
+     * 保存指定用户的隐私配置
      * @param int $uid 用户UID
      * @param  array $data 隐私配置相关数据
-     *
      * @return bool 是否保存成功
      */
     public function dosave($uid, $data)
@@ -48,7 +42,7 @@ class UserPrivacyModel extends Model
         if (empty($uid)) {
             return false;
         }
-        $map = [];
+        $map = array();
         $map['uid'] = $uid;
         $this->where($map)->delete();
         foreach ($data as $key => $value) {
@@ -65,11 +59,9 @@ class UserPrivacyModel extends Model
     }
 
     /**
-     * 获取A用户针对B用户的隐私设置情况.
-     *
-     * @param int $mid B用户UID
-     * @param int $uid A用户UID
-     *
+     * 获取A用户针对B用户的隐私设置情况
+     * @param  int $mid B用户UID
+     * @param  int $uid A用户UID
      * @return int 隐私状态，0表示不限制；1表示限制，不可以发送
      */
     public function getPrivacy($mid, $uid)
@@ -99,30 +91,27 @@ class UserPrivacyModel extends Model
     }
 
     /**
-     * 系统的默认用户隐私设置配置.
-     *
+     * 系统的默认用户隐私设置配置
      * @return array 默认隐私配置数组
      */
     private function _defaultSet()
     {
-        return [
+        return array(
             'comment_weibo' => 0,        // 所有人
-            'message'       => 0,                // 所有人
-            'space'         => 0,                // 所有人
+            'message' => 0,                // 所有人
+            'space' => 0,                // 所有人
             //'email' => 0,				// 接收系统邮件
-            'atme_email'    => 0,                // 接收系统邮件
+            'atme_email' => 0,                // 接收系统邮件
             'comment_email' => 0,                // 接收系统邮件
             'message_email' => 0,                // 接收系统邮件
 
-        ];
+        );
     }
 
     /**
-     * 判断用户是否是黑名单关系.
-     *
-     * @param int $mid B用户UID
-     * @param int $uid A用户UID
-     *
+     * 判断用户是否是黑名单关系
+     * @param  int   $mid B用户UID
+     * @param  int   $uid A用户UID
      * @return array
      */
     public function isInBlackList($mid, $uid)

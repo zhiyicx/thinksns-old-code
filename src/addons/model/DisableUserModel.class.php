@@ -28,7 +28,7 @@ class DisableUserModel extends Model
 
         S('is_disable_user_'.$disableItem.'_'.$uid, null);
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function getDisableUser($uid)
@@ -37,17 +37,17 @@ class DisableUserModel extends Model
         $list = $this->where($map)->findAll();
 
         if (empty($list)) {
-            return [];
+            return array();
         }
 
-        $tmp = [];
+        $tmp = array();
         foreach ($list as $value) {
             $tmp[$value['type']]['start_time'] = $value['start_time'];
             $tmp[$value['type']]['end_time'] = $value['end_time'];
         }
 
         $data['uid'] = $uid;
-        foreach (['login', 'post'] as $value) {
+        foreach (array('login', 'post') as $value) {
             $data[$value]['start_time'] = isset($tmp[$value]['start_time']) ? $tmp[$value]['start_time'] : '';
             $data[$value]['start_time_format'] = isset($tmp[$value]['start_time']) ? date('Y-m-d H:i:s', $tmp[$value]['start_time']) : '';
             $data[$value]['end_time'] = isset($tmp[$value]['end_time']) ? $tmp[$value]['end_time'] : '';
@@ -61,7 +61,7 @@ class DisableUserModel extends Model
     {
         $data = $this->getDisableUser($uid);
 
-        $result = [];
+        $result = array();
         $time = time();
         $result['login'] = ($time > $data['login']['start_time'] && $time < $data['login']['end_time']) ? true : false;
         $result['post'] = ($time > $data['post']['start_time'] && $time < $data['post']['end_time']) ? true : false;
@@ -73,7 +73,7 @@ class DisableUserModel extends Model
     {
         $map['ud.type'] = $type;
         $map['u.is_del'] = 0;
-        $map['ud.end_time'] = ['gt', time()];
+        $map['ud.end_time'] = array('gt', time());
         $list = D()->table($this->tablePrefix.'user_disable AS ud LEFT JOIN '.$this->tablePrefix.'user AS u ON ud.uid = u.uid')
                    ->field('u.*, ud.user_disable_id, ud.type, ud.start_time, ud.end_time')
                    ->where($map)
@@ -92,12 +92,12 @@ class DisableUserModel extends Model
         S('is_disable_user_login_'.$uid, null);
         S('is_disable_user_post_'.$uid, null);
 
-        return (bool) $result;
+        return (boolean) $result;
     }
 
     public function isDisableUser($uid, $type = 'login')
     {
-        if (!in_array($type, ['login', 'post'])) {
+        if (!in_array($type, array('login', 'post'))) {
             $type = 'login';
         }
         if (empty($uid)) {
@@ -109,8 +109,8 @@ class DisableUserModel extends Model
             $map['uid'] = $uid;
             $map['type'] = $type;
             $time = time();
-            $map['start_time'] = ['lt', $time];
-            $map['end_time'] = ['gt', $time];
+            $map['start_time'] = array('lt', $time);
+            $map['end_time'] = array('gt', $time);
             $data = $this->where($map)->find();
 
             if (empty($data)) {

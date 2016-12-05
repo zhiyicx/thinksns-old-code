@@ -12,26 +12,31 @@
 // $Id$
 
 /**
- * HTML标签库解析类.
+ +------------------------------------------------------------------------------
+ * HTML标签库解析类
  +------------------------------------------------------------------------------
  * @category   Think
- *
+ * @package  Think
+ * @subpackage  Template
  * @author    liu21st <liu21st@gmail.com>
- *
  * @version   $Id$
+ +------------------------------------------------------------------------------
  */
+
 class TagLibHtml extends TagLib
 {
     //类定义开始
 
     /**
+     +----------------------------------------------------------
      * editor标签解析 插入可视化编辑器
-     * 格式： <html:editor id="editor" name="remark" type="FCKeditor" content="{$vo.remark}" />.
+     * 格式： <html:editor id="editor" name="remark" type="FCKeditor" content="{$vo.remark}" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _editor($attr)
     {
@@ -42,7 +47,7 @@ class TagLibHtml extends TagLib
         $width = !empty($tag['width']) ? $tag['width'] : '100%';
         $height = !empty($tag['height']) ? $tag['height'] : '320px';
         $content = $tag['content'];
-        $type = $tag['type'];
+        $type = $tag['type'] ;
         switch (strtoupper($type)) {
             case 'FCKEDITOR':
                 $parseStr = '<!-- 编辑器调用开始 --><script type="text/javascript" src="__ROOT__/Public/Js/FCKeditor/fckeditor.js"></script><textarea id="'.$id.'" name="'.$name.'">'.$content.'</textarea><script type="text/javascript"> var oFCKeditor = new FCKeditor( "'.$id.'","'.$width.'","'.$height.'" ) ; oFCKeditor.BasePath = "__ROOT__/Public/Js/FCKeditor/" ; oFCKeditor.ReplaceTextarea() ;function resetEditor(){setContents("'.$id.'",document.getElementById("'.$id.'").value)}; function saveEditor(){document.getElementById("'.$id.'").value = getContents("'.$id.'");} function InsertHTML(html){ var oEditor = FCKeditorAPI.GetInstance("'.$id.'") ;if (oEditor.EditMode == FCK_EDITMODE_WYSIWYG ){oEditor.InsertHtml(html) ;}else	alert( "FCK必须处于WYSIWYG模式!" ) ;}</script> <!-- 编辑器调用结束 -->';
@@ -64,13 +69,15 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * link标签解析
-     * 格式： <html:link file="" type="" />.
+     * 格式： <html:link file="" type="" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _link($attr)
     {
@@ -89,13 +96,15 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * link标签解析
-     * 格式： <html:link file="" type="" />.
+     * 格式： <html:link file="" type="" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _import($attr)
     {
@@ -104,22 +113,24 @@ class TagLibHtml extends TagLib
         $basepath = !empty($tag['basepath']) ? $tag['basepath'] : WEB_PUBLIC_URL;
         $type = !empty($tag['type']) ? strtolower($tag['type']) : 'js';
         if ($type == 'js') {
-            $parseStr = "<script type='text/javascript' src='".$basepath.'/'.str_replace(['.', '#'], ['/', '.'], $file).'.js'."'></script> ";
+            $parseStr = "<script type='text/javascript' src='".$basepath.'/'.str_replace(array('.', '#'), array('/', '.'), $file).'.js'."'></script> ";
         } elseif ($type == 'css') {
-            $parseStr = "<link rel='stylesheet' type='text/css' href='".$basepath.'/'.str_replace(['.', '#'], ['/', '.'], $file).'.css'."' />";
+            $parseStr = "<link rel='stylesheet' type='text/css' href='".$basepath.'/'.str_replace(array('.', '#'), array('/', '.'), $file).'.css'."' />";
         }
 
         return $parseStr;
     }
 
     /**
+     +----------------------------------------------------------
      * imageBtn标签解析
-     * 格式： <html:imageBtn type="" value="" />.
+     * 格式： <html:imageBtn type="" value="" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _imageBtn($attr)
     {
@@ -141,13 +152,15 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * imageLink标签解析
-     * 格式： <html:imageLink type="" value="" />.
+     * 格式： <html:imageLink type="" value="" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _imgLink($attr)
     {
@@ -167,13 +180,15 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * select标签解析
-     * 格式： <html:select options="name" selected="value" />.
+     * 格式： <html:select options="name" selected="value" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _select($attr)
     {
@@ -228,13 +243,15 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * checkbox标签解析
-     * 格式： <html:checkbox checkboxs="" checked="" />.
+     * 格式： <html:checkbox checkboxs="" checked="" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _checkbox($attr)
     {
@@ -258,13 +275,15 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * radio标签解析
-     * 格式： <html:radio radios="name" checked="value" />.
+     * 格式： <html:radio radios="name" checked="value" />
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string|void
+     +----------------------------------------------------------
      */
     public function _radio($attr)
     {
@@ -288,14 +307,16 @@ class TagLibHtml extends TagLib
     }
 
     /**
+     +----------------------------------------------------------
      * list标签解析
-     * 格式： <html:list datasource="" show="" />.
+     * 格式： <html:list datasource="" show="" />
      *
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param string $attr 标签属性
      +----------------------------------------------------------
      * @return string
+     +----------------------------------------------------------
      */
     public function _list($attr)
     {
@@ -333,7 +354,7 @@ class TagLibHtml extends TagLib
         $parseStr .= '<tr><td height="5" colspan="'.$colNum.'" class="topTd" ></td></tr>';
         $parseStr .= '<tr class="row" >';
         //列表需要显示的字段
-        $fields = [];
+        $fields = array();
         foreach ($show as $key => $val) {
             $fields[] = explode(':', $val);
         }

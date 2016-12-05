@@ -3,10 +3,8 @@
 use Medz\Component\EmojiFormat;
 
 /**
- * ThinkSNS Action控制器基类.
- *
+ * ThinkSNS Action控制器基类
  * @author  liuxiaoqing <liuxiaoqing@zhishisoft.com>
- *
  * @version TS v4
  */
 abstract class Action
@@ -15,17 +13,17 @@ abstract class Action
 
     // 当前Action名称
     private $name = '';
-    protected $tVar = [];
-    protected $trace = [];
+    protected $tVar = array();
+    protected $trace = array();
     protected $templateFile = '';
 
-    protected $appCssList = [];
-    protected $appJsList = [];
-    protected $langJsList = [];
+    protected $appCssList = array();
+    protected $appJsList = array();
+    protected $langJsList = array();
 
-    protected $site = [];
-    protected $user = [];
-    protected $app = [];
+    protected $site = array();
+    protected $user = array();
+    protected $app = array();
 
     protected $mid = 0;
     protected $uid = 0;
@@ -33,7 +31,7 @@ abstract class Action
     protected $initUserData = false;
 
     /**
-     * 架构函数 取得模板对.
+     * 架构函数 取得模板对
      */
     public function __construct()
     {
@@ -54,7 +52,7 @@ abstract class Action
     }
 
     /**
-     * 站点信息初始化.
+     * 站点信息初始化
      */
     private function initSite()
     {
@@ -106,7 +104,7 @@ abstract class Action
             $GLOBALS['time_run_detail']['action_init_site_search'] = microtime(true);
 
             //网站所有的应用
-            $this->site['site_nav_apps'] = model('App')->getAppList(['status' => 1, 'add_front_top' => 1], 9);
+            $this->site['site_nav_apps'] = model('App')->getAppList(array('status' => 1, 'add_front_top' => 1), 9);
             $GLOBALS['time_run_detail']['action_init_site_applist'] = microtime(true);
 
             //获取当前Js语言包
@@ -168,7 +166,8 @@ abstract class Action
     }
 
     /**
-     * 应用信息初始化.
+     * 应用信息初始化
+     *
      */
     private function initApp()
     {
@@ -202,7 +201,7 @@ abstract class Action
     }
 
     /**
-     * 用户信息初始化.
+     * 用户信息初始化
      */
     private function initUser()
     {
@@ -210,7 +209,7 @@ abstract class Action
 
         // 邀请跳转
         if (isset($_GET['invite']) && APP_NAME.'/'.MODULE_NAME != 'public/Register') {
-            redirect(U('public/Register/index', ['invite' => t($_GET['invite'])]));
+            redirect(U('public/Register/index', array('invite' => t($_GET['invite']))));
             exit();
         }
 
@@ -257,10 +256,10 @@ abstract class Action
 
         // 获取用户基本资料
         if ($this->mid > 0 || $this->uid > 0) {
-            $GLOBALS['ts']['user'] = !empty($this->mid) ? $this->user = model('User')->getUserInfo($this->mid) : [];
+            $GLOBALS['ts']['user'] = !empty($this->mid) ? $this->user = model('User')->getUserInfo($this->mid) : array();
 
             if ($this->mid != $this->uid) {
-                $GLOBALS['ts']['_user'] = !empty($this->uid) ? model('User')->getUserInfo($this->uid) : [];
+                $GLOBALS['ts']['_user'] = !empty($this->uid) ? model('User')->getUserInfo($this->uid) : array();
             } else {
                 $GLOBALS['ts']['_user'] = $GLOBALS['ts']['user'];
             }
@@ -268,10 +267,10 @@ abstract class Action
             $GLOBALS['time_run_detail']['action_init_user_info'] = microtime(true);
 
             // 未初始化
-            $module_arr = ['Register' => 1, 'Passport' => 1, 'Account' => 1];
-            if (0 < $this->mid && 0 == $this->user['is_init'] && APP_NAME != 'admin' && !isset($module_arr[MODULE_NAME])) {
+            $module_arr = array('Register' => 1, 'Passport' => 1, 'Account' => 1);
+            if (0 < $this->mid && 0 == $this->user ['is_init'] && APP_NAME != 'admin' && ! isset($module_arr [MODULE_NAME])) {
                 // 注册完成后就开启此功能
-                if ($this->user['is_active'] == '0') {
+                if ($this->user ['is_active'] == '0') {
                     U('public/Register/waitForActivation', 'uid='.$this->mid, true);
                 } else {
                     $init_config = model('Xdata')->get('admin_Config:register');
@@ -310,7 +309,7 @@ abstract class Action
                         model('Follow')->bulkDoFollow($this->mid, $defaultFollow);
                     }
 
-                    model('Register')->overUserInit($GLOBALS['ts']['mid']);
+                    model('Register')->overUserInit($GLOBALS ['ts'] ['mid']);
                     U('square/Index/index', '', true);
                 }
             }
@@ -337,7 +336,7 @@ abstract class Action
 
             //oauth_token
             $login = D('login')->where('uid='.$this->mid." AND type='location'")->find();
-            if (!$login) {
+            if (! $login) {
                 $data['uid'] = $this->mid;
                 $data['oauth_token'] = getOAuthToken($this->mid);
                 $data['oauth_token_secret'] = getOAuthTokenSecret();
@@ -366,7 +365,7 @@ abstract class Action
     }
 
     /**
-     * 重设访问对象的用户信息 主要用于重写等地方.
+     * 重设访问对象的用户信息 主要用于重写等地方
      */
     public function reinitUser($uid = '')
     {
@@ -389,11 +388,9 @@ abstract class Action
     }
 
     /**
-     * 魔术方法 有不存在的操作的时候.
-     *
-     * @param string $method 方法名
-     * @param array  $parms
-     *
+     * 魔术方法 有不存在的操作的时候
+     * @param  string $method 方法名
+     * @param  array  $parms
      * @return mix
      */
     public function __call($method, $parms)
@@ -412,7 +409,7 @@ abstract class Action
                 if (!empty($action)) {
                     call_user_func($action);
 
-                    return;
+                    return ;
                 }
             }
             // 如果定义了_empty操作 则调用
@@ -422,7 +419,7 @@ abstract class Action
                 // 检查是否存在默认模版 如果有直接输出模版
                     $this->display();
             }
-        } elseif (in_array(strtolower($method), ['ispost', 'isget', 'ishead', 'isdelete', 'isput'])) {
+        } elseif (in_array(strtolower($method), array('ispost', 'isget', 'ishead', 'isdelete', 'isput'))) {
             return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method, 2));
         } else {
             throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
@@ -430,10 +427,8 @@ abstract class Action
     }
 
     /**
-     * 模板Title.
-     *
+     * 模板Title
      * @param mixed $input 要
-     *
      * @return
      */
     public function setTitle($title = '')
@@ -443,10 +438,8 @@ abstract class Action
     }
 
     /**
-     * 模板keywords.
-     *
+     * 模板keywords
      * @param mixed $input 要
-     *
      * @return
      */
     public function setKeywords($keywords = '')
@@ -455,10 +448,8 @@ abstract class Action
     }
 
     /**
-     * 模板description.
-     *
+     * 模板description
      * @param mixed $input 要
-     *
      * @return
      */
     public function setDescription($description = '')
@@ -467,8 +458,7 @@ abstract class Action
     }
 
     /**
-     * 模板变量赋.
-     *
+     * 模板变量赋
      * @param mixed $name  要显示的模板变量
      * @param mixed $value 变量的
      */
@@ -486,11 +476,9 @@ abstract class Action
     }
 
     /**
-     * 魔术方法：注册模版变量.
-     *
-     * @param string $name  模版变量
-     * @param mix    $value 变量值
-     *
+     * 魔术方法：注册模版变量
+     * @param  string $name  模版变量
+     * @param  mix    $value 变量值
      * @return mixed
      */
     public function __set($name, $value)
@@ -500,9 +488,7 @@ abstract class Action
 
     /**
      * 取得模板显示变量的值
-     *
-     * @param string $name 模板显示变量
-     *
+     * @param  string $name 模板显示变量
      * @return mixed
      */
     protected function get($name)
@@ -516,7 +502,6 @@ abstract class Action
 
     /**
      * Trace变量赋值
-     *
      * @param mixed $name  要显示的模板变量
      * @param mixed $value 变量的值
      */
@@ -531,13 +516,11 @@ abstract class Action
 
     /**
      * 模板显示
-     * 调用内置的模板引擎显示方法.
-     *
-     * @param string $templateFile 指定要调用的模板文件
-     *                             默认为空 由系统自动定位模板文件
-     * @param string $charset      输出编码
-     * @param string $contentType  输出类
-     *
+     * 调用内置的模板引擎显示方法
+     * @param  string $templateFile 指定要调用的模板文件
+     *                              默认为空 由系统自动定位模板文件
+     * @param  string $charset      输出编码
+     * @param  string $contentType  输出类
      * @return voi
      */
     protected function display($templateFile = '', $charset = 'utf-8', $contentType = 'text/html')
@@ -547,13 +530,11 @@ abstract class Action
 
     /**
      *  获取输出页面内容
-     * 调用内置的模板引擎fetch方法.
-     *
-     * @param string $templateFile 指定要调用的模板文件
-     *                             默认为空 由系统自动定位模板文件
-     * @param string $charset      输出编码
-     * @param string $contentType  输出类
-     *
+     * 调用内置的模板引擎fetch方法
+     * @param  string $templateFile 指定要调用的模板文件
+     *                              默认为空 由系统自动定位模板文件
+     * @param  string $charset      输出编码
+     * @param  string $contentType  输出类
      * @return strin
      */
     protected function fetch($templateFile = '', $charset = 'utf-8', $contentType = 'text/html')
@@ -562,7 +543,7 @@ abstract class Action
         $this->assign('appCssList', $this->appCssList);
         $this->assign('appJsList', $this->appJsList);
         $this->assign('langJsList', $this->langJsList);
-        Addons::hook('core_display_tpl', ['tpl' => $templateFile, 'vars' => $this->tVar, 'charset' => $charset, 'contentType' => $contentType, 'display' => $display]);
+        Addons::hook('core_display_tpl', array('tpl' => $templateFile, 'vars' => $this->tVar, 'charset' => $charset, 'contentType' => $contentType, 'display' => $display));
         $content = fetch($templateFile, $this->tVar, $charset, $contentType);
         $this->buildHtml($content);
 
@@ -570,10 +551,8 @@ abstract class Action
     }
 
     /**
-     *  输出静态化内容.
-     *
+     *  输出静态化内容
      * @param  string $content 模板内容
-     *
      * @return boolen
      */
     protected function buildHtml($content)
@@ -593,11 +572,9 @@ abstract class Action
     }
 
     /**
-     * 操作错误跳转的快捷方.
-     *
-     * @param string $message 错误信息
-     * @param bool   $ajax    是否为Ajax方
-     *
+     * 操作错误跳转的快捷方
+     * @param  string  $message 错误信息
+     * @param  Boolean $ajax    是否为Ajax方
      * @return voi
      */
     protected function error($message, $ajax = false)
@@ -612,13 +589,10 @@ abstract class Action
         $this->assign('message', $message);
         $this->display(THEME_PATH.'/page404.html');
     }
-
     /**
-     * 操作成功跳转的快捷方.
-     *
-     * @param string $message 提示信息
-     * @param bool   $ajax    是否为Ajax方
-     *
+     * 操作成功跳转的快捷方
+     * @param  string  $message 提示信息
+     * @param  Boolean $ajax    是否为Ajax方
      * @return voi
      */
     protected function success($message = '', $ajax = false)
@@ -628,12 +602,11 @@ abstract class Action
     }
 
     /**
-     * Ajax方式返回数据到客户端.
-     *
+     * Ajax方式返回数据到客户端
      * @param mixed  $data   要返回的数据
-     * @param string $info   提示信息
+     * @param String $info   提示信息
      * @param bool   $status 返回状态
-     * @param string $status ajax返回类型 JSON XML
+     * @param String $status ajax返回类型 JSON XML
      */
     protected function ajaxReturn($data, $info = '', $status = 1, $type = 'JSON')
     {
@@ -641,7 +614,7 @@ abstract class Action
         if (C('LOG_RECORD')) {
             Log::save();
         }
-        $result = [];
+        $result = array();
         $result['status'] = $status;
         $result['info'] = $info;
         $result['data'] = $data;
@@ -666,14 +639,13 @@ abstract class Action
     }
 
     /**
-     * Action跳转(URL重定向） 支持指定模块和延时跳转.
-     *
+     * Action跳转(URL重定向） 支持指定模块和延时跳转
      * @param string $url 跳转的URL表达式
      * @param array  $params 其它URL参数
      * @param int    $delay 延时跳转的时间 单位为秒
      * @param string $msg   跳转提示信息
      */
-    protected function redirect($url, $params = [], $delay = 0, $msg = '')
+    protected function redirect($url, $params = array(), $delay = 0, $msg = '')
     {
         if (C('LOG_RECORD')) {
             Log::save();
@@ -685,11 +657,10 @@ abstract class Action
     /**
      * 默认跳转操作 支持错误导向和正确跳转
      * 调用模板显示 默认为public目录下面的success页面
-     * 提示页面为可配置 支持模板标签.
-     *
-     * @param string $message 提示信息
-     * @param bool   $status  状态
-     * @param bool   $ajax    是否为Ajax方式
+     * 提示页面为可配置 支持模板标签
+     * @param string  $message 提示信息
+     * @param Boolean $status  状态
+     * @param Boolean $ajax    是否为Ajax方式
      */
     private function _dispatch_jump($message, $status = 1, $ajax = false)
     {
@@ -744,12 +715,11 @@ abstract class Action
             Log::save();
         }
         // 中止执行  避免出错后继续执行
-        exit;
+        exit ;
     }
 
     /**
      * 是否AJAX请求
-     *
      * @return bool
      */
     protected function isAjax()

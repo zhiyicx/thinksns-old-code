@@ -1,15 +1,13 @@
 <?php
 /**
- * 邀请好友.
- *
+ * 邀请好友
  * @example {:W('InviteFriend')}
- *
  * @version TS3.0
  */
 class InviteFriendWidget extends Widget
 {
     /**
-     * 渲染邀请好友页面.
+     * 渲染邀请好友页面
      */
     public function render($data)
     {

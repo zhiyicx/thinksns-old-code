@@ -6,7 +6,6 @@ class UpYun
     {
         return '1.0.1';
     }
-
     private $bucketname;
     private $username;
     private $password;
@@ -18,8 +17,7 @@ class UpYun
     private $file_secret = null;
 
     /**
-     * 初始化 UpYun 存储接口.
-     *
+     * 初始化 UpYun 存储接口
      * @param $bucketname 空间名称
      * @param $username 操作员名称
      * @param $password 密码
@@ -33,8 +31,7 @@ class UpYun
     }
 
     /**
-     * 切换 API 接口的域名.
-     *
+     * 切换 API 接口的域名
      * @param $domain {默然 v0.api.upyun.com 自动识别, v1.api.upyun.com 电信, v2.api.upyun.com 联通, v3.api.upyun.com 移动}
      * return null;
      */
@@ -44,8 +41,7 @@ class UpYun
     }
 
     /**
-     * 设置连接超时时间.
-     *
+     * 设置连接超时时间
      * @param $time 秒
      * return null;
      */
@@ -55,8 +51,7 @@ class UpYun
     }
 
     /**
-     * 设置待上传文件的 Content-MD5 值（如又拍云服务端收到的文件MD5值与用户设置的不一致，将回报 406 Not Acceptable 错误）.
-     *
+     * 设置待上传文件的 Content-MD5 值（如又拍云服务端收到的文件MD5值与用户设置的不一致，将回报 406 Not Acceptable 错误）
      * @param $str （文件 MD5 校验码）
      * return null;
      */
@@ -64,10 +59,8 @@ class UpYun
     {
         $this->content_md5 = $str;
     }
-
     /**
-     * 连接签名方法.
-     *
+     * 连接签名方法
      * @param $method 请求方式 {GET, POST, PUT, DELETE}
      * return 签名字符串
      */
@@ -79,8 +72,7 @@ class UpYun
     }
 
     /**
-     * 连接处理逻辑.
-     *
+     * 连接处理逻辑
      * @param $method 请求方式 {GET, POST, PUT, DELETE}
      * @param $uri 请求地址
      * @param $datas 如果是 POST 上传文件，传递文件内容 或 文件IO数据流
@@ -92,7 +84,7 @@ class UpYun
         unset($this->tmp_infos);
         $uri = "/{$this->bucketname}{$uri}";
         $process = curl_init("http://{$this->api_domain}{$uri}");
-        $headers = ['Expect:'];
+        $headers = array('Expect:');
         if ($datas == 'folder:true') {
             $headers[] = $datas;
             $datas = null;
@@ -154,7 +146,7 @@ class UpYun
                 throw new Exception($r, $rc);
             }
 
-            return;
+            return null;
         }
         curl_close($process);
         $r_headers = explode("\n", substr($r, 0, $r_offset).']');
@@ -162,10 +154,10 @@ class UpYun
             $hl = trim($hl);
             if (substr($hl, 0, 7) == 'x-upyun') {
                 if (!isset($this->tmp_infos)) {
-                    $this->tmp_infos = [];
+                    $this->tmp_infos = array();
                 }
                 list($k, $v) = explode(':', $hl);
-                if (in_array(substr($k, 8, 5), ['width', 'heigh', 'frame'])) {
+                if (in_array(substr($k, 8, 5), array('width', 'heigh', 'frame'))) {
                     $this->tmp_infos[trim($k)] = intval($v);
                 } else {
                     $this->tmp_infos[trim($k)] = trim($v);
@@ -173,7 +165,7 @@ class UpYun
             }
         }
         if ($rc != 200 && $method == 'HEAD') {
-            return;
+            return null;
         }
 
         return substr($r, $r_offset, strlen($r));
@@ -181,7 +173,7 @@ class UpYun
 
     /**
      * 获取总体空间的占用信息
-     * return 空间占用量，失败返回 null.
+     * return 空间占用量，失败返回 null
      */
     public function getBucketUsage()
     {
@@ -189,8 +181,7 @@ class UpYun
     }
 
     /**
-     * 获取某个子目录的占用信息.
-     *
+     * 获取某个子目录的占用信息
      * @param $path 目标路径
      * return 空间占用量，失败返回 null
      */
@@ -198,7 +189,7 @@ class UpYun
     {
         $r = $this->HttpAction('GET', "{$path}?usage", null);
         if ($r == '') {
-            return;
+            return null;
         }
 
         return floatval($r);
@@ -206,8 +197,7 @@ class UpYun
 
     /**
      * 设置待上传文件的 访问密钥（注意：仅支持图片空！，设置密钥后，无法根据原文件URL直接访问，需带 URL 后面加上 （缩略图间隔标志符+密钥） 进行访问）
-     * 如缩略图间隔标志符为 ! ，密钥为 bac，上传文件路径为 /folder/test.jpg ，那么该图片的对外访问地址为： http://空间域名/folder/test.jpg!bac.
-     *
+     * 如缩略图间隔标志符为 ! ，密钥为 bac，上传文件路径为 /folder/test.jpg ，那么该图片的对外访问地址为： http://空间域名/folder/test.jpg!bac
      * @param $str （文件 MD5 校验码）
      * return null;
      */
@@ -217,8 +207,7 @@ class UpYun
     }
 
     /**
-     * 上传文件.
-     *
+     * 上传文件
      * @param $file 文件路径（包含文件名）
      * @param $datas 文件内容 或 文件IO数据流
      * @param $auto_mkdir=false 是否自动创建父级目录
@@ -233,23 +222,21 @@ class UpYun
     }
 
     /**
-     * 获取上传文件后的信息（仅图片空间有返回数据）.
-     *
+     * 获取上传文件后的信息（仅图片空间有返回数据）
      * @param $key 信息字段名（x-upyun-width、x-upyun-height、x-upyun-frames、x-upyun-file-type）
      * return value or NULL
      */
     public function getWritedFileInfo($key)
     {
         if (!isset($this->tmp_infos)) {
-            return;
+            return null;
         }
 
         return $this->tmp_infos[$key];
     }
 
     /**
-     * 读取文件.
-     *
+     * 读取文件
      * @param $file 文件路径（包含文件名）
      * @param $output_file 可传递文件IO数据流（默认为 null，结果返回文件内容，如设置文件数据流，将返回 true or false）
      * return 文件内容 或 null
@@ -260,8 +247,7 @@ class UpYun
     }
 
     /**
-     * 获取文件信息.
-     *
+     * 获取文件信息
      * @param $file 文件路径（包含文件名）
      * return array('type'=> file | folder, 'size'=> file size, 'date'=> unix time) 或 null
      */
@@ -269,15 +255,14 @@ class UpYun
     {
         $r = $this->HttpAction('HEAD', $file, null);
         if (is_null($r)) {
-            return;
+            return null;
         }
 
-        return ['type' => $this->tmp_infos['x-upyun-file-type'], 'size' => @intval($this->tmp_infos['x-upyun-file-size']), 'date' => @intval($this->tmp_infos['x-upyun-file-date'])];
+        return array('type' => $this->tmp_infos['x-upyun-file-type'], 'size' => @intval($this->tmp_infos['x-upyun-file-size']), 'date' => @intval($this->tmp_infos['x-upyun-file-date']));
     }
 
     /**
-     * 读取目录列表.
-     *
+     * 读取目录列表
      * @param $path 目录路径
      * return array 数组 或 null
      */
@@ -285,13 +270,13 @@ class UpYun
     {
         $r = $this->HttpAction('GET', $path, null);
         if (is_null($r)) {
-            return;
+            return null;
         }
         $rs = explode("\n", $r);
-        $returns = [];
+        $returns = array();
         foreach ($rs as $r) {
             $r = trim($r);
-            $l = new stdclass();
+            $l = new stdclass;
             @list($l->name, $l->type, $l->size, $l->time) = explode("\t", $r);
             if (!empty($l->time)) {
                 $l->type = ($l->type == 'N' ? 'file' : 'folder');
@@ -305,8 +290,7 @@ class UpYun
     }
 
     /**
-     * 删除文件.
-     *
+     * 删除文件
      * @param $file 文件路径（包含文件名）
      * return true or false
      */
@@ -318,8 +302,7 @@ class UpYun
     }
 
     /**
-     * 创建目录.
-     *
+     * 创建目录
      * @param $path 目录路径
      * @param $auto_mkdir=false 是否自动创建父级目录
      * return true or false
@@ -333,8 +316,7 @@ class UpYun
     }
 
     /**
-     * 删除目录.
-     *
+     * 删除目录
      * @param $path 目录路径
      * return true or false
      */

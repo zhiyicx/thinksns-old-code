@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpThumb GD Thumb Class Definition File.
+ * PhpThumb GD Thumb Class Definition File
  *
  * This file contains the definition for the GdThumb object
  *
@@ -15,48 +15,49 @@
  *
  * @author Ian Selby <ian@gen-x-design.com>
  * @copyright Copyright (c) 2009 Gen X Design
- *
  * @link http://phpthumb.gxdlabs.com
- *
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
- *
  * @version 3.0
+ * @package PhpThumb
  * @filesource
  */
 
 /**
- * GdThumb Class Definition.
+ * GdThumb Class Definition
  *
  * This is the GD Implementation of the PHP Thumb library.
+ *
+ * @package PhpThumb
+ * @subpackage Core
  */
 class GdThumb extends ThumbBase
 {
     /**
-     * The prior image (before manipulation).
+     * The prior image (before manipulation)
      *
      * @var resource
      */
     protected $oldImage;
     /**
-     * The working image (used during manipulation).
+     * The working image (used during manipulation)
      *
      * @var resource
      */
     protected $workingImage;
     /**
-     * The current dimensions of the image.
+     * The current dimensions of the image
      *
      * @var array
      */
     protected $currentDimensions;
     /**
-     * The new, calculated dimensions of the image.
+     * The new, calculated dimensions of the image
      *
      * @var array
      */
     protected $newDimensions;
     /**
-     * The options for this class.
+     * The options for this class
      *
      * This array contains various options that determine the behavior in
      * various functions throughout the class.  Functions note which specific
@@ -66,32 +67,31 @@ class GdThumb extends ThumbBase
      */
     protected $options;
     /**
-     * The maximum width an image can be after resizing (in pixels).
+     * The maximum width an image can be after resizing (in pixels)
      *
      * @var int
      */
     protected $maxWidth;
     /**
-     * The maximum height an image can be after resizing (in pixels).
+     * The maximum height an image can be after resizing (in pixels)
      *
      * @var int
      */
     protected $maxHeight;
     /**
-     * The percentage to resize the image by.
+     * The percentage to resize the image by
      *
      * @var int
      */
     protected $percent;
 
     /**
-     * Class Constructor.
-     *
-     * @param string $fileName
+     * Class Constructor
      *
      * @return GdThumb
+     * @param  string  $fileName
      */
-    public function __construct($fileName, $options = [], $isDataStream = false)
+    public function __construct($fileName, $options = array(), $isDataStream = false)
     {
         parent::__construct($fileName, $isDataStream);
 
@@ -116,10 +116,10 @@ class GdThumb extends ThumbBase
                 break;
         }
 
-        $this->currentDimensions = [
-            'width'  => imagesx($this->oldImage),
+        $this->currentDimensions = array(
+            'width' => imagesx($this->oldImage),
             'height' => imagesy($this->oldImage),
-        ];
+        );
 
         $this->setOptions($options);
 
@@ -127,7 +127,8 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Class Destructor.
+     * Class Destructor
+     *
      */
     public function __destruct()
     {
@@ -140,20 +141,19 @@ class GdThumb extends ThumbBase
         }
     }
 
-    //#############################
-    // ----- API FUNCTIONS ------ #
-    //#############################
+    ##############################
+    # ----- API FUNCTIONS ------ #
+    ##############################
 
     /**
-     * Resizes an image to be no larger than $maxWidth or $maxHeight.
+     * Resizes an image to be no larger than $maxWidth or $maxHeight
      *
      * If either param is set to zero, then that dimension will not be considered as a part of the resize.
      * Additionally, if $this->options['resizeUp'] is set to true (false by default), then this function will
      * also scale the image up to the maximum dimensions provided.
      *
-     * @param int $maxWidth  The maximum width of the image in pixels
-     * @param int $maxHeight The maximum height of the image in pixels
-     *
+     * @param  int     $maxWidth  The maximum width of the image in pixels
+     * @param  int     $maxHeight The maximum height of the image in pixels
      * @return GdThumb
      */
     public function resize($maxWidth = 0, $maxHeight = 0)
@@ -211,14 +211,13 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Adaptively Resizes the Image.
+     * Adaptively Resizes the Image
      *
      * This function attempts to get the image to as close to the provided dimensions as possible, and then crops the
      * remaining overflow (from the center) to get the image to be the size specified
      *
-     * @param int $maxWidth
-     * @param int $maxHeight
-     *
+     * @param  int     $maxWidth
+     * @param  int     $maxHeight
      * @return GdThumb
      */
     public function adaptiveResize($width, $height)
@@ -298,12 +297,11 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Resizes an image by a given percent uniformly.
+     * Resizes an image by a given percent uniformly
      *
      * Percentage should be whole number representation (i.e. 1-100)
      *
-     * @param int $percent
-     *
+     * @param  int     $percent
      * @return GdThumb
      */
     public function resizePercent($percent = 0)
@@ -324,7 +322,7 @@ class GdThumb extends ThumbBase
 
         $this->preserveAlpha();
 
-        imagecopyresampled(
+        ImageCopyResampled(
             $this->workingImage,
             $this->oldImage,
             0,
@@ -345,13 +343,12 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Crops an image from the center with provided dimensions.
+     * Crops an image from the center with provided dimensions
      *
      * If no height is given, the width will be used as a height, thus creating a square crop
      *
-     * @param int $cropWidth
-     * @param int $cropHeight
-     *
+     * @param  int     $cropWidth
+     * @param  int     $cropHeight
      * @return GdThumb
      */
     public function cropFromCenter($cropWidth, $cropHeight = null)
@@ -380,13 +377,12 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Vanilla Cropping - Crops from x,y with specified width and height.
+     * Vanilla Cropping - Crops from x,y with specified width and height
      *
-     * @param int $startX
-     * @param int $startY
-     * @param int $cropWidth
-     * @param int $cropHeight
-     *
+     * @param  int     $startX
+     * @param  int     $startY
+     * @param  int     $cropWidth
+     * @param  int     $cropHeight
      * @return GdThumb
      */
     public function crop($startX, $startY, $cropWidth, $cropHeight)
@@ -459,7 +455,7 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Rotates image either 90 degrees clockwise or counter-clockwise.
+     * Rotates image either 90 degrees clockwise or counter-clockwise
      *
      * @param string $direction
      * @retunrn GdThumb
@@ -476,10 +472,9 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Rotates image specified number of degrees.
+     * Rotates image specified number of degrees
      *
-     * @param int $degrees
-     *
+     * @param  int     $degrees
      * @return GdThumb
      */
     public function rotateImageNDegrees($degrees)
@@ -504,14 +499,13 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Shows an image.
+     * Shows an image
      *
      * This function will show the current image by first sending the appropriate header
      * for the format, and then outputting the image data. If headers have already been sent,
      * a runtime exception will be thrown
      *
-     * @param bool $rawData Whether or not the raw image stream should be output
-     *
+     * @param  bool    $rawData Whether or not the raw image stream should be output
      * @return GdThumb
      */
     public function show($rawData = false)
@@ -546,7 +540,7 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Returns the Working Image as a String.
+     * Returns the Working Image as a String
      *
      * This function is useful for getting the raw image data as a string for storage in
      * a database, or other similar things.
@@ -565,7 +559,7 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Saves an image.
+     * Saves an image
      *
      * This function will make sure the target directory is writeable, and then save the image.
      *
@@ -575,14 +569,13 @@ class GdThumb extends ThumbBase
      *
      * TODO: Create additional paramter for color matte when saving images with alpha to non-alpha formats (i.e. PNG => JPG)
      *
-     * @param string $fileName The full path and filename of the image to save
-     * @param string $format   The format to save the image in (optional, must be one of [GIF,JPG,PNG]
-     *
+     * @param  string  $fileName The full path and filename of the image to save
+     * @param  string  $format   The format to save the image in (optional, must be one of [GIF,JPG,PNG]
      * @return GdThumb
      */
     public function save($fileName, $format = null)
     {
-        $validFormats = ['GIF', 'JPG', 'PNG'];
+        $validFormats = array('GIF', 'JPG', 'PNG');
         $format = ($format !== null) ? strtoupper($format) : $this->format;
 
         if (!in_array($format, $validFormats)) {
@@ -621,20 +614,20 @@ class GdThumb extends ThumbBase
         return $this;
     }
 
-    //################################
-    // ----- GETTERS / SETTERS ----- #
-    //################################
+    #################################
+    # ----- GETTERS / SETTERS ----- #
+    #################################
 
     /**
-     * Sets $this->options to $options.
+     * Sets $this->options to $options
      *
      * @param array $options
      */
-    public function setOptions($options = [])
+    public function setOptions($options = array())
     {
         // make sure we've got an array for $this->options (could be null)
         if (!is_array($this->options)) {
-            $this->options = [];
+            $this->options = array();
         }
 
         // make sure we've gotten a proper argument
@@ -644,15 +637,15 @@ class GdThumb extends ThumbBase
 
         // we've yet to init the default options, so create them here
         if (count($this->options) == 0) {
-            $defaultOptions = [
-                'resizeUp'              => false,
-                'jpegQuality'           => 100,
-                'correctPermissions'    => false,
-                'preserveAlpha'         => true,
-                'alphaMaskColor'        => [255, 255, 255],
-                'preserveTransparency'  => true,
-                'transparencyMaskColor' => [0, 0, 0],
-            ];
+            $defaultOptions = array(
+                'resizeUp' => false,
+                'jpegQuality' => 100,
+                'correctPermissions' => false,
+                'preserveAlpha' => true,
+                'alphaMaskColor' => array(255, 255, 255),
+                'preserveTransparency' => true,
+                'transparencyMaskColor' => array(0, 0, 0),
+            );
         }
         // otherwise, let's use what we've got already
         else {
@@ -676,7 +669,6 @@ class GdThumb extends ThumbBase
      * Sets $currentDimensions.
      *
      * @param object $currentDimensions
-     *
      * @see GdThumb::$currentDimensions
      */
     public function setCurrentDimensions($currentDimensions)
@@ -698,7 +690,6 @@ class GdThumb extends ThumbBase
      * Sets $maxHeight.
      *
      * @param object $maxHeight
-     *
      * @see GdThumb::$maxHeight
      */
     public function setMaxHeight($maxHeight)
@@ -720,7 +711,6 @@ class GdThumb extends ThumbBase
      * Sets $maxWidth.
      *
      * @param object $maxWidth
-     *
      * @see GdThumb::$maxWidth
      */
     public function setMaxWidth($maxWidth)
@@ -742,7 +732,6 @@ class GdThumb extends ThumbBase
      * Sets $newDimensions.
      *
      * @param object $newDimensions
-     *
      * @see GdThumb::$newDimensions
      */
     public function setNewDimensions($newDimensions)
@@ -774,7 +763,6 @@ class GdThumb extends ThumbBase
      * Sets $percent.
      *
      * @param object $percent
-     *
      * @see GdThumb::$percent
      */
     public function setPercent($percent)
@@ -796,7 +784,6 @@ class GdThumb extends ThumbBase
      * Sets $oldImage.
      *
      * @param object $oldImage
-     *
      * @see GdThumb::$oldImage
      */
     public function setOldImage($oldImage)
@@ -818,7 +805,6 @@ class GdThumb extends ThumbBase
      * Sets $workingImage.
      *
      * @param object $workingImage
-     *
      * @see GdThumb::$workingImage
      */
     public function setWorkingImage($workingImage)
@@ -826,69 +812,66 @@ class GdThumb extends ThumbBase
         $this->workingImage = $workingImage;
     }
 
-    //################################
-    // ----- UTILITY FUNCTIONS ----- #
-    //################################
+    #################################
+    # ----- UTILITY FUNCTIONS ----- #
+    #################################
 
     /**
-     * Calculates a new width and height for the image based on $this->maxWidth and the provided dimensions.
-     *
-     * @param int $width
-     * @param int $height
+     * Calculates a new width and height for the image based on $this->maxWidth and the provided dimensions
      *
      * @return array
+     * @param  int   $width
+     * @param  int   $height
      */
     protected function calcWidth($width, $height)
     {
         $newWidthPercentage = (100 * $this->maxWidth) / $width;
         $newHeight = ($height * $newWidthPercentage) / 100;
 
-        return [
-            'newWidth'  => intval($this->maxWidth),
+        return array(
+            'newWidth' => intval($this->maxWidth),
             'newHeight' => intval($newHeight),
-        ];
+        );
     }
 
     /**
-     * Calculates a new width and height for the image based on $this->maxWidth and the provided dimensions.
-     *
-     * @param int $width
-     * @param int $height
+     * Calculates a new width and height for the image based on $this->maxWidth and the provided dimensions
      *
      * @return array
+     * @param  int   $width
+     * @param  int   $height
      */
     protected function calcHeight($width, $height)
     {
         $newHeightPercentage = (100 * $this->maxHeight) / $height;
         $newWidth = ($width * $newHeightPercentage) / 100;
 
-        return [
-            'newWidth'  => ceil($newWidth),
+        return array(
+            'newWidth' => ceil($newWidth),
             'newHeight' => ceil($this->maxHeight),
-        ];
+        );
     }
 
     /**
-     * Calculates a new width and height for the image based on $this->percent and the provided dimensions.
-     *
-     * @param int $width
-     * @param int $height
+     * Calculates a new width and height for the image based on $this->percent and the provided dimensions
      *
      * @return array
+     * @param  int   $width
+     * @param  int   $height
      */
     protected function calcPercent($width, $height)
     {
         $newWidth = ($width * $this->percent) / 100;
         $newHeight = ($height * $this->percent) / 100;
 
-        return [
-            'newWidth'  => ceil($newWidth),
+        return array(
+            'newWidth' => ceil($newWidth),
             'newHeight' => ceil($newHeight),
-        ];
+        );
     }
 
     /**
-     * Calculates the new image dimensions.
+     * Calculates the new image dimensions
      *
      * These calculations are based on both the provided dimensions and $this->maxWidth and $this->maxHeight
      *
@@ -897,10 +880,10 @@ class GdThumb extends ThumbBase
      */
     protected function calcImageSize($width, $height)
     {
-        $newSize = [
-            'newWidth'  => $width,
+        $newSize = array(
+            'newWidth' => $width,
             'newHeight' => $height,
-        ];
+        );
 
         if ($this->maxWidth > 0) {
             $newSize = $this->calcWidth($width, $height);
@@ -922,7 +905,7 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Calculates new image dimensions, not allowing the width and height to be less than either the max width or height.
+     * Calculates new image dimensions, not allowing the width and height to be less than either the max width or height
      *
      * @param int $width
      * @param int $height
@@ -965,7 +948,7 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Calculates new dimensions based on $this->percent and the provided dimensions.
+     * Calculates new dimensions based on $this->percent and the provided dimensions
      *
      * @param int $width
      * @param int $height
@@ -978,9 +961,10 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Determines the file format by mime-type.
+     * Determines the file format by mime-type
      *
      * This function will throw exceptions for invalid images / mime-types
+     *
      */
     protected function determineFormat()
     {
@@ -1022,7 +1006,8 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Makes sure the correct GD implementation exists for the file type.
+     * Makes sure the correct GD implementation exists for the file type
+     *
      */
     protected function verifyFormatCompatiblity()
     {
@@ -1054,13 +1039,14 @@ class GdThumb extends ThumbBase
     }
 
     /**
-     * Preserves the alpha or transparency for PNG and GIF files.
+     * Preserves the alpha or transparency for PNG and GIF files
      *
      * Alpha / transparency will not be preserved if the appropriate options are set to false.
      * Also, the GIF transparency is pretty skunky (the results aren't awesome), but it works like a
      * champ... that's the nature of GIFs tho, so no huge surprise.
      *
      * This functionality was originally suggested by commenter Aimi (no links / site provided) - Thanks! :)
+     *
      */
     protected function preserveAlpha()
     {

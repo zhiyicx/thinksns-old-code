@@ -1,10 +1,8 @@
 <?php
 /**
  * 头像上传组件
- *登录注册.
- *
+ *登录注册
  * @example {:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>$user_info['avatar_big'],'callback'=>'gotoStep3'))}
- *
  * @version TS3.0
  */
 class AvatarsWidget extends Widget
@@ -17,7 +15,7 @@ class AvatarsWidget extends Widget
     public function render($data)
     {
         $template = 'default';
-        $var = [];
+        $var = array();
         if ($template === 'default') {
             $var['password'] = time();
             $var['defaultImg'] = 'noavatar/big.jpg';
@@ -35,7 +33,7 @@ class AvatarsWidget extends Widget
     }
 
     /**
-     * 输出新头像.
+     * 输出新头像
      */
     public function getflashHtml()
     {

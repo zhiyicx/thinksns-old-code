@@ -1,6 +1,7 @@
 <?php
 /**
-* PHP版DES加解密类.
+*
+* PHP版DES加解密类
 *
 * 可与java、c#的3DES(DESede)加密方式兼容
 *
@@ -9,6 +10,7 @@
 * @version: V0.1 2008.12.04
 * @version: V0.2 2010.05.28
 * @version: V0.3 2010.10.25 增加华为特殊处理支持
+*
 */
 class CryptDES
 {
@@ -44,7 +46,6 @@ class CryptDES
 
         return $data;
     }
-
     public function decrypt($encrypted, $type = 'default')
     {
         //标准处理方法
@@ -67,17 +68,15 @@ class CryptDES
 
         return $y;
     }
-
     public function pkcs5_pad($text, $blocksize)
     {
         $pad = $blocksize - (strlen($text) % $blocksize);
 
         return $text.str_repeat(chr($pad), $pad);
     }
-
     public function pkcs5_unpad($text)
     {
-        $pad = ord($text[strlen($text) - 1]);
+        $pad = ord($text{strlen($text) - 1});
         if ($pad > strlen($text)) {
             return false;
         }
@@ -87,7 +86,6 @@ class CryptDES
 
         return substr($text, 0, -1 * $pad);
     }
-
     public function inputFilter($data, $type = 'base64_decode')
     {
         if ($type == 'java') {
@@ -102,7 +100,6 @@ class CryptDES
 
         return $data;
     }
-
     public function outputFilter($data, $type = 'base64_encode')
     {
         if ($type == 'java') {

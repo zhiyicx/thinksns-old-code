@@ -1,12 +1,9 @@
 <?php
 /**
- * 积分模型 - 数据对象模型.
- *
+ * 积分模型 - 数据对象模型
  * @example
  * $credit = model('Credit')->setUserCredit($uid,'weibo_demo');
- *
  * @author jason <yangjs17@yeah.net>
- *
  * @version TS3.0
  */
 class CreditModel extends Model
@@ -19,7 +16,7 @@ class CreditModel extends Model
     /**
      * +----------------------------------------------------------
      * 架构函数
-     * +----------------------------------------------------------.
+     * +----------------------------------------------------------
      *
      * @author melec制作
      */
@@ -32,7 +29,7 @@ class CreditModel extends Model
     }
 
     /**
-     * 获取积分设置信息.
+     * 获取积分设置信息
      *
      * @return array 积分设置信息
      */
@@ -47,7 +44,7 @@ class CreditModel extends Model
     }
 
     /**
-     * 获取用户积分.
+     * 获取用户积分
      *
      * 返回积分值的数据结构
      * <code>
@@ -67,8 +64,7 @@ class CreditModel extends Model
      * )
      * </code>
      *
-     * @param int $uid
-     *
+     * @param  int  $uid
      * @return bool array
      */
     public function getUserCredit($uid)
@@ -90,39 +86,39 @@ class CreditModel extends Model
         }
 
         foreach ($this->creditType as $v) {
-            $userCredit['credit'][$v['name']] = [
-                    'value' => intval($userCreditInfo[$v['name']]),
-                    'alias' => $v['alias'],
-            ];
+            $userCredit ['credit'] [$v ['name']] = array(
+                    'value' => intval($userCreditInfo [$v ['name']]),
+                    'alias' => $v ['alias'],
+            );
         }
 
-        $userCredit['creditType'] = $this->getTypeList();
+        $userCredit ['creditType'] = $this->getTypeList();
 
         // 获取积分等级规则
         $level = $this->getLevel();
-        $data = $userCredit['credit'][$this->type]['value'];
+        $data = $userCredit ['credit'] [$this->type] ['value'];
 
         foreach ($level as $k => $v) {
-            if ($data >= $v['start'] && $data <= $v['end']) {
-                $userCredit['level'] = $v;
-                $userCredit['level']['level_type'] = $this->type;
-                $userCredit['level']['nextNeed'] = $v['end'] - $data;
-                $userCredit['level']['nextName'] = $level[$k + 1]['name'];
-                if (is_numeric($userCredit['level']['image'])) {
-                    $userCredit['level']['src'] = getImageUrlByAttachId($userCredit['level']['image']);
+            if ($data >= $v ['start'] && $data <= $v ['end']) {
+                $userCredit ['level'] = $v;
+                $userCredit ['level'] ['level_type'] = $this->type;
+                $userCredit ['level'] ['nextNeed'] = $v ['end'] - $data;
+                $userCredit ['level'] ['nextName'] = $level [$k + 1] ['name'];
+                if (is_numeric($userCredit ['level'] ['image'])) {
+                    $userCredit ['level'] ['src'] = getImageUrlByAttachId($userCredit['level']['image']);
                 } else {
-                    $userCredit['level']['src'] = THEME_PUBLIC_URL.'/image/level/'.$userCredit['level']['image'];
+                    $userCredit ['level'] ['src'] = THEME_PUBLIC_URL.'/image/level/'.$userCredit ['level'] ['image'];
                 }
                 break;
             }
-            if ($data > $v['end'] && !isset($level[$k + 1])) {
-                $userCredit['level'] = $v;
-                $userCredit['level']['nextNeed'] = '';
-                $userCredit['level']['nextName'] = '';
-                if (is_numeric($userCredit['level']['image'])) {
-                    $userCredit['level']['src'] = getImageUrlByAttachId($userCredit['level']['image']);
+            if ($data > $v ['end'] && ! isset($level [$k + 1])) {
+                $userCredit ['level'] = $v;
+                $userCredit ['level'] ['nextNeed'] = '';
+                $userCredit ['level'] ['nextName'] = '';
+                if (is_numeric($userCredit ['level'] ['image'])) {
+                    $userCredit ['level'] ['src'] = getImageUrlByAttachId($userCredit['level']['image']);
                 } else {
-                    $userCredit['level']['src'] = THEME_PUBLIC_URL.'/image/level/'.$userCredit['level']['image'];
+                    $userCredit ['level'] ['src'] = THEME_PUBLIC_URL.'/image/level/'.$userCredit ['level'] ['image'];
                 }
                 break;
             }
@@ -132,43 +128,42 @@ class CreditModel extends Model
     }
 
     /**
-     * 获取积分类型列表.
+     * 获取积分类型列表
      *
-     * @param string $return
-     *                       返回类型，默认为has
-     *
+     * @param  string $return
+     *                        返回类型，默认为has
      * @return [type] [description]
      */
     public function getTypeList()
     {
-        $arr = [];
+        $arr = array();
         foreach ($this->creditType as $value) {
-            $arr[$value['name']] = $value['alias'];
+            $arr [$value['name']] = $value ['alias'];
         }
 
         return $arr;
     }
 
     /**
-     * 获取积分等级规则.
+     * 获取积分等级规则
      *
      * @return array 积分等级规则信息
      */
     public function getLevel()
     {
         $data = model('Xdata')->get('admin_Credit:level');
-        if (!$data) {
-            $creditlevel = [];
-            $creditlevel[] = ['level' => 1, 'name' => 'level1', 'image' => 'level1.png', 'start' => '0', 'end' => '1000'];
-            $creditlevel[] = ['level' => 2, 'name' => 'level2', 'image' => 'level2.png', 'start' => '1001', 'end' => '2000'];
-            $creditlevel[] = ['level' => 3, 'name' => 'level3', 'image' => 'level3.png', 'start' => '2001', 'end' => '3000'];
-            $creditlevel[] = ['level' => 4, 'name' => 'level4', 'image' => 'level4.png', 'start' => '3001', 'end' => '4000'];
-            $creditlevel[] = ['level' => 5, 'name' => 'level5', 'image' => 'level5.png', 'start' => '4001', 'end' => '5000'];
-            $creditlevel[] = ['level' => 6, 'name' => 'level6', 'image' => 'level6.png', 'start' => '5001', 'end' => '6000'];
-            $creditlevel[] = ['level' => 7, 'name' => 'level7', 'image' => 'level7.png', 'start' => '6001', 'end' => '7000'];
-            $creditlevel[] = ['level' => 8, 'name' => 'level8', 'image' => 'level8.png', 'start' => '7001', 'end' => '8000'];
-            $creditlevel[] = ['level' => 9, 'name' => 'level9', 'image' => 'level9.png', 'start' => '8001', 'end' => '9000'];
-            $creditlevel[] = ['level' => 10, 'name' => 'level10', 'image' => 'level10.png', 'start' => '9001', 'end' => '1000000'];
+        if (! $data) {
+            $creditlevel = array();
+            $creditlevel[] = array('level' => 1, 'name' => 'level1', 'image' => 'level1.png', 'start' => '0', 'end' => '1000');
+            $creditlevel[] = array('level' => 2, 'name' => 'level2', 'image' => 'level2.png', 'start' => '1001', 'end' => '2000');
+            $creditlevel[] = array('level' => 3, 'name' => 'level3', 'image' => 'level3.png', 'start' => '2001', 'end' => '3000');
+            $creditlevel[] = array('level' => 4, 'name' => 'level4', 'image' => 'level4.png', 'start' => '3001', 'end' => '4000');
+            $creditlevel[] = array('level' => 5, 'name' => 'level5', 'image' => 'level5.png', 'start' => '4001', 'end' => '5000');
+            $creditlevel[] = array('level' => 6, 'name' => 'level6', 'image' => 'level6.png', 'start' => '5001', 'end' => '6000');
+            $creditlevel[] = array('level' => 7, 'name' => 'level7', 'image' => 'level7.png', 'start' => '6001', 'end' => '7000');
+            $creditlevel[] = array('level' => 8, 'name' => 'level8', 'image' => 'level8.png', 'start' => '7001', 'end' => '8000');
+            $creditlevel[] = array('level' => 9, 'name' => 'level9', 'image' => 'level9.png', 'start' => '8001', 'end' => '9000');
+            $creditlevel[] = array('level' => 10, 'name' => 'level10', 'image' => 'level10.png', 'start' => '9001', 'end' => '1000000');
             model('Xdata')->put('admin_Credit:level', $creditlevel);
         }
 
@@ -176,7 +171,7 @@ class CreditModel extends Model
     }
 
     /**
-     * 添加任务积分.
+     * 添加任务积分
      *
      * @param int $exp
      * @param int $score
@@ -192,7 +187,7 @@ class CreditModel extends Model
     }
 
     /**
-     * TS2兼容方法：获取积分类型列表.
+     * TS2兼容方法：获取积分类型列表
      *
      * @return array 积分类型列表
      */
@@ -203,7 +198,7 @@ class CreditModel extends Model
 
     /**
      * TS2兼容方法：设置用户积分
-     * 操作用户积分.
+     * 操作用户积分
      *
      * @param int          $uid
      *                             用户ID
@@ -212,12 +207,11 @@ class CreditModel extends Model
      *                             或临时定义的一个积分规则数组，例如array('score'=>-4,'experience'=>3)即socre减4点，experience加三点
      * @param string|int   $type
      *                              reset:按照操作的值直接重设积分值，整型：作为操作的系数，-1可实现增减倒置
-     *
-     * @return object
+     * @return Object
      */
-    public function setUserCredit($uid, $action, $type = 1, $des = [])
+    public function setUserCredit($uid, $action, $type = 1, $des = array())
     {
-        if (!$uid) {
+        if (! $uid) {
             $this->info = false;
 
             return $this;
@@ -228,7 +222,7 @@ class CreditModel extends Model
                 // 获取配置规则
                 $credit_ruls = $this->getCreditRules();
                 foreach ($credit_ruls as $v) {
-                    if ($v['name'] == $action['name']) {
+                    if ($v ['name'] == $action['name']) {
                         $creditSet = array_merge($v, $action);
                     }
                 }
@@ -237,12 +231,12 @@ class CreditModel extends Model
             // 获取配置规则
             $credit_ruls = $this->getCreditRules();
             foreach ($credit_ruls as $v) {
-                if ($v['name'] == $action) {
+                if ($v ['name'] == $action) {
                     $creditSet = $v;
                 }
             }
         }
-        if (!$creditSet) {
+        if (! $creditSet) {
             $this->info = '积分规则不存在';
 
             return $this;
@@ -262,7 +256,7 @@ class CreditModel extends Model
                     break;
             }
             $c['uid'] = $uid;
-            $c['ctime'] = ['between', [$beginTime, $now]];
+            $c['ctime'] = array('between', array($beginTime, $now));
             $times = D('credit_record')->where($c)->count();
             if ($times >= $creditSet['cycle_times']) {
                 $this->info = '积分变更已达上限';
@@ -275,20 +269,20 @@ class CreditModel extends Model
                                                                       // 积分计算
         if ($type == 'reset') {
             foreach ($this->creditType as $v) {
-                $creditUser[$v['name']] = $creditSet[$v['name']];
+                $creditUser [$v ['name']] = $creditSet [$v ['name']];
             }
         } else {
-            $change = [];
-            $detail = [];
+            $change = array();
+            $detail = array();
             $type = intval($type);
             foreach ($this->creditType as $v) {
-                $creditUser[$v['name']] = $creditUser[$v['name']] + ($type * $creditSet[$v['name']]);
+                $creditUser [$v ['name']] = $creditUser [$v ['name']] + ($type * $creditSet [$v ['name']]);
                 //记录
                 if ($creditSet[$v['name']] != 0) {
                     if ($creditSet[$v['name']] * $type > 0) {
-                        $c = '+'.$creditSet[$v['name']];
+                        $c = '+'.$creditSet [$v ['name']];
                     } else {
-                        $c = $creditSet[$v['name']];
+                        $c = $creditSet [$v ['name']];
                     }
                     $change[] = $v['alias'].'<font color="red">'.$c.'</font>';
                     $detail[$v['name']] = "$c";
@@ -296,8 +290,8 @@ class CreditModel extends Model
             }
         }
 
-        $creditUser['uid'] || $creditUser['uid'] = $uid;
-        $creditUser['type'] = $creditSet['type'] ? intval($creditSet) : 1;
+        $creditUser ['uid'] || $creditUser ['uid'] = $uid;
+        $creditUser ['type'] = $creditSet['type'] ? intval($creditSet) : 1;
         if ($creditUserDao->where('uid='.$creditUser['uid'])->count()) {
             $map['id'] = $creditUser['id'];
             $map['uid'] = $creditUser['uid'];
@@ -329,7 +323,7 @@ class CreditModel extends Model
         // S('S_userInfo_'.$uid, $userLoginInfo);
         // }
         if ($res) {
-            $this->info = $creditSet['info'];
+            $this->info = $creditSet ['info'];
 
             return $this;
         } else {
@@ -340,7 +334,7 @@ class CreditModel extends Model
     }
 
     /**
-     * 获取积分操作结果.
+     * 获取积分操作结果
      *
      * return string
      */
@@ -350,7 +344,7 @@ class CreditModel extends Model
     }
 
     /**
-     * 获取所有系统积分规则.
+     * 获取所有系统积分规则
      */
     public function getCreditRules()
     {
@@ -361,9 +355,8 @@ class CreditModel extends Model
 
         return $res;
     }
-
     /**
-     * 获取某个系统积分规则.
+     * 获取某个系统积分规则
      */
     public function getCreditRuleByName($name)
     {
@@ -374,8 +367,7 @@ class CreditModel extends Model
     }
 
     /**
-     * 保存积分等级规则.
-     *
+     * 保存积分等级规则
      * @param array $d 修改的积分等级规则
      */
     public function saveCreditLevel($d)
@@ -396,7 +388,6 @@ class CreditModel extends Model
 
     /**
      * 积分充值成功
-     *
      * @param string $serial_number 订单号
      */
     public function charge_success($serial_number)
@@ -418,7 +409,7 @@ class CreditModel extends Model
                 $add['change'] = intval($detail['charge_sroce']);
                 $add['ctime'] = time();
                 $add['detail'] = '{"score":"'.$add['change'].'"}';
-                M('credit_user')->where("uid={$add['uid']}")->save(['score' => $score + $add['change']]);
+                M('credit_user')->where("uid={$add['uid']}")->save(array('score' => $score + $add['change']));
                 D('credit_record')->add($add);
                 $this->cleanCache($add['uid']);
 
@@ -430,13 +421,11 @@ class CreditModel extends Model
     }
 
     /**
-     * 积分转账.
-     *
-     * @param array $data 转账数据
-     *
+     * 积分转账
+     * @param  array $data 转账数据
      * @return bool
      */
-    public function startTransfer(array $data = [])
+    public function startTransfer(array $data = array())
     {
         $data = count($data) ? $data : $_POST;
         if (!$data['toUid'] || $data['num'] <= 0 || !$data['fromUid']) {
@@ -462,8 +451,8 @@ class CreditModel extends Model
         $add2['change'] = -1 * intval($data['num']);
         $add2['action'] = '积分转出';
         $add2['detail'] = '{"score":"'.$add2['change'].'"}';
-        M('credit_user')->where("uid={$add2['uid']}")->save(['score' => $score2 - $add['change']]);
-        M('credit_user')->where("uid={$add['uid']}")->save(['score' => $score + $add['change']]);
+        M('credit_user')->where("uid={$add2['uid']}")->save(array('score' => $score2 - $add['change']));
+        M('credit_user')->where("uid={$add['uid']}")->save(array('score' => $score + $add['change']));
         //转账对象积分变动记录
         //当前用户积分变动记录
         D('credit_record')->add($add) && D('credit_record')->add($add2);
@@ -472,9 +461,8 @@ class CreditModel extends Model
 
         return true;
     }
-
     /**
-     * 清除用户积分缓存.
+     * 清除用户积分缓存
      */
     public function cleanCache($uid)
     {

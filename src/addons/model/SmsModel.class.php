@@ -1,13 +1,14 @@
 <?php
 /**
- * 短信模型.
+ * 短信模型
  *
+ * @package ThinkSNS\Medz\Model\SMS
  * @author Medz Seven <lovevipdsw@vip.qq.com>
  **/
 class SmsModel extends Model
 {
     /**
-     * 校验锁时间，单位秒.
+     * 校验锁时间，单位秒
      *
      * @var int
      **/
@@ -21,7 +22,7 @@ class SmsModel extends Model
     protected $url;
 
     /**
-     * 发送服务器参数.
+     * 发送服务器参数
      *
      * @var string
      **/
@@ -36,14 +37,14 @@ class SmsModel extends Model
 
     /**
      * 发送方式
-     * type [auto,post,get] auto标识get+post并存.
+     * type [auto,post,get] auto标识get+post并存
      *
      * @var string
      **/
     protected $type = 'auto';
 
     /**
-     * 短信平台提供商.
+     * 短信平台提供商
      *
      * @var string
      **/
@@ -57,28 +58,28 @@ class SmsModel extends Model
     protected $template = '您的验证码是：{rand}。如非本人操作，可不用理会！';
 
     /**
-     * 消息.
+     * 消息
      *
      * @var string
      **/
     private $message;
 
     /**
-     * 短信记录表.
+     * 短信记录表
      *
      * @var string
      **/
     protected $tableName = 'sms';
 
     /**
-     * 数据表保护字段成员.
+     * 数据表保护字段成员
      *
      * @var array
      **/
-    protected $fields = ['phone', 'code', 'message', 'time'];
+    protected $fields = array('phone', 'code', 'message', 'time');
 
     /**
-     * 储存Curl对象的变量.
+     * 储存Curl对象的变量
      *
      * @var object
      **/
@@ -99,7 +100,7 @@ class SmsModel extends Model
     protected $code;
 
     /**
-     * 构造方法 - 获取短信数据配置.
+     * 构造方法 - 获取短信数据配置
      *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
@@ -124,7 +125,7 @@ class SmsModel extends Model
     }
 
     /**
-     * 析构方法 - 主要关闭curl.
+     * 析构方法 - 主要关闭curl
      *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
@@ -134,10 +135,9 @@ class SmsModel extends Model
     }
 
     /**
-     * 设置消息.
+     * 设置消息
      *
      * @param string $message 消息
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function setMessage($message)
@@ -146,10 +146,9 @@ class SmsModel extends Model
     }
 
     /**
-     * 获取消息.
+     * 获取消息
      *
      * @return string
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getMessage()
@@ -161,7 +160,6 @@ class SmsModel extends Model
      * 获取验证码
      *
      * @return int
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getCode()
@@ -170,10 +168,9 @@ class SmsModel extends Model
     }
 
     /**
-     * 所以方法方法前置方法.
+     * 所以方法方法前置方法
      *
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function allBefore()
@@ -199,10 +196,9 @@ class SmsModel extends Model
     }
 
     /**
-     * 发送数据.
+     * 发送数据
      *
      * @return string
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function curl()
@@ -223,7 +219,6 @@ class SmsModel extends Model
      * 发送
      *
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function send()
@@ -255,10 +250,8 @@ class SmsModel extends Model
     /**
      * 自适应校验发送是否成功
      *
-     * @param string $data 数据;
-     *
+     * @param  string $data 数据;
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function auto($data)
@@ -269,12 +262,10 @@ class SmsModel extends Model
     }
 
     /**
-     * 互亿无线平台校验.
+     * 互亿无线平台校验
      *
-     * @param string $data 数据
-     *
+     * @param  string $data 数据
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function ihuyi($data)
@@ -291,18 +282,16 @@ class SmsModel extends Model
     }
 
     /**
-     * 短信宝 www.smsbao.com.
+     * 短信宝 www.smsbao.com
      *
-     * @param string $data 数据
-     *
+     * @param  string $data 数据
      * @return bool
-     *
      * @author Seven Du <lovevipdsw@vip.qq.com>
      **/
     public function smsbao($data)
     {
-        $code = [
-            0  => '发送成功',
+        $code = array(
+            0 => '发送成功',
             30 => '密码错误',
             40 => '账号不存在',
             41 => '余额不足',
@@ -310,7 +299,7 @@ class SmsModel extends Model
             43 => 'IP地址限制',
             50 => '内容含有敏感词',
             51 => '手机号码不正确',
-        ];
+        );
         $data = intval($data);
         $code[$data] and
         $this->setMessage($code[$data]);
@@ -321,23 +310,22 @@ class SmsModel extends Model
     /*========================End=================================*/
 
     /**
-     * 获取平台配置.
+     * 获取平台配置
      *
      * @return array
-     *
      * @author Seven Du <lovevipdsw@vip.qq.com>
      **/
     public function getService()
     {
-        return [
-            'auto'   => '自动判断',
-            'ihuyi'  => '互亿无线',
+        return array(
+            'auto' => '自动判断',
+            'ihuyi' => '互亿无线',
             'smsbao' => '短信宝',
-        ];
+        );
     }
 
     /**
-     * undocumented function.
+     * undocumented function
      *
      * @author
      **/
@@ -347,7 +335,7 @@ class SmsModel extends Model
         $this->template = str_replace('{rand}', $this->code, $this->template);
         $this->param = str_replace('{message}', rawurlencode($this->template), $this->param);
 
-        if (in_array($this->type, ['auto', 'get'])) {
+        if (in_array($this->type, array('auto', 'get'))) {
             $this->url = parse_url($this->url);
             isset($this->url['query']) and $this->url['query'] .= '&';
             $this->url['query'] .= $this->param;
@@ -367,7 +355,6 @@ class SmsModel extends Model
      * 时间锁，检查是否不可以发送
      *
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function lock()
@@ -388,7 +375,6 @@ class SmsModel extends Model
      * 时间加锁
      *
      * @param int $time 加锁的时间
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     protected function InLock($time = null)
@@ -407,9 +393,7 @@ class SmsModel extends Model
      *
      * @param int $phone 要发送到的手机号码
      * @param  bool $sendLock 发送锁，默认关闭
-     *
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function sendCaptcha($phone, $sendLock = false)
@@ -435,24 +419,22 @@ class SmsModel extends Model
         }
 
         if ($debug || ($result = $this->send())) {
-            $this->add([
+            $this->add(array(
                 'phone' => $this->phone,
-                'code'  => $this->code,
-                'time'  => time(),
-            ]);
+                'code' => $this->code,
+                'time' => time(),
+            ));
         }
 
         return $result;
     }
 
     /**
-     * 校验验证码是否正确.
+     * 校验验证码是否正确
      *
-     * @param float $phone 手机号码
-     * @param int   $code  验证码
-     *
+     * @param  float $phone 手机号码
+     * @param  int   $code  验证码
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function CheckCaptcha($phone, $code)
@@ -482,14 +464,12 @@ class SmsModel extends Model
     }
 
     /**
-     * 发送短息消息.
+     * 发送短息消息
      *
      * @param int $phone 手机号码
      * @param  string $message  短信内容
      * @param  bool   $sendLock 时间锁， 默认关闭
-     *
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function sendMessage($phone, $message, $sendLock = false)
@@ -510,24 +490,22 @@ class SmsModel extends Model
         $this->InLock();
 
         if ($result = $this->send()) {
-            $this->add([
-                'phone'   => $this->phone,
+            $this->add(array(
+                'phone' => $this->phone,
                 'message' => $this->template,
-                'time'    => time(),
-            ]);
+                'time' => time(),
+            ));
         }
 
         return $result;
     }
 
     /**
-     * 发送验证码到邮箱.
+     * 发送验证码到邮箱
      *
-     * @param string $email    邮箱地址
-     * @param bool   $sendLock 是否有时间锁
-     *
+     * @param  string $email    邮箱地址
+     * @param  bool   $sendLock 是否有时间锁
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function sendEmaillCaptcha($email, $sendLock = false)
@@ -558,11 +536,11 @@ class SmsModel extends Model
         if ($email->send_email($this->phone, $title, $body)) {
             $this->InLock();
 
-            $this->add([
+            $this->add(array(
                 'phone' => $this->phone,
-                'code'  => $this->code,
-                'time'  => time(),
-            ]);
+                'code' => $this->code,
+                'time' => time(),
+            ));
 
             return true;
         }
@@ -572,13 +550,11 @@ class SmsModel extends Model
     }
 
     /**
-     * 验证邮箱验证码正确性.
+     * 验证邮箱验证码正确性
      *
-     * @param string $email 邮箱地址
-     * @param int    $code  验证码
-     *
+     * @param  string $email 邮箱地址
+     * @param  int    $code  验证码
      * @return bool
-     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function checkEmailCaptcha($email, $code)

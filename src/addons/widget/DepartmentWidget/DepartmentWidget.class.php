@@ -1,18 +1,15 @@
 <?php
 /**
  * //TODO  以后统一优化成分类的多级选择widget
- * 部门选择.
- *
+ * 部门选择
  * @example W('Department',array('tpl'=>'input','inputName'=>'depart','canChange'=>1,'sid'=>1,'defaultName'=>'无','defaultId'=>'0','callback'=>'contactBack'))
- *
  * @author jason
- *
  * @version TS3.0
  */
 class DepartmentWidget extends Widget
 {
     private static $rand = 1;
-    public static $userDepartHash = [];
+    public static $userDepartHash = array();
 
     /**
      * @param string tpl 部门选择类型 admin:下拉形式  input:表单输入形式   menu:菜单形式
@@ -55,18 +52,18 @@ class DepartmentWidget extends Widget
                 $var['sid'] = !empty($data['sid']) ? intval($data['sid']) : 0;
 
                 //全部部门
-                $pInfo[] = ['sid' => 0, 'pid' => 0, 'name' => L('PUBLIC_DEPARTMENT_ALL')];
+                $pInfo[] = array('sid' => 0, 'pid' => 0, 'name' => L('PUBLIC_DEPARTMENT_ALL'));
 
                 $list = $this->_getList($var['sid']);
 
-                $childInfo = [];
+                $childInfo = array();
 
                 foreach ($list['_child'] as $v) {
-                    $pInfo[] = ['sid' => $v['department_id'], 'pid' => $v['parent_dept_id'], 'name' => $v['title']];
+                    $pInfo[] = array('sid' => $v['department_id'], 'pid' => $v['parent_dept_id'], 'name' => $v['title']);
 
                     if ($v['department_id'] == $var['sid'] || $v['department_id'] == $var['pid']) {
                         foreach ($v['_child'] as $vv) {
-                            $childInfo[] = ['sid' => $vv['department_id'], 'pid' => $vv['parent_dept_id'], 'name' => $vv['title']];
+                            $childInfo[] = array('sid' => $vv['department_id'], 'pid' => $vv['parent_dept_id'], 'name' => $vv['title']);
                         }
                     }
                 }
@@ -88,8 +85,7 @@ class DepartmentWidget extends Widget
     }
 
     /**
-     * 获取部门列表.
-     *
+     * 获取部门列表
      * @return array 部门列表
      */
     private function _getList($sid)
@@ -112,7 +108,7 @@ class DepartmentWidget extends Widget
     }
 
    /**
-    * 修改部门.
+    * 修改部门
     */
    public function change()
    {
@@ -123,18 +119,17 @@ class DepartmentWidget extends Widget
    }
 
    /**
-    * 选择部门.
-    *
+    * 选择部门
     * @return array 已选择的部门
     */
    public function selectDepartment()
    {
-       $return = ['status' => 1, 'data' => ''];
+       $return = array('status' => 1, 'data' => '');
 
        $return['data'] = model('Department')->getHashDepartment(t($_REQUEST['pid']), t($_REQUEST['sid']), t($_REQUEST['nosid']), t($_REQUEST['notop']));
 
        if (empty($return['data'])) {
-           $return['data'] = [];
+           $return['data'] = array();
        }
        echo json_encode($return);
        exit();

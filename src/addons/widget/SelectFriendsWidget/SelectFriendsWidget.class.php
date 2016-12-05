@@ -1,11 +1,11 @@
 <?php
 /**
- * 选择好友Widget.
+ * 选择好友Widget
  */
 class SelectFriendsWidget extends Widget
 {
     /**
-     * 选择好友Widget.
+     * 选择好友Widget
      *
      * $data的参数:
      * array(

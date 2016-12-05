@@ -12,7 +12,7 @@ class FeedTopHomeAddons extends NormalAddons
 
     public function getHooksInfo()
     {
-        $hooks['list'] = ['FeedTopHomeHooks'];
+        $hooks['list'] = array('FeedTopHomeHooks');
 
         return $hooks;
     }

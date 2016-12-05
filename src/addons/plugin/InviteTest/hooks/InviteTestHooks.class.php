@@ -1,9 +1,7 @@
 <?php
 /**
- * 天气预报钩子.
- *
+ * 天气预报钩子
  * @author 程序_小时代
- *
  * @version TS3.0
  */
 class InviteTestHooks extends Hooks
@@ -18,7 +16,7 @@ class InviteTestHooks extends Hooks
     public function check()
     {
         if (APP_NAME == 'admin' || APP_NAME == 'w3g' || CheckPermission('core_admin', 'admin_login')) {
-            return;
+            return ;
         }
 
         if (self::$checked) {
@@ -69,7 +67,7 @@ class InviteTestHooks extends Hooks
         $model = $this->model('InviteTest');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!empty($_POST['isdel'])) { //删除
-                $map['id'] = ['in', t($_POST['id'])];
+                $map['id'] = array('in', t($_POST['id']));
                 if ($model->where($map)->delete()) {
                     echo strpos($_POST['id'], ',') === false ? 2 : 1;
                     exit;
@@ -77,8 +75,8 @@ class InviteTestHooks extends Hooks
                 exit;
             }
             if (!empty($_POST['isset'])) { //设置状态
-                $map['id'] = ['in', t($_POST['id'])];
-                $save = ['is_disable' => $_POST['status'] ? 0 : 1];
+                $map['id'] = array('in', t($_POST['id']));
+                $save = array('is_disable' => $_POST['status'] ? 0 : 1);
                 if ($model->where($map)->save($save)) {
                     echo strpos($_POST['id'], ',') === false ? 2 : 1;
                     exit;

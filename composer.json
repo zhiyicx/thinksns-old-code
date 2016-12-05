@@ -45,7 +45,6 @@
     },
     "support": {
         "email": "support@zhishisoft.com",
-        "forum": "http://demo.thinksns.com",
-        "source": "https://github.com/medz/thinksns.git"
+        "forum": "http://demo.thinksns.com"
     }
 }

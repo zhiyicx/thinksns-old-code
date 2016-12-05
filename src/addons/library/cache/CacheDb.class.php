@@ -18,24 +18,25 @@
  *      data blob,
  *      datacrc int(32),
  *      UNIQUE KEY `cachekey` (`cachekey`)
- *    );
+ *    );.
+ *
  * @category   Extend
- * @package  Extend
- * @subpackage  Driver.Cache
+ *
  * @author    liu21st <liu21st@gmail.com>
  */
 class CacheDb extends Cache
 {
     /**
-     * 架构函数
+     * 架构函数.
+     *
      * @param array $options 缓存参数
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (empty($options)) {
-            $options = array(
+            $options = [
                 'table' => C('DATA_CACHE_TABLE'),
-            );
+            ];
         }
         $this->options = $options;
         $this->options['prefix'] = isset($options['prefix']) ? $options['prefix'] : C('DATA_CACHE_PREFIX');
@@ -46,8 +47,10 @@ class CacheDb extends Cache
     }
 
     /**
-     * 读取缓存
-     * @param  string $name 缓存变量名
+     * 读取缓存.
+     *
+     * @param string $name 缓存变量名
+     *
      * @return mixed
      */
     public function get($name)
@@ -78,10 +81,12 @@ class CacheDb extends Cache
     }
 
     /**
-     * 写入缓存
-     * @param  string $name   缓存变量名
-     * @param  mixed  $value  存储数据
-     * @param  int    $expire 有效时间（秒）
+     * 写入缓存.
+     *
+     * @param string $name   缓存变量名
+     * @param mixed  $value  存储数据
+     * @param int    $expire 有效时间（秒）
+     *
      * @return boolen
      */
     public function set($name, $value, $expire = null)
@@ -102,7 +107,7 @@ class CacheDb extends Cache
         if (is_null($expire)) {
             $expire = $this->options['expire'];
         }
-        $expire = ($expire == 0) ? 0 : (time() + $expire) ; //缓存有效期为0表示永久缓存
+        $expire = ($expire == 0) ? 0 : (time() + $expire); //缓存有效期为0表示永久缓存
         $result = $this->handler->query('select `cachekey` from `'.$this->options['table'].'` where `cachekey`=\''.$name.'\' limit 0,1');
         if (!empty($result)) {
             //更新记录
@@ -124,8 +129,10 @@ class CacheDb extends Cache
     }
 
     /**
-     * 删除缓存
-     * @param  string $name 缓存变量名
+     * 删除缓存.
+     *
+     * @param string $name 缓存变量名
+     *
      * @return boolen
      */
     public function rm($name)
@@ -136,7 +143,8 @@ class CacheDb extends Cache
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
+     *
      * @return boolen
      */
     public function clear()

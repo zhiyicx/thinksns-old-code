@@ -1,7 +1,9 @@
 <?php
 /**
- * 黑名单 widget
+ * 黑名单 widget.
+ *
  * @example {:W('Blacklist',array('tpl'=>'btn', 'fid'=>10001))}
+ *
  * @author Jason
  */
 class BlacklistWidget extends Widget
@@ -36,6 +38,7 @@ class BlacklistWidget extends Widget
 
     /**
      * 渲染按钮模板
+     *
      * @param  int tpl 模板名称
      * @param int fid 目标用户ID
      */
@@ -49,16 +52,17 @@ class BlacklistWidget extends Widget
     }
 
     /**
-     * 加入黑名单
+     * 加入黑名单.
+     *
      * @return array 加入黑名单状态和提示
      */
     public function addUser()
     {
-        $r = array('data' => '请选择用户', 'status' => '0');
+        $r = ['data' => '请选择用户', 'status' => '0'];
         if (!empty($_POST['fid'])) {
             if ($res = model('UserBlacklist')->addUser($GLOBALS['ts']['mid'], t($_POST['fid']))) {
                 $finfo = model('User')->getUserInfo($_POST['fid']);
-                $r['data'] = L('PUBLIC_ADD_HUSER_USRE', array('user' => $finfo['uname']));
+                $r['data'] = L('PUBLIC_ADD_HUSER_USRE', ['user' => $finfo['uname']]);
                 $r['status'] = 1;
             } else {
                 $r['data'] = model('UserBlacklist')->getError();
@@ -69,12 +73,13 @@ class BlacklistWidget extends Widget
     }
 
     /**
-     * 移出黑名单
+     * 移出黑名单.
+     *
      * @return array 移出黑名单状态和提示
      */
     public function removeUser()
     {
-        $r = array('data' => L('PUBLIC_USER_ID_ISNULL'), 'status' => '0');
+        $r = ['data' => L('PUBLIC_USER_ID_ISNULL'), 'status' => '0'];
         if (!empty($_POST['fid'])) {
             if ($res = model('UserBlacklist')->removeUser($GLOBALS['ts']['mid'], t($_POST['fid']))) {
                 $r['data'] = L('PUBLIC_MOVE_USER_SUCCESS');

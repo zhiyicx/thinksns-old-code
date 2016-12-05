@@ -1,37 +1,41 @@
 <?php
 /**
- * 邮件模型 - 数据对象模型
+ * 邮件模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class MailModel
 {
     // 允许发送邮件的类型
-    public static $allowed = array('Register', 'unAudit', 'resetPass', 'resetPassOk', 'invateOpen', 'invate', 'atme', 'comment', 'reply');
+    public static $allowed = ['Register', 'unAudit', 'resetPass', 'resetPassOk', 'invateOpen', 'invate', 'atme', 'comment', 'reply'];
     public $message;
 
     /**
-     * 初始化方法，加载phpmailer，初始化默认参数
+     * 初始化方法，加载phpmailer，初始化默认参数.
      */
     public function __construct()
     {
         $emailset = model('Xdata')->get('admin_Config:email');
-        $this->option = array(
-            'email_sendtype' => $emailset['email_sendtype'],
-            'email_host' => $emailset['email_host'],
-            'email_port' => $emailset['email_port'],
-            'email_ssl' => $emailset['email_ssl'],
-            'email_account' => $emailset['email_account'],
-            'email_password' => $emailset['email_password'],
-            'email_sender_name' => $emailset['email_sender_name'],
-            'email_sender_email' => $emailset['email_sender_email'],
+        $this->option = [
+            'email_sendtype'      => $emailset['email_sendtype'],
+            'email_host'          => $emailset['email_host'],
+            'email_port'          => $emailset['email_port'],
+            'email_ssl'           => $emailset['email_ssl'],
+            'email_account'       => $emailset['email_account'],
+            'email_password'      => $emailset['email_password'],
+            'email_sender_name'   => $emailset['email_sender_name'],
+            'email_sender_email'  => $emailset['email_sender_email'],
             'email_reply_account' => $emailset['email_sender_email'],
-        );
+        ];
     }
 
     /**
-     * 测试发送邮件
+     * 测试发送邮件.
+     *
      * @param  array $data 邮件相关内容数据
+     *
      * @return bool 是否发送成功
      */
     public function test_email($data)
@@ -43,12 +47,14 @@ class MailModel
     }
 
     /**
-     * 发送邮件
-     * @param  string $sendto_email 收件人的Email
-     * @param  string $subject      主题
-     * @param  string $body         正文
-     * @param  array  $senderInfo   发件人信息 array('email_sender_name'=>'发件人姓名', 'email_account'=>'发件人Email地址')
-     * @return bool   是否发送邮件成功
+     * 发送邮件.
+     *
+     * @param string $sendto_email 收件人的Email
+     * @param string $subject      主题
+     * @param string $body         正文
+     * @param array  $senderInfo   发件人信息 array('email_sender_name'=>'发件人姓名', 'email_account'=>'发件人Email地址')
+     *
+     * @return bool 是否发送邮件成功
      */
     public function send_email($sendto_email, $subject, $body, $senderInfo = '')
     {

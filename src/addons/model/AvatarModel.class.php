@@ -1,8 +1,10 @@
 <?php
 
 /**
- * 头像模型 - 业务逻辑模型
+ * 头像模型 - 业务逻辑模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class AvatarModel
@@ -10,10 +12,10 @@ class AvatarModel
     protected $_uid;   // 用户UID字段
 
     /**
-     * 初始化模型，加载相应的文件
+     * 初始化模型，加载相应的文件.
+     *
      * @param int $uid 用户UID
      */
-
     public function __construct($uid = null)
     {
         $uid or $uid = intval($_SESSION['mid']);
@@ -21,8 +23,10 @@ class AvatarModel
     }
 
     /**
-     * 初始化模型，加载相应的文件
-     * @param  int    $uid 用户UID
+     * 初始化模型，加载相应的文件.
+     *
+     * @param int $uid 用户UID
+     *
      * @return object 头像模型对象
      */
     public function init($uid)
@@ -33,7 +37,8 @@ class AvatarModel
     }
 
     /**
-     * 判断用户是否上传头像
+     * 判断用户是否上传头像.
+     *
      * @return array
      */
     public function hasAvatar()
@@ -59,19 +64,20 @@ class AvatarModel
     }
 
     /**
-     * 获取当前登录用户头像
+     * 获取当前登录用户头像.
+     *
      * @return array 用户的头像链接
      */
     public function getUserAvatar()
     {
         $empty_url = THEME_URL.'/_static/image/noavatar';
-        $avatar_url = array(
+        $avatar_url = [
             'avatar_original' => $empty_url.'/big.jpg',
-            'avatar_big' => $empty_url.'/big.jpg',
-            'avatar_middle' => $empty_url.'/middle.jpg',
-            'avatar_small' => $empty_url.'/small.jpg',
-            'avatar_tiny' => $empty_url.'/tiny.jpg',
-        );
+            'avatar_big'      => $empty_url.'/big.jpg',
+            'avatar_middle'   => $empty_url.'/middle.jpg',
+            'avatar_small'    => $empty_url.'/small.jpg',
+            'avatar_tiny'     => $empty_url.'/tiny.jpg',
+        ];
 
         $original_file_name = '/avatar'.$this->convertUidToPath($this->_uid).'/original.jpg';
 
@@ -102,9 +108,11 @@ class AvatarModel
     }
 
     /**
-     * 保存Flash提交的数据 - flash上传
+     * 保存Flash提交的数据 - flash上传.
+     *
      * @param  array $data        用户头像的相关信息
      * @param  array $oldUserInfo 貌似无用字段，与此flash组件有关
+     *
      * @return bool 是否保存成功
      */
     public function saveUploadAvatar($data, $oldUserInfo)
@@ -137,7 +145,8 @@ class AvatarModel
     }
 
     /**
-     * 上传头像
+     * 上传头像.
+     *
      * @return array 上传头像操作信息
      */
     public function upload($fromApi = false)
@@ -183,22 +192,23 @@ class AvatarModel
                 //}
             } else {
                 if ($fromApi) {
-                    return array('status' => 0, 'msg' => '不是有效的图片格式，请重新选择照片上传');
+                    return ['status' => 0, 'msg' => '不是有效的图片格式，请重新选择照片上传'];
                 } else {
-                    die(json_encode(array('status' => 0, 'info' => '不是有效的图片格式，请重新选择照片上传')));
+                    die(json_encode(['status' => 0, 'info' => '不是有效的图片格式，请重新选择照片上传']));
                 }
             }
         } else {
             if ($fromApi) {
-                return array('status' => 0, 'msg' => $info['info']);
+                return ['status' => 0, 'msg' => $info['info']];
             } else {
-                die(json_encode(array('status' => 0, 'info' => $info['info'])));
+                die(json_encode(['status' => 0, 'info' => $info['info']]));
             }
         }
     }
 
     /**
-     * 保存用户头像图片 - 本地上传
+     * 保存用户头像图片 - 本地上传.
+     *
      * @return array 头像图片信息
      */
     public function dosave($facedata = false, $forceReturn = false)
@@ -236,9 +246,9 @@ class AvatarModel
             if (!$res) {
                 //w3g优化
                 if ($forceReturn) {
-                    return array('status' => 0, 'info' => '头像切割失败');
+                    return ['status' => 0, 'info' => '头像切割失败'];
                 }
-                die(json_encode(array('status' => 0, 'info' => '头像切割失败')));
+                die(json_encode(['status' => 0, 'info' => '头像切割失败']));
             }
             @$cloud->deleteFile($original_file_name);
             //重新上传新头像原图
@@ -264,9 +274,9 @@ class AvatarModel
             //获取获取缩图后的数据
             if (!$res) {
                 if ($forceReturn) {
-                    return array('status' => 0, 'info' => '头像切割失败');
+                    return ['status' => 0, 'info' => '头像切割失败'];
                 }
-                die(json_encode(array('status' => 0, 'info' => '头像切割失败')));
+                die(json_encode(['status' => 0, 'info' => '头像切割失败']));
             }
 
             if (!file_exists(UPLOAD_PATH.$original_file_name)) {
@@ -329,22 +339,23 @@ class AvatarModel
                 //}
             } else {
                 if ($fromApi) {
-                    return array('status' => 0, 'msg' => '不是有效的图片格式，请重新选择照片上传');
+                    return ['status' => 0, 'msg' => '不是有效的图片格式，请重新选择照片上传'];
                 } else {
-                    die(json_encode(array('status' => 0, 'info' => '不是有效的图片格式，请重新选择照片上传')));
+                    die(json_encode(['status' => 0, 'info' => '不是有效的图片格式，请重新选择照片上传']));
                 }
             }
         } else {
             if ($fromApi) {
-                return array('status' => 0, 'msg' => $info['info']);
+                return ['status' => 0, 'msg' => $info['info']];
             } else {
-                die(json_encode(array('status' => 0, 'info' => $info['info'])));
+                die(json_encode(['status' => 0, 'info' => $info['info']]));
             }
         }
     }
 
     /**
-     * 保存用户头像图片 - 本地上传
+     * 保存用户头像图片 - 本地上传.
+     *
      * @return array 头像图片信息
      */
     public function dosaveAvatars($facedata = false, $forceReturn = false)
@@ -382,9 +393,9 @@ class AvatarModel
             if (!$res) {
                 //w3g优化
                 if ($forceReturn) {
-                    return array('status' => 0, 'info' => '切割失败');
+                    return ['status' => 0, 'info' => '切割失败'];
                 }
-                die(json_encode(array('status' => 0, 'info' => '切割失败')));
+                die(json_encode(['status' => 0, 'info' => '切割失败']));
             }
             @$cloud->deleteFile($original_file_name);
             //重新上传新头像原图
@@ -411,9 +422,9 @@ class AvatarModel
             //获取获取缩图后的数据
             if (!$res) {
                 if ($forceReturn) {
-                    return array('status' => 0, 'info' => '切割失败');
+                    return ['status' => 0, 'info' => '切割失败'];
                 }
-                die(json_encode(array('status' => 0, 'info' => '切割失败')));
+                die(json_encode(['status' => 0, 'info' => '切割失败']));
             }
 
             if (!file_exists(UPLOAD_PATH.$original_file_name)) {
@@ -433,7 +444,8 @@ class AvatarModel
     }
 
     /**
-     * 保存用户头像图片 - 本地上传
+     * 保存用户头像图片 - 本地上传.
+     *
      * @return array 头像图片信息
      */
     public function saveRemoteAvatar($src, $uid)
@@ -443,13 +455,13 @@ class AvatarModel
         $original_file_name = '/avatar'.$this->convertUidToPath($uid).'/original.jpg';
 
         //保存图片到原图
-        $opts = array(
-            'http' => array(
-                'method' => 'GET',
-                'timeout' => 3, //超时30秒
+        $opts = [
+            'http' => [
+                'method'     => 'GET',
+                'timeout'    => 3, //超时30秒
                 'user_agent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)',
-            ),
-        );
+            ],
+        ];
         $context = stream_context_create($opts);
         $imageData = file_get_contents($src, false, $context);
 
@@ -500,8 +512,10 @@ class AvatarModel
     }
 
     /**
-     * 将用户的UID转换为三级路径
-     * @param  int    $uid 用户UID
+     * 将用户的UID转换为三级路径.
+     *
+     * @param int $uid 用户UID
+     *
      * @return string 用户路径
      */
     public function convertUidToPath($uid)
@@ -519,7 +533,8 @@ class AvatarModel
     }
 
     /**
-     * 创建多级文件目录
+     * 创建多级文件目录.
+     *
      * @param string $path 路径名称
      */
     private function _createFolder($path)

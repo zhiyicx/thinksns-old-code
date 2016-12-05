@@ -1,9 +1,12 @@
 <?php
 
 /**
- * 搜索用户数据
+ * 搜索用户数据.
+ *
  * @example W('SearchUser', array('name' => 'selectUser', 'uids' => array(10000,14983),'follow'=>0,'max'=>10,'editable'=>0))
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class SearchUserWidget extends Widget
@@ -19,7 +22,7 @@ class SearchUserWidget extends Widget
      */
     public function render($data)
     {
-        $var = array();
+        $var = [];
         $var['follow'] = 0;
         $var['max'] = 0; //最多可以选择用户个数 为0表示不限制
         $var['editable'] = 1;
@@ -39,7 +42,7 @@ class SearchUserWidget extends Widget
         //渲染模版
         $content = $this->renderFile(dirname(__FILE__).'/'.$tpl, $var);
 
-        self::$rand ++;
+        self::$rand++;
 
         unset($var, $data);
         //输出数据
@@ -47,7 +50,8 @@ class SearchUserWidget extends Widget
     }
 
     /**
-     * 搜索用户
+     * 搜索用户.
+     *
      * @return array 搜索状态及用户列表数据
      */
     public function search()
@@ -65,26 +69,27 @@ class SearchUserWidget extends Widget
         $list = model('User')->searchUser($key, $follow, 10, '', '', $noself, '', $type);
         foreach ($list['data'] as $k => &$v) {
             $user = $v;
-            $v = array();
+            $v = [];
             $v['uid'] = $user['uid'];
             $v['uname'] = $user['uname'];
             $v['avatar_small'] = $user['avatar_small'];
             $v['search_key'] = $user['search_key'];
         }
         $data = $list['data'];
-        $msg = array('status' => 1, 'data' => $data);
+        $msg = ['status' => 1, 'data' => $data];
         exit(json_encode($msg));
     }
 
     /**
-     * 搜索最近@的人
+     * 搜索最近@的人.
+     *
      * @return array 搜索状态及用户列表数据
      */
     public function searchAt()
     {
         $users = model('UserData')->where("`key`='user_recentat' and uid=".$GLOBALS['ts']['mid'])->getField('at_value');
         $data = unserialize($users);
-        $msg = array('data' => $data);
+        $msg = ['data' => $data];
         exit(json_encode($msg));
     }
 }

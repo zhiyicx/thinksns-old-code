@@ -34,7 +34,7 @@ class CloudImageModel
     private $error = '';
 
     // 上传成功的文件信息
-    private $uploadFileInfo ;
+    private $uploadFileInfo;
 
     // 又拍云配置
     private $config;
@@ -119,13 +119,13 @@ class CloudImageModel
     //获取表单API相关信息
     public function getPolicydoc()
     {
-        $policydoc = array(
-           'bucket' => $this->config['cloud_image_bucket'],
-           'expiration' => time() + 600, //1分钟超时
-           'save-key' => '/{year}/{mon}{day}/{random}.{suffix}',
-           'allow-file-type' => 'jpg,jpeg,gif,png',
+        $policydoc = [
+           'bucket'               => $this->config['cloud_image_bucket'],
+           'expiration'           => time() + 600, //1分钟超时
+           'save-key'             => '/{year}/{mon}{day}/{random}.{suffix}',
+           'allow-file-type'      => 'jpg,jpeg,gif,png',
            'content-length-range' => '0,5120000',    //最大5M
-        );
+        ];
 
         return $policydoc;
     }
@@ -147,9 +147,11 @@ class CloudImageModel
     }
 
     /**
-     * 写入文件
-     * @param  string $filename    文件相对路径
-     * @param  string $filecontent 文件数据
+     * 写入文件.
+     *
+     * @param string $filename    文件相对路径
+     * @param string $filecontent 文件数据
+     *
      * @return bool
      */
     public function writeFile($filename, $filecontent)
@@ -170,8 +172,10 @@ class CloudImageModel
     }
 
     /**
-     * 删除文件
-     * @param  string $filename 文件相对路径
+     * 删除文件.
+     *
+     * @param string $filename 文件相对路径
+     *
      * @return bool
      */
     public function deleteFile($filename)
@@ -192,10 +196,13 @@ class CloudImageModel
     }
 
     /**
-     * 上传文件
-     * @param  string         $savePath 上传文件保存路径
-     * @return string
+     * 上传文件.
+     *
+     * @param string $savePath 上传文件保存路径
+     *
      * @throws ThinkExecption
+     *
+     * @return string
      */
     public function upload($savePath = '')
     {
@@ -205,7 +212,7 @@ class CloudImageModel
             return false;
         }
 
-        $fileInfo = array();
+        $fileInfo = [];
         $isUpload = false;
 
         // 获取上传的文件信息,对$_FILES数组信息处理
@@ -278,13 +285,15 @@ class CloudImageModel
     }
 
     /**
-     * 转换上传文件数组变量为正确的方式
-     * @param  array $files 上传的文件变量
+     * 转换上传文件数组变量为正确的方式.
+     *
+     * @param array $files 上传的文件变量
+     *
      * @return array
      */
     private function dealFiles($files)
     {
-        $fileArray = array();
+        $fileArray = [];
         foreach ($files as $file) {
             if (is_array($file['name'])) {
                 $keys = array_keys($file);
@@ -304,8 +313,10 @@ class CloudImageModel
     }
 
     /**
-     * 获取错误代码信息
-     * @param  string         $errorNo 错误号码
+     * 获取错误代码信息.
+     *
+     * @param string $errorNo 错误号码
+     *
      * @throws ThinkExecption
      */
     protected function error($errorNo)
@@ -350,13 +361,13 @@ class CloudImageModel
             default:
                 $this->error = '未知上传错误！';
         }
-
-        return ;
     }
 
     /**
-     * 检查上传的文件
-     * @param  array $file 文件信息
+     * 检查上传的文件.
+     *
+     * @param array $file 文件信息
+     *
      * @return bool
      */
     private function check($file)
@@ -400,8 +411,10 @@ class CloudImageModel
     }
 
     /**
-     * 检查上传的文件类型是否合法
-     * @param  string $type 数据
+     * 检查上传的文件类型是否合法.
+     *
+     * @param string $type 数据
+     *
      * @return bool
      */
     private function checkType($type)
@@ -418,8 +431,10 @@ class CloudImageModel
     }
 
     /**
-     * 检查上传的文件后缀是否合法
-     * @param  string $ext 后缀名
+     * 检查上传的文件后缀是否合法.
+     *
+     * @param string $ext 后缀名
+     *
      * @return bool
      */
     private function checkExt($ext)
@@ -436,8 +451,10 @@ class CloudImageModel
     }
 
     /**
-     * 检查文件大小是否合法
-     * @param  int  $size 数据
+     * 检查文件大小是否合法.
+     *
+     * @param int $size 数据
+     *
      * @return bool
      */
     private function checkSize($size)
@@ -446,8 +463,10 @@ class CloudImageModel
     }
 
     /**
-     * 检查文件是否非法提交
-     * @param  string $filename 文件名
+     * 检查文件是否非法提交.
+     *
+     * @param string $filename 文件名
+     *
      * @return bool
      */
     private function checkUpload($filename)
@@ -457,7 +476,9 @@ class CloudImageModel
 
     /**
      * 取得上传文件的后缀
-     * @param  string $filename 文件名
+     *
+     * @param string $filename 文件名
+     *
      * @return bool
      */
     private function getExt($filename)
@@ -468,7 +489,8 @@ class CloudImageModel
     }
 
     /**
-     * 取得上传文件的信息
+     * 取得上传文件的信息.
+     *
      * @return array
      */
     public function getUploadFileInfo()
@@ -477,7 +499,8 @@ class CloudImageModel
     }
 
     /**
-     * 取得最后一次错误信息
+     * 取得最后一次错误信息.
+     *
      * @return string
      */
     public function getErrorMsg()

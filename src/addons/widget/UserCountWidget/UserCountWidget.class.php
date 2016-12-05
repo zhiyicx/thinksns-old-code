@@ -1,6 +1,7 @@
 <?php
 /**
- * 用户统计Widget
+ * 用户统计Widget.
+ *
  * @version TS3.0
  */
     class UserCountWidget extends Widget
@@ -13,7 +14,7 @@
         }
 
         /**
-         * 获取指定用户的通知统计数目
+         * 获取指定用户的通知统计数目.
          */
         public function getUnreadCount()
         {

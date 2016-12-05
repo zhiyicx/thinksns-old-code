@@ -3,8 +3,10 @@
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
- * 邀请模型 - 数据对象模型
+ * 邀请模型 - 数据对象模型.
+ *
  * @author nonant
+ *
  * @version TS3.0
  */
 class InviteModel extends Model
@@ -14,10 +16,12 @@ class InviteModel extends Model
 
     /**
      * 生成邀请码
-     * @param  int         $uid     用户ID
-     * @param  string      $type    邀请码类型
-     * @param  int         $num     邀请码数量，默认为5
-     * @param  bool        $isAdmin 是否为管理员邀请操作，默认为false
+     *
+     * @param int    $uid     用户ID
+     * @param string $type    邀请码类型
+     * @param int    $num     邀请码数量，默认为5
+     * @param bool   $isAdmin 是否为管理员邀请操作，默认为false
+     *
      * @return bool|string 成功返回邀请码，失败返回false
      */
     public function createInviteCode($uid, $type, $num = 5, $isAdmin = false)
@@ -29,23 +33,23 @@ class InviteModel extends Model
         }
 
         // 邀请码数组
-        $inviteCodes = array();
-        $insertDatas = array();
+        $inviteCodes = [];
+        $insertDatas = [];
 
         for ($i = 1; $i <= $num; $i++) {
             $inviteCode = tsmd5($uid.microtime(true).rand(1111, 9999).$i);
             array_push($inviteCodes, $inviteCode);
-            array_push($insertDatas, array(
-                'inviter_uid' => $uid,
-                'code' => $inviteCode,
-                'is_used' => 0,
-                'is_admin' => $isAdmin ? 1 : 0,
-                'type' => $type,
-                'is_received' => 0,
-                'receiver_uid' => 0,
+            array_push($insertDatas, [
+                'inviter_uid'    => $uid,
+                'code'           => $inviteCode,
+                'is_used'        => 0,
+                'is_admin'       => $isAdmin ? 1 : 0,
+                'type'           => $type,
+                'is_received'    => 0,
+                'receiver_uid'   => 0,
                 'receiver_email' => null,
-                'ctime' => time(),
-            ));
+                'ctime'          => time(),
+            ]);
         }
 
         if (count($insertDatas)) {
@@ -58,10 +62,12 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取指定用户的邀请码列表 - 链接邀请使用
-     * @param  int    $uid  用户ID
-     * @param  string $type 邀请码类型
-     * @return array  指定用户的邀请码列表
+     * 获取指定用户的邀请码列表 - 链接邀请使用.
+     *
+     * @param int    $uid  用户ID
+     * @param string $type 邀请码类型
+     *
+     * @return array 指定用户的邀请码列表
      */
     public function getInviteCode($uid, $type)
     {
@@ -90,9 +96,11 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取后台邀请码列表
-     * @param  string $type 邀请码类型
-     * @return array  后台邀请码列表
+     * 获取后台邀请码列表.
+     *
+     * @param string $type 邀请码类型
+     *
+     * @return array 后台邀请码列表
      */
     public function getAdminInviteCode($type)
     {
@@ -105,10 +113,12 @@ class InviteModel extends Model
     }
 
     /**
-     * 设置指定验证码已被使用
-     * @param  string $code         验证码
-     * @param  array  $receiverInfo 邀请人用户信息
-     * @return bool   设置是否成功
+     * 设置指定验证码已被使用.
+     *
+     * @param string $code         验证码
+     * @param array  $receiverInfo 邀请人用户信息
+     *
+     * @return bool 设置是否成功
      */
     public function setInviteCodeUsed($code, $receiverInfo)
     {
@@ -119,12 +129,14 @@ class InviteModel extends Model
         $data['ctime'] = time();
         $result = $this->where($map)->save($data);
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     /**
-     * 获取指定邀请码的相关信息
+     * 获取指定邀请码的相关信息.
+     *
      * @param string $code 邀请码
+     *
      * @return array  指定邀请码的相关信息
      */
     public function getInviteCodeInfo($code)
@@ -136,9 +148,11 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取指定用户可用的邀请码个数
+     * 获取指定用户可用的邀请码个数.
+     *
      * @param int $uid 用户ID
      * @param  string $type 邀请码类型，email或者link
+     *
      * @return int 指定用户可用的邀请码个数
      */
     public function getAvailableCodeCount($uid, $type)
@@ -158,9 +172,11 @@ class InviteModel extends Model
     }
 
     /**
-     * 检验验证码是否可用
+     * 检验验证码是否可用.
+     *
      * @param string $code 验证码
      * @param string $type 注册类型
+     *
      * @return int    邀请码使用情况，0：邀请码不存在，1：邀请码可用，2：邀请码已被使用
      */
     public function checkInviteCode($code, $type)
@@ -177,14 +193,16 @@ class InviteModel extends Model
     }
 
     /**
-     * 通过邀请码获取邀请人相关信息
+     * 通过邀请码获取邀请人相关信息.
+     *
      * @param string $code 邀请码
+     *
      * @return array  获取邀请人相关信息
      */
     public function getInviterInfoByCode($code)
     {
         if (empty($code)) {
-            return array();
+            return [];
         }
         $inviterUid = $this->where("code='{$code}'")->getField('inviter_uid');
         $inviterInfo = model('User')->getUserInfo($inviterUid);
@@ -193,10 +211,12 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取指定用户所邀请的用户列表
-     * @param  int   $uid     用户ID
-     * @param  array $type    邀请类型
-     * @param  bool  $isAdmin 是否为管理员操作，默认为false
+     * 获取指定用户所邀请的用户列表.
+     *
+     * @param int   $uid     用户ID
+     * @param array $type    邀请类型
+     * @param bool  $isAdmin 是否为管理员操作，默认为false
+     *
      * @return array 指定用户所邀请的用户列表
      */
     public function getInviteUserList($uid, $type, $isAdmin = false)
@@ -221,9 +241,11 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取指定用户所邀请的用户列表
-     * @param  array $type    邀请类型
-     * @param  bool  $isAdmin 是否为管理员操作，默认为false
+     * 获取指定用户所邀请的用户列表.
+     *
+     * @param array $type    邀请类型
+     * @param bool  $isAdmin 是否为管理员操作，默认为false
+     *
      * @return array 指定用户所邀请的用户列表
      */
     public function getInviteAdminUserList($type)
@@ -247,11 +269,13 @@ class InviteModel extends Model
     }
 
     /**
-     * 邮件邀请注册
+     * 邮件邀请注册.
+     *
      * @param array $email 被邀请人邮箱数组
      * @param  string $detail  邀请相关信息
-     * @param  int  $uid     邀请人ID
-     * @param  bool $isAdmin 是否为管理员邀请操作，默认为false
+     * @param int  $uid     邀请人ID
+     * @param bool $isAdmin 是否为管理员邀请操作，默认为false
+     *
      * @return bool 是否发送邀请成功
      */
     public function doInvite($email, $detail, $uid, $isAdmin = false)
@@ -344,10 +368,12 @@ class InviteModel extends Model
     }
 
     /**
-     * 普通用户获取邀请码操作
-     * @param  int    $uid  用户ID
-     * @param  string $type 邀请码类型
-     * @return bool   是否获取邀请码成功
+     * 普通用户获取邀请码操作.
+     *
+     * @param int    $uid  用户ID
+     * @param string $type 邀请码类型
+     *
+     * @return bool 是否获取邀请码成功
      */
     public function applyInviteCode($uid, $type)
     {
@@ -374,12 +400,14 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取邀请结果列表，用于后台 - 分页型
-     * @param  array $map      查询条件
-     * @param  int   $pageNums 结果集数目，默认为10
+     * 获取邀请结果列表，用于后台 - 分页型.
+     *
+     * @param array $map      查询条件
+     * @param int   $pageNums 结果集数目，默认为10
+     *
      * @return array 邀请结果列表
      */
-    public function getPage($map = array(), $pageNums = 10)
+    public function getPage($map = [], $pageNums = 10)
     {
         $map['is_used'] = 1;
         $list = $this->where($map)->order('ctime DESC')->findPage($pageNums);
@@ -388,10 +416,12 @@ class InviteModel extends Model
     }
 
     /**
-     * 获取邀请排行信息
-     * @param  string $where    查询条件
-     * @param  int    $pageNums 结果集数目，默认为20
-     * @return array  邀请排行信息
+     * 获取邀请排行信息.
+     *
+     * @param string $where    查询条件
+     * @param int    $pageNums 结果集数目，默认为20
+     *
+     * @return array 邀请排行信息
      */
     public function getTopPage($where = '', $pageNums = '20')
     {

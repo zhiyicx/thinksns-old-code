@@ -1,16 +1,19 @@
 <?php
 /**
- * 导航模型 - 数据对象模型
+ * 导航模型 - 数据对象模型.
+ *
  * @author jason <renjianchao@zhishisoft.com>
+ *
  * @version TS3.0
  */
 class NaviModel extends Model
 {
     protected $tableName = 'navi';
-    protected $fields = array(0 => 'navi_id', 1 => 'navi_name', 2 => 'app_name', 3 => 'url', 4 => 'target', 5 => 'status', 6 => 'position', 7 => 'guest', 8 => 'is_app_navi', 9 => 'parent_id', 10 => 'order_sort');
+    protected $fields = [0 => 'navi_id', 1 => 'navi_name', 2 => 'app_name', 3 => 'url', 4 => 'target', 5 => 'status', 6 => 'position', 7 => 'guest', 8 => 'is_app_navi', 9 => 'parent_id', 10 => 'order_sort'];
 
     /**
-     * 获取头部导航
+     * 获取头部导航.
+     *
      * @return array 头部导航
      */
     public function getTopNav()
@@ -31,14 +34,16 @@ class NaviModel extends Model
                 }
             }
             $topNav = $navlist;
-            empty($topNav) && $topNav = array();
+            empty($topNav) && $topNav = [];
             model('Cache')->set('topNav', $topNav);
         }
 
         return $topNav;
     }
+
     /**
-     * 游客导航
+     * 游客导航.
+     *
      * @return multitype:
      */
     public function getGuestNav()
@@ -59,14 +64,16 @@ class NaviModel extends Model
                 }
             }
             $guestNav = $navlist;
-            empty($guestNav) && $guestNav = array();
+            empty($guestNav) && $guestNav = [];
             model('Cache')->set('guestNav', $guestNav);
         }
 
         return $guestNav;
     }
+
     /**
-     * 获取底部导航
+     * 获取底部导航.
+     *
      * @return array 底部导航
      */
     public function getBottomNav()
@@ -87,7 +94,7 @@ class NaviModel extends Model
                 }
             }
             $bottomNav = $navlist;
-            empty($bottomNav) && $bottomNav = array();
+            empty($bottomNav) && $bottomNav = [];
             model('Cache')->set('bottomNav', $bottomNav);
         }
 
@@ -104,8 +111,9 @@ class NaviModel extends Model
 
         return false;
     }
+
     /**
-     * 清除导航缓存
+     * 清除导航缓存.
      */
     public function cleanCache()
     {

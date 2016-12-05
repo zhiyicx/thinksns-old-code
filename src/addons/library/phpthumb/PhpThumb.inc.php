@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpThumb Library Definition File
+ * PhpThumb Library Definition File.
  *
  * This file contains the definitions for the PhpThumb class.
  *
@@ -15,15 +15,17 @@
  *
  * @author Ian Selby <ian@gen-x-design.com>
  * @copyright Copyright (c) 2009 Gen X Design
+ *
  * @link http://phpthumb.gxdlabs.com
+ *
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+ *
  * @version 3.0
- * @package PhpThumb
  * @filesource
  */
 
 /**
- * PhpThumb Object
+ * PhpThumb Object.
  *
  * This singleton object is essentially a function library that helps with core validation
  * and loading of the core classes and plugins.  There isn't really any need to access it directly,
@@ -36,20 +38,17 @@
  *
  * It's that simple!  Outside of that, there's no need to modify anything within this class, unless you're doing
  * some crazy customization... then knock yourself out! :)
- *
- * @package PhpThumb
- * @subpackage Core
  */
 class PhpThumb
 {
     /**
-     * Instance of self
+     * Instance of self.
      *
      * @var object PhpThumb
      */
     protected static $_instance;
     /**
-     * The plugin registry
+     * The plugin registry.
      *
      * This is where all plugins to be loaded are stored.  Data about the plugin is
      * provided, and currently consists of:
@@ -60,7 +59,7 @@ class PhpThumb
      */
     protected $_registry;
     /**
-     * What implementations are available
+     * What implementations are available.
      *
      * This stores what implementations are available based on the loaded
      * extensions in PHP, NOT whether or not the class files are present.
@@ -70,7 +69,7 @@ class PhpThumb
     protected $_implementations;
 
     /**
-     * Returns an instance of self
+     * Returns an instance of self.
      *
      * This is the usual singleton function that returns / instantiates the object
      *
@@ -86,27 +85,25 @@ class PhpThumb
     }
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Initializes all the variables, and does some preliminary validation / checking of stuff
-     *
      */
     private function __construct()
     {
-        $this->_registry = array();
-        $this->_implementations = array('gd' => false, 'imagick' => false);
+        $this->_registry = [];
+        $this->_implementations = ['gd' => false, 'imagick' => false];
 
         $this->getImplementations();
     }
 
     /**
-     * Finds out what implementations are available
+     * Finds out what implementations are available.
      *
      * This function loops over $this->_implementations and validates that the required extensions are loaded.
      *
      * I had planned on attempting to load them dynamically via dl(), but that would provide more overhead than I
      * was comfortable with (and would probably fail 99% of the time anyway)
-     *
      */
     private function getImplementations()
     {
@@ -122,14 +119,15 @@ class PhpThumb
     }
 
     /**
-     * Returns whether or not $implementation is valid (available)
+     * Returns whether or not $implementation is valid (available).
      *
      * If 'all' is passed, true is only returned if ALL implementations are available.
      *
      * You can also pass 'n/a', which always returns true
      *
+     * @param string $implementation
+     *
      * @return bool
-     * @param  string $implementation
      */
     public function isValidImplementation($implementation)
     {
@@ -155,7 +153,7 @@ class PhpThumb
     }
 
     /**
-     * Registers a plugin in the registry
+     * Registers a plugin in the registry.
      *
      * Adds a plugin to the registry if it isn't already loaded, and if the provided
      * implementation is valid.  Note that you can pass the following special keywords
@@ -168,14 +166,15 @@ class PhpThumb
      *  - loaded - whether or not the plugin has been "loaded" into the core class
      *  - implementation - what implementation this plugin is valid for
      *
+     * @param string $pluginName
+     * @param string $implementation
+     *
      * @return bool
-     * @param  string $pluginName
-     * @param  string $implementation
      */
     public function registerPlugin($pluginName, $implementation)
     {
         if (!array_key_exists($pluginName, $this->_registry) && $this->isValidImplementation($implementation)) {
-            $this->_registry[$pluginName] = array('loaded' => false, 'implementation' => $implementation);
+            $this->_registry[$pluginName] = ['loaded' => false, 'implementation' => $implementation];
 
             return true;
         }
@@ -184,7 +183,7 @@ class PhpThumb
     }
 
     /**
-     * Loads all the plugins in $pluginPath
+     * Loads all the plugins in $pluginPath.
      *
      * All this function does is include all files inside the $pluginPath directory.  The plugins themselves
      * will not be added to the registry unless you've properly added the code to do so inside your plugin file.
@@ -210,14 +209,15 @@ class PhpThumb
     }
 
     /**
-     * Returns the plugin registry for the supplied implementation
+     * Returns the plugin registry for the supplied implementation.
+     *
+     * @param string $implementation
      *
      * @return array
-     * @param  string $implementation
      */
     public function getPluginRegistry($implementation)
     {
-        $returnArray = array();
+        $returnArray = [];
 
         foreach ($this->_registry as $plugin => $meta) {
             if ($meta['implementation'] == 'n/a' || $meta['implementation'] == $implementation) {

@@ -5,7 +5,7 @@ class FeedTopHooks extends Hooks
     private $isRefresh = 1;
 
     /**
-     * 主页右钩子
+     * 主页右钩子.
      */
     public function home_index_left_feedtop()
     {
@@ -40,23 +40,23 @@ class FeedTopHooks extends Hooks
         }
         $this->assign('data', $list);
 
-        $cancomment_old_type = array(
+        $cancomment_old_type = [
             'post', 'repost', 'postimage', 'postfile',
             'weiba_post', 'weiba_repost',
             'blog_post', 'blog_repost',
             'event_post', 'event_repost',
             'vote_post', 'vote_repost',
-            'photo_post', 'photo_repost', );
+            'photo_post', 'photo_repost', ];
         $this->assign('cancomment_old_type', $cancomment_old_type);
 
-        $uids = array();
+        $uids = [];
         foreach ($list as $item) {
             $uids[] = $item['feed_info']['uid'];
         }
         if (!empty($uids)) {
-            $map = array();
+            $map = [];
             $map['uid'] = $GLOBALS['ts']['mid'];
-            $map['fid'] = array('in', $uids);
+            $map['fid'] = ['in', $uids];
             $followUids = model('Follow')->where($map)->getAsFieldArray('fid');
             $this->assign('followUids', $followUids);
 
@@ -70,6 +70,7 @@ class FeedTopHooks extends Hooks
         $this->assign('diggArr', $diggArr);
         $this->display('feedtop');
     }
+
     //public function home_index_right_top(){
     // 	$list = $this->model('FeedTop')->getFeedTopList(0);
     // 	foreach($list as $k =>$v){
@@ -84,13 +85,14 @@ class FeedTopHooks extends Hooks
         $feed_top_id = t($_POST['feed_id']);
         $has_del_feed = $_SESSION['feed_top_'.$this->mid];
         if (!is_array($has_del_feed)) {
-            $has_del_feed = array();
+            $has_del_feed = [];
         }
         $has_del_feed[] = $feed_top_id;
         $has_del_feed = array_unique($has_del_feed);
         $_SESSION['feed_top_'.$this->mid] = $has_del_feed;
         echo 1;
     }
+
     //后台列表
     public function config()
     {
@@ -105,14 +107,15 @@ class FeedTopHooks extends Hooks
     }
 
     /**
-     * 添加置顶页面
+     * 添加置顶页面.
      */
     public function addFeedTop()
     {
         $this->display('addFeedTop');
     }
+
     /**
-     * 添加置顶操作
+     * 添加置顶操作.
      */
     public function doAddFeedTop()
     {
@@ -124,8 +127,9 @@ class FeedTopHooks extends Hooks
 
         return false;
     }
+
     /**
-     * 编辑广告位页面
+     * 编辑广告位页面.
      */
     public function editFeedTop()
     {
@@ -136,8 +140,9 @@ class FeedTopHooks extends Hooks
         $this->assign('editPage', true);
         $this->display('addFeedTop');
     }
+
     /**
-     * 编辑广告位操作
+     * 编辑广告位操作.
      */
     public function doEditFeedTop()
     {
@@ -150,13 +155,15 @@ class FeedTopHooks extends Hooks
 
         return false;
     }
+
     /**
-     * 取消置顶操作
+     * 取消置顶操作.
+     *
      * @return json 是否删除成功
      */
     public function doDelFeedTop()
     {
-        $result = array();
+        $result = [];
         $id = t($_POST['id']);
         if (empty($id)) {
             $result['status'] = 0;
@@ -173,13 +180,15 @@ class FeedTopHooks extends Hooks
         }
         exit(json_encode($result));
     }
+
     /**
-     * 重新置顶操作
+     * 重新置顶操作.
+     *
      * @return json 是否成功
      */
     public function doFeedTop()
     {
-        $result = array();
+        $result = [];
         $id = t($_POST['id']);
         if (empty($id)) {
             $result['status'] = 0;
@@ -196,9 +205,10 @@ class FeedTopHooks extends Hooks
         }
         exit(json_encode($result));
     }
+
     public function doDel()
     {
-        $result = array();
+        $result = [];
         $id = t($_POST['id']);
         if (empty($id)) {
             $result['status'] = 0;
@@ -218,7 +228,7 @@ class FeedTopHooks extends Hooks
 
     public function check_feed_manage($params)
     {
-        $data = array();
+        $data = [];
         $isAdmin = model('UserGroup')->isAdmin($this->mid);
         if ($isAdmin > 0) {
             $data['status'] = true;
@@ -248,10 +258,10 @@ class FeedTopHooks extends Hooks
         $uid = intval($_POST['uid']);
         $feedId = intval($_POST['feed_id']);
         if (empty($uid) || empty($feedId)) {
-            exit(json_encode(array('status' => 0, 'info' => '设置失败')));
+            exit(json_encode(['status' => 0, 'info' => '设置失败']));
         }
         $result = $this->model('FeedTop')->setFeedTop($uid, $feedId);
-        $res = array();
+        $res = [];
         if ($result) {
             $res['status'] = 1;
             $res['info'] = '设置成功';
@@ -267,10 +277,10 @@ class FeedTopHooks extends Hooks
         $uid = intval($_POST['uid']);
         $feedId = intval($_POST['feed_id']);
         if (empty($uid) || empty($feedId)) {
-            exit(json_encode(array('status' => 0, 'info' => '设置失败')));
+            exit(json_encode(['status' => 0, 'info' => '设置失败']));
         }
         $result = $this->model('FeedTop')->delFeedTop($uid, $feedId);
-        $res = array();
+        $res = [];
         if ($result) {
             $res['status'] = 1;
             $res['info'] = '设置成功';

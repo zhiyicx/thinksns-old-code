@@ -1,7 +1,9 @@
 <?php
 /**
- * 地区模型 - 数据对象模型
+ * 地区模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class AreaModel extends Model
@@ -9,12 +11,14 @@ class AreaModel extends Model
     protected $tableName = 'area';
 
     /**
-     * 当指定pid时，查询该父地区的所有子地区；否则查询所有地区
-     * @param  int   $pid   父地区ID
-     * @param  array $where 额外条件
+     * 当指定pid时，查询该父地区的所有子地区；否则查询所有地区.
+     *
+     * @param int   $pid   父地区ID
+     * @param array $where 额外条件
+     *
      * @return array 相应地区列表
      */
-    public function getAreaList($pid = -1, array $where = array())
+    public function getAreaList($pid = -1, array $where = [])
     {
         $pid != -1 and $where['pid'] = intval($pid);
 
@@ -34,30 +38,32 @@ class AreaModel extends Model
     }
 
     /**
-     * 获取地区的树形结构 - 目前为两级结构 - TODO
-     * @param  int   $pid 地区的父级ID
+     * 获取地区的树形结构 - 目前为两级结构 - TODO.
+     *
+     * @param int $pid 地区的父级ID
+     *
      * @return array 指定父级ID的树形结构
      */
     public function getAreaTree($pid)
     {
-        $output = array();
+        $output = [];
         $list = $this->getAreaList();
         // 获取省级
         foreach ($list as $k1 => $p) {
             if ($p['pid'] == 0) {
                 // 获取当前省的市
-                $city = array();
+                $city = [];
                 foreach ($list as $k2 => $c) {
                     if ($c['pid'] == $p['area_id']) {
-                        $city[] = array($c['area_id'] => $c['title']);
+                        $city[] = [$c['area_id'] => $c['title']];
                         unset($list[$k2]);
                     }
                 }
-                $output['provinces'][] = array(
-                    'id' => $p['area_id'],
-                    'name' => $p['title'],
+                $output['provinces'][] = [
+                    'id'    => $p['area_id'],
+                    'name'  => $p['title'],
                     'citys' => $city,
-                );
+                ];
                 unset($list[$k1], $city);
             }
         }
@@ -67,13 +73,15 @@ class AreaModel extends Model
     }
 
     /**
-     * 获取指定地区ID下的地区信息
-     * @param  int   $id 地区ID
+     * 获取指定地区ID下的地区信息.
+     *
+     * @param int $id 地区ID
+     *
      * @return array 指定地区ID下的地区信息
      */
     public function getAreaById($id)
     {
-        $result = array();
+        $result = [];
         if (!empty($id)) {
             $name = 'ts_area_aid_'.$id;
             $result = S($name);
@@ -88,8 +96,10 @@ class AreaModel extends Model
     }
 
     /**
-     * 获取指定父地区的树形结构
-     * @param  int   $pid 父地区ID
+     * 获取指定父地区的树形结构.
+     *
+     * @param int $pid 父地区ID
+     *
      * @return array 指定树形结构
      */
     public function getNetworkList($pid = '0')
@@ -110,7 +120,7 @@ class AreaModel extends Model
     }
 
     /**
-     * 清除地区数据PHP文件
+     * 清除地区数据PHP文件.
      */
     public function remakeCityCache()
     {
@@ -118,9 +128,11 @@ class AreaModel extends Model
     }
 
     /**
-     * 递归形成树形结构
-     * @param  int   $pid   父级ID
-     * @param  int   $level 等级
+     * 递归形成树形结构.
+     *
+     * @param int $pid   父级ID
+     * @param int $level 等级
+     *
      * @return array 树形结构
      */
     private function _MakeTree($pid, $level = '0')

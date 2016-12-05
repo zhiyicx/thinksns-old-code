@@ -1,15 +1,19 @@
 <?php
 /**
  * 用户身份选择Widget
- *注册插件
+ *注册插件.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class UserCategorysWidget extends Widget
 {
     /**
-     * 模板渲染
+     * 模板渲染.
+     *
      * @param  array  $data 相关数据
+     *
      * @return string 用户身份选择模板
      */
     public function render($data)
@@ -37,7 +41,7 @@ class UserCategorysWidget extends Widget
     }
 
     /**
-     * 添加用户与用户身份的关联信息
+     * 添加用户与用户身份的关联信息.
      */
     public function addRelatedUser()
     {
@@ -49,7 +53,7 @@ class UserCategorysWidget extends Widget
     }
 
     /**
-     * 删除用户与用户身份的关联信息
+     * 删除用户与用户身份的关联信息.
      */
     public function deleteRelateUser()
     {
@@ -61,8 +65,10 @@ class UserCategorysWidget extends Widget
     }
 
     /**
-     * 登录页面，获取选择模板数据
-     * @param  array $data 参数数据
+     * 登录页面，获取选择模板数据.
+     *
+     * @param array $data 参数数据
+     *
      * @return array 获取的模板数据
      */
     private function _login($data)
@@ -85,8 +91,10 @@ class UserCategorysWidget extends Widget
     }
 
     /**
-     * 人物分类页面，获取选择模板数据
-     * @param  array $data 参数数据
+     * 人物分类页面，获取选择模板数据.
+     *
+     * @param array $data 参数数据
+     *
      * @return array 获取的模板数据
      */
     public function _user($data)

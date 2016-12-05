@@ -1,22 +1,26 @@
 <?php
 /**
- * 用户身份模型 - 数据对象模型
+ * 用户身份模型 - 数据对象模型.
+ *
  * @zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class UserCategoryModel extends Model
 {
     protected $tableName = 'user_category';
-    protected $fields = array(0 => 'user_category_id', 1 => 'title', 2 => 'pid');
+    protected $fields = [0 => 'user_category_id', 1 => 'title', 2 => 'pid'];
 
     /**
-     * 当指定pid时，查询该父用户身份的所有子用户身份；否则查询所有用户身份
-     * @param  int   $pid 父用户身份ID
+     * 当指定pid时，查询该父用户身份的所有子用户身份；否则查询所有用户身份.
+     *
+     * @param int $pid 父用户身份ID
+     *
      * @return array 相应用户身份列表
      */
     public function getUserCategoryListr($pid = -1)
     {
-        $map = array();
+        $map = [];
         $pid != -1 && $map['pid'] = $pid;
         $data = $this->where($map)->order('`user_category_id` ASC')->findAll();
 
@@ -24,7 +28,7 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 清除用户身份缓存
+     * 清除用户身份缓存.
      */
     public function remakeUserCategoryCache()
     {
@@ -32,8 +36,10 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 获取指定父身份的树形结构
-     * @param  int   $pid 父身份ID
+     * 获取指定父身份的树形结构.
+     *
+     * @param int $pid 父身份ID
+     *
      * @return array 指定树形结构
      */
     public function getNetworkList($pid = '0')
@@ -54,9 +60,11 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 递归形成树形结构
-     * @param  int   $pid   父级ID
-     * @param  int   $level 等级
+     * 递归形成树形结构.
+     *
+     * @param int $pid   父级ID
+     * @param int $level 等级
+     *
      * @return array 树形结构
      */
     private function _MakeTree($pid, $level = '0')
@@ -77,9 +85,11 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 添加用户与用户身份的关联信息
-     * @param  int  $uid 用户ID
-     * @param  int  $cid 用户身份ID
+     * 添加用户与用户身份的关联信息.
+     *
+     * @param int $uid 用户ID
+     * @param int $cid 用户身份ID
+     *
      * @return bool 是否添加成功
      */
     public function addRelatedUser($uid, $cid)
@@ -92,13 +102,15 @@ class UserCategoryModel extends Model
         }
         $result = D('user_category_link')->add($add);
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     /**
-     * 删除用户与用户身份的关联信息
-     * @param  int  $uid 用户ID
-     * @param  int  $cid 用户身份ID
+     * 删除用户与用户身份的关联信息.
+     *
+     * @param int $uid 用户ID
+     * @param int $cid 用户身份ID
+     *
      * @return bool 是否删除成功
      */
     public function deleteRelatedUser($uid, $cid)
@@ -111,14 +123,16 @@ class UserCategoryModel extends Model
         }
         $result = D('user_category_link')->where($map)->delete();
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     /**
-     * 更改用户与用户身份的关联信息
-     * @param  int   $uid  用户ID
-     * @param  array $cids 用户身份ID数组
-     * @return bool  是否修改成功
+     * 更改用户与用户身份的关联信息.
+     *
+     * @param int   $uid  用户ID
+     * @param array $cids 用户身份ID数组
+     *
+     * @return bool 是否修改成功
      */
     public function updateRelateUser($uid, $cids)
     {
@@ -136,7 +150,7 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 获取指定用户的身份信息
+     * 获取指定用户的身份信息.
      */
     public function getRelatedUserInfo($uid)
     {
@@ -150,8 +164,10 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 获取身份的哈希列表
-     * @param  array $map 查询条件
+     * 获取身份的哈希列表.
+     *
+     * @param array $map 查询条件
+     *
      * @return array 身份的哈希列表数组
      */
     public function getAllHash($map)
@@ -162,10 +178,12 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 获取指定分类下的用户ID
-     * @param  int   $cid            分类ID
-     * @param  int   $isAuthenticate 是否是认证用户，1表示是，0表示不是
-     * @param  int   $limit          每页显示多少个
+     * 获取指定分类下的用户ID.
+     *
+     * @param int $cid            分类ID
+     * @param int $isAuthenticate 是否是认证用户，1表示是，0表示不是
+     * @param int $limit          每页显示多少个
+     *
      * @return array 指定分类下的用户ID
      */
     public function getUidsByCid($cid, $isAuthenticate, $limit = 20)
@@ -208,33 +226,33 @@ class UserCategoryModel extends Model
                 if ($pid == 0) {
                     $cids = M('UserCategory')->where('pid='.$cid)->getAsFieldArray('user_category_id');
 
-                    $cmap['user_category_id'] = array('IN', $cids);
+                    $cmap['user_category_id'] = ['IN', $cids];
 
                     $title = M('UserCategory')->where($cmap)->findAll();
 
                     foreach ($title as $key => $value) {
-                        $amap['name'] = array('LIKE', $value['title']);
+                        $amap['name'] = ['LIKE', $value['title']];
                         $tag = M('tag')->where($amap)->getField('tag_id');
                         if ($tag) {
                             $tag_id[] = $tag;
                         }
                     }
-                    $tmap['tag_id'] = array('IN', $tag_id);
+                    $tmap['tag_id'] = ['IN', $tag_id];
                 } else {
                     $cmap['user_category_id'] = intval($cid);
                     $title = M('UserCategory')->where($cmap)->find();
-                    $amap['name'] = array('LIKE', $title['title']);
+                    $amap['name'] = ['LIKE', $title['title']];
                     $tag_id[] = M('tag')->where($amap)->getField('tag_id');
-                    $tmap['tag_id'] = array('IN', $tag_id);
+                    $tmap['tag_id'] = ['IN', $tag_id];
                 }
                 $uids = M('app_tag')->field('`row_id`')->where($tmap)->findAll();
-                $umap['uid'] = array('in', getSubByKey($uids, 'row_id'));
+                $umap['uid'] = ['in', getSubByKey($uids, 'row_id')];
                 $data = model('User')->where($umap)->field('uid')->order('last_post_time DESC,last_login_time DESC')->findPage($limit);
 
                 return $data;
             }
         }
-        $ordermap['uid'] = array('in', getSubByKey($data['data'], 'uid'));
+        $ordermap['uid'] = ['in', getSubByKey($data['data'], 'uid')];
         $uiddata = model('User')->where($ordermap)->field('uid')->order('last_post_time DESC,last_login_time DESC')->findAll();
         $data['data'] = $uiddata;
 
@@ -242,9 +260,11 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 获取指定分类下的用户ID
-     * @param  array $post           分类数据
-     * @param  int   $isAuthenticate 是否是认证用户，1表示是，0表示不是
+     * 获取指定分类下的用户ID.
+     *
+     * @param array $post           分类数据
+     * @param int   $isAuthenticate 是否是认证用户，1表示是，0表示不是
+     *
      * @return array 指定分类下的用户ID
      */
     public function w3g_getUidsByCid($data, $isAuthenticate)
@@ -254,7 +274,7 @@ class UserCategoryModel extends Model
         $limit = intval($data['limit']);
         if ($isAuthenticate == 1) {
             // 由于认证用户的用户组为5 - 将不会被改变
-            $lastUid && $map['a.uid'] = array('lt', $lastUid);
+            $lastUid && $map['a.uid'] = ['lt', $lastUid];
             $map['a.user_category_id'] = intval($cid);
             $map['b.user_group_id'] = 5;
             $data['data'] = D('')->table('`'.$this->tablePrefix.'user_category_link` AS a LEFT JOIN `'.$this->tablePrefix.'user_group_link` AS b ON a.uid = b.uid')
@@ -267,7 +287,7 @@ class UserCategoryModel extends Model
             $umap['is_active'] = 1;
             $umap['is_audit'] = 1;
             $umap['is_init'] = 1;
-            $lastUid && $umap['uid'] = array('lt', $lastUid);
+            $lastUid && $umap['uid'] = ['lt', $lastUid];
             if ($cid == 0) {
                 // 				$count = D('')->table($this->tablePrefix.'user_category_link')->count(array(), 'DISTINCT `uid`');
 // 				$data = D('')->table($this->tablePrefix.'user_category_link')->field('DISTINCT `uid`')->findPage(20, $count);
@@ -298,28 +318,28 @@ class UserCategoryModel extends Model
                 if ($pid == 0) {
                     $cids = M('UserCategory')->where('pid='.$cid)->getAsFieldArray('user_category_id');
 
-                    $cmap['user_category_id'] = array('IN', $cids);
+                    $cmap['user_category_id'] = ['IN', $cids];
 
                     $title = M('UserCategory')->where($cmap)->findAll();
 
                     foreach ($title as $key => $value) {
-                        $amap['name'] = array('LIKE', $value['title']);
+                        $amap['name'] = ['LIKE', $value['title']];
                         $tag = M('tag')->where($amap)->getField('tag_id');
                         if ($tag) {
                             $tag_id[] = $tag;
                         }
                     }
-                    $tmap['tag_id'] = array('IN', $tag_id);
+                    $tmap['tag_id'] = ['IN', $tag_id];
                 } else {
                     $cmap['user_category_id'] = intval($cid);
                     $title = M('UserCategory')->where($cmap)->find();
-                    $amap['name'] = array('LIKE', $title['title']);
+                    $amap['name'] = ['LIKE', $title['title']];
                     $tag_id[] = M('tag')->where($amap)->getField('tag_id');
-                    $tmap['tag_id'] = array('IN', $tag_id);
+                    $tmap['tag_id'] = ['IN', $tag_id];
                 }
-                $lastUid && $tmap['row_id'] = array('lt', $lastUid);
+                $lastUid && $tmap['row_id'] = ['lt', $lastUid];
                 $uids = M('app_tag')->field('`row_id`')->where($tmap)->order('row_id desc')->findAll();
-                $umap['uid'] = array('in', getSubByKey($uids, 'row_id'));
+                $umap['uid'] = ['in', getSubByKey($uids, 'row_id')];
                 $data['data'] = model('User')->where($umap)
                                      ->field('uid')
                                      ->order('uid desc')
@@ -329,7 +349,7 @@ class UserCategoryModel extends Model
                 return $data;
             }
         }
-        $ordermap['uid'] = array('in', getSubByKey($data['data'], 'uid'));
+        $ordermap['uid'] = ['in', getSubByKey($data['data'], 'uid')];
         $uiddata = model('User')->where($ordermap)
                                 ->field('uid')
                                 ->order('uid desc')
@@ -341,7 +361,8 @@ class UserCategoryModel extends Model
     }
 
     /**
-     * 获取所有身份分类ID
+     * 获取所有身份分类ID.
+     *
      * @return array 所有身份分类ID
      */
     public function getAllUserCategoryIds()

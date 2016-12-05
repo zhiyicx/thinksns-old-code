@@ -48,21 +48,20 @@ class WeChatPay
         }
         $xml .= '<sign>'.$sign."</sign>\n";
         $xml .= '</xml>';
-        $opts = array(
-            'http' => array(
-                'method' => 'POST',
-                'header' => 'Content-type: text/xml',
+        $opts = [
+            'http' => [
+                'method'  => 'POST',
+                'header'  => 'Content-type: text/xml',
                 'content' => $xml,
-                ),
-            'ssl' => array(
-                'verify_peer' => false,
+                ],
+            'ssl' => [
+                'verify_peer'      => false,
                 'verify_peer_name' => false,
-                ),
-            );
+                ],
+            ];
 
         return $opts;
     }
-
 
     //微信预下单 并获得回调参数
     public function getUnifiedResult($opts)
@@ -74,7 +73,6 @@ class WeChatPay
         return $result;
     }
 
-
     /*
           返回给客户端调用的支付协议链接或参数数组
         $pid 应用id
@@ -85,14 +83,14 @@ class WeChatPay
      */
     public function getClientPayUrl($pid, $noncestr, $mid, $prepayid, $key, $type = 1)
     {
-        $input = array(
-            'noncestr' => ''.$noncestr,
-            'prepayid' => ''.$prepayid, //上一步请求微信服务器得到nonce_str和prepay_id参数。
-            'appid' => $pid,
-            'package' => 'Sign=WXPay',
+        $input = [
+            'noncestr'  => ''.$noncestr,
+            'prepayid'  => ''.$prepayid, //上一步请求微信服务器得到nonce_str和prepay_id参数。
+            'appid'     => $pid,
+            'package'   => 'Sign=WXPay',
             'partnerid' => $mid,
             'timestamp' => time(),
-            );
+            ];
         $sign = $this->setWXsign($input, $key);
 
         switch ($type) {

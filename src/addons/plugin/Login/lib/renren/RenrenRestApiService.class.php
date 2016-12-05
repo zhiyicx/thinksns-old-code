@@ -17,24 +17,24 @@
  * @Link:	http://www.dianboom.com
  */
 
- #Include configure resources
+ //Include configure resources
 
  class RenrenRestApiService extends HttpRequestService
  {
      private $_config;
      private $_postFields = '';
-     private $_params = array();
+     private $_params = [];
      private $_currentMethod;
      private static $_sigKey = 'sig';
      private $_sig = '';
      private $_call_id = '';
 
-     private $_keyMapping = array(
+     private $_keyMapping = [
                 'api_key' => '',
-                'method' => '',
-                'v' => '',
-                'format' => '',
-            );
+                'method'  => '',
+                'v'       => '',
+                'format'  => '',
+            ];
 
      public function __construct()
      {
@@ -50,50 +50,57 @@
      }
 
     /**
-     * GET wrapper
+     * GET wrapper.
+     *
      * @param method String
      * @param parameters Array
+     *
      * @return mixed
      */
     public function GET()
     {
         $args = func_get_args();
-        $this->_currentMethod = trim($args[0]); #Method
+        $this->_currentMethod = trim($args[0]); //Method
         $this->paramsMerge($args[1])
              ->getCallId()
              ->setConfigToMapping()
              ->generateSignature();
 
-        #Invoke
+        //Invoke
         unset($args);
 
         return $this->_GET($this->_config->APIURL, $this->_params);
     }
 
     /**
-     * POST wrapper，基于curl函数，需要支持curl函数才行
+     * POST wrapper，基于curl函数，需要支持curl函数才行.
+     *
      * @param method String
      * @param parameters Array
+     *
      * @return mixed
      */
     public function rr_post_curl()
     {
         $args = func_get_args();
-        $this->_currentMethod = trim($args[0]); #Method
+        $this->_currentMethod = trim($args[0]); //Method
         $this->paramsMerge($args[1])
              ->getCallId()
              ->setConfigToMapping()
              ->generateSignature();
 
-        #Invoke
+        //Invoke
         unset($args);
 
         return $this->_POST($this->_config->APIURL, $this->_params);
     }
+
     /**
-     * Generate signature for sig parameter
+     * Generate signature for sig parameter.
+     *
      * @param method String
      * @param parameters Array
+     *
      * @return RenRenClient
      */
     private function generateSignature()
@@ -119,9 +126,11 @@
     }
 
     /**
-     * Parameters merge
+     * Parameters merge.
+     *
      * @param $params Array
      * @modified by Edison tsai on 15:56 2011/01/13 for fix non-object bug
+     *
      * @return RenRenClient
      */
     private function paramsMerge($params)
@@ -132,8 +141,10 @@
     }
 
     /**
-     * Setting mapping value
+     * Setting mapping value.
+     *
      * @modified by Edison tsai on 15:04 2011/01/13 for add call id & session_key
+     *
      * @return RenRenClient
      */
     private function setConfigToMapping()
@@ -152,9 +163,11 @@
      }
 
     /**
-     * Generate call id
+     * Generate call id.
+     *
      * @author Edison tsai
      * @created 14:48 2011/01/13
+     *
      * @return RenRenClient
      */
     public function getCallId()
@@ -167,27 +180,28 @@
      public function rr_post_fopen()
      {
          $args = func_get_args();
-         $this->_currentMethod = trim($args[0]); #Method
+         $this->_currentMethod = trim($args[0]); //Method
         $this->paramsMerge($args[1])
              ->getCallId()
              ->setConfigToMapping()
              ->generateSignature();
 
-        #Invoke
+        //Invoke
         unset($args);
 
          return $this->_POST_FOPEN($this->_config->APIURL, $this->_params);
      }
+
      public function rr_photo_post_fopen()
      {
          $args = func_get_args();
-         $this->_currentMethod = trim($args[0]); #Method
+         $this->_currentMethod = trim($args[0]); //Method
         $this->paramsMerge($args[1])
              ->getCallId()
              ->setConfigToMapping()
              ->generateSignature();
 
-        #Invoke
+        //Invoke
         $photo_files = $args[2];
 
          unset($args);

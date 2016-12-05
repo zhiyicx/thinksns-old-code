@@ -1,15 +1,18 @@
 <?php
 /**
- * ThinkPHP系统基类
+ * ThinkPHP系统基类.
+ *
  * @author    liu21st <liu21st@gmail.com>
+ *
  * @version   $Id$
  */
 class Think
 {
-    private static $_instance = array();
+    private static $_instance = [];
 
     /**
-     * 自动变量设置
+     * 自动变量设置.
+     *
      * @param $name 属性名称
      * @param $value  属性值
      */
@@ -21,8 +24,10 @@ class Think
     }
 
     /**
-     * 自动变量获取
+     * 自动变量获取.
+     *
      * @param $name 属性名称
+     *
      * @return mixed
      */
     public function __get($name)
@@ -32,14 +37,15 @@ class Think
 
     /**
      * 系统自动加载ThinkPHP类库
-     * 并且支持配置自动加载路径
+     * 并且支持配置自动加载路径.
+     *
      * @param string $classname 对象类名
      */
     public static function autoload($classname)
     {
         // 检查是否存在别名定义
         if (tsload($classname)) {
-            return ;
+            return;
         }
         // 自动加载当前项目的Actioon类和Model类
         if (substr($classname, -5) == 'Model') {
@@ -47,14 +53,14 @@ class Think
         } elseif (substr($classname, -6) == 'Action') {
             tsload(APP_ACTION_PATH.'/'.$classname.'.class.php');
         }
-
-        return ;
     }
 
     /**
-     * 取得对象实例 支持调用类的静态方法
-     * @param  string $class  对象类名
-     * @param  string $method 类的静态方法名
+     * 取得对象实例 支持调用类的静态方法.
+     *
+     * @param string $class  对象类名
+     * @param string $method 类的静态方法名
+     *
      * @return object
      */
     public static function instance($class, $method = '')
@@ -64,7 +70,7 @@ class Think
             if (class_exists($class)) {
                 $o = new $class();
                 if (!empty($method) && method_exists($o, $method)) {
-                    self::$_instance[$identify] = call_user_func_array(array(&$o, $method));
+                    self::$_instance[$identify] = call_user_func_array([&$o, $method]);
                 } else {
                     self::$_instance[$identify] = $o;
                 }

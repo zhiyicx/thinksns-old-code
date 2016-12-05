@@ -10,27 +10,24 @@
 //
 
 /**
- +------------------------------------------------------------------------------
  * ScheduleModel 计划任务服务
  * 实现任务的定时执行
  * 为各种任务的定期执行提供支持
  +------------------------------------------------------------------------------
  * @category	addons
- * @package		addons
- * @subpackage  services
+ *
  * @author		Daniel Yang <desheng.young@gmail.com>
+ *
  * @version		$Id$
- +------------------------------------------------------------------------------
  */
-
 class ScheduleModel extends Model
 {
-    private $MONTH_ARRAY = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-    private $WEEK_ARRAY = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+    private $MONTH_ARRAY = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    private $WEEK_ARRAY = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     private $model;
-    private $schedule = array();
-    private $scheduleList = array();
+    private $schedule = [];
+    private $scheduleList = [];
 
     //	task_to_run 	要执行任务的url
     //	schedule_type 	计划类型：NOCE/MINUTE/HOURLY/DAILY/WEEKLY/MONTHLY
@@ -123,7 +120,7 @@ class ScheduleModel extends Model
             $schedule['end_datetime'] = date('Y-m-d H:i:s');
         } else {
             //非ONCE类型的计划任务， 防止由程序执行导致的启动时间的漂移
-            if (in_array($schedule['schedule_type'], array('MINUTE', 'HOURLY'))) {
+            if (in_array($schedule['schedule_type'], ['MINUTE', 'HOURLY'])) {
                 //将last_run_time设置为当前时间（秒数设为0）
                 $schedule['last_run_time'] = date('Y-m-d H:i:s', $this->setSecondToZero());
             } else {
@@ -182,7 +179,7 @@ class ScheduleModel extends Model
     public function delSchedule($ids)
     {
         $ids = array_map('intval', $ids);
-        $map['id'] = array('IN', $ids);
+        $map['id'] = ['IN', $ids];
         $res = model('Schedule')->where($map)->delete();
         if ($res) {
             $this->cleanCache();
@@ -432,7 +429,7 @@ class ScheduleModel extends Model
                 if (empty($schedule['month'])) {
                     return false;
                 }
-            } elseif (in_array(strtoupper($schedule['modifier']), array('FIRST', 'SECOND', 'THIRD', 'FOURTH', 'LAST'))) {
+            } elseif (in_array(strtoupper($schedule['modifier']), ['FIRST', 'SECOND', 'THIRD', 'FOURTH', 'LAST'])) {
                 //modifier为FIRST,SECOND,THIRD,FOURTH,LAST之一时，dirlist必须在MON～SUN、*中
                 if ($schedule['dirlist'] == '*') {
                 } else {
@@ -562,7 +559,7 @@ class ScheduleModel extends Model
             //组装dirlist数组
             if (empty($schedule['dirlist'])) {
                 //当dirlist为空时,默认为周一
-                $schedule['dirlist'] = array('Mon');
+                $schedule['dirlist'] = ['Mon'];
             } elseif ($schedule['dirlist'] == '*') {
                 //当dirlist==*时，每天执行
                 $schedule['dirlist'] = $this->WEEK_ARRAY;
@@ -612,7 +609,7 @@ class ScheduleModel extends Model
                 }
             }
         //modifier为FIRST,SECOND,THIRD,FOURTH,LAST之一时
-        } elseif (in_array(strtoupper($schedule['modifier']), array('FIRST', 'SECOND', 'THIRD', 'FOURTH', 'LAST'))) {
+        } elseif (in_array(strtoupper($schedule['modifier']), ['FIRST', 'SECOND', 'THIRD', 'FOURTH', 'LAST'])) {
             //判断当前月份是否符合要求
             if (in_array(date('M'), $schedule['month'])) {
                 //设置dirlist数组(星期)
@@ -640,7 +637,7 @@ class ScheduleModel extends Model
             if (($this->_getMonthDif($date) % $schedule['modifier']) == 0) {
                 //组装dirlist数组
                 if (empty($schedule['dirlist'])) {
-                    $schedule['dirlist'] = array('1');
+                    $schedule['dirlist'] = ['1'];
                 } else {
                     $schedule['dirlist'] = explode(',', str_replace(' ', '', $schedule['dirlist']));
                 }
@@ -778,7 +775,7 @@ class ScheduleModel extends Model
         $lockfile = $this->getLogPath().'/schedule.lock';
         //锁定未过期 - 返回
         if (file_exists($lockfile) && ((filemtime($lockfile)) + 60 > $_SERVER['REQUEST_TIME'])) {
-            return ;
+            return;
         } else {
             //重新生成锁文件
             touch($lockfile);
@@ -793,11 +790,10 @@ class ScheduleModel extends Model
 
         //解除锁定
         unlink($lockfile);
-
-        return ;
     }
+
     /**
-     * 清除缓存
+     * 清除缓存.
      */
     public function cleanCache()
     {

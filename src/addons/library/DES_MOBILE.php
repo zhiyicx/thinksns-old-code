@@ -16,10 +16,10 @@ class DES_MOBILE
 
     public function encrypt($string)
     {
-        $ivArray = array(0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF);
+        $ivArray = [0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF];
         $iv = null;
         foreach ($ivArray as $element) {
-            $iv .= CHR($element);
+            $iv .= chr($element);
         }
 
         $size = mcrypt_get_block_size(MCRYPT_DES, MCRYPT_MODE_CBC);
@@ -34,10 +34,10 @@ class DES_MOBILE
 
     public function decrypt($string)
     {
-        $ivArray = array(0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF);
+        $ivArray = [0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF];
         $iv = null;
         foreach ($ivArray as $element) {
-            $iv .= CHR($element);
+            $iv .= chr($element);
         }
 
         $string = base64_decode($string);
@@ -58,7 +58,7 @@ class DES_MOBILE
 
     public function pkcs5Unpad($text)
     {
-        $pad = ord($text {strlen($text) - 1});
+        $pad = ord($text[strlen($text) - 1]);
         if ($pad > strlen($text)) {
             return false;
         }
@@ -66,6 +66,6 @@ class DES_MOBILE
             return false;
         }
 
-        return substr($text, 0, - 1 * $pad);
+        return substr($text, 0, -1 * $pad);
     }
 }

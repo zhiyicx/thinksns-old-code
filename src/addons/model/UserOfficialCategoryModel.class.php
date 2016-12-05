@@ -1,7 +1,9 @@
 <?php
 /**
- * 官方用户分类模型 - 数据对象模型
+ * 官方用户分类模型 - 数据对象模型.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class UserOfficialCategoryModel extends Model
@@ -9,13 +11,15 @@ class UserOfficialCategoryModel extends Model
     protected $tableName = 'user_official_category';
 
     /**
-     * 当指定pid时，查询该父分类的所有子分类；否则查询所有分类
-     * @param  int   $pid 父分类ID
+     * 当指定pid时，查询该父分类的所有子分类；否则查询所有分类.
+     *
+     * @param int $pid 父分类ID
+     *
      * @return array 相应的分类列表
      */
     public function getCategoryList($pid = -1)
     {
-        $map = array();
+        $map = [];
         $pid != -1 && $map['pid'] = $pid;
         $data = $this->where($map)->order('`official_category_id` ASC')->findAll();
 
@@ -23,9 +27,11 @@ class UserOfficialCategoryModel extends Model
     }
 
     /**
-     * 判断名称是否重复
-     * @param  string $title 名称
-     * @return bool   是否重复
+     * 判断名称是否重复.
+     *
+     * @param string $title 名称
+     *
+     * @return bool 是否重复
      */
     public function isTitleExist($title)
     {
@@ -37,8 +43,10 @@ class UserOfficialCategoryModel extends Model
     }
 
     /**
-     * 获取指定分类的信息
-     * @param  int   $cid 分类ID
+     * 获取指定分类的信息.
+     *
+     * @param int $cid 分类ID
+     *
      * @return array 分类信息
      */
     public function getCategoryInfo($cid)
@@ -50,8 +58,10 @@ class UserOfficialCategoryModel extends Model
     }
 
     /**
-     * 获取指定父地区的树形结构
-     * @param  int   $pid 父地区ID
+     * 获取指定父地区的树形结构.
+     *
+     * @param int $pid 父地区ID
+     *
      * @return array 指定树形结构
      */
     public function getNetworkList($pid = '0')
@@ -72,7 +82,7 @@ class UserOfficialCategoryModel extends Model
     }
 
     /**
-     * 清除地区数据PHP文件
+     * 清除地区数据PHP文件.
      */
     public function remakeOfficialCache()
     {
@@ -80,9 +90,11 @@ class UserOfficialCategoryModel extends Model
     }
 
     /**
-     * 递归形成树形结构
-     * @param  int   $pid   父级ID
-     * @param  int   $level 等级
+     * 递归形成树形结构.
+     *
+     * @param int $pid   父级ID
+     * @param int $level 等级
+     *
      * @return array 树形结构
      */
     private function _MakeTree($pid, $level = '0')
@@ -103,11 +115,11 @@ class UserOfficialCategoryModel extends Model
     }
 
     /**
-     * 获取分类的Hash数组
+     * 获取分类的Hash数组.
      */
     public function getCategoryHash($pid = -1)
     {
-        $map = array();
+        $map = [];
         $pid != -1 && $map['pid'] = $pid;
         $data = $this->where($map)->getHashList('official_category_id', 'title');
 

@@ -1,14 +1,18 @@
 <?php
 /**
- * DIY Widget
+ * DIY Widget.
+ *
  * @example {:W('Diy',array())}
+ *
  * @version TS3.0
  */
 class DiyWidget extends Widget
 {
     /**
-     * [render description]
+     * [render description].
+     *
      * @param  int id [description]
+     *
      * @return int widget_user_id [description]
      */
     public function render($data)
@@ -50,9 +54,9 @@ class DiyWidget extends Widget
     public function doadd()
     {
         if (model('Widget')->saveUserWigdet(intval($_POST['diyId']), $GLOBALS['ts']['uid'], t($_POST['selected']))) {
-            $return = array('status' => 1, 'data' => '', 'info' => L('PUBLIC_SAVE_SUCCESS'));
+            $return = ['status' => 1, 'data' => '', 'info' => L('PUBLIC_SAVE_SUCCESS')];
         } else {
-            $return = array('status' => 0, 'data' => '', 'info' => L('PUBLIC_SAVE_FAIL'));
+            $return = ['status' => 0, 'data' => '', 'info' => L('PUBLIC_SAVE_FAIL')];
         }
 
         echo json_encode($return);
@@ -68,9 +72,9 @@ class DiyWidget extends Widget
         $return = model('Widget')->updateUserWidget($var['diyId'], $GLOBALS['ts']['uid'], $var['appname'].':'.$var['widget_name'], $data);
 
         if ($return) {
-            $return = array('status' => 1, 'data' => '', 'info' => L('PUBLIC_SETING_SUCCESS'));
+            $return = ['status' => 1, 'data' => '', 'info' => L('PUBLIC_SETING_SUCCESS')];
         } else {
-            $return = array('status' => 0, 'data' => '', 'info' => L('PUBLIC_SYSTEM_SETTING_FAIL'));
+            $return = ['status' => 0, 'data' => '', 'info' => L('PUBLIC_SYSTEM_SETTING_FAIL')];
         }
 
         echo json_encode($return);
@@ -84,9 +88,9 @@ class DiyWidget extends Widget
         $return = model('Widget')->deleteUserWidget($var['diyId'], $GLOBALS['ts']['uid'], $var['appname'].':'.$var['widget_name']);
 
         if ($return) {
-            $return = array('status' => 1, 'data' => '', 'info' => L('PUBLIC_DELETE_SUCCESS'));
+            $return = ['status' => 1, 'data' => '', 'info' => L('PUBLIC_DELETE_SUCCESS')];
         } else {
-            $return = array('status' => 0, 'data' => '', 'info' => L('PUBLIC_DELETE_FAIL'));
+            $return = ['status' => 0, 'data' => '', 'info' => L('PUBLIC_DELETE_FAIL')];
         }
 
         echo json_encode($return);
@@ -116,12 +120,13 @@ class DiyWidget extends Widget
 
         return $this->renderFile(dirname(__FILE__).'/config.html', $var);
     }
+
     public function doconfig()
     {
         if (model('Widget')->configWidget(intval($_POST['diyId']), t($_POST['selected']))) {
-            $return = array('status' => 1, 'data' => '', 'info' => L('PUBLIC_SAVE_SUCCESS'));
+            $return = ['status' => 1, 'data' => '', 'info' => L('PUBLIC_SAVE_SUCCESS')];
         } else {
-            $return = array('status' => 0, 'data' => '', 'info' => L('PUBLIC_SAVE_FAIL'));
+            $return = ['status' => 0, 'data' => '', 'info' => L('PUBLIC_SAVE_FAIL')];
         }
 
         echo json_encode($return);

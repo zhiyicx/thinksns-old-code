@@ -1,8 +1,11 @@
 <?php
 /**
- * 分享发布框
+ * 分享发布框.
+ *
  * @example W('Share',array('sid'=>14983,'stable'=>'contact','appname'=>'contact','nums'=>10,'initHTML'=>'这里是默认的话'))
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class ShareToFeedWidget extends Widget
@@ -16,7 +19,7 @@ class ShareToFeedWidget extends Widget
      */
     public function render($data)
     {
-        $var = array();
+        $var = [];
         $var['appname'] = 'public';
         $data['url'] = urlencode($data['url']);
         empty($data['isLoad']) && $var['isLoad'] = 0;

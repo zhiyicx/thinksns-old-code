@@ -2,9 +2,12 @@
 
 /**
  * 地区选择 widget
- * 注册插件
+ * 注册插件.
+ *
  * @example W('Areas',array('curPro'=>1,'curCity'=>2,'area'=>3,'impotid'=>3273,'impotval'=>'请手动填写','tpl'=>'loadCity'))
+ *
  * @author Jason
+ *
  * @version TS3.0
  */
 class AreasWidget extends Widget
@@ -41,7 +44,7 @@ class AreasWidget extends Widget
 
             $list = model('CategoryTree')->setTable('area')->getNetworkList();
             if ($data['tpl'] == 'selectArea') {
-                $tmp = array();
+                $tmp = [];
                 foreach ($list as $key => $value) {
                     $tmp['area_'.$key] = $value;
                 }
@@ -60,7 +63,7 @@ class AreasWidget extends Widget
     }
 
     /**
-     * 渲染地区选择弹窗
+     * 渲染地区选择弹窗.
      */
     public function area()
     {

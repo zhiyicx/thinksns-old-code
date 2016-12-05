@@ -16,31 +16,32 @@
  *      session_expire int(11) NOT NULL,
  *      session_data blob,
  *      UNIQUE KEY `session_id` (`session_id`)
- *    );
+ *    );.
+ *
  * @category   Extend
- * @package  Extend
- * @subpackage  Driver.Session
+ *
  * @author    liu21st <liu21st@gmail.com>
  */
 class SessionDb
 {
     /**
-    * Session有效时间
+    * Session有效时间.
     */
    protected $lifeTime = '';
 
    /**
-    * session保存的数据库名
+    * session保存的数据库名.
     */
    protected $sessionTable = '';
 
    /**
-    * 数据库句柄
+    * 数据库句柄.
     */
-   protected $hander = array();
+   protected $hander = [];
 
     /**
-     * 打开Session
+     * 打开Session.
+     *
      * @param string $savePath
      * @param mixed  $sessName
      */
@@ -110,7 +111,7 @@ class SessionDb
     }
 
    /**
-    * 关闭Session
+    * 关闭Session.
     */
    public function close()
    {
@@ -125,7 +126,8 @@ class SessionDb
    }
 
    /**
-    * 读取Session
+    * 读取Session.
+    *
     * @param string $sessID
     */
    public function read($sessID)
@@ -142,9 +144,10 @@ class SessionDb
    }
 
    /**
-    * 写入Session
+    * 写入Session.
+    *
     * @param string $sessID
-    * @param String $sessData
+    * @param string $sessData
     */
    public function write($sessID, $sessData)
    {
@@ -159,7 +162,8 @@ class SessionDb
    }
 
    /**
-    * 删除Session
+    * 删除Session.
+    *
     * @param string $sessID
     */
    public function destroy($sessID)
@@ -174,7 +178,8 @@ class SessionDb
    }
 
    /**
-    * Session 垃圾回收
+    * Session 垃圾回收.
+    *
     * @param string $sessMaxLifeTime
     */
    public function gc($sessMaxLifeTime)
@@ -186,15 +191,15 @@ class SessionDb
    }
 
     /**
-     * 打开Session
+     * 打开Session.
      */
     public function execute()
     {
-        session_set_save_handler(array(&$this, 'open'),
-                         array(&$this, 'close'),
-                         array(&$this, 'read'),
-                         array(&$this, 'write'),
-                         array(&$this, 'destroy'),
-                         array(&$this, 'gc'));
+        session_set_save_handler([&$this, 'open'],
+                         [&$this, 'close'],
+                         [&$this, 'read'],
+                         [&$this, 'write'],
+                         [&$this, 'destroy'],
+                         [&$this, 'gc']);
     }
 }

@@ -4,16 +4,18 @@
 class taobao
 {
     public $loginUrl;
+
     public function getUrl($redirect_uri)
     {
         if (!$redirect_uri) {
-            $redirect_uri = Addons::createAddonShow('Login', 'no_register_display', array('type' => 'taobao', 'do' => 'bind'));
+            $redirect_uri = Addons::createAddonShow('Login', 'no_register_display', ['type' => 'taobao', 'do' => 'bind']);
         }
         $_SESSION['state'] = md5(uniqid(rand(), true));
-        $this->loginUrl = 'https://oauth.taobao.com/authorize?'.'client_id='.TAOBAO_KEY.'&redirect_uri='.urlencode($redirect_uri).'&response_type=code&state='.$_SESSION['state'] ;
+        $this->loginUrl = 'https://oauth.taobao.com/authorize?'.'client_id='.TAOBAO_KEY.'&redirect_uri='.urlencode($redirect_uri).'&response_type=code&state='.$_SESSION['state'];
 
         return $this->loginUrl;
     }
+
     //用户资料
     public function userInfo()
     {
@@ -32,11 +34,12 @@ class taobao
             return false;
         }
     }
+
     //验证用户
     public function checkUser()
     {
         if ($_REQUEST['code']) {
-            $redirect_uri = Addons::createAddonShow('Login', 'no_register_display', array('type' => 'taobao', 'do' => 'bind'));
+            $redirect_uri = Addons::createAddonShow('Login', 'no_register_display', ['type' => 'taobao', 'do' => 'bind']);
             $url = 'https://oauth.taobao.com/token';
             $field = 'grant_type=authorization_code&client_id='.TAOBAO_KEY.'&code='.$_REQUEST['code'].'&client_secret='.TAOBAO_SECRET.'&redirect_uri='.urlencode($redirect_uri);
             $ch = curl_init();
@@ -65,21 +68,25 @@ class taobao
             return false;
         }
     }
+
     //发布一条分享
     public function update($text, $opt)
     {
         return true;
     }
+
     //上传一个照片，并发布一条分享
     public function upload($text, $opt, $pic)
     {
         return true;
     }
+
     //转发一条分享
     public function transpond($transpondId, $reId, $content = '', $opt = null)
     {
         return true;
     }
+
     //保存数据
     public function saveData($data)
     {

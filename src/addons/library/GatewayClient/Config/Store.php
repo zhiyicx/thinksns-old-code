@@ -9,7 +9,9 @@
  *
  * @author walkor<walkor@workerman.net>
  * @copyright walkor<walkor@workerman.net>
+ *
  * @link http://www.workerman.net/
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
@@ -20,7 +22,7 @@ namespace Config;
  * 这是一个GatewayWorker的配置文件，
  * 用于配置key/value存储，支持File、Memcache、Redis
  * 生产环境建议用Redis存储，即配置Store::$driver=self::DRIVER_REDIS;
- * 默认是File存储，存储在本地磁盘上
+ * 默认是File存储，存储在本地磁盘上.
  *
  * 作用：此存储用于存储Gateway进程的内部通讯地址，以及每个客户端client_id
  *            对应的Gateway地址。
@@ -54,9 +56,9 @@ class Store
     public static $driver = self::DRIVER_MC;
 
     //$driver为DRIVER_MC/DRIVER_REDIS时需要配置memcached/redis服务端ip和端口
-    public static $gateway = array(
+    public static $gateway = [
         '127.0.0.1:11212',
-    );
+    ];
 
     // $driver为DRIVER_FILE时要配置此项，实际配置在最下面一行
     public static $storePath = '';

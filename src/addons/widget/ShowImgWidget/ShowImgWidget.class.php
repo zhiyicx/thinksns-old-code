@@ -1,8 +1,11 @@
 <?php
 /**
- * 图片轮播JS
+ * 图片轮播JS.
+ *
  * @example {:W('showImg')}
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class ShowImgWidget extends Widget
@@ -16,7 +19,7 @@ class ShowImgWidget extends Widget
      */
     public function render($data)
     {
-        $var = array();
+        $var = [];
 
         $var['id'] = 'scroll'.self::$rand;
         $var['width'] = '100%';
@@ -30,7 +33,7 @@ class ShowImgWidget extends Widget
 
         unset($var, $data);
 
-        self::$rand ++;
+        self::$rand++;
         //输出数据
         return $content;
     }

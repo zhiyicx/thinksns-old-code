@@ -49,7 +49,7 @@ class InviteTestModel extends Model
             }
         }
         $data['utime'] = time();
-        $map = array('id' => $data['id']);
+        $map = ['id' => $data['id']];
         unset($data['id']);
 
         return false !== $this->where($map)->save($data);
@@ -61,7 +61,7 @@ class InviteTestModel extends Model
         $add = 0;
         for ($i = 0; $i < $num; $i++) {
             $rand = substr(str_shuffle($str), 0, 6);
-            if ($this->add(array('code' => $rand))) {
+            if ($this->add(['code' => $rand])) {
                 $add++;
             }
         }
@@ -74,7 +74,7 @@ class InviteTestModel extends Model
         $save['bgimg'] = intval($config['bgimg']);
         $save['rule'] = $config['rule'];
 
-        return !!model('AddonData')->lput('InviteTest', $save);
+        return (bool) model('AddonData')->lput('InviteTest', $save);
     }
 
     public function getConfig()

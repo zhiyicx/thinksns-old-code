@@ -1,14 +1,16 @@
 <?php
 /**
- * ThinkSNS Widget类 抽象类
+ * ThinkSNS Widget类 抽象类.
+ *
  * @author liuxiaoqing <liuxiaoqing@zhishisoft.com>,liu21st <liu21st@gmail.com>
+ *
  * @version TS v4 only
  */
 abstract class Widget
 {
     // 使用的模板引擎 每个Widget可以单独配置不受系统影响
     protected $template = '';
-    protected $attr = array();
+    protected $attr = [];
     protected $cacheChecked = false;
     protected $mid;
     protected $uid;
@@ -17,15 +19,17 @@ abstract class Widget
 
     /**
      * 渲染输出 render方法是Widget唯一的接口
-     * 使用字符串返回 不能有任何输出
-     * @param  mixed  $data 要渲染的数据
+     * 使用字符串返回 不能有任何输出.
+     *
+     * @param mixed $data 要渲染的数据
+     *
      * @return string
      */
     abstract public function render($data);
 
     /**
      * 架构函数,处理核心变量
-     * 使用字符串返回 不能有任何输出
+     * 使用字符串返回 不能有任何输出.
      */
     public function __construct()
     {
@@ -61,16 +65,18 @@ abstract class Widget
     }
 
     /**
-     * 渲染模板输出 供render方法内部调用
-     * @param  string $templateFile 模板文件
-     * @param  mixed  $var          模板变量
-     * @param  string $charset      模板编码
+     * 渲染模板输出 供render方法内部调用.
+     *
+     * @param string $templateFile 模板文件
+     * @param mixed  $var          模板变量
+     * @param string $charset      模板编码
+     *
      * @return string
      */
     protected function renderFile($templateFile = '', $var = '', $charset = 'utf-8')
     {
         $var['ts'] = $GLOBALS['ts'];
-        if (! file_exists_case($templateFile)) {
+        if (!file_exists_case($templateFile)) {
             // 自动定位模板文件
             // $name = substr ( get_class ( $this ), 0, - 6 );
             // $filename = empty ( $templateFile ) ? $name : $templateFile;

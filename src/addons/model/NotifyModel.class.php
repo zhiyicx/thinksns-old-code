@@ -1,10 +1,13 @@
 <?php
 /**
- * 消息通知节点模型 - 数据对象模型
+ * 消息通知节点模型 - 数据对象模型.
+ *
  * @example
  * 使用Demo：
  * model('Notify')->sendNotify(14983,'register_active',array('siteName'=>'SOCIAX','name'=>'yangjs'));
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class NotifyModel extends Model
@@ -15,7 +18,7 @@ class NotifyModel extends Model
     protected $_config = array();            // 配置字段
 
     /**
-     * 初始化方法，获取站点名称、系统邮箱、找回密码的URL
+     * 初始化方法，获取站点名称、系统邮箱、找回密码的URL.
      */
     public function _initialize()
     {
@@ -27,7 +30,8 @@ class NotifyModel extends Model
     }
 
     /**
-     * 获取节点列表
+     * 获取节点列表.
+     *
      * @return array 节点列表数据
      */
     public function getNodeList()
@@ -47,9 +51,11 @@ class NotifyModel extends Model
     }
 
     /**
-     * 保存节点配置
-     * @param  array $data 节点修改信息
-     * @return bool  是否保存成功
+     * 保存节点配置.
+     *
+     * @param array $data 节点修改信息
+     *
+     * @return bool 是否保存成功
      */
     public function saveNodeList($data)
     {
@@ -67,7 +73,7 @@ class NotifyModel extends Model
     }
 
     /**
-     * 清除消息节点缓存
+     * 清除消息节点缓存.
      */
     public function cleanCache()
     {
@@ -77,9 +83,11 @@ class NotifyModel extends Model
     }
 
     /**
-     * 保存模版设置
-     * @param  array $data 模板数据
-     * @return bool  是否保存成功
+     * 保存模版设置.
+     *
+     * @param array $data 模板数据
+     *
+     * @return bool 是否保存成功
      */
     public function saveTpl($data)
     {
@@ -97,8 +105,10 @@ class NotifyModel extends Model
     }
 
     /**
-     * 分组返回指定用户的系统消息列表
-     * @param  int   $uid 用户ID
+     * 分组返回指定用户的系统消息列表.
+     *
+     * @param int $uid 用户ID
+     *
      * @return array 分组返回指定用户的系统消息列表
      */
     public function getMessageList($uid)
@@ -122,10 +132,12 @@ class NotifyModel extends Model
     }
 
     /**
-     * 获取指定应用指定用户下的系统消息列表
-     * @param  string $app 应用Key值
-     * @param  int    $uid 用户ID
-     * @return array  指定应用指定用户下的系统消息列表
+     * 获取指定应用指定用户下的系统消息列表.
+     *
+     * @param string $app 应用Key值
+     * @param int    $uid 用户ID
+     *
+     * @return array 指定应用指定用户下的系统消息列表
      */
     public function getMessageDetail($app, $uid)
     {
@@ -137,10 +149,12 @@ class NotifyModel extends Model
     }
 
     /**
-     * 更改指定用户的消息从未读为已读
-     * @param  int    $uid     用户ID
-     * @param  string $appname 应用Key值
-     * @return mix    更改失败返回false，更改成功返回消息ID
+     * 更改指定用户的消息从未读为已读.
+     *
+     * @param int    $uid     用户ID
+     * @param string $appname 应用Key值
+     *
+     * @return mix 更改失败返回false，更改成功返回消息ID
      */
     public function setRead($uid, $appname = '', $node = null)
     {
@@ -154,8 +168,10 @@ class NotifyModel extends Model
     }
 
     /**
-     * 获取指定用户未读消息的总数
-     * @param  int $uid 用户ID
+     * 获取指定用户未读消息的总数.
+     *
+     * @param int $uid 用户ID
+     *
      * @return int 指定用户未读消息的总数
      */
     public function getUnreadCount($uid)
@@ -167,7 +183,8 @@ class NotifyModel extends Model
     }
 
     /**
-     * 发送消息入口，对已注册用户发送的消息都可以通过此函数
+     * 发送消息入口，对已注册用户发送的消息都可以通过此函数.
+     *
      * @param array  $toUid 接收消息的用户ID数组
      * @param string $node  节点Key值
      * @param array  $config 配置数据
@@ -249,9 +266,11 @@ class NotifyModel extends Model
     }
 
     /**
-     * 获取指定节点信息
-     * @param  string $node 节点Key值
-     * @return array  指定节点信息
+     * 获取指定节点信息.
+     *
+     * @param string $node 节点Key值
+     *
+     * @return array 指定节点信息
      */
     public function getNode($node)
     {
@@ -261,9 +280,11 @@ class NotifyModel extends Model
     }
 
     /**
-     * 获取指定节点的详细信息
+     * 获取指定节点的详细信息.
+     *
      * @param string $node 节点Key值
      * @param  array  $config 配置数据
+     *
      * @return array 指定节点的详细信息
      */
     public function getDataByNode($node, $config)
@@ -278,8 +299,10 @@ class NotifyModel extends Model
     }
 
     /**
-     * 发送邮件，添加到消息队列数据表中
+     * 发送邮件，添加到消息队列数据表中.
+     *
      * @param  array $data 消息的相关数据
+     *
      * @return mix 添加失败返回false，添加成功返回新数据的ID
      */
     public function sendEmail($data)
@@ -313,8 +336,10 @@ class NotifyModel extends Model
     }
 
     /**
-     * 发送系统消息，给指定用户
+     * 发送系统消息，给指定用户.
+     *
      * @param  array $data 发送系统消息相关数据
+     *
      * @return mix 发送失败返回false，发送成功返回新的消息ID
      */
     public function sendMessage($data)
@@ -335,8 +360,10 @@ class NotifyModel extends Model
     }
 
     /**
-     * 删除通知
-     * @param  int $id 通知ID
+     * 删除通知.
+     *
+     * @param int $id 通知ID
+     *
      * @return mix 删除失败返回false，删除成功返回删除的通知ID
      */
     public function deleteNotify($id)
@@ -348,8 +375,10 @@ class NotifyModel extends Model
     }
 
     /**
-     * 发送邮件队列中的数据，每次执行默认发送10封邮件
+     * 发送邮件队列中的数据，每次执行默认发送10封邮件.
+     *
      * @param int $sendNums 发送邮件的个数，默认为10
+     *
      * @return array 返回取出的数据个数与实际发送邮件的数据个数
      */
     public function sendEmailList($sendNums = 10)
@@ -376,9 +405,11 @@ class NotifyModel extends Model
     }
 
     /**
-     * 发送系统消息，给用户组或全站用户
+     * 发送系统消息，给用户组或全站用户.
+     *
      * @param array $user_group 用户组ID
      * @param  string $content    发送信息内容
+     *
      * @return bool 是否发送成功
      */
     public function sendSysMessage($user_group, $content)
@@ -411,9 +442,11 @@ class NotifyModel extends Model
     }
 
     /**
-     * 发送系统消息，给用户组或全站用户 - 并发送邮件
+     * 发送系统消息，给用户组或全站用户 - 并发送邮件.
+     *
      * @param array $user_group 用户组ID
      * @param  string $content    发送信息内容
+     *
      * @return bool 是否发送成功
      */
     public function sendSystemMessage($user_group, $content)
@@ -466,15 +499,18 @@ class NotifyModel extends Model
     }
 
     /*** API使用 ***/
+
     /**
-     * 返回指定用户的未读消息列表，没有since_id 和 max_id 的时候返回未读消息
-     * @param  int   $uid      用户ID
-     * @param  int   $since_id 开始的组件ID，默认为0
-     * @param  int   $max_id   最大主键ID，默认为0
-     * @param  int   $limit    结果集数目，默认为20
+     * 返回指定用户的未读消息列表，没有since_id 和 max_id 的时候返回未读消息.
+     *
+     * @param int $uid      用户ID
+     * @param int $since_id 开始的组件ID，默认为0
+     * @param int $max_id   最大主键ID，默认为0
+     * @param int $limit    结果集数目，默认为20
+     *
      * @return array 指定用户的未读消息列表
      */
-    public function getUnreadListForApi($uid, $since_id = 0, $max_id = 0, $limit = 20, $page)
+    public function getUnreadListForApi($uid, $since_id, $max_id, $limit, $page)
     {
         // 未读消息
         if (!$page) {
@@ -501,7 +537,8 @@ class NotifyModel extends Model
     }
 
     /**
-     * 系统对用户发送通知
+     * 系统对用户发送通知.
+     *
      * @param string|int|array $receive 接收人ID 多个时以英文的","分割或传入数组
      * @param string           $type    通知类型, 必须与模版的类型相同, 使用下划线分割应用.
      *                                  如$type = "weibo_follow"定位至/apps/weibo/Language/cn/notify.php的"weibo_follow"

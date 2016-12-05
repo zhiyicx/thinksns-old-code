@@ -1,7 +1,9 @@
 <?php
 /**
- * 标签模型 - 数据对象模型
+ * 标签模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class TagModel extends Model
@@ -13,8 +15,10 @@ class TagModel extends Model
     private $_app_table = null;                // 所属资源表
 
     /**
-     * 设置所属应用
-     * @param  string $app 应用名称
+     * 设置所属应用.
+     *
+     * @param string $app 应用名称
+     *
      * @return object 标签对象
      */
     public function setAppName($app)
@@ -26,6 +30,7 @@ class TagModel extends Model
 
     /**
      * 设置相关内容所存储的表格
+     *
      * @param string $app_table 数据表名
      */
     public function setAppTable($app_table)
@@ -36,8 +41,10 @@ class TagModel extends Model
     }
 
     /**
-     * 通过指定的应用资源ID，获取应用的内容标签
+     * 通过指定的应用资源ID，获取应用的内容标签.
+     *
      * @param  array|int $row_ids 应用内容编号
+     *
      * @return array     标签内容列表
      */
     public function getAppTags($row_ids, $isUserTag = false)
@@ -71,11 +78,13 @@ class TagModel extends Model
     }
 
     /**
-     * 设置指定应用下的应用内容标签
+     * 设置指定应用下的应用内容标签.
+     *
      * @param  int   $row_id 应用内容编号
-     * @param  array $tags 标签
-     * @param  int   $max  最多标签数量
-     * @return bool  是否设置成功
+     * @param array $tags 标签
+     * @param int   $max  最多标签数量
+     *
+     * @return bool 是否设置成功
      */
     public function setAppTags($row_id, $tags, $max = 9)
     {
@@ -117,10 +126,12 @@ class TagModel extends Model
     }
 
     /**
-     * 一次添加多个应用内容的标签
+     * 一次添加多个应用内容的标签.
+     *
      * @param  int    $row_id 应用内容编号
-     * @param  string $tags 标签
-     * @return bool   是否添加成功
+     * @param string $tags 标签
+     *
+     * @return bool 是否添加成功
      */
     public function addAppTags($row_id, $tags)
     {
@@ -143,10 +154,12 @@ class TagModel extends Model
     }
 
     /**
-     * 添加应用内容的标签
+     * 添加应用内容的标签.
+     *
      * @param  int    $row_id 应用内容编号
-     * @param  string $tag 标签
-     * @return bool   是否添加成功
+     * @param string $tag 标签
+     *
+     * @return bool 是否添加成功
      */
     public function addAppTag($row_id, $tag)
     {
@@ -189,9 +202,11 @@ class TagModel extends Model
     }
 
     /**
-     * 删除应用内容的标签
+     * 删除应用内容的标签.
+     *
      * @param  int  $row_id 应用内容编号
-     * @param  int  $tag_id 标签编号
+     * @param int $tag_id 标签编号
+     *
      * @return bool 是否删除成功
      */
     public function deleteAppTag($row_id, $tag_id)
@@ -220,9 +235,11 @@ class TagModel extends Model
     }
 
     /**
-     * 通过标签名称，获取标签编号
-     * @param  string $name 标签
-     * @return int    标签编号
+     * 通过标签名称，获取标签编号.
+     *
+     * @param string $name 标签
+     *
+     * @return int 标签编号
      */
     public function getTagId($name)
     {
@@ -242,8 +259,10 @@ class TagModel extends Model
     }
 
     /**
-     * 通过标签编号，获取标签内容
+     * 通过标签编号，获取标签内容.
+     *
      * @param array $tag_ids 标签ID数组
+     *
      * @return array 标签内容列表
      */
     public function getTagNames($tag_ids)
@@ -270,11 +289,13 @@ class TagModel extends Model
     }
 
     /**
-     * 获取全局标签列表 - 分页型
+     * 获取全局标签列表 - 分页型.
+     *
      * @param array  $map   查询条件
      * @param string $field 显示字段名称，多个用“,”分割
      * @param string $order 排序条件，默认tag_id DESC
      * @param int    $limit 结果集数目，默认为20
+     *
      * @return array  全局标签列表
      */
     public function getTagList($map = null, $field = null, $order = 'tag_id DESC', $limit = 20)
@@ -285,9 +306,11 @@ class TagModel extends Model
     }
 
     /**
-     * 获取应用标签列表 - 分页型
-     * @param  array $map   查询条件
-     * @param  int   $limit 结果集数目，默认为20
+     * 获取应用标签列表 - 分页型.
+     *
+     * @param array $map   查询条件
+     * @param int   $limit 结果集数目，默认为20
+     *
      * @return array 应用列表标签列表
      */
     public function getAppTagList($map, $limit = 20)
@@ -299,7 +322,8 @@ class TagModel extends Model
     }
 
     /**
-     * 获取应用标签的Hash数组
+     * 获取应用标签的Hash数组.
+     *
      * @return array 应用标签的Hash数组
      */
     public function getTableHash()
@@ -314,9 +338,11 @@ class TagModel extends Model
     }
 
     /**
-     * 获取热门标签
-     * @param  int   $limit  结果集数目，默认为15
-     * @param  int   $expire 缓存时间，默认为3600
+     * 获取热门标签.
+     *
+     * @param int $limit  结果集数目，默认为15
+     * @param int $expire 缓存时间，默认为3600
+     *
      * @return array 热门标签列表
      */
     public function getHotTags($limit = 15, $expire = 3600)
@@ -334,7 +360,7 @@ class TagModel extends Model
             // 指针引用
             foreach ($hot_tag_ids as $h_v) {
                 $hot_tag_list[$h_v['tag_id']] = array(
-                    'name' => $hot_names[$h_v['tag_id']],
+                    'name'  => $hot_names[$h_v['tag_id']],
                     'count' => $h_v['count'],
                 );
             }
@@ -347,9 +373,11 @@ class TagModel extends Model
     }
 
     /**
-     * 添加全局标签
-     * @param  string $tags 标签
-     * @return bool   是否添加成功
+     * 添加全局标签.
+     *
+     * @param string $tags 标签
+     *
+     * @return bool 是否添加成功
      */
     public function addTags($tags)
     {
@@ -394,8 +422,10 @@ class TagModel extends Model
     }
 
     /**
-     * 删除应用指定资源的标签信息
+     * 删除应用指定资源的标签信息.
+     *
      * @param  int $row_id 应用内容编号
+     *
      * @return int 0表示删除失败，1表示删除成功
      */
     public function deleteSourceTag($row_id)

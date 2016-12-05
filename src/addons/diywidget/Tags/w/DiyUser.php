@@ -1,13 +1,14 @@
 <?php
 /**
- * 用户模块
- * @author Stream
+ * 用户模块.
  *
+ * @author Stream
  */
 class DiyUser extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签
+     * 是否是封闭的标签.
+     *
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
@@ -18,13 +19,14 @@ class DiyUser extends TagsAbstract
     {
         return self::$TAG_CLOSED;
     }
+
     /* (non-PHPdoc)
      * @see TagsAbstract::getTemplateFile()
      */
     public function getTemplateFile($tpl = '')
     {
         //返回需要渲染的模板
-        $file = $this->attr ['style'];
+        $file = $this->attr['style'];
         if (!empty($tpl)) {
             $file = $tpl;
         }

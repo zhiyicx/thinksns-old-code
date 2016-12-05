@@ -62,7 +62,7 @@ tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags($_SERVER['H
 tsdefine('CONF_PATH', SITE_PATH.'/config');
 
 tsdefine('APPS_PATH', SITE_PATH.'/apps');
-tsdefine('APPS_URL', SITE_URL.'/apps');    # 应用内部图标 等元素
+tsdefine('APPS_URL', SITE_URL.'/apps');    // 应用内部图标 等元素
 
 tsdefine('ADDON_PATH', dirname(__FILE__).'/addons');
 
@@ -85,8 +85,8 @@ if (function_exists('spl_autoload_register')) {
     });
 }
 
-tsdefine('NOW_TIME', $_SERVER ['REQUEST_TIME']);
-tsdefine('REQUEST_METHOD', $_SERVER ['REQUEST_METHOD']);
+tsdefine('NOW_TIME', $_SERVER['REQUEST_TIME']);
+tsdefine('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
 tsdefine('IS_GET', REQUEST_METHOD == 'GET' ? true : false);
 tsdefine('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
 
@@ -94,7 +94,9 @@ tsdefine('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
 
 /**
  * 载入文件 去重\缓存.
+ *
  * @param  string $filename 载入的文件名
+ *
  * @return bool
  */
 function tsload($filename)
@@ -103,14 +105,15 @@ function tsload($filename)
 }
 
 /**
- * 系统自动加载函数
+ * 系统自动加载函数.
+ *
  * @param string $classname 对象类名
  */
 function tsautoload($classname)
 {
     // 检查是否存在别名定义
     if (tsload($classname)) {
-        return ;
+        return;
     }
 
     // 自动加载当前项目的Actioon类和Model类
@@ -124,15 +127,14 @@ function tsautoload($classname)
     } elseif (substr($classname, -6) == 'Addons') {
         tsload(APP_LIB_PATH.'/Plugin/'.$classname.'.class.php');
     }
-
-    return ;
 }
 
 /**
  * 定义常量,判断是否未定义.
  *
- * @param  string $name  常量名
- * @param  string $value 常量值
+ * @param string $name  常量名
+ * @param string $value 常量值
+ *
  * @return string $str 返回常量的值
  */
 function tsdefine($name, $value)
@@ -155,7 +157,8 @@ function tsdefine($name, $value)
 /**
  * 返回16位md5值
  *
- * @param  string $str 字符串
+ * @param string $str 字符串
+ *
  * @return string $str 返回16位的字符串
  */
 function tsmd5($str)
@@ -168,6 +171,7 @@ function tsmd5($str)
  *
  * @param  string              $name  配置名/文件名.
  * @param  string|array|object $value 配置赋值
+ *
  * @return void|null
  */
 function tsconfig($name = null, $value = null)
@@ -206,14 +210,15 @@ function tsconfig($name = null, $value = null)
         return $ts['_config'] = array_merge((array) $ts['_config'], array_change_key_case($name));
     }
 
-    return null; // 避免非法参数
+     // 避免非法参数
 }
 
 /**
- * 执行钩子方法
+ * 执行钩子方法.
  *
- * @param  string       $name   钩子方法名.
- * @param  array        $params 钩子参数数组.
+ * @param string $name   钩子方法名.
+ * @param array  $params 钩子参数数组.
+ *
  * @return array|string Stripped array (or string in the callback).
  */
 function tshook($name, $params = array())
@@ -238,7 +243,9 @@ function tshook($name, $params = array())
  *
  * If an array is passed, the array_map() function causes a callback to pass the
  * value back to the function. The slashes from this value will removed.
- * @param  array|string $value The array or string to be striped.
+ *
+ * @param array|string $value The array or string to be striped.
+ *
  * @return array|string Stripped array (or string in the callback).
  */
 function stripslashes_deep($value)
@@ -258,8 +265,10 @@ function stripslashes_deep($value)
 }
 
 /**
- * GPC参数过滤
- * @param  array|string $value The array or string to be striped.
+ * GPC参数过滤.
+ *
+ * @param array|string $value The array or string to be striped.
+ *
  * @return array|string Stripped array (or string in the callback).
  */
 function check_gpc($value = array())

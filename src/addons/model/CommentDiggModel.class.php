@@ -1,24 +1,25 @@
 <?php
 /**
- * 分享赞模型
+ * 分享赞模型.
+ *
  * @version TS3.0
  */
 class CommentDiggModel extends Model
 {
     public $tableName = 'comment_digg';
     protected $fields = array(
-            0 => 'id',
-            1 => 'uid',
-            2 => 'comment_id',
-            3 => 'fid',
-            4 => 'cTime',
+            0     => 'id',
+            1     => 'uid',
+            2     => 'comment_id',
+            3     => 'fid',
+            4     => 'cTime',
             '_pk' => 'id',
     );
 
     public function addDigg($comment_id, $mid)
     {
-        $data ['comment_id'] = $comment_id;
-        $data ['uid'] = $mid;
+        $data['comment_id'] = $comment_id;
+        $data['uid'] = $mid;
         $data['uid'] = !$data['uid'] ? $GLOBALS['ts']['mid'] : $data['uid'];
         if (!$data['uid']) {
             $this->error = '未登录不能赞';
@@ -31,7 +32,7 @@ class CommentDiggModel extends Model
 
             return false;
         }
-        $data ['cTime'] = time();
+        $data['cTime'] = time();
         $res = $this->add($data);
 
         if ($res) {
@@ -89,11 +90,14 @@ class CommentDiggModel extends Model
 
         return $res;
     }
+
     /**
-     * 返回赞列表
-     * @param  unknown_type $map
-     * @param  unknown_type $page  -- 是否分页
-     * @param  unknown_type $limit --分页代表每页条数 不分页表示查询条数
+     * 返回赞列表.
+     *
+     * @param unknown_type $map
+     * @param unknown_type $page  -- 是否分页
+     * @param unknown_type $limit --分页代表每页条数 不分页表示查询条数
+     *
      * @return unknown
      */
     public function getDiggList($map, $page = true, $limit = 20)
@@ -131,6 +135,7 @@ class CommentDiggModel extends Model
 
         return $list;
     }
+
     public function getDiggListPage($map, $limit = 20)
     {
         $list = $this->where($map)->order('id desc')->findPage($limit);
@@ -153,7 +158,7 @@ class CommentDiggModel extends Model
     }
 
     /**
-     * 返回赞过的用户列表
+     * 返回赞过的用户列表.
      */
     public function getDiggUser($map, $page = true, $limit = 20)
     {
@@ -170,14 +175,16 @@ class CommentDiggModel extends Model
     }
 
     /**
-     * 返回指定用户是否赞了指定的分享
-     * @var    $comment_ids 指定的分享数组
-     * @var    $uid         指定的用户
+     * 返回指定用户是否赞了指定的分享.
+     *
+     * @var 指定的分享数组
+     * @var $uid                  指定的用户
+     *
      * @return array
      */
     public function checkIsDigg($comment_ids, $uid)
     {
-        if (! is_array($comment_ids)) {
+        if (!is_array($comment_ids)) {
             $comment_ids = array(
                     $comment_ids,
             );
@@ -192,7 +199,7 @@ class CommentDiggModel extends Model
             $map['uid'] = $uid;
             $list = $this->where($map)->field('comment_id')->findAll();
             foreach ($list as $v) {
-                $res [$v ['comment_id']] = 1;
+                $res[$v['comment_id']] = 1;
             }
             $this->setDiggCache($uid);
         } else {

@@ -6,8 +6,10 @@ define('HAS_MANY', 3);
 define('MANY_TO_MANY', 4);
 /**
  * ThinkPHP Model模型类
- * 实现了ORM和ActiveRecords模式
+ * 实现了ORM和ActiveRecords模式.
+ *
  * @author    liu21st <liu21st@gmail.com>
+ *
  * @version   $Id$
  */
 class Model extends Think
@@ -54,7 +56,8 @@ class Model extends Think
 
     /**
      * 架构函数
-     * 取得DB类的实例对象 字段检查
+     * 取得DB类的实例对象 字段检查.
+     *
      * @param string $name 模型名称
      */
     public function __construct($name = '')
@@ -87,7 +90,7 @@ class Model extends Think
     }
 
     /**
-     * 自动检测数据表信息
+     * 自动检测数据表信息.
      */
     protected function _checkTableInfo()
     {
@@ -113,7 +116,7 @@ class Model extends Think
     }
 
     /**
-     * 获取字段信息并缓存
+     * 获取字段信息并缓存.
      */
     public function flush()
     {
@@ -144,9 +147,11 @@ class Model extends Think
     }
 
     /**
-     * 动态切换扩展模型
+     * 动态切换扩展模型.
+     *
      * @param string $type 模型类型名称
      * @param  mixed  $vars 要传入扩展模型的属性变量
+     *
      * @return Model
      */
     public function switchModel($type, $vars = array())
@@ -169,6 +174,7 @@ class Model extends Think
 
     /**
      * 设置数据对象的值
+     *
      * @param string $name  名称
      * @param mixed  $value 值
      */
@@ -180,7 +186,9 @@ class Model extends Think
 
     /**
      * 获取数据对象的值
-     * @param  string $name 名称
+     *
+     * @param string $name 名称
+     *
      * @return mixed
      */
     public function __get($name)
@@ -190,7 +198,9 @@ class Model extends Think
 
     /**
      * 检测数据对象的值
-     * @param  string $name 名称
+     *
+     * @param string $name 名称
+     *
      * @return bool
      */
     public function __isset($name)
@@ -200,6 +210,7 @@ class Model extends Think
 
     /**
      * 销毁数据对象的值
+     *
      * @param string $name 名称
      */
     public function __unset($name)
@@ -208,9 +219,11 @@ class Model extends Think
     }
 
     /**
-     * 利用__call方法实现一些特殊的Model方法
-     * @param  string $method 方法名称
-     * @param  array  $args   调用参数
+     * 利用__call方法实现一些特殊的Model方法.
+     *
+     * @param string $method 方法名称
+     * @param array  $args   调用参数
+     *
      * @return mixed
      */
     public function __call($method, $args)
@@ -237,15 +250,19 @@ class Model extends Think
             return;
         }
     }
+
     // 回调方法 初始化模型
     protected function _initialize()
     {
     }
+
 //     protected function getSourceInfo() {}
 
      /**
-      * 对保存到数据库的数据进行处理
+      * 对保存到数据库的数据进行处理.
+      *
       * @param mixed $data 要操作的数据
+      *
       * @return bool
       */
      protected function _facade($data)
@@ -277,9 +294,11 @@ class Model extends Think
     }
 
     /**
-     * 新增数据
-     * @param  mixed $data    数据
-     * @param  array $options 表达式
+     * 新增数据.
+     *
+     * @param mixed $data    数据
+     * @param array $options 表达式
+     *
      * @return mixed
      */
     public function add($data = '', $options = array())
@@ -317,20 +336,24 @@ class Model extends Think
 
         return $result;
     }
+
     // 插入数据前的回调方法
     protected function _before_insert(&$data, $options)
     {
     }
+
     // 插入成功后的回调方法
     protected function _after_insert($data, $options)
     {
     }
 
     /**
-     * 通过Select方式添加记录
+     * 通过Select方式添加记录.
+     *
      * @param  string $fields  要插入的数据表字段名
      * @param  string $table   要插入的数据表名
-     * @param  array $options 表达式
+     * @param array $options 表达式
+     *
      * @return bool
      */
     public function selectAdd($fields = '', $table = '', $options = array())
@@ -350,9 +373,11 @@ class Model extends Think
     }
 
     /**
-     * 保存数据
-     * @param  mixed $data    数据
-     * @param  array $options 表达式
+     * 保存数据.
+     *
+     * @param mixed $data    数据
+     * @param array $options 表达式
+     *
      * @return bool
      */
     public function save($data = '', $options = array())
@@ -398,18 +423,22 @@ class Model extends Think
 
         return $result;
     }
+
     // 更新数据前的回调方法
     protected function _before_update(&$data, $options)
     {
     }
+
     // 更新成功后的回调方法
     protected function _after_update($data, $options)
     {
     }
 
     /**
-     * 删除数据
-     * @param  mixed $options 表达式
+     * 删除数据.
+     *
+     * @param mixed $options 表达式
+     *
      * @return mixed
      */
     public function delete($options = array())
@@ -447,14 +476,17 @@ class Model extends Think
         // 返回删除记录个数
         return $result;
     }
+
     // 删除成功后的回调方法
     protected function _after_delete($data, $options)
     {
     }
 
     /**
-     * 查询数据集
-     * @param  array $options 表达式参数
+     * 查询数据集.
+     *
+     * @param array $options 表达式参数
+     *
      * @return mixed
      */
     public function select($options = array())
@@ -472,12 +504,13 @@ class Model extends Think
             return false;
         }
         if (empty($resultSet)) { // 查询结果为空
-            return null;
+            return;
         }
         $this->_after_select($resultSet, $options);
 
         return $resultSet;
     }
+
     // 查询成功后的回调方法
     protected function _after_select(&$resultSet, $options)
     {
@@ -505,11 +538,12 @@ class Model extends Think
             return false;
         }
         if (empty($resultSet)) { // 查询结果为空
-            return null;
+            return;
         }
 
         return $resultSet;
     }
+
     public function getHashList($hashKey = '', $hashValue = '*')
     {
         $options = $this->_parseOptions(array());
@@ -531,14 +565,17 @@ class Model extends Think
             return false;
         }
         if (empty($resultSet)) { // 查询结果为空
-            return null;
+            return;
         }
 
         return $resultSet;
     }
+
     /**
-     * 分析表达式
-     * @param  array $options 表达式参数
+     * 分析表达式.
+     *
+     * @param array $options 表达式参数
+     *
      * @return array
      */
     private function _parseOptions($options)
@@ -574,14 +611,17 @@ class Model extends Think
 
         return $options;
     }
+
     // 表达式过滤回调方法
     protected function _options_filter(&$options)
     {
     }
 
      /**
-      * 查询数据
+      * 查询数据.
+      *
       * @param mixed $options 表达式参数
+      *
       * @return mixed
       */
      public function find($options = array())
@@ -601,13 +641,14 @@ class Model extends Think
          }
          if (empty($resultSet)) {
              // 查询结果为空
-            return null;
+            return;
          }
          $this->data = $resultSet[0];
          $this->_after_find($this->data, $options);
 
          return $this->data;
      }
+
      // 查询成功的回调方法
      protected function _after_find(&$result, $options)
      {
@@ -615,10 +656,12 @@ class Model extends Think
 
     /**
      * 设置记录的某个字段值
-     * 支持使用数据库字段和方法
-     * @param  string|array $field     字段名
-     * @param  string|array $value     字段值
-     * @param  mixed        $condition 条件
+     * 支持使用数据库字段和方法.
+     *
+     * @param string|array $field     字段名
+     * @param string|array $value     字段值
+     * @param mixed        $condition 条件
+     *
      * @return bool
      */
     public function setField($field, $value, $condition = '')
@@ -640,9 +683,11 @@ class Model extends Think
 
     /**
      * 字段值增长
-     * @param  string $field     字段名
-     * @param  mixed  $condition 条件
-     * @param  int    $step      增长值
+     *
+     * @param string $field     字段名
+     * @param mixed  $condition 条件
+     * @param int    $step      增长值
+     *
      * @return bool
      */
     public function setInc($field, $condition = '', $step = 1)
@@ -651,10 +696,12 @@ class Model extends Think
     }
 
     /**
-     * 字段值减少
-     * @param  string $field     字段名
-     * @param  mixed  $condition 条件
-     * @param  int    $step      减少值
+     * 字段值减少.
+     *
+     * @param string $field     字段名
+     * @param mixed  $condition 条件
+     * @param int    $step      减少值
+     *
      * @return bool
      */
     public function setDec($field, $condition = '', $step = 1)
@@ -664,9 +711,11 @@ class Model extends Think
 
     /**
      * 获取一条记录的某个字段值
-     * @param  string $field     字段名
-     * @param  mixed  $condition 查询条件
-     * @param  string $spea      字段数据间隔符号
+     *
+     * @param string $field     字段名
+     * @param mixed  $condition 查询条件
+     * @param string $spea      字段数据间隔符号
+     *
      * @return mixed
      */
     public function getField($field, $condition = '', $sepa = ' ')
@@ -701,14 +750,14 @@ class Model extends Think
                 return reset($result[0]);
             }
         }
-
-        return null;
     }
 
      /**
-      * 创建数据对象 但不保存到数据库
+      * 创建数据对象 但不保存到数据库.
+      *
       * @param mixed $data 创建数据
       * @param string $type 状态
+      *
       * @return mixed
       */
      public function create($data = '', $type = '')
@@ -784,23 +833,25 @@ class Model extends Think
     }
 
     /**
-     * 使用正则验证数据
-     * @param  string $value 要验证的数据
-     * @param  string $rule  验证规则
+     * 使用正则验证数据.
+     *
+     * @param string $value 要验证的数据
+     * @param string $rule  验证规则
+     *
      * @return bool
      */
     public function regex($value, $rule)
     {
         $validate = array(
-            'require' => '/.+/',
-            'email' => '/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/',
-            'url' => '/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/',
+            'require'  => '/.+/',
+            'email'    => '/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/',
+            'url'      => '/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/',
             'currency' => '/^\d+(\.\d+)?$/',
-            'number' => '/\d+$/',
-            'zip' => '/^[1-9]\d{5}$/',
-            'integer' => '/^[-\+]?\d+$/',
-            'double' => '/^[-\+]?\d+(\.\d+)?$/',
-            'english' => '/^[A-Za-z]+$/',
+            'number'   => '/\d+$/',
+            'zip'      => '/^[1-9]\d{5}$/',
+            'integer'  => '/^[-\+]?\d+$/',
+            'double'   => '/^[-\+]?\d+(\.\d+)?$/',
+            'english'  => '/^[A-Za-z]+$/',
         );
         // 检查是否有内置的正则表达式
         if (isset($validate[strtolower($rule)])) {
@@ -811,9 +862,11 @@ class Model extends Think
     }
 
     /**
-     * 自动表单处理
-     * @param  array  $data 创建数据
-     * @param  string $type 创建类型
+     * 自动表单处理.
+     *
+     * @param array  $data 创建数据
+     * @param string $type 创建类型
+     *
      * @return mixed
      */
     private function autoOperation(&$data, $type)
@@ -859,8 +912,10 @@ class Model extends Think
 
     /**
      * 自动表单验证
-     * @param  array  $data 创建数据
-     * @param  string $type 创建类型
+     *
+     * @param array  $data 创建数据
+     * @param string $type 创建类型
+     *
      * @return bool
      */
     private function autoValidation($data, $type)
@@ -916,9 +971,11 @@ class Model extends Think
     }
 
     /**
-     * 根据验证因子验证字段
-     * @param  array  $data 创建数据
-     * @param  string $val  验证规则
+     * 根据验证因子验证字段.
+     *
+     * @param array  $data 创建数据
+     * @param string $val  验证规则
+     *
      * @return bool
      */
     private function _validationField($data, $val)
@@ -966,8 +1023,10 @@ class Model extends Think
     }
 
     /**
-     * SQL查询
-     * @param  mixed $sql SQL指令
+     * SQL查询.
+     *
+     * @param mixed $sql SQL指令
+     *
      * @return mixed
      */
     public function query($sql)
@@ -984,9 +1043,11 @@ class Model extends Think
     }
 
     /**
-     * 执行SQL语句
-     * @param  string $sql SQL指令
-     * @return false  | integer
+     * 执行SQL语句.
+     *
+     * @param string $sql SQL指令
+     *
+     * @return false | integer
      */
     public function execute($sql)
     {
@@ -1002,7 +1063,8 @@ class Model extends Think
     }
 
     /**
-     * 得到当前的数据对象名称
+     * 得到当前的数据对象名称.
+     *
      * @return string
      */
     public function getModelName()
@@ -1016,7 +1078,8 @@ class Model extends Think
     }
 
     /**
-     * 得到完整的数据表名
+     * 得到完整的数据表名.
+     *
      * @return string
      */
     public function getTableName()
@@ -1042,7 +1105,6 @@ class Model extends Think
      * 启动事务
      *
      * 开启事务的同时先提交其他Sql,
-     *
      */
     public function startTrans()
     {
@@ -1052,6 +1114,7 @@ class Model extends Think
 
     /**
      * 提交事务
+     *
      * @return bool
      */
     public function commit()
@@ -1060,7 +1123,8 @@ class Model extends Think
     }
 
     /**
-     * 事务回滚
+     * 事务回滚.
+     *
      * @return bool
      */
     public function rollback()
@@ -1069,7 +1133,8 @@ class Model extends Think
     }
 
     /**
-     * 返回模型的错误信息
+     * 返回模型的错误信息.
+     *
      * @return string
      */
     public function getError()
@@ -1082,7 +1147,8 @@ class Model extends Think
     }
 
     /**
-     * 返回数据库的错误信息
+     * 返回数据库的错误信息.
+     *
      * @return string
      */
     public function getDbError()
@@ -1092,7 +1158,8 @@ class Model extends Think
     }
 
     /**
-     * 返回最后插入的ID
+     * 返回最后插入的ID.
+     *
      * @return string
      */
     public function getLastInsID()
@@ -1101,7 +1168,8 @@ class Model extends Think
     }
 
     /**
-     * 返回最后执行的sql语句
+     * 返回最后执行的sql语句.
+     *
      * @return string
      */
     public function getLastSql()
@@ -1110,7 +1178,8 @@ class Model extends Think
     }
 
     /**
-     * 获取主键名称
+     * 获取主键名称.
+     *
      * @return string
      */
     public function getPk()
@@ -1123,7 +1192,8 @@ class Model extends Think
     }
 
     /**
-     * 获取数据表字段信息
+     * 获取数据表字段信息.
+     *
      * @return array
      */
     public function getDbFields()
@@ -1133,7 +1203,9 @@ class Model extends Think
 
     /**
      * 设置数据对象值
-     * @param  mixed $data 数据
+     *
+     * @param mixed $data 数据
+     *
      * @return Model
      */
     public function data($data)
@@ -1149,8 +1221,10 @@ class Model extends Think
     }
 
     /**
-     * 查询SQL组装 join
-     * @param  mixed $join
+     * 查询SQL组装 join.
+     *
+     * @param mixed $join
+     *
      * @return Model
      */
     public function join($join)
@@ -1166,8 +1240,10 @@ class Model extends Think
 
     /**
      * 设置模型的属性值
-     * @param  string $name  名称
-     * @param  mixed  $value 值
+     *
+     * @param string $name  名称
+     * @param mixed  $value 值
+     *
      * @return Model
      */
     public function setProperty($name, $value)
@@ -1180,9 +1256,11 @@ class Model extends Think
     }
 
     /**
-     * 统计满足条件的记录个数
-     * @param  mixed  $condition 条件
-     * @param  string $field     要统计的字段 默认为*
+     * 统计满足条件的记录个数.
+     *
+     * @param mixed  $condition 条件
+     * @param string $field     要统计的字段 默认为*
+     *
      * @return int
      */
     public function count($options = array(), $field = '1')
@@ -1202,9 +1280,11 @@ class Model extends Think
     }
 
     /**
-     * 分页查询数据
-     * @param  mixed $options 表达式参数
-     * @param  mixed $pageopt 分页参数
+     * 分页查询数据.
+     *
+     * @param mixed $options 表达式参数
+     * @param mixed $pageopt 分页参数
+     *
      * @return mixed
      */
     public function findPage($pageopt = 20, $count = false, $options = array())
@@ -1271,9 +1351,11 @@ class Model extends Think
     }
 
     /**
-     * 通过SQL语句，分页查询数据
-     * @param  mixed $options 表达式参数
-     * @param  mixed $pageopt 分页参数
+     * 通过SQL语句，分页查询数据.
+     *
+     * @param mixed $options 表达式参数
+     * @param mixed $pageopt 分页参数
+     *
      * @return mixed
      */
     public function findPageBySql($sql, $count = null, $pagesize = null)
@@ -1330,10 +1412,12 @@ class Model extends Think
     }
 
     /**
-     * 执行SQL文件
-     * @param  string $file       要执行的sql文件路径
-     * @param  bool   $stop       遇错是否停止  默认为true
-     * @param  string $db_charset 数据库编码 默认为utf-8
+     * 执行SQL文件.
+     *
+     * @param string $file       要执行的sql文件路径
+     * @param bool   $stop       遇错是否停止  默认为true
+     * @param string $db_charset 数据库编码 默认为utf-8
+     *
      * @return array
      */
     public function executeSqlFile($file, $stop = true, $db_charset = 'utf-8')
@@ -1341,7 +1425,7 @@ class Model extends Think
         if (!is_readable($file)) {
             $error = array(
                         'error_code' => 'SQL文件不可读',
-                        'error_sql' => '',
+                        'error_sql'  => '',
                      );
 
             return $error;
@@ -1370,7 +1454,7 @@ class Model extends Think
                 if ($res === false) {
                     $error[] = array(
                                 'error_code' => $this->getDbError(),
-                                'error_sql' => $query,
+                                'error_sql'  => $query,
                                );
 
                     if ($stop) {
@@ -1384,8 +1468,10 @@ class Model extends Think
     }
 
     /**
-     * 清理缓存
-     * @param  mixed $param
+     * 清理缓存.
+     *
+     * @param mixed $param
+     *
      * @return bool
      */
     public function cleanCache($param)

@@ -1,8 +1,11 @@
 <?php
 /**
- * 分享发布框
+ * 分享发布框.
+ *
  * @example {:W('SendWeibo',array('send_type'=>'repost_weibo','oldUid'=>$oldInfo['source_user_info']['uid'],'space_link'=>$oldInfo['source_user_info']['space_link'],'sid'=>$shareInfo['sid'],'app_name'=>$shareInfo['appname'],'stype'=>$shareInfo['stable'],'initHtml'=>$shareInfo['initHTML'],'curid'=>$shareInfo['curid'],'curtable'=>$shareInfo['curtable'],'cancomment'=>$shareInfo['cancomment']))}
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class SendWeiboWidget extends Widget
@@ -11,13 +14,16 @@ class SendWeiboWidget extends Widget
 
     /**
      * 渲染分享发布框模板
+     *
      * @example
      * $data['send_type'] string 分享发送类型
      * $data['app_name'] string 发布分享所在的应用名称
      * $data['initHtml'] string 发布分享框中的默认内容
      * $data['cancomment'] integer 是否可以评论
      *$data['channelID']  发布到某个频道的id
+     *
      * @param  array  $data 发布分享框的配置参数
+     *
      * @return string 渲染后的模板内容
      */
     public function render($data)
@@ -48,7 +54,7 @@ class SendWeiboWidget extends Widget
             !isset($var['actions'][$value]) && $var['actions'][$value] = true;
         }
         // 只有发言模板
-        $var['speak'] = $data['speak'] ;
+        $var['speak'] = $data['speak'];
 
         $var['isHome'] = (APP_NAME == 'public' && MODULE_NAME == 'Index' && ACTION_NAME == 'index');
 

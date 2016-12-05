@@ -1,6 +1,7 @@
 <?php
 /**
- * 话题模型
+ * 话题模型.
+ *
  * @version TS3.0
  */
 class FeedTopicAdminModel extends Model
@@ -8,8 +9,10 @@ class FeedTopicAdminModel extends Model
     //var $tableName = 'feed_topic';
 
     /**
-     * 获取全部话题
+     * 获取全部话题.
+     *
      * @param int limit 每页显示条数
+     *
      * @return array 话题列表
      */
     public function getTopic($limit = 20, $isrecommend = 0)
@@ -56,8 +59,10 @@ class FeedTopicAdminModel extends Model
     }
 
     /**
-     * 后台添加话题
+     * 后台添加话题.
+     *
      * @param array data 要添加的话题信息
+     *
      * @return bool 是否成功
      */
     public function addTopic($data)

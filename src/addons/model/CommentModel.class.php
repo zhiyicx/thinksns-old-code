@@ -1,7 +1,9 @@
 <?php
 /**
- * 评论模型 - 数据对象模型
+ * 评论模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class CommentModel extends Model
@@ -16,8 +18,10 @@ class CommentModel extends Model
     // private static $infoList = array();
 
     /**
-     * 设置所属应用
-     * @param  string $app 应用名称
+     * 设置所属应用.
+     *
+     * @param string $app 应用名称
+     *
      * @return object 评论对象
      */
     public function setAppName($app)
@@ -28,8 +32,10 @@ class CommentModel extends Model
     }
 
     /**
-     * 设置相关内容所存储的资源表
-     * @param  string $app_table 数据表名
+     * 设置相关内容所存储的资源表.
+     *
+     * @param string $app_table 数据表名
+     *
      * @return object 评论对象
      */
     public function setAppTable($app_table)
@@ -38,10 +44,13 @@ class CommentModel extends Model
 
         return $this;
     }
+
     /**
-     * 设置所需的参数
-     * @param  string $app       应用名称
-     * @param  string $app_table 数据表名
+     * 设置所需的参数.
+     *
+     * @param string $app       应用名称
+     * @param string $app_table 数据表名
+     *
      * @return object 评论对象
      */
     public function init($app, $app_table)
@@ -51,9 +60,12 @@ class CommentModel extends Model
 
         return $this;
     }
+
     /**
-     * 获取评论的种类，用于评论的Tab
+     * 获取评论的种类，用于评论的Tab.
+     *
      * @param array $map 查询条件
+     *
      * @return array 评论种类与其资源数目
      */
     public function getTab($map)
@@ -80,12 +92,14 @@ class CommentModel extends Model
     }
 
     /**
-     * 获取评论列表，已在后台被使用
-     * @param  array  $map     查询条件
-     * @param  string $order   排序条件，默认为comment_id ASC
-     * @param  int    $limit   结果集数目，默认为10
-     * @param  bool   $isReply 是否显示回复信息
-     * @return array  评论列表信息
+     * 获取评论列表，已在后台被使用.
+     *
+     * @param array  $map     查询条件
+     * @param string $order   排序条件，默认为comment_id ASC
+     * @param int    $limit   结果集数目，默认为10
+     * @param bool   $isReply 是否显示回复信息
+     *
+     * @return array 评论列表信息
      */
     public function getCommentList($map = null, $order = 'comment_id ASC', $limit = 10, $isReply = false)
     {
@@ -126,9 +140,11 @@ class CommentModel extends Model
     }
 
     /**
-     * 获取评论信息
-     * @param  int   $id     评论ID
-     * @param  bool  $source 是否显示资源信息，默认为true
+     * 获取评论信息.
+     *
+     * @param int  $id     评论ID
+     * @param bool $source 是否显示资源信息，默认为true
+     *
      * @return array 获取评论信息
      */
     public function getCommentInfo($id, $source = true)
@@ -155,12 +171,14 @@ class CommentModel extends Model
     }
 
     /**
-     * 添加评论操作
-     * @param  array $data     评论数据
-     * @param  bool  $forApi   是否用于API，默认为false
-     * @param  bool  $notCount 是否统计到未读评论
-     * @param  array $lessUids 除去@用户ID
-     * @return bool  是否添加评论成功
+     * 添加评论操作.
+     *
+     * @param array $data     评论数据
+     * @param bool  $forApi   是否用于API，默认为false
+     * @param bool  $notCount 是否统计到未读评论
+     * @param array $lessUids 除去@用户ID
+     *
+     * @return bool 是否添加评论成功
      */
     public function addComment($data, $forApi = false, $notCount = false, $lessUids = null)
     {
@@ -287,7 +305,8 @@ class CommentModel extends Model
     }
 
     /**
-     * 将指定用户的评论，全部设置为已读
+     * 将指定用户的评论，全部设置为已读.
+     *
      * @param int $uid 用户UID
      */
     public function setUnreadCountToZero($uid)
@@ -296,7 +315,8 @@ class CommentModel extends Model
     }
 
     /**
-     * 获取指定用户的评论，未读评论数
+     * 获取指定用户的评论，未读评论数.
+     *
      * @param int $uid 用户UID
      */
     public function getUnreadCount($uid)
@@ -305,11 +325,13 @@ class CommentModel extends Model
     }
 
     /**
-     * 删除评论
-     * @param  array $app_name 评论所属应用   积分加减时用到
-     * @param  array $ids      评论ID数组
-     * @param  int   $uid      用户UID
-     * @return bool  是否删除评论成功
+     * 删除评论.
+     *
+     * @param array $app_name 评论所属应用   积分加减时用到
+     * @param array $ids      评论ID数组
+     * @param int   $uid      用户UID
+     *
+     * @return bool 是否删除评论成功
      */
     public function deleteComment($ids, $uid = null, $app_name = 'public')
     {
@@ -390,10 +412,12 @@ class CommentModel extends Model
     }
 
     /**
-     * 评论处理方法，包含彻底删除、假删除与恢复功能
+     * 评论处理方法，包含彻底删除、假删除与恢复功能.
+     *
      * @param int    $id   评论ID
      * @param string $type 操作类型，delComment假删除、deleteComment彻底删除、commentRecover恢复
      * @param  string $title 提示语言所附加的内容
+     *
      * @return array 评论处理后，返回的数组操作信息
      */
     public function doEditComment($id, $type, $title)
@@ -423,8 +447,10 @@ class CommentModel extends Model
     }
 
     /**
-     * 评论恢复操作
-     * @param  int  $id 评论ID
+     * 评论恢复操作.
+     *
+     * @param int $id 评论ID
+     *
      * @return bool 评论是否恢复成功
      */
     public function commentRecover($id)
@@ -452,8 +478,10 @@ class CommentModel extends Model
     }
 
     /**
-     * 审核通过评论
-     * @param  int   $comment_id 评论ID
+     * 审核通过评论.
+     *
+     * @param int $comment_id 评论ID
+     *
      * @return array 评论操作后的结果信息数组
      */
     public function doAuditComment($comment_id)
@@ -474,8 +502,10 @@ class CommentModel extends Model
     }
 
     /**
-     * 检测数据安全性
+     * 检测数据安全性.
+     *
      * @param  array $data 待检测的数据
+     *
      * @return array 验证后的数据
      */
     private function _escapeData($data)
@@ -499,15 +529,18 @@ class CommentModel extends Model
     }
 
     /*** API使用 ***/
+
     /**
-     * 获取评论列表，API使用
-     * @param  string $where    查询条件
-     * @param  int    $since_id 主键起始ID，默认为0
-     * @param  int    $max_id   主键最大ID，默认为0
-     * @param  int    $limit    每页结果集数目，默认为20
-     * @param  int    $page     页数，默认为1
-     * @param  bool   $source   是否获取资源信息，默认为false
-     * @return array  评论列表数据
+     * 获取评论列表，API使用.
+     *
+     * @param string $where    查询条件
+     * @param int    $since_id 主键起始ID，默认为0
+     * @param int    $max_id   主键最大ID，默认为0
+     * @param int    $limit    每页结果集数目，默认为20
+     * @param int    $page     页数，默认为1
+     * @param bool   $source   是否获取资源信息，默认为false
+     *
+     * @return array 评论列表数据
      */
     public function getCommentListForApi($where = '', $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $source = false)
     {
@@ -539,11 +572,13 @@ class CommentModel extends Model
 
     /**
      * 设置资源评论的绝对楼层
-     * @param  int    $rowId 资源ID
-     * @param  string $app   应用名称
-     * @param  string $table 资源表名称
-     * @param  bool   $inc   是否自增，默认为true
-     * @return int    楼层ID
+     *
+     * @param int    $rowId 资源ID
+     * @param string $app   应用名称
+     * @param string $table 资源表名称
+     * @param bool   $inc   是否自增，默认为true
+     *
+     * @return int 楼层ID
      */
     public function getStorey($rowId, $app, $table, $inc = true)
     {

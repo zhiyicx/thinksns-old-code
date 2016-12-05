@@ -11,16 +11,17 @@
 // +----------------------------------------------------------------------
 
 /**
- * Memcache缓存驱动
+ * Memcache缓存驱动.
+ *
  * @category   Extend
- * @package  Extend
- * @subpackage  Driver.Cache
+ *
  * @author    liu21st <liu21st@gmail.com>
  */
 class CacheMemcache extends Cache
 {
     /**
-     * 架构函数
+     * 架构函数.
+     *
      * @param array $options 缓存参数
      */
     public function __construct($options = array())
@@ -40,11 +41,11 @@ class CacheMemcache extends Cache
         }
         if (empty($options)) {
             $options = array(
-                'host' => $hosts[0]['host'],
-                'port' => $hosts[0]['port'],
-                'timeout' => C('DATA_CACHE_TIMEOUT') ? C('DATA_CACHE_TIMEOUT') : false,
+                'host'       => $hosts[0]['host'],
+                'port'       => $hosts[0]['port'],
+                'timeout'    => C('DATA_CACHE_TIMEOUT') ? C('DATA_CACHE_TIMEOUT') : false,
                 'persistent' => false,
-                'servers' => $hosts,
+                'servers'    => $hosts,
             );
         }
         $this->options = $options;
@@ -52,7 +53,7 @@ class CacheMemcache extends Cache
         $this->options['prefix'] = isset($options['prefix']) ? $options['prefix'] : C('DATA_CACHE_PREFIX');
         $this->options['length'] = isset($options['length']) ? $options['length'] : 0;
         $func = $options['persistent'] ? 'pconnect' : 'connect';
-        $this->handler = new Memcache;
+        $this->handler = new Memcache();
         //Memcache集群支持
         if (isset($hosts[1])) {
             foreach ($hosts as $host) {
@@ -69,8 +70,10 @@ class CacheMemcache extends Cache
     }
 
     /**
-     * 读取缓存
-     * @param  string $name 缓存变量名
+     * 读取缓存.
+     *
+     * @param string $name 缓存变量名
+     *
      * @return mixed
      */
     public function get($name)
@@ -81,8 +84,10 @@ class CacheMemcache extends Cache
     }
 
     /**
-     * 批量读取缓存
-     * @param  string $prefix 缓存前缀
+     * 批量读取缓存.
+     *
+     * @param string $prefix 缓存前缀
+     *
      * @return mixed
      */
     public function getMulti($prefix, $key)
@@ -96,7 +101,7 @@ class CacheMemcache extends Cache
 
         foreach ($result as $k => $v) {
             $k = str_replace($this->options['prefix'].$prefix, '', $k);
-            $data[ $k ] = $v;
+            $data[$k] = $v;
         }
         unset($result);
 
@@ -104,10 +109,12 @@ class CacheMemcache extends Cache
     }
 
     /**
-     * 写入缓存
-     * @param  string $name   缓存变量名
-     * @param  mixed  $value  存储数据
-     * @param  int    $expire 有效时间（秒）
+     * 写入缓存.
+     *
+     * @param string $name   缓存变量名
+     * @param mixed  $value  存储数据
+     * @param int    $expire 有效时间（秒）
+     *
      * @return boolen
      */
     public function set($name, $value, $expire = null)
@@ -130,8 +137,10 @@ class CacheMemcache extends Cache
     }
 
     /**
-     * 删除缓存
-     * @param  string $name 缓存变量名
+     * 删除缓存.
+     *
+     * @param string $name 缓存变量名
+     *
      * @return boolen
      */
     public function rm($name, $ttl = false)
@@ -144,7 +153,8 @@ class CacheMemcache extends Cache
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
+     *
      * @return boolen
      */
     public function clear()

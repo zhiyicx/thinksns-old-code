@@ -1,7 +1,9 @@
 <?php
 /**
- * TS插件 - 天气预报插件
+ * TS插件 - 天气预报插件.
+ *
  * @author 程序_小时代
+ *
  * @version TS3.0
  */
 class InviteTestAddons extends NormalAddons
@@ -14,7 +16,7 @@ class InviteTestAddons extends NormalAddons
     protected $tsVersion = '4.0';
 
     /**
-     * 获的改插件使用了那些钩子聚合类
+     * 获的改插件使用了那些钩子聚合类.
      */
     public function getHooksInfo()
     {
@@ -24,15 +26,16 @@ class InviteTestAddons extends NormalAddons
     }
 
     /**
-     * 后台管理入口
+     * 后台管理入口.
+     *
      * @return array 管理相关数据
      */
     public function adminMenu()
     {
         $menu = array(
-            'invite' => '邀请码管理',
+            'invite'    => '邀请码管理',
             'addinvite' => '添加邀请码',
-            'config' => '邀请配置',
+            'config'    => '邀请配置',
         );
 
         return $menu;
@@ -43,7 +46,8 @@ class InviteTestAddons extends NormalAddons
     }
 
     /**
-     * 插件安装入口
+     * 插件安装入口.
+     *
      * @return bool 是否安装成功
      */
     public function install()
@@ -69,7 +73,8 @@ class InviteTestAddons extends NormalAddons
     }
 
     /**
-     * 插件卸载
+     * 插件卸载.
+     *
      * @return bool
      */
     public function uninstall()

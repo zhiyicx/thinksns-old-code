@@ -1,13 +1,14 @@
 <?php
 /**
- * 系统分享类
- * @author Stream
+ * 系统分享类.
  *
+ * @author Stream
  */
 class DiyWeibo extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签
+     * 是否是封闭的标签.
+     *
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
@@ -17,18 +18,21 @@ class DiyWeibo extends TagsAbstract
     public function __construct()
     {
     }
+
     public function getTagStatus()
     {
         return self::$TAG_CLOSED;
     }
+
     /**
-     * 返回模板文件
+     * 返回模板文件.
+     *
      * @see TagsAbstract::getTemplateFile()
      */
     public function getTemplateFile($tpl = '')
     {
         //返回需要渲染的模板
-        $file = $this->attr ['style'];
+        $file = $this->attr['style'];
         if (!empty($tpl)) {
             $file = $tpl;
         }
@@ -37,7 +41,8 @@ class DiyWeibo extends TagsAbstract
     }
 
     /**
-     * 参数处理
+     * 参数处理.
+     *
      * @see TagsAbstract::replace()
      */
     public function replace()

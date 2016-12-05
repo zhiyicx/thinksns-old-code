@@ -1,7 +1,9 @@
 <?php
 /**
- * 用户档案模型 - 数据对象模型
+ * 用户档案模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class UserProfileModel extends Model
@@ -16,7 +18,8 @@ class UserProfileModel extends Model
     public static $sysProfile = array('intro', 'work_position', 'mobile', 'tel', 'work_director', 'department');            // 系统默认的字段，用户数据里面必须有的
 
     /**
-     * 获取用户的分类信息列表
+     * 获取用户的分类信息列表.
+     *
      * @return array 用户的分类信息列表
      */
     public function getCategoryList()
@@ -28,9 +31,11 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 获取用户资料配置信息 - 不分页型
+     * 获取用户资料配置信息 - 不分页型.
+     *
      * @param array  $map   查询条件
      * @param string $order 排序条件
+     *
      * @return array  用户资料配置信息
      */
     public function getUserProfileSetting($map = null, $order = 'field_key, display_order ASC')
@@ -47,9 +52,11 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 获取用户资料配置信息的树形结构，已分类进行树形分类
+     * 获取用户资料配置信息的树形结构，已分类进行树形分类.
+     *
      * @param array  $map   查询条件
      * @param string $order 排序条件
+     *
      * @return array  用户资料配置信息的树形结构，已分类进行树形分类
      */
     public function getUserProfileSettingTree($map = null, $order = 'field_key, display_order ASC')
@@ -61,8 +68,10 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 删除指定的资料配置字段
+     * 删除指定的资料配置字段.
+     *
      * @param  array $filed_ids 配置字段ID数组
+     *
      * @return bool 是否删除成功
      */
     public function deleteProfileSet($filed_ids)
@@ -85,9 +94,11 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 获取指定用户的档案信息
-     * @param  integet $uid 用户UID
-     * @return array   指定用户的档案信息
+     * 获取指定用户的档案信息.
+     *
+     * @param integet $uid 用户UID
+     *
+     * @return array 指定用户的档案信息
      */
     public function getUserProfile($uid)
     {
@@ -107,7 +118,8 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 清除指定用户的档案缓存
+     * 清除指定用户的档案缓存.
+     *
      * @param array $uids 用户UID数组
      */
     public function cleanCache($uids)
@@ -123,10 +135,12 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 批量获取多个用户的档案信息
-     * @param  array  $uids     用户UID数组
-     * @param  string $category 字段类型，未使用
-     * @return array  多个用户的档案信息
+     * 批量获取多个用户的档案信息.
+     *
+     * @param array  $uids     用户UID数组
+     * @param string $category 字段类型，未使用
+     *
+     * @return array 多个用户的档案信息
      */
     public function getUserProfileByUids($uids, $category = null)
     {
@@ -141,20 +155,21 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 获取用户配置信息字段信息
+     * 获取用户配置信息字段信息.
+     *
      * @return array 用户配置信息字段信息
      */
     public function getUserProfileInputType()
     {
         $input_type = array(
-            'input' => L('PUBLIC_INPUT_FORM'),                    // 输入表单
-            'inputnums' => L('PUBLIC_NUM_INPUT'),                // 纯数字input输入
-            'textarea' => L('PUBLIC_SEVERAL_TEXTFIELD'),            // 多行文本
-            'select' => L('PUBLIC_DROPDOWN_MENU'),                // 下拉菜单
-            'radio' => L('PUBLIC_RADIO_BUTTON'),                    // 单选框
-            'checkbox' => L('PUBLIC_CHECK_BOX'),                    // 复选框
-            'date' => L('PUBLIC_TIME_SELECT'),                    // 时间选择
-            'selectUser' => L('PUBLIC_USER_SELECT'),                // 用户选择
+            'input'        => L('PUBLIC_INPUT_FORM'),                    // 输入表单
+            'inputnums'    => L('PUBLIC_NUM_INPUT'),                // 纯数字input输入
+            'textarea'     => L('PUBLIC_SEVERAL_TEXTFIELD'),            // 多行文本
+            'select'       => L('PUBLIC_DROPDOWN_MENU'),                // 下拉菜单
+            'radio'        => L('PUBLIC_RADIO_BUTTON'),                    // 单选框
+            'checkbox'     => L('PUBLIC_CHECK_BOX'),                    // 复选框
+            'date'         => L('PUBLIC_TIME_SELECT'),                    // 时间选择
+            'selectUser'   => L('PUBLIC_USER_SELECT'),                // 用户选择
             'selectDepart' => L('PUBLIC_DEPARTMENT_SELECT'),        // 部门选择
         );
 
@@ -162,10 +177,12 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 保存指定用户的档案信息
-     * @param  int   $uid  用户UID
-     * @param  array $data 用户档案信息
-     * @return bool  是否保存成功
+     * 保存指定用户的档案信息.
+     *
+     * @param int   $uid  用户UID
+     * @param array $data 用户档案信息
+     *
+     * @return bool 是否保存成功
      */
     public function saveUserProfile($uid, $data)
     {
@@ -235,9 +252,11 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 获取汇报关系，由上级至下级
+     * 获取汇报关系，由上级至下级.
+     *
      * @param int $uid   用户UID
      * @param int $level 显示的层级值
+     *
      * @return array 汇报关系树形结构
      */
     public function getUserWorkDirectorTree($uid, $level = 3)
@@ -245,7 +264,7 @@ class UserProfileModel extends Model
         // 由下级至上级
         $director_uid = $uid;
         $tree = array($director_uid);
-        for ($i = 1; $i < $level; $i ++) {
+        for ($i = 1; $i < $level; $i++) {
             $director_uid = $this->_getWorkDirector($director_uid);
             if ($director_uid) {
                 $tree[] = (int) $director_uid;
@@ -259,11 +278,14 @@ class UserProfileModel extends Model
     }
 
     /*** 私有方法 ***/
+
     /**
-     * 获取用户资料字段信息
-     * @param  array  $map   查询条件
-     * @param  string $order 排序条件
-     * @return array  用户资料字段信息
+     * 获取用户资料字段信息.
+     *
+     * @param array  $map   查询条件
+     * @param string $order 排序条件
+     *
+     * @return array 用户资料字段信息
      */
     private function _getUserProfileSetting($map = null, $order = 'display_order,field_id ASC')
     {
@@ -273,8 +295,10 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 格式化用户资料字段信息
-     * @param  array $setting 用户资料字段信息
+     * 格式化用户资料字段信息.
+     *
+     * @param array $setting 用户资料字段信息
+     *
      * @return array 格式化后的用户资料字段信息
      */
     private function _formatUserProfileSetting($setting)
@@ -288,9 +312,11 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 生成用户字段配置的树形结构，递归方法
+     * 生成用户字段配置的树形结构，递归方法.
+     *
      * @param  array $setting    用户字段配置信息
      * @param int $parent_key 父级的Key值
+     *
      * @return array 用户字段配置的树形结构
      */
     private function _makeUserProfileSettingTree($setting, $parent_key = 0)
@@ -308,8 +334,10 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 格式化用户的档案数据
-     * @param  array $profile 档案数据
+     * 格式化用户的档案数据.
+     *
+     * @param array $profile 档案数据
+     *
      * @return array 格式化后的用户档案数据
      */
     private function _formatUserProfile($profile)
@@ -323,8 +351,10 @@ class UserProfileModel extends Model
     }
 
     /**
-     * 获取指定用户的直接领导的UID
-     * @param  int $uid 用户UID
+     * 获取指定用户的直接领导的UID.
+     *
+     * @param int $uid 用户UID
+     *
      * @return int 指定用户的直接领导的UID
      */
     private function _getWorkDirector($uid)
@@ -338,9 +368,12 @@ class UserProfileModel extends Model
     }
 
     /*** API使用 ***/
+
     /**
-     * 获取指定用户的档案信息，API使用
-     * @param  int   $uid 用户UID
+     * 获取指定用户的档案信息，API使用.
+     *
+     * @param int $uid 用户UID
+     *
      * @return array 指定用户的档案信息
      */
     public function getUserProfileForApi($uid)

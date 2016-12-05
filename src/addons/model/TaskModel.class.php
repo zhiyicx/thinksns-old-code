@@ -1,8 +1,8 @@
 <?php
 /**
- * 任务Dao类
- * @author Stream
+ * 任务Dao类.
  *
+ * @author Stream
  */
 class TaskModel extends Model
 {
@@ -17,6 +17,7 @@ class TaskModel extends Model
         //返回用户当前执行的任务名称及任务等级 和类型
         return $data;
     }
+
     public function getTaskList($tasktype, $uid, $show = '')
     {
         $tasklevel = 1;
@@ -40,11 +41,11 @@ class TaskModel extends Model
 // 		dump($this->getLastSql());
         $steps = array();
         foreach ($steplist as $s) {
-            if (! empty($s ['headface'])) {
-                $attach = explode('|', $s ['headface']);
-                $steps [$s ['id']] ['headface'] = getImageUrl($attach [1]);
+            if (!empty($s['headface'])) {
+                $attach = explode('|', $s['headface']);
+                $steps[$s['id']]['headface'] = getImageUrl($attach[1]);
             } else {
-                $steps [$s ['id']] ['headface'] = '';
+                $steps[$s['id']]['headface'] = '';
             }
             $steps[$s['id']]['step_name'] = $s['step_name'];
             $steps[$s['id']]['step_desc'] = $s['step_desc'];
@@ -139,7 +140,7 @@ class TaskModel extends Model
         }
     }
 
-    public function completeTask($tasktype, $tasklevel = 1, $uid)
+    public function completeTask($tasktype, $tasklevel, $uid)
     {
         $complete = D('task_user')->where('status=0 and task_type='.$tasktype.' and task_level='.$tasklevel.' and uid='.$uid)->find();
             //是否完成
@@ -170,6 +171,7 @@ class TaskModel extends Model
                 return $res;
             }
     }
+
     public function addTask($map, $uid)
     {
         //查询新的任务进程
@@ -388,8 +390,10 @@ class TaskModel extends Model
         // dump($excutetype.'-'.intval($rescount).' / '.$num);
         return $rescount >= $num;
     }
+
     /**
-     * 领取奖励
+     * 领取奖励.
+     *
      * @param unknown_type $exp
      * @param unknown_type $score
      * @param unknown_type $medal
@@ -411,7 +415,8 @@ class TaskModel extends Model
     }
 
     /**
-     * 设置统计数据Hash数据
+     * 设置统计数据Hash数据.
+     *
      * @param string key 键值
      * @param string progressRate 进度比
      */
@@ -421,8 +426,10 @@ class TaskModel extends Model
     }
 
     /**
-     * 获取统计数据Hash数据
+     * 获取统计数据Hash数据.
+     *
      * @param string key 键值
+     *
      * @return array 统计数据Hash数据
      */
     private function getAmountHash($key)

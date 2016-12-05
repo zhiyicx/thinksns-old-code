@@ -1,7 +1,9 @@
 <?php
 /**
- * ThinkSNS API接口抽象类
+ * ThinkSNS API接口抽象类.
+ *
  * @author liuxiaoqing@zhishisoft.com
+ *
  * @version TS4.0
  */
 class Api
@@ -18,14 +20,15 @@ class Api
     public $error;
 
     /**
-     * 架构函数
+     * 架构函数.
+     *
      * @param bool $location 是否本机调用，本机调用不需要认证
      */
     public function __construct($location = false)
     {
         //$this->mid = $_SESSION['mid'];
         //外部接口调用
-        if ($location == false && !defined('DEBUG')) {
+        if ($location == false && (!defined('DEBUG') || !DEBUG)) {
             $this->verifyUser();
         //本机调用
         } else {
@@ -75,9 +78,9 @@ class Api
         }
 
         if (isset($acl['access'][MODULE_NAME.'/'.ACTION_NAME])) {
-            $canaccess = (boolean) $acl['access'][MODULE_NAME.'/'.ACTION_NAME];
+            $canaccess = (bool) $acl['access'][MODULE_NAME.'/'.ACTION_NAME];
         } elseif (isset($acl['access'][MODULE_NAME.'/*'])) {
-            $canaccess = (boolean) $acl['access'][MODULE_NAME.'/*'];
+            $canaccess = (bool) $acl['access'][MODULE_NAME.'/*'];
         } else {
             $canaccess = false;
         }
@@ -163,7 +166,8 @@ class Api
     }
 
     /**
-     * 输出API认证失败信息
+     * 输出API认证失败信息.
+     *
      * @return object|json
      */
     protected function verifyError()
@@ -178,7 +182,8 @@ class Api
 
     /**
      * 通过api方法调用API时的赋值
-     * api('WeiboStatuses')->data($data)->public_timeline();
+     * api('WeiboStatuses')->data($data)->public_timeline();.
+     *
      * @param array $data 方法调用时的参数
      */
     public function data($data)
@@ -249,7 +254,7 @@ class Api
     }
 
     /**
-     * 运行控制器
+     * 运行控制器.
      */
     public static function run()
     {
@@ -290,7 +295,7 @@ class Api
         if (!file_exists($class_file)) {
             $message['msg'] = '接口不存在';
             $message['status'] = 404;
-            API::error($message);
+            self::error($message);
         }
 
         //执行当前操作
@@ -322,12 +327,10 @@ class Api
         if (C('LOG_RECORD')) {
             Log::save();
         }
-
-        return ;
     }
 
     /**
-     * app异常处理
+     * app异常处理.
      */
     public static function appException($e)
     {
@@ -335,7 +338,8 @@ class Api
     }
 
     /**
-     * 自定义错误处理
+     * 自定义错误处理.
+     *
      * @param int    $errno   错误类型
      * @param string $errstr  错误信息
      * @param string $errfile 错误文件

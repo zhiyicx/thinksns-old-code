@@ -1,7 +1,9 @@
 <?php
 /**
- * 用户组关联模型 - 数据对象模型
+ * 用户组关联模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class UserGroupLinkModel extends Model
@@ -10,10 +12,12 @@ class UserGroupLinkModel extends Model
     protected $fields = array(0 => 'id', 1 => 'uid', 2 => 'user_group_id');
 
     /**
-     * 转移用户的用户组
-     * @param  string $uids          用户UID，多个用“，”分割
-     * @param  string $user_group_id 用户组ID，多个用“，”分割
-     * @return bool   是否转移成功
+     * 转移用户的用户组.
+     *
+     * @param string $uids          用户UID，多个用“，”分割
+     * @param string $user_group_id 用户组ID，多个用“，”分割
+     *
+     * @return bool 是否转移成功
      */
     public function domoveUsergroup($uids, $user_group_id)
     {
@@ -54,8 +58,10 @@ class UserGroupLinkModel extends Model
     }
 
     /**
-     * 获取用户的用户组信息
-     * @param  array $uids 用户UID数组
+     * 获取用户的用户组信息.
+     *
+     * @param array $uids 用户UID数组
+     *
      * @return array 用户的用户组信息
      */
     public function getUserGroup($uids)
@@ -81,8 +87,10 @@ class UserGroupLinkModel extends Model
     }
 
     /**
-     * 获取用户所在用户组详细信息
-     * @param  array $uids 用户UID数组
+     * 获取用户所在用户组详细信息.
+     *
+     * @param array $uids 用户UID数组
+     *
      * @return array 用户的用户组详细信息
      */
     public function getUserGroupData($uids)

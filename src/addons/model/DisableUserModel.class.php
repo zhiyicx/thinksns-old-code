@@ -28,7 +28,7 @@ class DisableUserModel extends Model
 
         S('is_disable_user_'.$disableItem.'_'.$uid, null);
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     public function getDisableUser($uid)
@@ -92,7 +92,7 @@ class DisableUserModel extends Model
         S('is_disable_user_login_'.$uid, null);
         S('is_disable_user_post_'.$uid, null);
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     public function isDisableUser($uid, $type = 'login')

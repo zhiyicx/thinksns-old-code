@@ -1,7 +1,9 @@
 <?php
 /**
- * 注册模型 - 数据对象模型
+ * 注册模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class RegisterModel extends Model
@@ -25,10 +27,12 @@ class RegisterModel extends Model
     }
 
     /**
-     * 验证邀请邮件内容的正确性
-     * @param  string $email     邀请邮箱的信息
-     * @param  string $old_email 原始邮箱的信息
-     * @return bool   是否验证成功
+     * 验证邀请邮件内容的正确性.
+     *
+     * @param string $email     邀请邮箱的信息
+     * @param string $old_email 原始邮箱的信息
+     *
+     * @return bool 是否验证成功
      */
     public function isValidEmail_invite($email, $old_email = null)
     {
@@ -45,15 +49,17 @@ class RegisterModel extends Model
             $res = false;
         }
 
-        return (boolean) $res;
+        return (bool) $res;
     }
 
     /**
-     * 验证邮箱正确性
+     * 验证邮箱正确性.
      *
-     * @param  string $email    邮箱地址
-     * @param  string $oldEmail 旧邮箱地址
+     * @param string $email    邮箱地址
+     * @param string $oldEmail 旧邮箱地址
+     *
      * @return bool
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function isValidEmail($email, $oldEmail = null)
@@ -81,13 +87,14 @@ class RegisterModel extends Model
     }
 
     /**
-     * 验证邮箱内容的正确性
+     * 验证邮箱内容的正确性.
      *
      * @param string $email
      *                           输入邮箱的信息
-     * @param  string $old_email
-     *                           原始邮箱的信息
-     * @return bool   是否验证成功
+     * @param string $old_email
+     *                          原始邮箱的信息
+     *
+     * @return bool 是否验证成功
      */
     // public function isValidEmail($email, $old_email = null) {
     // 	$res = preg_match ( $this->_email_reg, $email, $matches ) !== 0;
@@ -126,15 +133,17 @@ class RegisterModel extends Model
             $res = false;
         }
 
-        return (boolean) $res;
+        return (bool) $res;
     }
 
     /**
-     * 验证注册验证码是否正确
+     * 验证注册验证码是否正确.
      *
-     * @param  int   $code  验证码
-     * @param  float $phone 手机号码
+     * @param int   $code  验证码
+     * @param float $phone 手机号码
+     *
      * @return bool
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function isValidRegCode($code, $phone)
@@ -184,10 +193,12 @@ class RegisterModel extends Model
     }*/
 
     /**
-     * 验证昵称内容的正确性
+     * 验证昵称内容的正确性.
+     *
      * @param  string $name     输入昵称的信息
-     * @param  string $old_name 原始昵称的信息
-     * @return bool   是否验证成功
+     * @param string $old_name 原始昵称的信息
+     *
+     * @return bool 是否验证成功
      */
     public function isValidName($name, $old_name = null)
     {
@@ -247,10 +258,12 @@ class RegisterModel extends Model
     }
 
     /**
-     * 验证密码内容的正确性
-     * @param  string $pwd   密码信息
-     * @param  string $repwd 确认密码信息
-     * @return bool   是否验证成功
+     * 验证密码内容的正确性.
+     *
+     * @param string $pwd   密码信息
+     * @param string $repwd 确认密码信息
+     *
+     * @return bool 是否验证成功
      */
     public function isValidPassword($pwd, $repwd)
     {
@@ -292,10 +305,12 @@ class RegisterModel extends Model
     }
 
     /**
-     * 审核用户
-     * @param  array $uids 用户UID数组
-     * @param  int   $type 类型，0表示取消审核，1表示通过审核
-     * @return bool  是否审核成功
+     * 审核用户.
+     *
+     * @param array $uids 用户UID数组
+     * @param int   $type 类型，0表示取消审核，1表示通过审核
+     *
+     * @return bool 是否审核成功
      */
     public function audit($uids, $type = 1)
     {
@@ -330,10 +345,12 @@ class RegisterModel extends Model
     }
 
     /**
-     * 给指定用户发送激活账户邮件
-     * @param  int    $uid  用户UID
-     * @param  string $node 邮件模板类型
-     * @return bool   是否发送成功
+     * 给指定用户发送激活账户邮件.
+     *
+     * @param int    $uid  用户UID
+     * @param string $node 邮件模板类型
+     *
+     * @return bool 是否发送成功
      */
     public function sendActivationEmail($uid, $node = 'register_active')
     {
@@ -361,10 +378,12 @@ class RegisterModel extends Model
     }
 
     /**
-     * 激活指定用户
-     * @param  int    $uid  用户UID
-     * @param  string $code 激活码
-     * @return bool   是否激活成功
+     * 激活指定用户.
+     *
+     * @param int    $uid  用户UID
+     * @param string $code 激活码
+     *
+     * @return bool 是否激活成功
      */
     public function activate($uid, $code)
     {
@@ -388,7 +407,9 @@ class RegisterModel extends Model
 
     /**
      * 获取激活码
+     *
      * @param  array  $user_info 用户的相关信息
+     *
      * @return string 激活码
      */
     public function getActivationCode($user_info)
@@ -397,8 +418,10 @@ class RegisterModel extends Model
     }
 
     /**
-     * 初始化用户账号
-     * @param  int  $uid 用户UID
+     * 初始化用户账号.
+     *
+     * @param int $uid 用户UID
+     *
      * @return bool 是否成功初始化用户账号
      */
     public function initUser($uid)
@@ -419,7 +442,8 @@ class RegisterModel extends Model
     }
 
     /**
-     * 获取最后的错误信息
+     * 获取最后的错误信息.
+     *
      * @return string 最后的错误信息
      */
     public function getLastError()
@@ -428,10 +452,12 @@ class RegisterModel extends Model
     }
 
     /**
-     * 修改指定用户的注册邮箱
-     * @param  int    $uid   用户ID
-     * @param  string $email 邮箱地址
-     * @return bool   是否更改邮箱成功
+     * 修改指定用户的注册邮箱.
+     *
+     * @param int    $uid   用户ID
+     * @param string $email 邮箱地址
+     *
+     * @return bool 是否更改邮箱成功
      */
     public function changeRegisterEmail($uid, $email)
     {
@@ -440,7 +466,7 @@ class RegisterModel extends Model
         $data['login'] = $email;
         $data['email'] = $email;
         $res = $this->_user_model->where($map)->save($data);
-        $res = (boolean) $res;
+        $res = (bool) $res;
         if ($res) {
             $this->_error = '更换邮箱成功';
             $this->_user_model->cleanCache($uid);
@@ -452,8 +478,10 @@ class RegisterModel extends Model
     }
 
     /**
-     * 指定用户初始化完成
-     * @param  int  $uid 用户ID
+     * 指定用户初始化完成.
+     *
+     * @param int $uid 用户ID
+     *
      * @return bool 是否初始化成功
      */
     public function overUserInit($uid)
@@ -461,7 +489,7 @@ class RegisterModel extends Model
         $map['uid'] = $uid;
         $data['is_init'] = 1;
         $res = $this->_user_model->where($map)->save($data);
-        $res = (boolean) $res;
+        $res = (bool) $res;
         // if($res) {
         // 	// 获取用户信息
         // 	$receiverInfo = model('User')->getUserInfo($uid);

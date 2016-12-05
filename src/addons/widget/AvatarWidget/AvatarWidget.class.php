@@ -1,8 +1,10 @@
 <?php
 
 /**
- * 头像上传组件
+ * 头像上传组件.
+ *
  * @example {:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>$user_info['avatar_big'],'callback'=>'gotoStep3'))}
+ *
  * @version TS3.0
  */
 class AvatarWidget extends Widget
@@ -41,7 +43,7 @@ class AvatarWidget extends Widget
     }
 
     /**
-     * 输出新头像
+     * 输出新头像.
      */
     public function getflashHtml()
     {

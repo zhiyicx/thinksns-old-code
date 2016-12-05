@@ -3,10 +3,12 @@
 include_once SITE_PATH.'/apps/event/Lib/Model/BaseModel.class.php';
 /**
  * EventModel
- * 活动主数据库模型
+ * 活动主数据库模型.
+ *
  * @uses BaseModel
- * @package
+ *
  * @version $id$
+ *
  * @copyright 2009-2011 SamPeng
  * @author SamPeng <sampeng87@gmail.com>
  * @license PHP Version 5.2 {@link www.sampeng.cn}
@@ -14,6 +16,7 @@ include_once SITE_PATH.'/apps/event/Lib/Model/BaseModel.class.php';
 class EventModel extends BaseModel
 {
     public $mid;
+
     public function getConfig($key = null)
     {
         $config = model('Xdata')->lget('event');
@@ -29,7 +32,8 @@ class EventModel extends BaseModel
             return $config;
         }
     }
-    public function getEventList($map = '', $order = 'id DESC', $mid)
+
+    public function getEventList($map, $order, $mid)
     {
         $this->mid = $mid;
         $result = $this->where($map)->order($order)->findPage($this->getConfig('limitpage'));
@@ -56,9 +60,11 @@ class EventModel extends BaseModel
 
         return $result;
     }
+
     /**
      * appendContent
-     * 追加和反解析数据
+     * 追加和反解析数据.
+     *
      * @param mixed $data
      */
     public function appendContent($data)
@@ -97,18 +103,20 @@ class EventModel extends BaseModel
 
         return $data;
     }
+
     /**
      * checkRoll
-     * 检查权限
+     * 检查权限.
+     *
      * @param mixed $uid
      */
     public function checkMember($eventAdmin, $opts, $mid)
     {
         $result = array(
-                        'admin' => false,
-                        'follow' => true,
-                        'canJoin' => true,
-                        'canAtt' => true,
+                        'admin'     => false,
+                        'follow'    => true,
+                        'canJoin'   => true,
+                        'canAtt'    => true,
                         'hasMember' => false,
                         );
         if ($mid == $eventAdmin) {
@@ -133,7 +141,8 @@ class EventModel extends BaseModel
 
     /**
      * doAddEvent
-     * 添加活动
+     * 添加活动.
+     *
      * @param mixed $map
      * @param mixed $feed
      */
@@ -184,7 +193,8 @@ class EventModel extends BaseModel
 
     /**
      * getEventContent
-     * 获得活动具体类容页
+     * 获得活动具体类容页.
+     *
      * @param mixed $eventId
      * @param mixed $uid
      * @param mixed $mid
@@ -246,7 +256,8 @@ class EventModel extends BaseModel
 
     /**
      * factoryModel
-     * 工厂方法
+     * 工厂方法.
+     *
      * @param mixed $name
      * @static
      */
@@ -257,7 +268,8 @@ class EventModel extends BaseModel
 
     /**
      * doAddUser
-     * 添加用户行为
+     * 添加用户行为.
+     *
      * @param mixed $data
      * @param mixed $allow
      */
@@ -356,7 +368,8 @@ class EventModel extends BaseModel
 
     /**
      * doArgeeUser
-     * 同意申请
+     * 同意申请.
+     *
      * @param mixed $data
      */
     public function doArgeeUser($data)
@@ -381,7 +394,8 @@ class EventModel extends BaseModel
 
     /**
      * doDelUser
-     * 取消关注或参加
+     * 取消关注或参加.
+     *
      * @param mixed $data
      */
     public function doDelUser($data)
@@ -425,7 +439,7 @@ class EventModel extends BaseModel
 
     public function getMember($map, $uid)
     {
-        $user = self::factoryModel('user') ;
+        $user = self::factoryModel('user');
         $result = $user->getUserList($map, 20, true);
         $data = $result['data'];
         //修正成员状态
@@ -465,7 +479,8 @@ class EventModel extends BaseModel
 
     /**
      * getList
-     * 供后台管理获取列表的方法
+     * 供后台管理获取列表的方法.
+     *
      * @param mixed $order
      * @param mixed $limit
      */
@@ -482,7 +497,8 @@ class EventModel extends BaseModel
 
     /**
      * doDeleteEvent
-     * 删除活动
+     * 删除活动.
+     *
      * @param mixed $eventId
      */
     public function doDeleteEvent($eventId)
@@ -515,9 +531,11 @@ class EventModel extends BaseModel
 
         return false;
     }
+
     /**
      * getConfig
-     * 获取配置
+     * 获取配置.
+     *
      * @param mixed $index
      */
     /*public function getConfig( $index ){
@@ -527,7 +545,8 @@ class EventModel extends BaseModel
 
     /**
      * doIsHot
-     * 设置推荐
+     * 设置推荐.
+     *
      * @param mixed $map
      * @param mixed $act
      */
@@ -557,7 +576,8 @@ class EventModel extends BaseModel
 
     /**
      * getHotList
-     * 推荐列表
+     * 推荐列表.
+     *
      * @param mixed $map
      * @param mixed $act
      */
@@ -581,7 +601,8 @@ class EventModel extends BaseModel
 
     /**
      * hasMember
-     * 判断是否是有这个成员
+     * 判断是否是有这个成员.
+     *
      * @param mixed $uid
      */
     public function hasMember($uid, $eventId)

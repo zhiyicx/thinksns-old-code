@@ -1,10 +1,11 @@
 <?php
 /**
- * 分页显示类
+ * 分页显示类.
+ *
  * @category   ORG
- * @package  ORG
- * @subpackage  Util
+ *
  * @author    liu21st <liu21st@gmail.com>
+ *
  * @version   $Id$
  */
 class Page
@@ -12,61 +13,71 @@ class Page
     //类定义开始
 
     /**
-     * 分页起始行数
+     * 分页起始行数.
+     *
      * @var int
      */
-    public $firstRow ;
+    public $firstRow;
 
     /**
-     * 列表每页显示行数
+     * 列表每页显示行数.
+     *
      * @var int
      */
-    public $listRows ;
+    public $listRows;
 
     /**
-     * 页数跳转时要带的参数
+     * 页数跳转时要带的参数.
+     *
      * @var int
      */
-    public $parameter  ;
+    public $parameter;
 
     /**
-     * 分页总页面数
+     * 分页总页面数.
+     *
      * @var int
      */
-    public $totalPages  ;
+    public $totalPages;
 
     /**
-     * 总行数
+     * 总行数.
+     *
      * @var int
      */
-    public $totalRows  ;
+    public $totalRows;
 
     /**
-     * 当前页数
+     * 当前页数.
+     *
      * @var int
      */
-    public $nowPage    ;
+    public $nowPage;
 
     /**
-     * 分页的栏的总页数
+     * 分页的栏的总页数.
+     *
      * @var int
      */
-    public $coolPages   ;
+    public $coolPages;
 
     /**
-     * 分页栏每页显示的页数
+     * 分页栏每页显示的页数.
+     *
      * @var int
      */
-    public $rollPage   ;
+    public $rollPage;
 
     /**
-     * 分页记录名称
+     * 分页记录名称.
+     *
      * @var int
      */
     public $config = array('header' => '条记录', 'prev' => '上一页', 'next' => '下一页', 'first' => '第一页', 'last' => '最后一页');
 
     /**
-     * 架构函数
+     * 架构函数.
+     *
      * @param array $totalRows 总的记录数
      * @param array $firstRow  起始记录位置
      * @param array $listRows  每页显示记录数
@@ -100,7 +111,8 @@ class Page
 
     /**
      * 分页显示
-     * 用于在页面显示的分页栏的输出
+     * 用于在页面显示的分页栏的输出.
+     *
      * @return string
      */
     public function show($isArray = false)
@@ -226,7 +238,8 @@ class Page
 
     /**
      * 手机端分页显示
-     * 用于在页面显示的分页栏的输出
+     * 用于在页面显示的分页栏的输出.
+     *
      * @return string
      */
     public function wapShow($isArray = false)

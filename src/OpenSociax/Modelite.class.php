@@ -12,10 +12,12 @@
 // $Id$
 
 /**
- * 简洁Modelite接口抽象类
+ * 简洁Modelite接口抽象类.
+ *
  * @category	core
- * @package		OpenSociax
+ *
  * @author		liuxiaoqing <liuxiaoqing@thinksns.com>
+ *
  * @version		$0.1$
  */
 abstract class Modelite
@@ -25,7 +27,8 @@ abstract class Modelite
 
     /**
      * 架构函数
-     * 取得DB类的实例对象 字段检查
+     * 取得DB类的实例对象 字段检查.
+     *
      * @param string $name 模型名称
      */
     public function __construct($name = '')

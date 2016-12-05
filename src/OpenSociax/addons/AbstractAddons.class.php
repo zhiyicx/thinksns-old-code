@@ -1,49 +1,56 @@
 <?php
 /**
- * 插件机制接口
+ * 插件机制接口.
+ *
  * @author SamPeng <penglingjun@zhishisoft.com>
+ *
  * @version TS v4
  */
 interface AddonsInterface
 {
     /**
-     * 告之系统，该插件使用了哪些hooks以及排序等信息
+     * 告之系统，该插件使用了哪些hooks以及排序等信息.
+     *
      * @return array()
      */
     public function getHooksInfo();
+
     /**
      * 插件初始化时需要的数据信息。所以就不需要写类的构造函数
      * Enter description here ...
      */
     public function start();
+
     /**
      * 该插件的基本信息
      * 这个方法不需要用户实现，将在下一层抽象中实现。
-     * 用户需要填写几个基本信息作为该插件的属性即可
+     * 用户需要填写几个基本信息作为该插件的属性即可.
      */
     public function getAddonInfo();
 
     /**
      * setUp
-     * 启动插件时的接口
+     * 启动插件时的接口.
      */
     public function install();
 
     /**
      * setDown
-     * 卸载插件时的接口;
+     * 卸载插件时的接口;.
      */
     public function uninstall();
 
     /**
-     * 显示不同的管理面板或表单等操作的处理受理接口。默认$page为false.也就是只显示第一个管理面板页面
+     * 显示不同的管理面板或表单等操作的处理受理接口。默认$page为false.也就是只显示第一个管理面板页面.
      */
     public function adminMenu();
 }
 
 /**
- * 插件机制抽象类
+ * 插件机制抽象类.
+ *
  * @author SamPeng <penglingjun@zhishisoft.com>
+ *
  * @version TS v4
  */
 abstract class AbstractAddons implements AddonsInterface
@@ -60,7 +67,7 @@ abstract class AbstractAddons implements AddonsInterface
     protected $model;           // 插件数据模型对象
 
     /**
-     * 初始化相关信息
+     * 初始化相关信息.
      */
     public function __construct()
     {
@@ -72,6 +79,7 @@ abstract class AbstractAddons implements AddonsInterface
 
     /**
      * 获取URL地址
+     *
      * @return string URL地址
      */
     public function getUrl()
@@ -81,6 +89,7 @@ abstract class AbstractAddons implements AddonsInterface
 
     /**
      * 设置URL地址
+     *
      * @param string $url URL地址
      */
     public function setUrl($url)
@@ -90,6 +99,7 @@ abstract class AbstractAddons implements AddonsInterface
 
     /**
      * 获取路径地址
+     *
      * @return string 路径地址
      */
     public function getPath()
@@ -108,7 +118,8 @@ abstract class AbstractAddons implements AddonsInterface
     abstract public function getHooksList($name);
 
     /**
-     * 获取插件信息
+     * 获取插件信息.
+     *
      * @return array 插件信息
      */
     public function getAddonInfo()
@@ -126,6 +137,7 @@ abstract class AbstractAddons implements AddonsInterface
 
     /**
      * 将数据渲染到HTML页面，设置模板变量的值
+     *
      * @param string $name  Key值
      * @param string $value Value值
      */
@@ -136,8 +148,10 @@ abstract class AbstractAddons implements AddonsInterface
 
     /**
      * 获取指定模板变量的值
-     * @param  string $name Key值
-     * @return mixed  指定模板变量的值
+     *
+     * @param string $name Key值
+     *
+     * @return mixed 指定模板变量的值
      */
     protected function get($name)
     {
@@ -147,10 +161,12 @@ abstract class AbstractAddons implements AddonsInterface
     }
 
     /**
-     * 渲染HTML页面
+     * 渲染HTML页面.
+     *
      * @param string $templateFile 模板文件路径
      * @param string $charset      字符集，默认为UTF8
      * @param  string $contentType  内容类型，默认为text/html
+     *
      * @return string HTML页面数据
      */
     public function fetch($templateFile = '', $charset = 'utf-8', $contentType = 'text/html')
@@ -161,10 +177,12 @@ abstract class AbstractAddons implements AddonsInterface
     }
 
     /**
-     * 显示指定HTML页面
+     * 显示指定HTML页面.
+     *
      * @param string $templateFile 模板文件路径
      * @param string $charset      字符集，默认为UTF8
      * @param  string $contentType  内容类型，默认为text/html
+     *
      * @return string HTML页面数据
      */
     public function display($templateFile = '', $charset = 'utf-8', $contentType = 'text/html')
@@ -173,7 +191,8 @@ abstract class AbstractAddons implements AddonsInterface
     }
 
     /**
-     * 错误提示方法
+     * 错误提示方法.
+     *
      * @param string $message 提示信息
      */
     protected function error($message)
@@ -183,7 +202,8 @@ abstract class AbstractAddons implements AddonsInterface
     }
 
     /**
-     * 成功提示方法
+     * 成功提示方法.
+     *
      * @param string $message 提示信息
      */
     protected function success($message)
@@ -193,7 +213,8 @@ abstract class AbstractAddons implements AddonsInterface
     }
 
     /**
-     * 跳转操作
+     * 跳转操作.
+     *
      * @param string $message 提示信息
      * @param int    $status  状态。1表示成功，0表示失败
      */
@@ -231,6 +252,6 @@ abstract class AbstractAddons implements AddonsInterface
             Log::save();
         }
         // 中止执行  避免出错后继续执行
-        exit ;
+        exit;
     }
 }

@@ -9,8 +9,8 @@
 /**
  * Client for Baidu OpenAPI2.0 service.
  *
- * @package Baidu
  * @author zhujianting(zhujianting@baidu.com)
+ *
  * @version v2.0.0
  */
 class BaiduApiClient
@@ -20,8 +20,8 @@ class BaiduApiClient
      */
     public static $BD_OPENAPI_DEFAULT_DOMAINS = array(
         'public' => 'http://openapi.baidu.com',
-        'rest' => 'https://openapi.baidu.com',
-        'file' => 'https://openapi.baidu.com',
+        'rest'   => 'https://openapi.baidu.com',
+        'file'   => 'https://openapi.baidu.com',
     );
 
     /**
@@ -29,26 +29,28 @@ class BaiduApiClient
      */
     public static $BD_OPENAPI_DEFAULT_PREFIXS = array(
         'public' => 'http://openapi.baidu.com/public/2.0/',
-        'rest' => 'https://openapi.baidu.com/rest/2.0/',
-        'file' => 'https://openapi.baidu.com/file/2.0/',
+        'rest'   => 'https://openapi.baidu.com/rest/2.0/',
+        'file'   => 'https://openapi.baidu.com/file/2.0/',
     );
 
     protected $clientId;
     protected $accessToken;
 
     /**
-     * Charset of the app pages, default is UTF-8
+     * Charset of the app pages, default is UTF-8.
      */
     protected $finalEncode = 'UTF-8';
 
     /**
-     * Mode of batch/run api
+     * Mode of batch/run api.
+     *
      * @var int
      */
     protected $batchMode;
 
     /**
      * Array of api calls to be batch run.
+     *
      * @var array
      */
     protected $batchQueue = null;
@@ -57,7 +59,7 @@ class BaiduApiClient
     const BATCH_MODE_SERIAL_ONLY = 1;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $clientId    Client_id of the baidu thirdparty app or access_key of the developer.
      * @param string $accessToken Access token for api call.
@@ -81,7 +83,8 @@ class BaiduApiClient
     /**
      * Set the client_id.
      *
-     * @param  string         $clientId Client_id of the baidu thirdparty app or access_key of the developer.
+     * @param string $clientId Client_id of the baidu thirdparty app or access_key of the developer.
+     *
      * @return BaiduApiClient
      */
     public function setClientId($clientId)
@@ -104,7 +107,8 @@ class BaiduApiClient
     /**
      * Set access token for the following api calls.
      *
-     * @param  string         $accessToken
+     * @param string $accessToken
+     *
      * @return BaiduApiClient
      */
     public function setAccessToken($accessToken)
@@ -127,7 +131,8 @@ class BaiduApiClient
     /**
      * Set the charset for the app.
      *
-     * @param  string         $finalEncode 'UTF-8' or 'GBK'
+     * @param string $finalEncode 'UTF-8' or 'GBK'
+     *
      * @return BaiduApiClient
      */
     public function setFinalEncode($finalEncode)
@@ -140,8 +145,9 @@ class BaiduApiClient
     /**
      * Set the mode of batch/run api.
      *
-     * @param  int            $batchMode Use BaiduApiClient::BATCH_MODE_SERVER_PARALLEL
-     *                                   or BaiduApiClient::BATCH_MODE_SERIAL_ONLY
+     * @param int $batchMode Use BaiduApiClient::BATCH_MODE_SERVER_PARALLEL
+     *                       or BaiduApiClient::BATCH_MODE_SERIAL_ONLY
+     *
      * @return BaiduApiClient
      */
     public function setBatchMode($batchMode)
@@ -162,7 +168,7 @@ class BaiduApiClient
     }
 
     /**
-     * End current batch operation
+     * End current batch operation.
      **/
     public function end_batch()
     {
@@ -176,17 +182,17 @@ class BaiduApiClient
      * Call an api which is opened by Baidu, file upload apis should not
      * be called by this interface.
      *
-     * @param string $uri Uri for the api, it could be the whole url,
-     *                    like 'https://openapi.baidu.com/rest/2.0/passport/user/info/get',
-     *                    or url path only, like '/rest/2.0/passport/user/info/get',
-     *                    or just api method only, like 'passport/user/info/get'.
+     * @param string $uri        Uri for the api, it could be the whole url,
+     *                           like 'https://openapi.baidu.com/rest/2.0/passport/user/info/get',
+     *                           or url path only, like '/rest/2.0/passport/user/info/get',
+     *                           or just api method only, like 'passport/user/info/get'.
+     * @param array  $params     Api specific parameters.
+     * @param string $httpMethod Http method, could be 'GET' or 'POST'.
+     * @param string $type       Type name of the openapi, could be 'rest', or 'public'.
      *
-     * @param  array       $params     Api specific parameters.
-     * @param  string      $httpMethod Http method, could be 'GET' or 'POST'.
-     * @param  string      $type       Type name of the openapi, could be 'rest', or 'public'.
      * @return array|false Returns an array if success, or false if failed.
      */
-    public function & api($uri, $params = array(), $httpMethod = 'GET', $type = 'rest')
+    public function &api($uri, $params = array(), $httpMethod = 'GET', $type = 'rest')
     {
         if (substr($uri, 0, 8) === 'https://') {
             //apis using https + access_token
@@ -236,13 +242,13 @@ class BaiduApiClient
 
             $parts = parse_url($uri);
             $item = array('domain' => $parts['host'],
-                'path' => $parts['path'],
-                'params' => $parts['query'] ? $parts['query'].'&'.$query : $query,
-                'http_method' => $httpMethod, );
+                'path'             => $parts['path'],
+                'params'           => $parts['query'] ? $parts['query'].'&'.$query : $query,
+                'http_method'      => $httpMethod, );
             if ($parts['scheme'] === 'https') {
-                $this->batchQueue[0][] = array('i' => $item, 'r' => & $result);
+                $this->batchQueue[0][] = array('i' => $item, 'r' => &$result);
             } else {
-                $this->batchQueue[1][] = array('i' => $item, 'r' => & $result);
+                $this->batchQueue[1][] = array('i' => $item, 'r' => &$result);
             }
         }
 
@@ -257,6 +263,7 @@ class BaiduApiClient
      *                    or just api method only, like 'cloudalbum/picture/upload', if the api
      *                    is provided under the domain of openapi.baidu.com.
      * @param $params Api specific parameters.
+     *
      * @return Returns an array if success, or false if failed.
      */
     public function upload($uri, $params = array())

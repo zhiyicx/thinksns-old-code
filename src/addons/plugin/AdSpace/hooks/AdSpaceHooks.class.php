@@ -1,13 +1,16 @@
 <?php
 /**
- * 广告位钩子
+ * 广告位钩子.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class AdSpaceHooks extends Hooks
 {
     /**
-     * 显示广告位钩子
+     * 显示广告位钩子.
+     *
      * @param array $param 钩子相关参数
      */
     public function show_ad_space($param)
@@ -48,7 +51,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 广告位插件
+     * 广告位插件.
      */
     public function config()
     {
@@ -67,7 +70,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 添加广告位页面
+     * 添加广告位页面.
      */
     public function addAdSpace()
     {
@@ -84,7 +87,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 添加广告位操作
+     * 添加广告位操作.
      */
     public function doAddAdSpace()
     {
@@ -115,7 +118,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 删除广告位操作
+     * 删除广告位操作.
+     *
      * @return json 是否删除成功
      */
     public function doDelAdSpace()
@@ -139,7 +143,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 编辑广告位页面
+     * 编辑广告位页面.
      */
     public function editAdSpace()
     {
@@ -168,7 +172,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 编辑广告位操作
+     * 编辑广告位操作.
      */
     public function doEditAdSpace()
     {
@@ -200,7 +204,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 移动广告位操作
+     * 移动广告位操作.
      */
     public function doMvAdSpace()
     {
@@ -225,7 +229,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 获取广告位配置信息
+     * 获取广告位配置信息.
+     *
      * @return array 广告位配置信息
      */
     private function _getPlaceData()
@@ -236,7 +241,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 通过键值获取相应的ID
+     * 通过键值获取相应的ID.
+     *
      * @return int 对应键值的ID
      */
     private function _getPlaceKey($key)
@@ -247,7 +253,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 通过ID获取相应的广告位信息
+     * 通过ID获取相应的广告位信息.
+     *
      * @return array 对应的广告位信息
      */
     private function _getPlaceByID($id)

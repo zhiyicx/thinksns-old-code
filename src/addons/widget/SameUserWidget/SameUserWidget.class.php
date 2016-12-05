@@ -1,14 +1,18 @@
 <?php
 /**
- * 具有相同资料项的人Widget
+ * 具有相同资料项的人Widget.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class SameUserWidget extends Widget
 {
     /**
-     * 渲染具有相同资料项的人页面
+     * 渲染具有相同资料项的人页面.
+     *
      * @param  array  $data 配置相关数据
+     *
      * @return string 渲染页面的HTML
      */
     public function render($data)
@@ -18,6 +22,7 @@ class SameUserWidget extends Widget
 
         return $content;
     }
+
     public function userlist()
     {
         $type = intval($_POST['type']);
@@ -32,8 +37,10 @@ class SameUserWidget extends Widget
         }
         exit($content);
     }
+
     /**
-     * 只获取一个相同资料项的人
+     * 只获取一个相同资料项的人.
+     *
      * @return string 人的列表
      */
     public function getOneSameUser()

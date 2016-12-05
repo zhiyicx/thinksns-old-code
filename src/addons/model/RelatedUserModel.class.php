@@ -1,7 +1,9 @@
 <?php
 /**
- * 感兴趣的人模型 - 业务逻辑模型
+ * 感兴趣的人模型 - 业务逻辑模型.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class RelatedUserModel extends Model
@@ -14,7 +16,7 @@ class RelatedUserModel extends Model
     private $user_sql_where = ' and is_active=1 and is_audit=1 and is_init=1 AND is_del = 0 ';  //过滤掉未激活，未审核，未初始化的用户
 
     /**
-     * 初始化
+     * 初始化.
      */
     public function _initialize()
     {
@@ -24,7 +26,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 设置关联用户
+     * 设置关联用户.
+     *
      * @param int $uid 用户ID
      */
     public function setUid($uid)
@@ -35,7 +38,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取最后的错误信息
+     * 获取最后的错误信息.
+     *
      * @return string 最后的错误信息
      */
     public function getLastError()
@@ -44,7 +48,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 可能感兴趣的人
+     * 可能感兴趣的人.
+     *
      * @example
      * 1.一周以内新注册的用户，最新注册用户推荐
      * 2.好友的好友推荐，XX（我关注的人）也关注了TA
@@ -53,8 +58,10 @@ class RelatedUserModel extends Model
      * 5.职业信息推荐，TA跟你的职业信息相同
      * 6.地区信息推荐，TA与你在同一个地方，只实现三级匹配
      * 7.随机推荐
+     *
      * @param int $show  显示个数，默认为4
      * @param int $limit 查询缓存个数，默认为100
+     *
      * @return array 可能感兴趣的人数组
      */
     public function getRelatedUser($show = 4, $limit = 100)
@@ -150,7 +157,8 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 可能感兴趣的人
+     * 可能感兴趣的人.
+     *
      * @example
      * 1.一周以内新注册的用户，最新注册用户推荐
      * 2.好友的好友推荐，XX（我关注的人）也关注了TA
@@ -159,8 +167,10 @@ class RelatedUserModel extends Model
      * 5.职业信息推荐，TA跟你的职业信息相同
      * 6.地区信息推荐，TA与你在同一个地方，只实现三级匹配
      * 7.随机推荐
+     *
      * @param int $show  显示个数，默认为4
      * @param int $limit 查询缓存个数，默认为100
+     *
      * @return array 可能感兴趣的人数组
      */
     public function getRelatedUserSquare($show = 4, $limit = 100)
@@ -236,9 +246,11 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取指定类型的关联用户
+     * 获取指定类型的关联用户.
+     *
      * @param string $type  类型字符串
      * @param int    $limit 显示个数
+     *
      * @return array  指定类型的关联用户
      */
     public function getRelatedUserByType($type, $limit)
@@ -281,8 +293,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 注册用户推荐
-     * @param  int   $limit 查询用户个数，默认为20
+     * 注册用户推荐.
+     *
+     * @param int $limit 查询用户个数，默认为20
+     *
      * @return array 推荐用户ID数组
      */
     public function getRelatedUserWithLogin($limit = 20)
@@ -320,8 +334,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 设置排除用户ID
-     * @param  array $uids 排除用户ID数组
+     * 设置排除用户ID.
+     *
+     * @param array $uids 排除用户ID数组
+     *
      * @return array 排除用户ID
      */
     private function _getExcludeUids($uids = array())
@@ -337,8 +353,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 新注册用户推荐
-     * @param  int   $limit 查询个数，默认为1
+     * 新注册用户推荐.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 新注册用户信息
      */
     private function _getRelatedUserFromNew($num = 1, $limit = 100)
@@ -382,8 +400,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 好友的好友用户推荐
-     * @param  int   $limit 查询个数，默认为1
+     * 好友的好友用户推荐.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 好友的好友用户信息
      */
     private function _getRelatedUserFromFriend($num = 1, $limit = 100)
@@ -443,8 +463,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取有共同好友的用户推荐
+     * 获取有共同好友的用户推荐.
+     *
      * @param int $limit 查询个人，默认为1
+     *
      * @return array 有共同好友的用户推荐
      */
     public function _getRelatedUserFromFollowing($limit = 2)
@@ -509,8 +531,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取相同的用户标签用户
-     * @param  int   $limit 查询个数，默认为1
+     * 获取相同的用户标签用户.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 相同的用户标签用户数据
      */
     private function _getRelatedUserFromTag($num = 1, $limit = 100)
@@ -588,8 +612,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取相同地区的用户
-     * @param  int   $limit 查询个数，默认为1
+     * 获取相同地区的用户.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 相同地区的用户数据
      */
     private function _getRelatedUserFromCity($num = 1, $limit = 100)
@@ -644,8 +670,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取后台推荐用户
-     * @param  int   $limit 查询个数，默认为1
+     * 获取后台推荐用户.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 相同的用户标签用户数据
      */
     private function _getRelatedUserFromRecommend($num = 1, $limit = 100)
@@ -694,8 +722,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取随机用户
-     * @param  int   $limit 查询个数，默认为1
+     * 获取随机用户.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 随机用户信息
      */
     private function _getRelatedUserFromRandom($num = 1, $limit = 100)
@@ -733,6 +763,7 @@ class RelatedUserModel extends Model
 
         return $data;
     }
+
     private function _data_array_rand($data, $num)
     {
         shuffle($data);
@@ -741,8 +772,10 @@ class RelatedUserModel extends Model
     }
 
     /**
-     * 获取相同年龄的用户
-     * @param  int   $limit 查询个数，默认为1
+     * 获取相同年龄的用户.
+     *
+     * @param int $limit 查询个数，默认为1
+     *
      * @return array 相同地区的用户数据
      */
     private function _getRelatedUserFromAge($num = 1, $limit = 100)

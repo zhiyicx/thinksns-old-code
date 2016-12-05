@@ -1,10 +1,11 @@
 <?php
 /**
- * 附件模型 - 数据对象模型
+ * 附件模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
-
 class AttachModel extends Model
 {
     protected $tableName = 'attach';
@@ -12,9 +13,11 @@ class AttachModel extends Model
     protected $fields = array('attach_id', 'app_name', 'table', 'row_id', 'attach_type', 'uid', 'ctime', 'name', 'type', 'size', 'extension', 'hash', 'private', 'is_del', 'save_path', 'save_name', 'save_domain', 'from', 'width', 'height');
 
     /**
-     * 通过附件ID获取附件数据 - 不分页型
+     * 通过附件ID获取附件数据 - 不分页型.
+     *
      * @param array $ids 附件ID数组
      * @param  string $field 附件数据显示字段，默认为显示全部
+     *
      * @return array  相关附件数据
      */
     public function getAttachByIds($ids, $field = '*')
@@ -26,7 +29,7 @@ class AttachModel extends Model
             }
         }
         if (empty($ids)) {
-            return null;
+            return;
         }
 
         $name = 'attach_ids_'.md5(json_encode($ids).$field);
@@ -50,8 +53,10 @@ class AttachModel extends Model
     }
 
     /**
-     * 通过单个附件ID获取其附件信息
-     * @param  int   $id 附件ID
+     * 通过单个附件ID获取其附件信息.
+     *
+     * @param int $id 附件ID
+     *
      * @return array 指定附件ID的附件信息
      */
     public function getAttachById($id)
@@ -86,12 +91,14 @@ class AttachModel extends Model
     }
 
     /**
-     * 获取附件列表 - 分页型
-     * @param  array  $map   查询条件
-     * @param  string $field 显示字段
-     * @param  string $order 排序条件，默认为id DESC
-     * @param  int    $limit 结果集个数，默认为20
-     * @return array  附件列表数据
+     * 获取附件列表 - 分页型.
+     *
+     * @param array  $map   查询条件
+     * @param string $field 显示字段
+     * @param string $order 排序条件，默认为id DESC
+     * @param int    $limit 结果集个数，默认为20
+     *
+     * @return array 附件列表数据
      */
     public function getAttachList($map, $field = '*', $order = 'id DESC', $limit = 20)
     {
@@ -102,11 +109,13 @@ class AttachModel extends Model
     }
 
     /**
-     * 删除附件信息，提供假删除功能
-     * @param  int    $id    附件ID
-     * @param  string $type  操作类型，若为delAttach则进行假删除操作，deleteAttach则进行彻底删除操作
-     * @param  string $title ???
-     * @return array  返回操作结果信息
+     * 删除附件信息，提供假删除功能.
+     *
+     * @param int    $id    附件ID
+     * @param string $type  操作类型，若为delAttach则进行假删除操作，deleteAttach则进行彻底删除操作
+     * @param string $title ???
+     *
+     * @return array 返回操作结果信息
      */
     public function doEditAttach($id, $type, $title)
     {
@@ -134,7 +143,8 @@ class AttachModel extends Model
     }
 
     /**
-     * 获取所有附件的扩展名
+     * 获取所有附件的扩展名.
+     *
      * @return array 扩展名数组
      */
     public function getAllExtensions()
@@ -151,10 +161,12 @@ class AttachModel extends Model
     }
 
     /**
-     * 上传附件
+     * 上传附件.
+     *
      * @param  array $data          附件相关信息
      * @param  array $input_options 配置选项[不推荐修改, 默认使用后台的配置]
-     * @param  bool  $thumb 是否启用缩略图
+     * @param bool $thumb 是否启用缩略图
+     *
      * @return array 上传的附件的信息
      */
     public function upload($data = null, $input_options = null, $thumb = false)
@@ -306,15 +318,15 @@ class AttachModel extends Model
     private function saveInfo($upload_info, $options)
     {
         $data = array(
-            'table' => t($data['table']),
-            'row_id' => $data['row_id'] ? intval($data['row_id']) : 0,
-            'app_name' => t($data['app_name']),
+            'table'       => t($data['table']),
+            'row_id'      => $data['row_id'] ? intval($data['row_id']) : 0,
+            'app_name'    => t($data['app_name']),
             'attach_type' => t($options['attach_type']),
-            'uid' => (int) $data['uid'] ? $data['uid'] : $GLOBALS['ts']['mid'],
-            'ctime' => time(),
-            'private' => $data['private'] > 0 ? 1 : 0,
-            'is_del' => 0,
-            'from' => isset($data['from']) ? intval($data['from']) : getVisitorClient(),
+            'uid'         => (int) $data['uid'] ? $data['uid'] : $GLOBALS['ts']['mid'],
+            'ctime'       => time(),
+            'private'     => $data['private'] > 0 ? 1 : 0,
+            'is_del'      => 0,
+            'from'        => isset($data['from']) ? intval($data['from']) : getVisitorClient(),
         );
         if ($options['save_to_db']) {
             foreach ($upload_info as $u) {
@@ -364,11 +376,11 @@ class AttachModel extends Model
 
     public function saveAttach($file)
     {
-        # code...
+        // code...
     }
 
     /**
-     * 更新附件图片，保存图片的宽度和高度
+     * 更新附件图片，保存图片的宽度和高度.
      */
     public function upImageAttach($page = 1, $count = 100)
     {

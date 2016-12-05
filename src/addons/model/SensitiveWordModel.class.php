@@ -33,7 +33,7 @@ class SensitiveWordModel extends Model
             $result = $this->where($map)->save($data);
         }
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     public function rmSensitiveWord($id)
@@ -44,7 +44,7 @@ class SensitiveWordModel extends Model
         $map['sensitive_word_id'] = $id;
         $result = $this->where($map)->delete();
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 
     public function getSensitiveWordList($map = array(), $limit = 20)

@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpThumb Base Class Definition File
+ * PhpThumb Base Class Definition File.
  *
  * This file contains the definition for the ThumbBase object
  *
@@ -15,27 +15,26 @@
  *
  * @author Ian Selby <ian@gen-x-design.com>
  * @copyright Copyright (c) 2009 Gen X Design
+ *
  * @link http://phpthumb.gxdlabs.com
+ *
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+ *
  * @version 3.0
- * @package PhpThumb
  * @filesource
  */
 
 /**
- * ThumbBase Class Definition
+ * ThumbBase Class Definition.
  *
  * This is the base class that all implementations must extend.  It contains the
  * core variables and functionality common to all implementations, as well as the functions that
  * allow plugins to augment those classes.
- *
- * @package PhpThumb
- * @subpackage Core
  */
 abstract class ThumbBase
 {
     /**
-     * All imported objects
+     * All imported objects.
      *
      * An array of imported plugin objects
      *
@@ -43,7 +42,7 @@ abstract class ThumbBase
      */
     protected $imported;
     /**
-     * All imported object functions
+     * All imported object functions.
      *
      * An array of all methods added to this class by imported plugin objects
      *
@@ -51,19 +50,19 @@ abstract class ThumbBase
      */
     protected $importedFunctions;
     /**
-     * The last error message raised
+     * The last error message raised.
      *
      * @var string
      */
     protected $errorMessage;
     /**
-     * Whether or not the current instance has any errors
+     * Whether or not the current instance has any errors.
      *
      * @var bool
      */
     protected $hasError;
     /**
-     * The name of the file we're manipulating
+     * The name of the file we're manipulating.
      *
      * This must include the path to the file (absolute paths recommended)
      *
@@ -71,19 +70,19 @@ abstract class ThumbBase
      */
     protected $fileName;
     /**
-     * What the file format is (mime-type)
+     * What the file format is (mime-type).
      *
      * @var string
      */
     protected $format;
     /**
-     * Whether or not the image is hosted remotely
+     * Whether or not the image is hosted remotely.
      *
      * @var bool
      */
     protected $remoteImage;
     /**
-     * Whether or not the current image is an actual file, or the raw file data
+     * Whether or not the current image is an actual file, or the raw file data.
      *
      * By "raw file data" it's meant that we're actually passing the result of something
      * like file_get_contents() or perhaps from a database blob
@@ -93,7 +92,7 @@ abstract class ThumbBase
     protected $isDataStream;
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @return ThumbBase
      */
@@ -111,7 +110,7 @@ abstract class ThumbBase
     }
 
     /**
-     * Imports plugins in $registry to the class
+     * Imports plugins in $registry to the class.
      *
      * @param array $registry
      */
@@ -123,7 +122,7 @@ abstract class ThumbBase
     }
 
     /**
-     * Imports a plugin
+     * Imports a plugin.
      *
      * This is where all the plugins magic happens!  This function "loads" the plugin functions, making them available as
      * methods on the class.
@@ -149,8 +148,7 @@ abstract class ThumbBase
     }
 
     /**
-     * Checks to see if $this->fileName exists and is readable
-     *
+     * Checks to see if $this->fileName exists and is readable.
      */
     protected function fileExistsAndReadable()
     {
@@ -172,7 +170,7 @@ abstract class ThumbBase
     }
 
     /**
-     * Sets $this->errorMessage to $errorMessage and throws an exception
+     * Sets $this->errorMessage to $errorMessage and throws an exception.
      *
      * Also sets $this->hasError to true, so even if the exceptions are caught, we don't
      * attempt to proceed with any other functions
@@ -188,7 +186,7 @@ abstract class ThumbBase
     }
 
     /**
-     * Calls plugin / imported functions
+     * Calls plugin / imported functions.
      *
      * This is also where a fair amount of plugins magaic happens.  This magic method is called whenever an "undefined" class
      * method is called in code, and we use that to call an imported function.
@@ -211,7 +209,9 @@ abstract class ThumbBase
 
     /**
      * Returns $imported.
+     *
      * @see ThumbBase::$imported
+     *
      * @return array
      */
     public function getImported()
@@ -221,7 +221,9 @@ abstract class ThumbBase
 
     /**
      * Returns $importedFunctions.
+     *
      * @see ThumbBase::$importedFunctions
+     *
      * @return array
      */
     public function getImportedFunctions()
@@ -243,6 +245,7 @@ abstract class ThumbBase
      * Sets $errorMessage.
      *
      * @param object $errorMessage
+     *
      * @see ThumbBase::$errorMessage
      */
     public function setErrorMessage($errorMessage)
@@ -264,6 +267,7 @@ abstract class ThumbBase
      * Sets $fileName.
      *
      * @param object $fileName
+     *
      * @see ThumbBase::$fileName
      */
     public function setFileName($fileName)
@@ -285,6 +289,7 @@ abstract class ThumbBase
      * Sets $format.
      *
      * @param object $format
+     *
      * @see ThumbBase::$format
      */
     public function setFormat($format)
@@ -306,6 +311,7 @@ abstract class ThumbBase
      * Sets $hasError.
      *
      * @param object $hasError
+     *
      * @see ThumbBase::$hasError
      */
     public function setHasError($hasError)

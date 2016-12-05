@@ -2,12 +2,14 @@
 /**
  * 文件上传
  * 主要由core.uploadFile完成前端ajaxpost功能
- * 要自定义回调显示则需要自定义回调函数
+ * 要自定义回调显示则需要自定义回调函数.
+ *
  * @example {:W('Upload',array('callback'=>'callback','uploadType'=>'file','inputname'=>'inputname','urlquery'=>'a=aaa&b=bb','attachIds'=>'1,2,3,4'))}
+ *
  * @author jason
+ *
  * @version TS3.0
  */
-
 class UploadWidget extends Widget
 {
     private static $rand = 1;
@@ -59,7 +61,8 @@ class UploadWidget extends Widget
     }
 
     /**
-     * 附件上传
+     * 附件上传.
+     *
      * @return array 上传的附件的信息
      */
     public function save()
@@ -118,7 +121,7 @@ class UploadWidget extends Widget
 
             $ajaxInfo['state'] = 'SUCCESS';
             //echo $ajaxInfo['url'];
-            echo "<script>parent.EditorList['".$editorId."'].getWidgetCallback('image')('".$ajaxInfo[ 'url' ]."','".$ajaxInfo[ 'state' ]."')</script>";
+            echo "<script>parent.EditorList['".$editorId."'].getWidgetCallback('image')('".$ajaxInfo['url']."','".$ajaxInfo['state']."')</script>";
             // exit(getImageUrl($return['data']['save_path'].$return['data']['save_name']));
         } else {
             echo json_encode($return);
@@ -127,7 +130,8 @@ class UploadWidget extends Widget
     }
 
     /**
-     * 编辑器图片上传
+     * 编辑器图片上传.
+     *
      * @return array 上传图片的路径及错误信息
      */
     public function saveEditorImg()
@@ -147,7 +151,8 @@ class UploadWidget extends Widget
     }
 
     /**
-     * 编辑器文件上传
+     * 编辑器文件上传.
+     *
      * @return array 上传文件的信息
      */
     public function saveEditorFile()
@@ -168,7 +173,7 @@ class UploadWidget extends Widget
     }
 
     /**
-     * 附件下载
+     * 附件下载.
      */
     public function down()
     {
@@ -205,6 +210,7 @@ class UploadWidget extends Widget
             }
         }
     }
+
     public function uploadVideo()
     {
         // dump($_FILES);

@@ -1,8 +1,10 @@
 
 <?php
 /**
- * 在线统计模型 - 业务逻辑模型
+ * 在线统计模型 - 业务逻辑模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class OnlineModel
@@ -12,8 +14,9 @@ class OnlineModel
     private $check_point = 0;                // 查询在线起始时间点的时间戳
     private $check_step = 1200;                // 检查在线用户步长，10分钟检查一次
     private $stats_step = 1800;                // 统计在线用户步长，30分钟
+
     /**
-     * 初始化方法，数据库配置、连接初始化
+     * 初始化方法，数据库配置、连接初始化.
      */
     public function __construct()
     {
@@ -33,13 +36,13 @@ class OnlineModel
         if ($dbconfig['DB_ENCRYPT'] == 1) {
             if ($db_pwd != '') {
                 require_once SITE_PATH.'/addons/library/CryptDES.php';
-                $crypt = new CryptDES;
+                $crypt = new CryptDES();
                 $db_pwd = (string) $crypt->decrypt($db_pwd);
             }
         }
         // 重设Service的数据连接信息
         $connection = array(
-                            'dbms' => $dbconfig['DB_TYPE'],
+                            'dbms'     => $dbconfig['DB_TYPE'],
                             'hostname' => $dbconfig['DB_HOST'],
                             'hostport' => $dbconfig['DB_PORT'],
                             'database' => $dbconfig['DB_NAME'],
@@ -53,10 +56,12 @@ class OnlineModel
     }
 
     /**
-     * 获取统计列表
-     * @param  string $where 查询条件
-     * @param  int    $limit 结果集数目，默认为30
-     * @return array  统计列表数据
+     * 获取统计列表.
+     *
+     * @param string $where 查询条件
+     * @param int    $limit 结果集数目，默认为30
+     *
+     * @return array 统计列表数据
      */
     public function getStatsList($where = '1', $limit = 30)
     {
@@ -151,7 +156,7 @@ class OnlineModel
     }
 
     /**
-     * 在线用户检查及入库
+     * 在线用户检查及入库.
      */
     public function checkOnline()
     {
@@ -193,8 +198,10 @@ class OnlineModel
     }
 
     /**
-     * 获取指定用户最后操作的IP地址信息
-     * @param  array $uids 指定用户ID数组
+     * 获取指定用户最后操作的IP地址信息.
+     *
+     * @param array $uids 指定用户ID数组
+     *
      * @return array 指定用户最后操作的IP地址信息
      */
     public function getLastOnlineInfo($uids)
@@ -206,12 +213,14 @@ class OnlineModel
     }
 
     /**
-     * 获取指定用户的操作知识 - 分页型
-     * @param  int    $uid   用户ID
-     * @param  array  $map   查询条件
-     * @param  int    $count 结果集数目，默认为20
-     * @param  string $order 排序条件，默认为day DESC
-     * @return array  指定用户的操作知识 - 分页型
+     * 获取指定用户的操作知识 - 分页型.
+     *
+     * @param int    $uid   用户ID
+     * @param array  $map   查询条件
+     * @param int    $count 结果集数目，默认为20
+     * @param string $order 排序条件，默认为day DESC
+     *
+     * @return array 指定用户的操作知识 - 分页型
      */
     public function getUserOperatingList($uid, $map, $count = 20, $order = 'id DESC')
     {

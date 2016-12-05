@@ -1,7 +1,9 @@
 <?php
 /**
- * 添加标签 Widget
+ * 添加标签 Widget.
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class StringTextWidget extends Widget

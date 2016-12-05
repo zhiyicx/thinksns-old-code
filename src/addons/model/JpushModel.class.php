@@ -1,11 +1,11 @@
 <?php
 /**
- * 极光推送模型
+ * 极光推送模型.
  *
  * @version TS4.5
  * @name JpushModel
- * @author Foreach
  *
+ * @author Foreach
  */
 class JpushModel extends Model
 {
@@ -18,14 +18,15 @@ class JpushModel extends Model
         static::$client = new \JPush\Client(t($config['key']), t($config['secret']));
     }
 
-
     /**
-     * 推送消息
+     * 推送消息.
+     *
      * @param array $uids 用户uid
      * @param string $alert 消息内容
-     * @param  array      $extras
-     * @param  int        $type
-     * @param  int        $rose
+     * @param array $extras
+     * @param int   $type
+     * @param int   $rose
+     *
      * @return array|bool
      */
     public function pushMessage($uids = array(), $alert = '', $extras = array())

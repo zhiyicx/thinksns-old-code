@@ -1,8 +1,11 @@
 <?php
 /**
- * 编辑器
+ * 编辑器.
+ *
  * @example W('Editor',array('width'=>300,'height'=>'200','contentName'=>'mycontent','value'=>'默认的值'))
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class EditorWidget extends Widget

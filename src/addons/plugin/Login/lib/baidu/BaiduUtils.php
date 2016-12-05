@@ -12,8 +12,8 @@
 /**
  * Utils class for Baidu OpenAPI2.0 SDK.
  *
- * @package Baidu
  * @author zhujianting(zhujianting@baidu.com)
+ *
  * @version v2.0.0
  */
 class BaiduUtils
@@ -90,12 +90,13 @@ class BaiduUtils
     }
 
     /**
-     * Request for a http/https resource
+     * Request for a http/https resource.
      *
-     * @param  string       $url        Url to request
-     * @param  array        $params     Parameters for the request
-     * @param  string       $httpMethod Http method, 'GET' or 'POST'
-     * @param  bool         $multi      Whether it's a multipart POST request
+     * @param string $url        Url to request
+     * @param array  $params     Parameters for the request
+     * @param string $httpMethod Http method, 'GET' or 'POST'
+     * @param bool   $multi      Whether it's a multipart POST request
+     *
      * @return string|false Returns string if success, or false if failed
      */
     public static function request($url, $params = array(), $httpMethod = 'GET', $multi = false)
@@ -110,11 +111,11 @@ class BaiduUtils
 
         $curl_opts = array(
             CURLOPT_CONNECTTIMEOUT => 3,
-            CURLOPT_TIMEOUT => 5,
-            CURLOPT_USERAGENT => 'baidu-apiclient-php-2.0',
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_TIMEOUT        => 5,
+            CURLOPT_USERAGENT      => 'baidu-apiclient-php-2.0',
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => false,
+            CURLOPT_HEADER         => false,
             CURLOPT_FOLLOWLOCATION => false,
         );
 
@@ -166,7 +167,7 @@ class BaiduUtils
     /**
      * Prints to the error log if you aren't in command line mode.
      *
-     * @param String log message
+     * @param string log message
      */
     public static function errorLog($msg)
     {
@@ -184,9 +185,10 @@ class BaiduUtils
     /**
      * Generate the signature for passed parameters.
      *
-     * @param  array  $params    Array of parameters to be signatured
-     * @param  string $secret    Secret key for signature
-     * @param  string $namespace The parameter which will be excluded when calculate the signature
+     * @param array  $params    Array of parameters to be signatured
+     * @param string $secret    Secret key for signature
+     * @param string $namespace The parameter which will be excluded when calculate the signature
+     *
      * @return string Signature of the parameters
      */
     public static function generateSign($params, $secret, $namespace = 'sign')
@@ -263,7 +265,9 @@ class BaiduUtils
 
     /**
      * Build the multipart body for file uploaded request.
-     * @param  array  $params Parameters for the request
+     *
+     * @param array $params Parameters for the request
+     *
      * @return string
      */
     private static function buildHttpMultipartBody($params)
@@ -273,7 +277,7 @@ class BaiduUtils
         self::$boundary = $boundary = md5('BAIDU-PHP-SDK-V2'.microtime(true));
 
         foreach ($params as $key => $value) {
-            if ($value{0} == '@') {
+            if ($value[0] == '@') {
                 $url = ltrim($value, '@');
                 $content = file_get_contents($url);
                 $array = explode('?', basename($url));
@@ -296,13 +300,14 @@ class BaiduUtils
     }
 
     /**
-     * Tries to detect MIME type of a file
+     * Tries to detect MIME type of a file.
      *
      * The method will try to use fileinfo extension if it is available,
      * deprecated mime_content_type() function in the other case. If neither
      * works, default 'application/octet-stream' MIME type is returned
      *
      * @param    string  filename
+     *
      * @return string file MIME type
      */
     private static function detectMimeType($filename)

@@ -5,7 +5,7 @@ class FeedTopHooks extends Hooks
     private $isRefresh = 1;
 
     /**
-     * 主页右钩子
+     * 主页右钩子.
      */
     public function home_index_left_feedtop()
     {
@@ -70,6 +70,7 @@ class FeedTopHooks extends Hooks
         $this->assign('diggArr', $diggArr);
         $this->display('feedtop');
     }
+
     //public function home_index_right_top(){
     // 	$list = $this->model('FeedTop')->getFeedTopList(0);
     // 	foreach($list as $k =>$v){
@@ -91,6 +92,7 @@ class FeedTopHooks extends Hooks
         $_SESSION['feed_top_'.$this->mid] = $has_del_feed;
         echo 1;
     }
+
     //后台列表
     public function config()
     {
@@ -105,14 +107,15 @@ class FeedTopHooks extends Hooks
     }
 
     /**
-     * 添加置顶页面
+     * 添加置顶页面.
      */
     public function addFeedTop()
     {
         $this->display('addFeedTop');
     }
+
     /**
-     * 添加置顶操作
+     * 添加置顶操作.
      */
     public function doAddFeedTop()
     {
@@ -124,8 +127,9 @@ class FeedTopHooks extends Hooks
 
         return false;
     }
+
     /**
-     * 编辑广告位页面
+     * 编辑广告位页面.
      */
     public function editFeedTop()
     {
@@ -136,8 +140,9 @@ class FeedTopHooks extends Hooks
         $this->assign('editPage', true);
         $this->display('addFeedTop');
     }
+
     /**
-     * 编辑广告位操作
+     * 编辑广告位操作.
      */
     public function doEditFeedTop()
     {
@@ -150,8 +155,10 @@ class FeedTopHooks extends Hooks
 
         return false;
     }
+
     /**
-     * 取消置顶操作
+     * 取消置顶操作.
+     *
      * @return json 是否删除成功
      */
     public function doDelFeedTop()
@@ -173,8 +180,10 @@ class FeedTopHooks extends Hooks
         }
         exit(json_encode($result));
     }
+
     /**
-     * 重新置顶操作
+     * 重新置顶操作.
+     *
      * @return json 是否成功
      */
     public function doFeedTop()
@@ -196,6 +205,7 @@ class FeedTopHooks extends Hooks
         }
         exit(json_encode($result));
     }
+
     public function doDel()
     {
         $result = array();

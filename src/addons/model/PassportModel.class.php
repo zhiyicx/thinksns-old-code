@@ -1,7 +1,9 @@
 <?php
 /**
- * 通行证模型 - 业务逻辑模型
+ * 通行证模型 - 业务逻辑模型.
+ *
  * @author liuxiaoqing <liuxiaoqing@zhishisoft.com>
+ *
  * @version TS3.0
  */
 class PassportModel
@@ -11,7 +13,8 @@ class PassportModel
     protected $rel = array();        // 判断是否是第一次登录
 
     /**
-     * 返回最后的错误信息
+     * 返回最后的错误信息.
+     *
      * @return string 最后的错误信息
      */
     public function getError()
@@ -20,7 +23,8 @@ class PassportModel
     }
 
     /**
-     * 返回最后的错误信息
+     * 返回最后的错误信息.
+     *
      * @return string 最后的错误信息
      */
     public function getSuccess()
@@ -29,7 +33,8 @@ class PassportModel
     }
 
     /**
-     * 验证后台登录
+     * 验证后台登录.
+     *
      * @return bool 是否已经登录后台
      */
     public function checkAdminLogin()
@@ -42,7 +47,8 @@ class PassportModel
     }
 
     /**
-     * 登录后台
+     * 登录后台.
+     *
      * @return bool 登录后台是否成功
      */
     public function adminLogin()
@@ -57,7 +63,7 @@ class PassportModel
     }
 
     /**
-     * 退出后台
+     * 退出后台.
      */
     public function adminLogout()
     {
@@ -66,7 +72,8 @@ class PassportModel
     }
 
     /**
-     * 验证用户是否需要登录
+     * 验证用户是否需要登录.
+     *
      * @return bool 登陆成功是返回true, 否则返回false
      */
     public function needLogin()
@@ -111,7 +118,8 @@ class PassportModel
 
     /**
      * 验证用户是否已登录
-     * 按照session -> cookie的顺序检查是否登陆
+     * 按照session -> cookie的顺序检查是否登陆.
+     *
      * @return bool 登陆成功是返回true, 否则返回false
      */
     public function isLogged()
@@ -141,10 +149,12 @@ class PassportModel
     }
 
     /**
-     * 根据标示符（email或uid）和未加密的密码获取本地用户（密码为null时不参与验证）
+     * 根据标示符（email或uid）和未加密的密码获取本地用户（密码为null时不参与验证）.
+     *
      * @param  string      $login    标示符内容（为数字时：标示符类型为uid，其他：标示符类型为email）
-     * @param  string|bool $password 未加密的密码
-     * @return array|bool  成功获取用户数据时返回用户信息数组，否则返回false
+     * @param string|bool $password 未加密的密码
+     *
+     * @return array|bool 成功获取用户数据时返回用户信息数组，否则返回false
      */
     public function getLocalUser($login, $password)
     {
@@ -247,11 +257,13 @@ class PassportModel
     }
 
     /**
-     * 使用本地帐号登陆（密码为null时不参与验证）
-     * @param  string $login          登录名称，邮箱或用户名
-     * @param  string $password       密码
-     * @param  bool   $is_remember_me 是否记录登录状态，默认为false
-     * @return bool   是否登录成功
+     * 使用本地帐号登陆（密码为null时不参与验证）.
+     *
+     * @param string $login          登录名称，邮箱或用户名
+     * @param string $password       密码
+     * @param bool   $is_remember_me 是否记录登录状态，默认为false
+     *
+     * @return bool 是否登录成功
      */
     public function loginLocal($login, $password = null, $is_remember_me = false)
     {
@@ -272,9 +284,11 @@ class PassportModel
 
     /**
      * 使用本地帐号登陆，无密码
-     * @param  string $login          登录名称，邮箱或用户名
-     * @param  bool   $is_remember_me 是否记录登录状态，默认为false
-     * @return bool   是否登录成功
+     *
+     * @param string $login          登录名称，邮箱或用户名
+     * @param bool   $is_remember_me 是否记录登录状态，默认为false
+     *
+     * @return bool 是否登录成功
      */
     public function loginLocalWithoutPassword($login, $is_remember_me = false)
     {
@@ -314,7 +328,6 @@ class PassportModel
         return $user['uid'] > 0 ? $this->_recordLogin($user['uid'], $is_remember_me) : false;
     }
 
-
     //兼容旧版错误
     public function loginLocalWhitoutPassword($login, $is_remember_me = false)
     {
@@ -327,9 +340,11 @@ class PassportModel
     }
 
     /**
-     * 设置登录状态、记录登录知识
-     * @param  int  $uid            用户ID
-     * @param  bool $is_remember_me 是否记录登录状态，默认为false
+     * 设置登录状态、记录登录知识.
+     *
+     * @param int  $uid            用户ID
+     * @param bool $is_remember_me 是否记录登录状态，默认为false
+     *
      * @return bool 操作是否成功
      */
     private function _recordLogin($uid, $is_remember_me = false)
@@ -381,7 +396,7 @@ class PassportModel
     }
 
     /**
-     * 注销本地登录
+     * 注销本地登录.
      */
     public function logoutLocal()
     {
@@ -397,7 +412,8 @@ class PassportModel
     }
 
     /**
-     * 获取cookie中记录的用户ID
+     * 获取cookie中记录的用户ID.
+     *
      * @return int cookie中记录的用户ID
      */
     public function getCookieUid()
@@ -417,9 +433,11 @@ class PassportModel
     }
 
     /**
-     * 判断email地址是否合法
-     * @param  string $email 邮件地址
-     * @return bool   邮件地址是否合法
+     * 判断email地址是否合法.
+     *
+     * @param string $email 邮件地址
+     *
+     * @return bool 邮件地址是否合法
      */
     public function isValidEmail($email)
     {
@@ -427,9 +445,11 @@ class PassportModel
     }
 
     /**
-     * 加密函数
+     * 加密函数.
+     *
      * @param string $txt 需加密的字符串
      * @param  string $key 加密密钥，默认读取SECURE_CODE配置
+     *
      * @return string 加密后的字符串
      */
     private function jiami($txt, $key = null)
@@ -444,9 +464,11 @@ class PassportModel
     }
 
     /**
-     * 解密函数
+     * 解密函数.
+     *
      * @param  string $txt 待解密的字符串
      * @param  string $key 解密密钥，默认读取SECURE_CODE配置
+     *
      * @return string 解密后的字符串
      */
     private function jiemi($txt, $key = null)
@@ -461,10 +483,12 @@ class PassportModel
     }
 
     /**
-     * UC登录或者注册
-     * @param  string $username
-     * @param  string $password
-     * @param  string $is_remember_me 是否记住登录
+     * UC登录或者注册.
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $is_remember_me 是否记住登录
+     *
      * @return bool
      */
     private function ucLogin($username, $password, $is_remember_me)
@@ -638,8 +662,10 @@ class PassportModel
     }
 
     /**
-     * UC注销登录
-     * @param  int    $uid
+     * UC注销登录.
+     *
+     * @param int $uid
+     *
      * @return string 退出登录的返回信息
      */
     private function ucLogout($uid)

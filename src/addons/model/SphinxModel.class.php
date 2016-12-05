@@ -1,7 +1,9 @@
 <?php
 /**
- * 搜索模型 - 业务逻辑模型
+ * 搜索模型 - 业务逻辑模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class SphinxModel
@@ -13,12 +15,12 @@ class SphinxModel
 
     /**
      * 初始化方法，链接搜索引擎数据库
-     * sphinx1.10开始支持mysql协议
+     * sphinx1.10开始支持mysql协议.
      */
     public function __construct()
     {
         $connection = array(
-                        'dbms' => 'mysql',
+                        'dbms'     => 'mysql',
                         'hostname' => (C('SEARCHD_HOST') ? C('SEARCHD_HOST') : $this->host),
                         'hostport' => (C('SEARCHD_PORT') ? C('SEARCHD_PORT') : $this->port),
                       );
@@ -26,15 +28,17 @@ class SphinxModel
     }
 
     /**
-     * 重置数据库链接
-     * @param  string $host 主机地址IP
-     * @param  int    $port 端口号
+     * 重置数据库链接.
+     *
+     * @param string $host 主机地址IP
+     * @param int    $port 端口号
+     *
      * @return object 搜索模型对象
      */
     public function connect($host, $port = 9306)
     {
         $connection = array(
-                            'dbms' => 'mysql',
+                            'dbms'     => 'mysql',
                             'hostname' => $host,
                             'hostport' => $port,
                       );
@@ -44,9 +48,11 @@ class SphinxModel
     }
 
     /**
-     * 直接搜索sphinx，结果未处理
-     * @param  string $query SQL查询语句
-     * @return array  查询出的相应结果
+     * 直接搜索sphinx，结果未处理.
+     *
+     * @param string $query SQL查询语句
+     *
+     * @return array 查询出的相应结果
      */
     public function query($query)
     {
@@ -56,10 +62,12 @@ class SphinxModel
     }
 
     /**
-     * 执行搜素，结果有处理
-     * @param  string $query SQL查询语句
-     * @param  int    $limit 结果集数目，默认为20
-     * @return array  查询出的相应结果
+     * 执行搜素，结果有处理.
+     *
+     * @param string $query SQL查询语句
+     * @param int    $limit 结果集数目，默认为20
+     *
+     * @return array 查询出的相应结果
      */
     public function search($query, $limit = 20)
     {
@@ -107,7 +115,8 @@ class SphinxModel
     }
 
     /**
-     * 获取分页数，默认为1
+     * 获取分页数，默认为1.
+     *
      * @return int 分页数
      */
     public function getPage()
@@ -116,8 +125,10 @@ class SphinxModel
     }
 
     /**
-     * 获取limit查询条件
-     * @param  int    $limit 结果集数目，默认为20
+     * 获取limit查询条件.
+     *
+     * @param int $limit 结果集数目，默认为20
+     *
      * @return string limit查询条件
      */
     public function getLimit($limit = 20)

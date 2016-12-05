@@ -5,6 +5,7 @@ class baidu
 {
     public $loginUrl;
     public $baidu;
+
     public function getUrl($redirectUri)
     {
         $baidu = new BaiduAPI(BAIDU_KEY, BAIDU_SECRET, $redirectUri, new BaiduCookieStore(BAIDU_KEY));
@@ -12,6 +13,7 @@ class baidu
 
         return $loginUrl;
     }
+
     //用户资料
     public function userInfo()
     {
@@ -31,6 +33,7 @@ class baidu
 
         return $user;
     }
+
     //验证用户
     public function checkUser()
     {
@@ -50,21 +53,25 @@ class baidu
             return false;
         }
     }
+
     //发布一条分享
     public function update($text, $opt)
     {
         return true;
     }
+
     //上传一个照片，并发布一条分享
     public function upload($text, $opt, $pic)
     {
         return true;
     }
+
     //转发一条分享
     public function transpond($transpondId, $reId, $content = '', $opt = null)
     {
         return true;
     }
+
     //保存数据
     public function saveData($data)
     {

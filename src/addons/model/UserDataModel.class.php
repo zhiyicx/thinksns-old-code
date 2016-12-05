@@ -1,7 +1,9 @@
 <?php
 /**
- * 用户统计数据模型 - 数据对象模型
+ * 用户统计数据模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class UserDataModel extends Model
@@ -11,7 +13,7 @@ class UserDataModel extends Model
     protected $uid = '';
 
     /**
-     * 初始化方法，设置默认用户信息
+     * 初始化方法，设置默认用户信息.
      */
     public function _initialize()
     {
@@ -19,8 +21,10 @@ class UserDataModel extends Model
     }
 
     /**
-     * 设置用户UID
-     * @param  int    $uid 用户UID
+     * 设置用户UID.
+     *
+     * @param int $uid 用户UID
+     *
      * @return object 用户统计数据对象
      */
     public function setUid($uid)
@@ -39,12 +43,14 @@ class UserDataModel extends Model
      * following_count：关注数
      * follower_count：粉丝数
      * unread_comment：评论未读数
-     * unread_atme：@Me未读数
-     * @param  string $key  Key值
-     * @param  int    $nums 更新的数目
-     * @param  bool   $add  是否添加数目，默认为true
-     * @param  int    $uid  用户UID
-     * @return array  返回更新后的数据
+     * unread_atme：@Me未读数.
+     *
+     * @param string $key  Key值
+     * @param int    $nums 更新的数目
+     * @param bool   $add  是否添加数目，默认为true
+     * @param int    $uid  用户UID
+     *
+     * @return array 返回更新后的数据
      */
     public function updateKey($key, $nums, $add = true, $uid = '')
     {
@@ -78,7 +84,8 @@ class UserDataModel extends Model
     }
 
     /**
-     * 设置指定用户指定Key值的统计数目
+     * 设置指定用户指定Key值的统计数目.
+     *
      * @param int    $uid   用户UID
      * @param string $key   Key值
      * @param int    $value 设置的统计数值
@@ -96,13 +103,13 @@ class UserDataModel extends Model
 
     public function setCountByStep($uid, $key, $step = 1)
     {
-        $map ['uid'] = $uid;
-        $map ['key'] = $key;
+        $map['uid'] = $uid;
+        $map['key'] = $key;
         if ($info = $this->where($map)->find()) {
-            $save ['value'] = $info[ 'value' ] + $step;
+            $save['value'] = $info['value'] + $step;
             $this->where($map)->save($save);
         } else {
-            $map ['value'] = $step;
+            $map['value'] = $step;
             $this->add($map);
         }
 
@@ -112,8 +119,10 @@ class UserDataModel extends Model
     }
 
     /**
-     * 获取指定用户的统计数据
-     * @param  int   $uid 用户UID
+     * 获取指定用户的统计数据.
+     *
+     * @param int $uid 用户UID
+     *
      * @return array 指定用户的统计数据
      */
     public function getUserData($uid = '')
@@ -138,8 +147,10 @@ class UserDataModel extends Model
     }
 
     /**
-     * 批量获取多个用户的统计数目
-     * @param  array $uids 用户UID数组
+     * 批量获取多个用户的统计数目.
+     *
+     * @param array $uids 用户UID数组
+     *
      * @return array 多个用户的统计数目
      */
     public function getUserDataByUids($uids)
@@ -167,7 +178,8 @@ class UserDataModel extends Model
             return $data;
         }
     }
-    public function getUserKeyDataByUids($key = 'weibo_count', $uids)
+
+    public function getUserKeyDataByUids($key, $uids)
     {
         $map['uid'] = array('in', $uids);
         $map['key'] = $key;
@@ -179,8 +191,9 @@ class UserDataModel extends Model
 
         return $rearray;
     }
+
     /**
-     * 手动统计更新用户数据，分享、关注、粉丝、收藏
+     * 手动统计更新用户数据，分享、关注、粉丝、收藏.
      */
     public function updateUserData()
     {
@@ -250,7 +263,8 @@ class UserDataModel extends Model
     }
 
     /**
-     * 手动统计更新用户数据，分享、关注、粉丝、收藏
+     * 手动统计更新用户数据，分享、关注、粉丝、收藏.
+     *
      * @param int $uid 用户UID
      */
     public function updateUserDataByuid($uids)

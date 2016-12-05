@@ -1,7 +1,9 @@
 <?php
 /**
- * 收藏模型 - 数据对象模型
+ * 收藏模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class CollectionModel extends Model
@@ -12,8 +14,10 @@ class CollectionModel extends Model
     private $collectionTables = array('feed', 'weiba_post');
 
     /**
-     * 添加收藏记录
+     * 添加收藏记录.
+     *
      * @param  array $data 收藏相关数据
+     *
      * @return bool 是否收藏成功
      */
     public function addCollection(array $data)
@@ -79,10 +83,12 @@ class CollectionModel extends Model
     }
 
     /**
-     * 返回指定资源的收藏数目
-     * @param  int    $sid    资源ID
-     * @param  string $stable 资源表名
-     * @return int    指定资源的收藏数目
+     * 返回指定资源的收藏数目.
+     *
+     * @param int    $sid    资源ID
+     * @param string $stable 资源表名
+     *
+     * @return int 指定资源的收藏数目
      */
     public function getCollectionCount($sid, $stable)
     {
@@ -97,11 +103,13 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取收藏列表
-     * @param  array  $map   查询条件
-     * @param  int    $limit 结果集显示数目，默认为20
-     * @param  string $order 排序条件，默认为ctime DESC
-     * @return array  收藏列表数据
+     * 获取收藏列表.
+     *
+     * @param array  $map   查询条件
+     * @param int    $limit 结果集显示数目，默认为20
+     * @param string $order 排序条件，默认为ctime DESC
+     *
+     * @return array 收藏列表数据
      */
     public function getCollectionList($map, $limit = 20, $order = 'ctime DESC')
     {
@@ -125,8 +133,10 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取收藏的种类，用于收藏的Tab
+     * 获取收藏的种类，用于收藏的Tab.
+     *
      * @param array $map 查询条件
+     *
      * @return array 收藏种类与其资源数目
      */
     public function getCollTab($map)
@@ -140,11 +150,13 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取指定收藏的信息
-     * @param  int    $sid    资源ID
-     * @param  string $stable 资源表名称
-     * @param  int    $uid    用户UID
-     * @return array  指定收藏的信息
+     * 获取指定收藏的信息.
+     *
+     * @param int    $sid    资源ID
+     * @param string $stable 资源表名称
+     * @param int    $uid    用户UID
+     *
+     * @return array 指定收藏的信息
      */
     public function getCollection($sid, $stable, $uid = '')
     {
@@ -168,11 +180,13 @@ class CollectionModel extends Model
     }
 
     /**
-     * 取消收藏
-     * @param  int    $sid    资源ID
-     * @param  string $stable 资源表名称
-     * @param  int    $uid    用户UID
-     * @return bool   是否取消收藏成功
+     * 取消收藏.
+     *
+     * @param int    $sid    资源ID
+     * @param string $stable 资源表名称
+     * @param int    $uid    用户UID
+     *
+     * @return bool 是否取消收藏成功
      */
     public function delCollection($sid, $stable, $uid = '')
     {
@@ -217,7 +231,7 @@ class CollectionModel extends Model
             return false;
         }
         $where = array(
-            'source_id' => array('IN', $sid),
+            'source_id'         => array('IN', $sid),
             'source_table_name' => t($stable),
         );
         $uids = $this->where($where)->field('uid')->getAsFieldArray('uid');
@@ -238,13 +252,16 @@ class CollectionModel extends Model
     }
 
     /*** API使用 ***/
+
     /**
-     * 获取收藏列表，API使用
-     * @param  int   $uid      用户UID
-     * @param  int   $since_id 主键起始ID，默认为0
-     * @param  int   $max_id   主键最大ID，默认为0
-     * @param  int   $limit    每页结果集数目，默认为20
-     * @param  int   $page     页数，默认为1
+     * 获取收藏列表，API使用.
+     *
+     * @param int $uid      用户UID
+     * @param int $since_id 主键起始ID，默认为0
+     * @param int $max_id   主键最大ID，默认为0
+     * @param int $limit    每页结果集数目，默认为20
+     * @param int $page     页数，默认为1
+     *
      * @return array 收藏列表数据
      */
     public function getCollectionForApi($uid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
@@ -270,12 +287,14 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取动态（分享）收藏列表，API使用
-     * @param  int   $uid      用户UID
-     * @param  int   $since_id 主键起始ID，默认为0
-     * @param  int   $max_id   主键最大ID，默认为0
-     * @param  int   $limit    每页结果集数目，默认为20
-     * @param  int   $page     页数，默认为1
+     * 获取动态（分享）收藏列表，API使用.
+     *
+     * @param int $uid      用户UID
+     * @param int $since_id 主键起始ID，默认为0
+     * @param int $max_id   主键最大ID，默认为0
+     * @param int $limit    每页结果集数目，默认为20
+     * @param int $page     页数，默认为1
+     *
      * @return array 收藏列表数据
      */
     public function getCollectionFeedForApi($uid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
@@ -298,9 +317,11 @@ class CollectionModel extends Model
     }
 
     /**
-     * 数据库搜索收藏分享
+     * 数据库搜索收藏分享.
+     *
      * @param  string $key   关键字
-     * @param  int   $limit 结果集数目，默认20
+     * @param int $limit 结果集数目，默认20
+     *
      * @return array 搜索的结果数据
      */
     public function searchCollections($key, $limit = 20)

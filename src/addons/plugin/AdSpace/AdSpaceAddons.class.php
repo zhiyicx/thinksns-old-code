@@ -1,7 +1,9 @@
 <?php
 /**
- * 广告位插件
+ * 广告位插件.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class AdSpaceAddons extends NormalAddons
@@ -14,7 +16,8 @@ class AdSpaceAddons extends NormalAddons
     protected $tsVersion = '3.0';
 
     /**
-     * 获取该插件使用钩子
+     * 获取该插件使用钩子.
+     *
      * @return array 钩子信息数组
      */
     public function getHooksInfo()
@@ -25,7 +28,8 @@ class AdSpaceAddons extends NormalAddons
     }
 
     /**
-     * 插件后台管理入口
+     * 插件后台管理入口.
+     *
      * @return array 管理相关数据
      */
     public function adminMenu()
@@ -47,7 +51,8 @@ class AdSpaceAddons extends NormalAddons
     }
 
     /**
-     * 插件安装入口
+     * 插件安装入口.
+     *
      * @return bool 是否安装成功
      */
     public function install()
@@ -73,7 +78,8 @@ class AdSpaceAddons extends NormalAddons
     }
 
     /**
-     * 插件卸载入口
+     * 插件卸载入口.
+     *
      * @return bool 是否卸载成功
      */
     public function uninstall()

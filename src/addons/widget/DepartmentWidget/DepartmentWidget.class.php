@@ -1,9 +1,12 @@
 <?php
 /**
  * //TODO  以后统一优化成分类的多级选择widget
- * 部门选择
+ * 部门选择.
+ *
  * @example W('Department',array('tpl'=>'input','inputName'=>'depart','canChange'=>1,'sid'=>1,'defaultName'=>'无','defaultId'=>'0','callback'=>'contactBack'))
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class DepartmentWidget extends Widget
@@ -85,7 +88,8 @@ class DepartmentWidget extends Widget
     }
 
     /**
-     * 获取部门列表
+     * 获取部门列表.
+     *
      * @return array 部门列表
      */
     private function _getList($sid)
@@ -108,7 +112,7 @@ class DepartmentWidget extends Widget
     }
 
    /**
-    * 修改部门
+    * 修改部门.
     */
    public function change()
    {
@@ -119,7 +123,8 @@ class DepartmentWidget extends Widget
    }
 
    /**
-    * 选择部门
+    * 选择部门.
+    *
     * @return array 已选择的部门
     */
    public function selectDepartment()

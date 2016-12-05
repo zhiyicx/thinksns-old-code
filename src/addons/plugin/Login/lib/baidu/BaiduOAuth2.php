@@ -9,8 +9,8 @@
 /**
  * Client for Baidu OAuth2.0 service.
  *
- * @package Baidu
  * @author zhujianting(zhujianting@baidu.com)
+ *
  * @version v2.0.0
  */
 class BaiduOAuth2
@@ -20,8 +20,8 @@ class BaiduOAuth2
      */
     public static $BD_OAUTH2_ENDPOINTS = array(
         'authorize' => 'https://openapi.baidu.com/oauth/2.0/authorize',
-        'token' => 'https://openapi.baidu.com/oauth/2.0/token',
-        'logout' => 'https://openapi.baidu.com/connect/2.0/logout',
+        'token'     => 'https://openapi.baidu.com/oauth/2.0/token',
+        'logout'    => 'https://openapi.baidu.com/connect/2.0/logout',
     );
 
     protected $clientId;
@@ -29,7 +29,7 @@ class BaiduOAuth2
     protected $redirectUri;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $clientId     Client_id of the baidu thirdparty app or access_key of the developer.
      * @param string $clientSecret Client_secret of the baidu thirdparty app or secret_key of the developer.
@@ -44,6 +44,7 @@ class BaiduOAuth2
      * Set the redirect uri for the app.
      *
      * @param $redirectUri Where to redirect after user authorization.
+     *
      * @return BaiduOAuth2
      */
     public function setRedirectUri($redirectUri)
@@ -69,14 +70,15 @@ class BaiduOAuth2
     /**
      * Get a Logout URL suitable for use with redirects.
      *
-     * @param  string $accessToken Access token for current user
-     * @param  string $next        Url to go to after a successful logout
-     * @return String The URL for the logout flow
+     * @param string $accessToken Access token for current user
+     * @param string $next        Url to go to after a successful logout
+     *
+     * @return string The URL for the logout flow
      */
     public function getLogoutUrl($accessToken, $next = '')
     {
         $params = array('access_token' => $accessToken,
-                        'next' => $next ? $next : BaiduUtils::getCurrentUrl(), );
+                        'next'         => $next ? $next : BaiduUtils::getCurrentUrl(), );
 
         return self::$BD_OAUTH2_ENDPOINTS['logout'].'?'.http_build_query($params, '', '&');
     }
@@ -84,21 +86,22 @@ class BaiduOAuth2
     /**
      * Get baidu oauth2's authorization granting url.
      *
-     * @param  string $responseType Response type, 'code' or 'token'
-     * @param  string $scope        blank space separated list of requested extended perms
-     * @param  string $display      Authorization page style, 'page', 'popup', 'touch' or 'mobile'
-     * @param  string $state        state parameter
+     * @param string $responseType Response type, 'code' or 'token'
+     * @param string $scope        blank space separated list of requested extended perms
+     * @param string $display      Authorization page style, 'page', 'popup', 'touch' or 'mobile'
+     * @param string $state        state parameter
+     *
      * @return string Page url for authorization granting
      */
     public function getAuthorizeUrl($responseType = 'code', $scope = '', $state = '', $display = 'popup')
     {
         $params = array(
-            'client_id' => $this->clientId,
+            'client_id'     => $this->clientId,
             'response_type' => $responseType,
-            'redirect_uri' => $this->redirectUri,
-            'scope' => $scope,
-            'state' => $state,
-            'display' => $display,
+            'redirect_uri'  => $this->redirectUri,
+            'scope'         => $scope,
+            'state'         => $state,
+            'display'       => $display,
         );
 
         return self::$BD_OAUTH2_ENDPOINTS['authorize'].'?'.http_build_query($params, '', '&');
@@ -107,17 +110,18 @@ class BaiduOAuth2
     /**
      * Get access token ifno by authorization code.
      *
-     * @param  string      $code Authorization code
+     * @param string $code Authorization code
+     *
      * @return array|false returns access token info if success, or false if failed
      */
     public function getAccessTokenByAuthorizationCode($code)
     {
         $params = array(
-            'grant_type' => 'authorization_code',
-            'code' => $code,
-            'client_id' => $this->clientId,
+            'grant_type'    => 'authorization_code',
+            'code'          => $code,
+            'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'redirect_uri' => $this->redirectUri,
+            'redirect_uri'  => $this->redirectUri,
         );
 
         return $this->makeAccessTokenRequest($params);
@@ -126,32 +130,35 @@ class BaiduOAuth2
     /**
      * Get access token info by client credentials.
      *
-     * @param  string      $scope Extend permissions delimited by blank space
+     * @param string $scope Extend permissions delimited by blank space
+     *
      * @return array|false returns access token info if success, or false if failed.
      */
     public function getAccessTokenByClientCredentials($scope = '')
     {
         $params = array(
-            'grant_type' => 'client_credentials',
-            'client_id' => $this->clientId,
+            'grant_type'    => 'client_credentials',
+            'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'scope' => $scope,
+            'scope'         => $scope,
         );
 
         return $this->makeAccessTokenRequest($params);
     }
 
     /**
-     * Get access token info by developer credentials
-     * @param  string      $accessKey Access key you got from baidu cloud platform
-     * @param  string      $secretKey Secret key you got from baidu cloud platform
+     * Get access token info by developer credentials.
+     *
+     * @param string $accessKey Access key you got from baidu cloud platform
+     * @param string $secretKey Secret key you got from baidu cloud platform
+     *
      * @return array|false Returns access token info if success, or false if failed
      */
     public function getAccessTokenByDeveloperCredentials($accessKey, $secretKey)
     {
         $params = array(
-            'grant_type' => 'developer_credentials',
-            'client_id' => $accessKey,
+            'grant_type'    => 'developer_credentials',
+            'client_id'     => $accessKey,
             'client_secret' => $secretKey,
         );
 
@@ -161,25 +168,26 @@ class BaiduOAuth2
     /**
      * Refresh access token by refresh token.
      *
-     * @param  string      $refreshToken The refresh token
-     * @param  string      $scope        Extend permissions delimited by blank space
+     * @param string $refreshToken The refresh token
+     * @param string $scope        Extend permissions delimited by blank space
+     *
      * @return array|false returns access token info if success, or false if failed.
      */
     public function getAccessTokenByRefreshToken($refreshToken, $scope = '')
     {
         $params = array(
-            'grant_type' => 'refresh_token',
+            'grant_type'    => 'refresh_token',
             'refresh_token' => $refreshToken,
-            'client_id' => $this->clientId,
+            'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'scope' => $scope,
+            'scope'         => $scope,
         );
 
         return $this->makeAccessTokenRequest($params);
     }
 
     /**
-     * Make an oauth access token request
+     * Make an oauth access token request.
      *
      * The parameters:
      * - client_id: The client identifier, just use api key
@@ -189,7 +197,8 @@ class BaiduOAuth2
      * - state: An opaque value used by the client to maintain state between the request and callback.
      * - display: login page style, 'page', 'popup', 'touch' or 'mobile'
      *
-     * @param  array $params oauth request parameters
+     * @param array $params oauth request parameters
+     *
      * @return mixed returns access token info if success, or false if failed
      */
     public function makeAccessTokenRequest($params)

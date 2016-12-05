@@ -12,9 +12,7 @@
 // $Id$
 
 /**
- +------------------------------------------------------------------------------
- * 附件操作服务，参考XattachModel
- +------------------------------------------------------------------------------
+ * 附件操作服务，参考XattachModel.
  */
 
 //载入上传操作类
@@ -23,7 +21,7 @@ tsload(SITE_PATH.'/addons/library/UploadFile.class.php');
 class XattachModel
 {
     /**
-     * 上传附件
+     * 上传附件.
      *
      * @param string $attach_type 附件类型
      * @param array  $input_options 配置选项[不推荐修改, 默认使用后台的配置]
@@ -136,7 +134,7 @@ class XattachModel
     }
 
     //直接直接保存文件到附件表
-    public function addFile($attach_type = 'attach', $attach_file)
+    public function addFile($attach_type, $attach_file)
     {
 
         //获取系统配置
@@ -233,7 +231,7 @@ class XattachModel
     }
 
     /**
-     * 下载附件
+     * 下载附件.
      *
      * @param int $aid 附件ID 为空时使用$_REQUEST['id']作为附件ID
      */

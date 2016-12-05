@@ -1,8 +1,7 @@
 <?php
 /**
- * 视频服务模型
+ * 视频服务模型.
  *
- * @package ThinkSNS\Addnons\Model\Video
  * @author Seven Du <lovevipdsw@vip.qq.com>
  **/
 // 原有的文件
@@ -403,6 +402,7 @@ class VideoModel extends Model
      * 更具优酷播放页面地址，获取优酷单条视频信息地址
      *
      * @return return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getYoukuOutsideVideoInfo($link)
@@ -441,9 +441,10 @@ class VideoModel extends Model
     }
 
     /**
-     * 根据土豆页面地址获取单条视频信息
+     * 根据土豆页面地址获取单条视频信息.
      *
      * @return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getTudouOutsideVideoInfo($link)
@@ -473,9 +474,10 @@ class VideoModel extends Model
     }
 
     /**
-     * 根据音悦台页面地址获取mv信息
+     * 根据音悦台页面地址获取mv信息.
      *
      * @return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getYinyuetaiOutsideVideoInfo($link)
@@ -497,9 +499,10 @@ class VideoModel extends Model
     }
 
     /**
-     * 获取外部视频信息
+     * 获取外部视频信息.
      *
      * @return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getOutsideVideoInfo($link, $host)
@@ -641,11 +644,13 @@ class VideoModel extends Model
     }
 
     /**
-     * 删除视频信息，提供假删除功能
-     * @param  int    $id    视频ID
-     * @param  string $type  操作类型，若为delVideo则进行假删除操作，deleteVideo则进行彻底删除操作
-     * @param  string $title ???
-     * @return array  返回操作结果信息
+     * 删除视频信息，提供假删除功能.
+     *
+     * @param int    $id    视频ID
+     * @param string $type  操作类型，若为delVideo则进行假删除操作，deleteVideo则进行彻底删除操作
+     * @param string $title ???
+     *
+     * @return array 返回操作结果信息
      */
     public function doEditVideo($id, $type, $title)
     {

@@ -1,8 +1,11 @@
 <?php
 /**
- * 日期选择
+ * 日期选择.
+ *
  * @example 调用方法：W('DateSelect',array('name'=>'dateSelect','class'=>'s-txt','id'=>'dateSelectId','value'=>'','dtype'=>'full'))
+ *
  * @author  jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class DateSelectWidget extends Widget

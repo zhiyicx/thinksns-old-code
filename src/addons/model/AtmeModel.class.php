@@ -1,7 +1,9 @@
 <?php
 /**
  * @Me模型 - 数据对象模型
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class AtmeModel extends Model
@@ -16,8 +18,10 @@ class AtmeModel extends Model
     private $_at_field = 'uid';                 // @的资源字段
 
     /**
-     * 设置所属应用
-     * @param  string $app 应用名称
+     * 设置所属应用.
+     *
+     * @param string $app 应用名称
+     *
      * @return object @对象
      */
     public function setAppName($app)
@@ -28,8 +32,10 @@ class AtmeModel extends Model
     }
 
     /**
-     * 设置相关内容所存储的资源表
-     * @param  string $app_table 数据表名
+     * 设置相关内容所存储的资源表.
+     *
+     * @param string $app_table 数据表名
+     *
      * @return object @对象
      */
     public function setAppTable($app_table)
@@ -40,8 +46,10 @@ class AtmeModel extends Model
     }
 
     /**
-     * 设置@的相关正则规则
-     * @param  string $regex 正则规则
+     * 设置@的相关正则规则.
+     *
+     * @param string $regex 正则规则
+     *
      * @return object @对象
      */
     public function setAtRegex($regex)
@@ -52,8 +60,10 @@ class AtmeModel extends Model
     }
 
     /**
-     * 设置@的资源字段
-     * @param  string $field @的资源字段
+     * 设置@的资源字段.
+     *
+     * @param string $field @的资源字段
+     *
      * @return object @对象
      */
     public function setAtField($field)
@@ -64,11 +74,13 @@ class AtmeModel extends Model
     }
 
     /**
-     * 获取@Me列表 - 分页型
-     * @param  array  $map   查询条件
-     * @param  string $order 排序条件，默认为atme_id DESC
-     * @param  int    $limit 结果集显示个数，默认为20
-     * @return array  @Me列表信息
+     * 获取@Me列表 - 分页型.
+     *
+     * @param array  $map   查询条件
+     * @param string $order 排序条件，默认为atme_id DESC
+     * @param int    $limit 结果集显示个数，默认为20
+     *
+     * @return array @Me列表信息
      */
     public function getAtmeList(array $map = null, $order = 'atme_id DESC', $limit = 5)
     {
@@ -86,12 +98,14 @@ class AtmeModel extends Model
     }
 
     /**
-     * 添加@Me数据
+     * 添加@Me数据.
+     *
      * @param  string $content    @Me的相关内容
-     * @param  int   $row_id     资源ID
-     * @param  array $extra_uids 额外@用户ID
-     * @param  array $less_uids  去除@用户ID
-     * @return int   添加成功后的@ID
+     * @param int   $row_id     资源ID
+     * @param array $extra_uids 额外@用户ID
+     * @param array $less_uids  去除@用户ID
+     *
+     * @return int 添加成功后的@ID
      */
     public function addAtme($content, $row_id, $extra_uids = null, $less_uids = null)
     {
@@ -112,7 +126,8 @@ class AtmeModel extends Model
     }
 
     /**
-     * 更新最近@的人
+     * 更新最近@的人.
+     *
      * @param string $content 原创分享内容
      */
     public function updateRecentAt($content)
@@ -159,7 +174,8 @@ class AtmeModel extends Model
     }
 
     /**
-     * 更新最近@的人
+     * 更新最近@的人.
+     *
      * @param string $content 原创分享内容
      */
     public function updateRecentAtForApi($content, $row_id)
@@ -211,14 +227,16 @@ class AtmeModel extends Model
     }
 
     /**
-     * 获取@内容中的@用户
+     * 获取@内容中的@用户.
+     *
      * @param  string $content    @Me的相关内容
-     * @param  array $extra_uids 额外@用户UID
-     * @param  int   $row_id     资源ID
-     * @param  array $less_uids  去除@用户ID
+     * @param array $extra_uids 额外@用户UID
+     * @param int   $row_id     资源ID
+     * @param array $less_uids  去除@用户ID
+     *
      * @return array 用户UID数组
      */
-    public function getUids($content, $extra_uids = null, $row_id, $less_uids = null)
+    public function getUids($content, $extra_uids, $row_id, $less_uids = null)
     {
         // 正则匹配内容
         preg_match_all($this->_at_regex, $content, $matches);
@@ -285,11 +303,13 @@ class AtmeModel extends Model
     }
 
     /**
-     * 删除@Me数据
+     * 删除@Me数据.
+     *
      * @param  string $content    @Me的相关内容
-     * @param  int   $row_id     资源ID
-     * @param  array $extra_uids 额外@用户UID
-     * @return bool  是否删除成功
+     * @param int   $row_id     资源ID
+     * @param array $extra_uids 额外@用户UID
+     *
+     * @return bool 是否删除成功
      */
     public function deleteAtme($content, $row_id, $extra_uids = null)
     {
@@ -300,10 +320,12 @@ class AtmeModel extends Model
     }
 
     /**
-     * 添加@Me信息操作
-     * @param  array $uids   用户UID数组
-     * @param  int   $row_id 资源ID
-     * @return int   添加成功后的@ID
+     * 添加@Me信息操作.
+     *
+     * @param array $uids   用户UID数组
+     * @param int   $row_id 资源ID
+     *
+     * @return int 添加成功后的@ID
      */
     private function _saveAtme($uids, $row_id)
     {
@@ -322,10 +344,12 @@ class AtmeModel extends Model
     }
 
     /**
-     * 删除@Me信息操作
-     * @param  array $uids   用户UID数组
-     * @param  int   $row_id 资源ID
-     * @return bool  是否删除成功
+     * 删除@Me信息操作.
+     *
+     * @param array $uids   用户UID数组
+     * @param int   $row_id 资源ID
+     *
+     * @return bool 是否删除成功
      */
     private function _deleteAtme($uids, $row_id)
     {
@@ -400,9 +424,12 @@ class AtmeModel extends Model
 
         return $data;
     }
+
     /**
-     * 获取动态的种类，用于动态的Tab
+     * 获取动态的种类，用于动态的Tab.
+     *
      * @param array $map 查询条件
+     *
      * @return array 评论种类与其资源数目
      */
     public function getTab($map)

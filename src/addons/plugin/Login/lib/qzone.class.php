@@ -10,6 +10,7 @@ class qzone
 
         return urlencode($callbackurl);
     }
+
     public function getUrl($callbackurl)
     {
         $_SESSION['state'] = md5(uniqid(rand(), true));
@@ -22,6 +23,7 @@ class qzone
 
         return $loginUrl;
     }
+
     //用户资料
     public function userInfo()
     {
@@ -49,6 +51,7 @@ class qzone
         //print_r($user);
         return $user;
     }
+
     //验证用户
     public function checkUser()
     {
@@ -108,6 +111,7 @@ class qzone
 
         return true;
     }
+
     //发布一条分享
     public function update($text, $opt)
     {
@@ -130,6 +134,7 @@ class qzone
 
         return true;
     }
+
     //上传一个照片，并发布一条分享
     public function upload($text, $opt, $pic)
     {
@@ -137,11 +142,13 @@ class qzone
 
         return true;
     }
+
     //转发一条分享
     public function transpond($transpondId, $reId, $content = '', $opt = null)
     {
         return true;
     }
+
     //保存数据
     public function saveData($data)
     {

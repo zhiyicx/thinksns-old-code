@@ -74,7 +74,7 @@ class InviteTestModel extends Model
         $save['bgimg'] = intval($config['bgimg']);
         $save['rule'] = $config['rule'];
 
-        return !!model('AddonData')->lput('InviteTest', $save);
+        return (bool) model('AddonData')->lput('InviteTest', $save);
     }
 
     public function getConfig()

@@ -1,7 +1,9 @@
 <?php
 /**
- * 天气预报钩子
+ * 天气预报钩子.
+ *
  * @author 程序_小时代
+ *
  * @version TS3.0
  */
 class InviteTestHooks extends Hooks
@@ -16,7 +18,7 @@ class InviteTestHooks extends Hooks
     public function check()
     {
         if (APP_NAME == 'admin' || APP_NAME == 'w3g' || CheckPermission('core_admin', 'admin_login')) {
-            return ;
+            return;
         }
 
         if (self::$checked) {

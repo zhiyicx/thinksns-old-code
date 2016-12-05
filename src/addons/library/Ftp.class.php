@@ -47,7 +47,8 @@ class Ftp
     }
 
     /**
-     * 连接FTP服务器
+     * 连接FTP服务器.
+     *
      * @param string $host                       　　 服务器地址
      * @param string $username　　　用户名
      * @param string $password　　　密�      �
@@ -89,7 +90,8 @@ class Ftp
     }
 
     /**
-     * 创建文件夹
+     * 创建文件夹.
+     *
      * @param string $dirname 目录名，
      */
     public function mkdir($dirname)
@@ -117,7 +119,8 @@ class Ftp
     }
 
     /**
-     * 上传文件
+     * 上传文件.
+     *
      * @param string $remote 远程存放地址
      * @param string $local  本地存放地址
      */
@@ -142,7 +145,8 @@ class Ftp
     }
 
     /**
-     * 删除文件夹
+     * 删除文件夹.
+     *
      * @param string $dirname 目录地址
      * @param bool   $enforce 强制删除
      */
@@ -170,7 +174,8 @@ class Ftp
     }
 
     /**
-     * 删除指定文件
+     * 删除指定文件.
+     *
      * @param string $filename 文件名
      */
     public function delete($filename)
@@ -190,9 +195,11 @@ class Ftp
     }
 
     /**
-     * 返回给定目录的文件列表
-     * @param  string $dirname 目录地址
-     * @return array  文件列表数据
+     * 返回给定目录的文件列表.
+     *
+     * @param string $dirname 目录地址
+     *
+     * @return array 文件列表数据
      */
     public function nlist($dirname)
     {
@@ -211,7 +218,8 @@ class Ftp
     }
 
     /**
-     * 在 FTP 服务器上改变当前目录
+     * 在 FTP 服务器上改变当前目录.
+     *
      * @param string $dirname 修改服务器上当前目录
      */
     public function chdir($dirname)
@@ -231,7 +239,7 @@ class Ftp
     }
 
     /**
-     * 获取错误信息
+     * 获取错误信息.
      */
     public function get_error()
     {
@@ -252,9 +260,11 @@ class Ftp
     }
 
     /**
-     * 检测目录名
-     * @param  string $url 目录
-     * @return 由    / 分开的返回数组
+     * 检测目录名.
+     *
+     * @param string $url 目录
+     *
+     * @return 由 / 分开的返回数组
      */
     private function ck_dirname($url)
     {
@@ -265,9 +275,8 @@ class Ftp
     }
 
     /**
-     * 关闭FTP连接
+     * 关闭FTP连接.
      */
-
     public function close()
     {
         return @ftp_close($this->link);

@@ -1,17 +1,19 @@
 <?php
 /**
- * 用户备注模型
+ * 用户备注模型.
  *
  * @author Foreach <missu082500@163.com>
  **/
 class UserRemarkModel extends Model
 {
     /**
-     * 设置用户备注名
+     * 设置用户备注名.
      *
-     * @param  int    $uid    被设置用户id
-     * @param  string $remark 备注名
+     * @param int    $uid    被设置用户id
+     * @param string $remark 备注名
+     *
      * @return bool
+     *
      * @author Foreach <missu082500@163.com>
      **/
     public function setRemark($uid, $remark)
@@ -35,10 +37,12 @@ class UserRemarkModel extends Model
     }
 
     /**
-     * 获取用户备注名
+     * 获取用户备注名.
      *
-     * @param  int    $uid 被设置用户id
+     * @param int $uid 被设置用户id
+     *
      * @return string
+     *
      * @author Foreach <missu082500@163.com>
      **/
     public function getRemark($mid, $uid)
@@ -56,11 +60,13 @@ class UserRemarkModel extends Model
     }
 
     /**
-     * 通过备注名搜索
+     * 通过备注名搜索.
      *
-     * @param  int    $mid    用户id
-     * @param  string $remark 备注名
+     * @param int    $mid    用户id
+     * @param string $remark 备注名
+     *
      * @return array
+     *
      * @author Foreach <missu082500@163.com>
      **/
     public function searchRemark($mid, $remark)

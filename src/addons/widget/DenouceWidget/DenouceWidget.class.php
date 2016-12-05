@@ -1,8 +1,11 @@
 <?php
 /**
- * 举报弹窗Widget
+ * 举报弹窗Widget.
+ *
  * @example {:W('Denouce',array())}
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class DenouceWidget extends Widget
@@ -18,7 +21,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 举报弹框
+     * 举报弹框.
+     *
      * @return string 弹窗页面HTML
      */
     public function index()
@@ -35,7 +39,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 判断资源是否已经被举报
+     * 判断资源是否已经被举报.
+     *
      * @return json 判断后的相关信息
      */
     public function isDenounce()
@@ -56,7 +61,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 格式化模板变量
+     * 格式化模板变量.
+     *
      * @return array 被举报的信息
      */
     public function getVar()
@@ -75,7 +81,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 提交举报
+     * 提交举报.
+     *
      * @return array 举报信息和操作状态
      */
     public function post()

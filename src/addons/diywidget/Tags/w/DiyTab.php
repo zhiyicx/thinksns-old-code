@@ -1,29 +1,32 @@
 <?php
 /**
- * tab标签模块
- * @author Stream
+ * tab标签模块.
  *
+ * @author Stream
  */
 class DiyTab extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签
+     * 是否是封闭的标签.
+     *
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
 
     public $config = array();
+
     public function getTagStatus()
     {
         return self::$TAG_CLOSED;
     }
+
     /**
-     * 返回模板文件路径
+     * 返回模板文件路径.
      */
     public function getTemplateFile($tpl = '')
     {
         //返回需要渲染的模板
-        $file = $this->attr ['style'];
+        $file = $this->attr['style'];
         if (!empty($tpl)) {
             $file = $tpl;
         }
@@ -32,7 +35,7 @@ class DiyTab extends TagsAbstract
     }
 
     /**
-     * 这里返回的是模板中需要渲染的变量
+     * 这里返回的是模板中需要渲染的变量.
      */
     public function replace()
     {

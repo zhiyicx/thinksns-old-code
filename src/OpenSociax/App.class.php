@@ -3,14 +3,16 @@
 use Ts\Helper\AutoJumper\Jumper;
 
 /**
- * ThinkSNS App基类
+ * ThinkSNS App基类.
+ *
  * @author  liuxiaoqing <liuxiaoqing@zhishisoft.com>
+ *
  * @version TS v4
  */
 class App
 {
     /**
-     * App初始化
+     * App初始化.
      */
     public static function init()
     {
@@ -30,11 +32,11 @@ class App
     }
 
     /**
-     * 运行控制器
+     * 运行控制器.
      */
     public static function run()
     {
-        App::init();
+        self::init();
 
         $GLOBALS['time_run_detail']['init_end'] = microtime(true);
 
@@ -48,25 +50,25 @@ class App
 
         //API控制器
         if (APP_NAME == 'api') {
-            App::execApi();
+            self::execApi();
 
             $GLOBALS['time_run_detail']['execute_api_end'] = microtime(true);
 
         //Widget控制器
         } elseif (APP_NAME == 'widget') {
-            App::execWidget();
+            self::execWidget();
 
             $GLOBALS['time_run_detail']['execute_widget_end'] = microtime(true);
 
         //Plugin控制器
         } elseif (APP_NAME == 'plugin') {
-            App::execPlugin();
+            self::execPlugin();
 
             $GLOBALS['time_run_detail']['execute_plugin_end'] = microtime(true);
 
         //APP控制器
         } else {
-            App::execApp();
+            self::execApp();
 
             $GLOBALS['time_run_detail']['execute_app_end'] = microtime(true);
         }
@@ -83,12 +85,10 @@ class App
         }
 
         $GLOBALS['time_run_detail']['logsave'] = microtime(true);
-
-        return ;
     }
 
     /**
-     * 执行App控制器
+     * 执行App控制器.
      */
     public static function execApp()
     {
@@ -105,11 +105,10 @@ class App
             $login = Ts\Models\Login::byType('weixin')
                 ->byVendorId($openid)
                 ->orderBy('login_id', 'desc')
-                ->first()
-            ;
+                ->first();
 
             if (!$login && $mid) {
-                $login = new Ts\Model\Login;
+                $login = new Ts\Model\Login();
                 $login->uid = $mid;
                 $login->type_uid = $openid;
                 $login->type = 'weixin';
@@ -176,19 +175,16 @@ class App
             ->setApp(APP_NAME)
             ->setController(MODULE_NAME)
             ->setAction(ACTION_NAME)
-            ->run()
-        ;
+            ->run();
 
         //执行计划任务
         model('Schedule')->run();
 
         $GLOBALS['time_run_detail']['action_run'] = microtime(true);
-
-        return ;
     }
 
     /**
-     * 执行Api控制器
+     * 执行Api控制器.
      */
     public static function execApi()
     {
@@ -225,12 +221,10 @@ class App
             dump($data);
             exit;
         }
-
-        return ;
     }
 
     /**
-     * 执行Widget控制器
+     * 执行Widget控制器.
      */
     public static function execWidget()
     {
@@ -264,12 +258,10 @@ class App
         if ($rs = call_user_func(array(&$module, $action))) {
             echo $rs;
         }
-
-        return ;
     }
 
     /**
-     * app异常处理
+     * app异常处理.
      */
     public static function appException($e)
     {
@@ -277,7 +269,8 @@ class App
     }
 
     /**
-     * 自定义错误处理
+     * 自定义错误处理.
+     *
      * @param int    $errno   错误类型
      * @param string $errstr  错误信息
      * @param string $errfile 错误文件

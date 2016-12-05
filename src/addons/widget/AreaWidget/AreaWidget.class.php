@@ -1,8 +1,11 @@
 <?php
 /**
- * 地区选择 widget
+ * 地区选择 widget.
+ *
  * @example W('Area',array('curPro'=>1,'curCity'=>2,'area'=>3,'tpl'=>'loadCity'))
+ *
  * @author Jason
+ *
  * @version TS3.0
  */
 class AreaWidget extends Widget
@@ -56,7 +59,7 @@ class AreaWidget extends Widget
     }
 
     /**
-     * 渲染地区选择弹窗
+     * 渲染地区选择弹窗.
      */
     public function area()
     {

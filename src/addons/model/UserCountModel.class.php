@@ -1,14 +1,18 @@
 <?php
 /**
- * 用户统计模型 - 数据对象模型
+ * 用户统计模型 - 数据对象模型.
+ *
  * @author 小川
+ *
  * @version TS3.0
  */
 class UserCountModel extends Model
 {
     /**
-     * 获取指定用户的通知统计数目
-     * @param  int   $uid 用户UID
+     * 获取指定用户的通知统计数目.
+     *
+     * @param int $uid 用户UID
+     *
      * @return array 指定用户的通知统计数目
      */
     public function getUnreadCount($uid)
@@ -53,7 +57,8 @@ class UserCountModel extends Model
     }
 
     /**
-     * 更新指定用户的通知统计数目
+     * 更新指定用户的通知统计数目.
+     *
      * @param int    $uid  用户UID
      * @param string $key  统计数目的Key值
      * @param int    $rate 数目变动的值
@@ -65,7 +70,8 @@ class UserCountModel extends Model
     }
 
     /**
-     * 重置指定用户的通知统计数目
+     * 重置指定用户的通知统计数目.
+     *
      * @param int    $uid   用户UID
      * @param string $key   统计数目的Key值
      * @param int    $value 统计数目变化的值，默认为0

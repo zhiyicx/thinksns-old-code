@@ -1,14 +1,18 @@
 <?php
 /**
- * DIY Widget
+ * DIY Widget.
+ *
  * @example {:W('Diy',array())}
+ *
  * @version TS3.0
  */
 class DiyWidget extends Widget
 {
     /**
-     * [render description]
+     * [render description].
+     *
      * @param  int id [description]
+     *
      * @return int widget_user_id [description]
      */
     public function render($data)
@@ -116,6 +120,7 @@ class DiyWidget extends Widget
 
         return $this->renderFile(dirname(__FILE__).'/config.html', $var);
     }
+
     public function doconfig()
     {
         if (model('Widget')->configWidget(intval($_POST['diyId']), t($_POST['selected']))) {

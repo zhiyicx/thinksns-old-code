@@ -1,11 +1,12 @@
 <?php
     /**
      * BaseModel
-     * 心情的base类
+     * 心情的base类.
      *
      * @uses Model
-     * @package Model::Mini
+     *
      * @version $id$
+     *
      * @copyright 2009-2011 SamPeng
      * @author SamPeng <sampeng87@gmail.com>
      * @license PHP Version 5.2 {@link www.sampeng.cn}
@@ -14,10 +15,12 @@
     {
         /**
          * mid
-         * 访问者的id
+         * 访问者的id.
+         *
          * @var mixed
          */
         protected $mid;
+
         public function setMid($mid)
         {
             $this->mid = $mid;
@@ -25,7 +28,8 @@
 
         /**
          * DateToTimeStemp
-         * 时间换算成时间戳返回
+         * 时间换算成时间戳返回.
+         *
          * @param mixed $stime
          * @param mixed $etime
          */
@@ -62,7 +66,8 @@
 
         /**
          * paramData
-         * 处理归档查询的时间格式
+         * 处理归档查询的时间格式.
+         *
          * @param string $findTime 200903这样格式的参数
          * @static
          */

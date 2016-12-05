@@ -1,7 +1,9 @@
 <?php
 /**
- * ThinkPHP标签库TagLib解析基类
+ * ThinkPHP标签库TagLib解析基类.
+ *
  * @author    liu21st <liu21st@gmail.com>
+ *
  * @version   $Id$
  */
 class TagLib
@@ -9,37 +11,43 @@ class TagLib
     //类定义开始
 
     /**
-     * 标签库定义XML文件
+     * 标签库定义XML文件.
+     *
      * @var string
      */
     protected $xml = '';
 
     /**
-     * 标签库名称
+     * 标签库名称.
+     *
      * @var string
      */
     protected $tagLib = '';
 
     /**
-     * 标签库标签列表
+     * 标签库标签列表.
+     *
      * @var string
      */
     protected $tagList = array();
 
     /**
-     * 标签库分析数组
+     * 标签库分析数组.
+     *
      * @var string
      */
     protected $parse = array();
 
     /**
-     * 标签库是否有效
+     * 标签库是否有效.
+     *
      * @var string
      */
     protected $valid = false;
 
     /**
      * 当前模板对象
+     *
      * @var object
      */
     protected $tpl;
@@ -47,7 +55,7 @@ class TagLib
     protected $comparison = array(' nheq ' => ' !== ', ' heq ' => ' === ', ' neq ' => ' != ', ' eq ' => ' == ', ' egt ' => ' >= ', ' gt ' => ' > ', ' elt ' => ' <= ', ' lt ' => ' < ');
 
     /**
-     * 架构函数
+     * 架构函数.
      */
     public function __construct()
     {
@@ -58,7 +66,7 @@ class TagLib
     }
 
     /**
-     * 初始化标签库的定义文件
+     * 初始化标签库的定义文件.
      */
     public function _initialize()
     {
@@ -66,7 +74,7 @@ class TagLib
     }
 
     /**
-     * 载入模板文件
+     * 载入模板文件.
      */
     public function load()
     {
@@ -81,9 +89,11 @@ class TagLib
 
     /**
      * 分析TagLib文件的信息是否有效
-     * 有效则转换成数组
-     * @param  mixed  $name  数据
-     * @param  string $value 数据表名
+     * 有效则转换成数组.
+     *
+     * @param mixed  $name  数据
+     * @param string $value 数据表名
+     *
      * @return string
      */
     public function valid()
@@ -92,7 +102,8 @@ class TagLib
     }
 
     /**
-     * 获取TagLib名称
+     * 获取TagLib名称.
+     *
      * @return string
      */
     public function getTagLib()
@@ -101,7 +112,8 @@ class TagLib
     }
 
     /**
-     * 获取Tag列表
+     * 获取Tag列表.
+     *
      * @return string
      */
     public function getTagList()
@@ -111,18 +123,18 @@ class TagLib
             $list = array();
             if (is_object($tags)) {
                 $list[] = array(
-                    'name' => $tags->name,
-                    'content' => $tags->bodycontent,
-                    'nested' => (!empty($tags->nested) && $tags->nested != 'false') ? $tags->nested : 0,
+                    'name'      => $tags->name,
+                    'content'   => $tags->bodycontent,
+                    'nested'    => (!empty($tags->nested) && $tags->nested != 'false') ? $tags->nested : 0,
                     'attribute' => isset($tags->attribute) ? $tags->attribute : '',
                     );
                 if (isset($tags->alias)) {
                     $alias = explode(',', $tag->alias);
                     foreach ($alias as $tag) {
                         $list[] = array(
-                            'name' => $tag,
-                            'content' => $tags->bodycontent,
-                            'nested' => (!empty($tags->nested) && $tags->nested != 'false') ? $tags->nested : 0,
+                            'name'      => $tag,
+                            'content'   => $tags->bodycontent,
+                            'nested'    => (!empty($tags->nested) && $tags->nested != 'false') ? $tags->nested : 0,
                             'attribute' => isset($tags->attribute) ? $tags->attribute : '',
                             );
                     }
@@ -131,18 +143,18 @@ class TagLib
                 foreach ($tags as $tag) {
                     $tag = (array) $tag;
                     $list[] = array(
-                        'name' => $tag['name'],
-                        'content' => $tag['bodycontent'],
-                        'nested' => (!empty($tag['nested']) && $tag['nested'] != 'false') ? $tag['nested'] : 0,
+                        'name'      => $tag['name'],
+                        'content'   => $tag['bodycontent'],
+                        'nested'    => (!empty($tag['nested']) && $tag['nested'] != 'false') ? $tag['nested'] : 0,
                         'attribute' => isset($tag['attribute']) ? $tag['attribute'] : '',
                         );
                     if (isset($tag['alias'])) {
                         $alias = explode(',', $tag['alias']);
                         foreach ($alias as $tag1) {
                             $list[] = array(
-                                'name' => $tag1,
-                                'content' => $tag['bodycontent'],
-                                'nested' => (!empty($tag['nested']) && $tag['nested'] != 'false') ? $tag['nested'] : 0,
+                                'name'      => $tag1,
+                                'content'   => $tag['bodycontent'],
+                                'nested'    => (!empty($tag['nested']) && $tag['nested'] != 'false') ? $tag['nested'] : 0,
                                 'attribute' => isset($tag['attribute']) ? $tag['attribute'] : '',
                                 );
                         }
@@ -156,7 +168,8 @@ class TagLib
     }
 
     /**
-     * 获取某个Tag属性的信息
+     * 获取某个Tag属性的信息.
+     *
      * @return string
      */
     public function getTagAttrList($tagName)
@@ -176,7 +189,7 @@ class TagLib
                         // 只有一个属性
                         $attr = $tag['attribute'];
                         $list[] = array(
-                            'name' => $attr->name,
+                            'name'     => $attr->name,
                             'required' => $attr->required,
                             );
                     } else {
@@ -184,7 +197,7 @@ class TagLib
                         foreach ($tag['attribute'] as $attr) {
                             $attr = (array) $attr;
                             $list[] = array(
-                                'name' => $attr['name'],
+                                'name'     => $attr['name'],
                                 'required' => $attr['required'],
                                 );
                         }
@@ -198,8 +211,10 @@ class TagLib
     }
 
     /**
-     * TagLib标签属性分析 返回标签属性数组
+     * TagLib标签属性分析 返回标签属性数组.
+     *
      * @param  string $tagStr 标签内容
+     *
      * @return array
      */
     public function parseXmlAttr($attr, $tag)
@@ -227,8 +242,10 @@ class TagLib
     }
 
     /**
-     * 解析条件表达式
+     * 解析条件表达式.
+     *
      * @param  string $condition 表达式标签内容
+     *
      * @return array
      */
     public function parseCondition($condition)
@@ -250,8 +267,10 @@ class TagLib
     }
 
     /**
-     * 自动识别构建变量
-     * @param  string $name 变量描述
+     * 自动识别构建变量.
+     *
+     * @param string $name 变量描述
+     *
      * @return string
      */
     public function autoBuildVar($name)
@@ -294,8 +313,10 @@ class TagLib
 
     /**
      * 用于标签属性里面的特殊模板变量解析
-     * 格式 以 Think. 打头的变量属于特殊模板变量
-     * @param  string $varStr 变量字符串
+     * 格式 以 Think. 打头的变量属于特殊模板变量.
+     *
+     * @param string $varStr 变量字符串
+     *
      * @return string
      */
     public function parseThinkVar($varStr)

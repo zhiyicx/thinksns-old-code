@@ -1,9 +1,12 @@
 <?php
 
 /**
- * 搜索用户数据
+ * 搜索用户数据.
+ *
  * @example W('SearchUser', array('name' => 'selectUser', 'uids' => array(10000,14983),'follow'=>0,'max'=>10,'editable'=>0))
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class SearchUserWidget extends Widget
@@ -39,7 +42,7 @@ class SearchUserWidget extends Widget
         //渲染模版
         $content = $this->renderFile(dirname(__FILE__).'/'.$tpl, $var);
 
-        self::$rand ++;
+        self::$rand++;
 
         unset($var, $data);
         //输出数据
@@ -47,7 +50,8 @@ class SearchUserWidget extends Widget
     }
 
     /**
-     * 搜索用户
+     * 搜索用户.
+     *
      * @return array 搜索状态及用户列表数据
      */
     public function search()
@@ -77,7 +81,8 @@ class SearchUserWidget extends Widget
     }
 
     /**
-     * 搜索最近@的人
+     * 搜索最近@的人.
+     *
      * @return array 搜索状态及用户列表数据
      */
     public function searchAt()

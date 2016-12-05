@@ -1,8 +1,11 @@
 <?php
 /**
- * 收藏
+ * 收藏.
+ *
  * @example W('Collection',array('sid'=>1,'stable'=>'feed','sapp'=>'public','tpl'=>'simple'))
+ *
  * @author Jason
+ *
  * @version TS3.0
  */
 class CollectionWidget extends Widget
@@ -39,7 +42,8 @@ class CollectionWidget extends Widget
     }
 
     /**
-     * 添加收藏记录
+     * 添加收藏记录.
+     *
      * @return array 收藏状态和成功提示
      */
     public function addColl()
@@ -74,7 +78,8 @@ class CollectionWidget extends Widget
     }
 
     /**
-     * 取消收藏
+     * 取消收藏.
+     *
      * @return array 成功取消的状态及错误提示
      */
     public function delColl()

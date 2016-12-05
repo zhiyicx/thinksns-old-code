@@ -1,6 +1,6 @@
 <?php
 /**
- * GD Reflection Lib Plugin Definition File
+ * GD Reflection Lib Plugin Definition File.
  *
  * This file contains the plugin definition for the GD Reflection Lib for PHP Thumb
  *
@@ -15,25 +15,24 @@
  *
  * @author Ian Selby <ian@gen-x-design.com>
  * @copyright Copyright (c) 2009 Gen X Design
+ *
  * @link http://phpthumb.gxdlabs.com
+ *
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+ *
  * @version 3.0
- * @package PhpThumb
  * @filesource
  */
 
 /**
- * GD Reflection Lib Plugin
+ * GD Reflection Lib Plugin.
  *
  * This plugin allows you to create those fun Apple(tm)-style reflections in your images
- *
- * @package PhpThumb
- * @subpackage Plugins
  */
 class GdReflectionLib
 {
     /**
-     * Instance of GdThumb passed to this class
+     * Instance of GdThumb passed to this class.
      *
      * @var GdThumb
      */
@@ -122,8 +121,7 @@ class GdReflectionLib
     }
 
     /**
-     * Flips the image vertically
-     *
+     * Flips the image vertically.
      */
     protected function imageFlipVertical()
     {
@@ -138,11 +136,12 @@ class GdReflectionLib
     }
 
     /**
-     * Converts a hex color to rgb tuples
+     * Converts a hex color to rgb tuples.
+     *
+     * @param string $hex
+     * @param bool   $asString
      *
      * @return mixed
-     * @param  string $hex
-     * @param  bool   $asString
      */
     protected function hex2rgb($hex, $asString = false)
     {

@@ -1,8 +1,11 @@
 <?php
 /**
- * 标签选择
+ * 标签选择.
+ *
  * @example W('Tag', array('width'=>'500px', 'appname'=>'support','apptable'=>'support','row_id'=>0,'tpl'=>'show','tag_url'=>'aaa','name'=>'public'))
+ *
  * @author zhishisoft
+ *
  * @version TS3.0
  */
 class TagWidget extends Widget
@@ -105,7 +108,7 @@ class TagWidget extends Widget
     }
 
     /**
-     * 获取标签的ID
+     * 获取标签的ID.
      */
     public function getTagId()
     {

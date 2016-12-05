@@ -1,8 +1,8 @@
 <?php
 /**
- * 勋章列表前台展示
- * @author Stream
+ * 勋章列表前台展示.
  *
+ * @author Stream
  */
 class MedalListWidget extends Widget
 {

@@ -10,19 +10,16 @@
 //
 
 /**
- +------------------------------------------------------------------------------
  * ScheduleModel 计划任务服务
  * 实现任务的定时执行
  * 为各种任务的定期执行提供支持
  +------------------------------------------------------------------------------
  * @category	addons
- * @package		addons
- * @subpackage  services
+ *
  * @author		Daniel Yang <desheng.young@gmail.com>
+ *
  * @version		$Id$
- +------------------------------------------------------------------------------
  */
-
 class ScheduleModel extends Model
 {
     private $MONTH_ARRAY = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
@@ -778,7 +775,7 @@ class ScheduleModel extends Model
         $lockfile = $this->getLogPath().'/schedule.lock';
         //锁定未过期 - 返回
         if (file_exists($lockfile) && ((filemtime($lockfile)) + 60 > $_SERVER['REQUEST_TIME'])) {
-            return ;
+            return;
         } else {
             //重新生成锁文件
             touch($lockfile);
@@ -793,11 +790,10 @@ class ScheduleModel extends Model
 
         //解除锁定
         unlink($lockfile);
-
-        return ;
     }
+
     /**
-     * 清除缓存
+     * 清除缓存.
      */
     public function cleanCache()
     {

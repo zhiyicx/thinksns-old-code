@@ -12,10 +12,12 @@ class MedzZip
     public $fileHandle = '';
 
     /**
-     * 增加待压缩的文件
+     * 增加待压缩的文件.
+     *
      * @param $data string 待压缩的字符串
      * @param $filename string 文件名
      * @param $timestamp int 时间戳
+     *
      * @return bool
      */
     public function addFile($data, $filename, $timestamp = 0)
@@ -53,7 +55,8 @@ class MedzZip
     }
 
     /**
-     * 返回压缩后的数据
+     * 返回压缩后的数据.
+     *
      * @return string 压缩后的数据
      */
     public function getCompressedFile()
@@ -74,8 +77,10 @@ class MedzZip
     }
 
     /**
-     * 解压缩一个文件
+     * 解压缩一个文件.
+     *
      * @param $file string 文件名
+     *
      * @return array 解压缩后的数据，其中包括时间、文件名、数据
      */
     public function extract($file)
@@ -107,9 +112,9 @@ class MedzZip
                 continue;
             }
             $extractedData[$i] = array(
-                'filename' => $centralDirectoryData['filename'],
+                'filename'  => $centralDirectoryData['filename'],
                 'timestamp' => $centralDirectoryData['time'],
-                'data' => $data,
+                'data'      => $data,
             );
         }
         fclose($this->fileHandle);
@@ -118,7 +123,7 @@ class MedzZip
     }
 
     /**
-     * 初始化
+     * 初始化.
      */
     public function init()
     {
@@ -129,8 +134,10 @@ class MedzZip
     }
 
     /**
-     * 取得压缩数据中的'Local file header'区块跟压缩的数据
+     * 取得压缩数据中的'Local file header'区块跟压缩的数据.
+     *
      * @param $centralDirectoryData array 'Central directory' 区块数据
+     *
      * @return array
      */
     public function _readLocalFileHeaderAndData($centralDirectoryData)
@@ -161,9 +168,11 @@ class MedzZip
     }
 
     /**
-     * 解压被压缩的数据
+     * 解压被压缩的数据.
+     *
      * @param $data string 被压缩的数据
      * @param $compressMethod int 压缩的方式
+     *
      * @return string 解压后的数据
      */
     public function _unCompressData($data, $compressMethod)
@@ -184,9 +193,11 @@ class MedzZip
     }
 
     /**
-     * 校验 'Local file header' 跟 'Central directory'
-     * @param  unknown_type $localFileHeaderData
-     * @param  unknown_type $centralDirectoryData
+     * 校验 'Local file header' 跟 'Central directory'.
+     *
+     * @param unknown_type $localFileHeaderData
+     * @param unknown_type $centralDirectoryData
+     *
      * @return bool
      */
     public function _checkLocalFileHeaderAndCentralDir($localFileHeaderData, $centralDirectoryData)
@@ -195,7 +206,8 @@ class MedzZip
     }
 
     /**
-     * 读取'Central directory' 区块数据
+     * 读取'Central directory' 区块数据.
+     *
      * @return string
      */
     public function _readCentralDirectoryData()
@@ -214,8 +226,10 @@ class MedzZip
     }
 
     /**
-     * 读取'end of central directory record'区块数据
+     * 读取'end of central directory record'区块数据.
+     *
      * @param $filesize int 文件大小
+     *
      * @return string
      */
     public function _findEOFCentralDirectoryRecord($filesize)
@@ -243,7 +257,8 @@ class MedzZip
     }
 
     /**
-     * 检查PHP zlib扩展有没有载入
+     * 检查PHP zlib扩展有没有载入.
+     *
      * @return bool
      */
     public function _checkZlib()
@@ -252,7 +267,8 @@ class MedzZip
     }
 
     /**
-     * 组装 'Central directory' 区块数据
+     * 组装 'Central directory' 区块数据.
+     *
      * @param $modTime
      * @param $modDate
      * @param $crc
@@ -261,6 +277,7 @@ class MedzZip
      * @param $filenameLength
      * @param $fileHeaderLength
      * @param $filename
+     *
      * @return string
      */
     public function _getCentralDirectory($modTime, $modDate, $crc, $compressedSize, $unCompressedSize, $filenameLength, $fileHeaderLength, $filename)
@@ -287,10 +304,12 @@ class MedzZip
     }
 
     /**
-     * 组装 'Data descriptor' 区块数据
+     * 组装 'Data descriptor' 区块数据.
+     *
      * @param $crc
      * @param $compressedSize
      * @param $unCompressedSize
+     *
      * @return string
      */
     public function _getDataDescriptor($crc, $compressedSize, $unCompressedSize)
@@ -300,8 +319,10 @@ class MedzZip
     }
 
     /**
-     * 格式化时间为DOS格式
+     * 格式化时间为DOS格式.
+     *
      * @param $timestamp
+     *
      * @return array
      */
     public function _getDosFormatTime($timestamp = 0)
@@ -323,9 +344,11 @@ class MedzZip
     }
 
     /**
-     * 还原DOS格式的时间为时间戳
+     * 还原DOS格式的时间为时间戳.
+     *
      * @param $time
      * @param $date
+     *
      * @return int
      */
     public function _recoverFromDosFormatTime($time, $date)

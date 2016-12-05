@@ -3,8 +3,10 @@
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
- * 分享模型 - 数据对象模型
+ * 分享模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class FeedModel extends Model
@@ -15,17 +17,19 @@ class FeedModel extends Model
     public $templateFile = '';            // 模板文件
 
     /**
-     * 添加分享
+     * 添加分享.
+     *
      * @param int    $uid  操作用户ID
      * @param string $app  分享应用类型，默认为public
      * @param string $type 分享类型，
      * @param  array  $data      分享相关数据
-     * @param  int    $app_id    应用资源ID，默认为0
-     * @param  string $app_table 应用资源表名，默认为feed
-     * @param  array  $extUid    额外用户ID，默认为null
-     * @param  array  $lessUids  去除的用户ID，默认为null
-     * @param  bool   $isAtMe    是否为进行发送，默认为true
-     * @return mix    添加失败返回false，成功返回新的分享ID
+     * @param int    $app_id    应用资源ID，默认为0
+     * @param string $app_table 应用资源表名，默认为feed
+     * @param array  $extUid    额外用户ID，默认为null
+     * @param array  $lessUids  去除的用户ID，默认为null
+     * @param bool   $isAtMe    是否为进行发送，默认为true
+     *
+     * @return mix 添加失败返回false，成功返回新的分享ID
      */
     public function put($uid, $app = 'public', $type = '', $data = array(), $app_id = 0, $app_table = 'feed', $extUid = null, $lessUids = null, $isAtMe = true, $is_repost = 0)
     {
@@ -159,13 +163,12 @@ class FeedModel extends Model
         // var_dump($feed_data);exit;
         $feed_data = Capsule::table('feed_data')
             ->insert(array(
-                'feed_id' => $feed_id,
-                'feed_data' => serialize($data),
-                'client_ip' => get_client_ip(),
-                'client_port' => get_client_port(),
+                'feed_id'      => $feed_id,
+                'feed_data'    => serialize($data),
+                'client_ip'    => get_client_ip(),
+                'client_port'  => get_client_port(),
                 'feed_content' => $data['body'],
-            ))
-        ;
+            ));
         // 添加分享成功后
         if ($feed_id && $feed_data) {
             //锁定发布
@@ -225,10 +228,11 @@ class FeedModel extends Model
     }
 
     /**
-     * * API使用 **
+     * * API使用 **.
      */
+
     /**
-     * 获取后台推荐的分享
+     * 获取后台推荐的分享.
      *
      * @param string $type
      *                         分享类型,原创post,转发repost,图片postimage,附件postfile,视频postvideo
@@ -240,6 +244,7 @@ class FeedModel extends Model
      *                         结果集数目，默认为20
      * @param int    $page
      *                         分页数，默认为1
+     *
      * @return array  全站最新的分享
      */
     public function recommend_timeline($type, $mid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $returnId = false)
@@ -259,9 +264,9 @@ class FeedModel extends Model
         ))) {
             $where .= " AND a.type='$type' ";
         }
-        if (! empty($since_id) || ! empty($max_id)) {
-            ! empty($since_id) && $where .= " AND a.feed_id > {$since_id}";
-            ! empty($max_id) && $where .= " AND a.feed_id < {$max_id}";
+        if (!empty($since_id) || !empty($max_id)) {
+            !empty($since_id) && $where .= " AND a.feed_id > {$since_id}";
+            !empty($max_id) && $where .= " AND a.feed_id < {$max_id}";
         }
         $where .= ' AND is_recommend = 1 AND is_audit = 1';
         $start = ($page - 1) * $limit;
@@ -295,9 +300,9 @@ class FeedModel extends Model
         ))) {
             $where .= " AND a.type='$type' ";
         }
-        if (! empty($since_id) || ! empty($max_id)) {
-            ! empty($since_id) && $where .= " AND a.feed_id > {$since_id}";
-            ! empty($max_id) && $where .= " AND a.feed_id < {$max_id}";
+        if (!empty($since_id) || !empty($max_id)) {
+            !empty($since_id) && $where .= " AND a.feed_id > {$since_id}";
+            !empty($max_id) && $where .= " AND a.feed_id < {$max_id}";
         }
         $where .= ' AND is_recommend = 1 AND is_audit = 1';
         $start = ($page - 1) * $limit;
@@ -313,11 +318,11 @@ class FeedModel extends Model
     // 后台推荐的分享（即全局置顶的）+我关注的人+我自己发布的分享+频道内后台推荐的分享，不要显示转发的分享
     public function getOriginalWeiboFor3G($data, $type = 'original')
     {
-        $mid = $GLOBALS ['ts'] ['mid'];
-        $since_id = intval($data ['since_id']);
-        $max_id = intval($data ['max_id']);
-        $count = intval($data ['count']) ? intval($data ['count']) : 10;
-        $page = intval($data ['page']);
+        $mid = $GLOBALS['ts']['mid'];
+        $since_id = intval($data['since_id']);
+        $max_id = intval($data['max_id']);
+        $count = intval($data['count']) ? intval($data['count']) : 10;
+        $page = intval($data['page']);
         // 获取后台推荐的分享id
         $wl_attention_ids = $this->recommend_timeline($type, $mid, $since_id, $max_id, $count, $page, true);
         $feed_ids = array_unique($wl_attention_ids);
@@ -328,8 +333,10 @@ class FeedModel extends Model
 
     /**
      * 截取分享内容，将分享中的URL替换成{ts_urlX}进行字符数目统计
+     *
      * @param  string $content   分享内容
      * @param string $weiboNums 分享截取数目，默认为0
+     *
      * @return array  格式化后的分享内容，body与content
      */
     public function formatFeedContent($content, $weiboNums = 0)
@@ -372,8 +379,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取指定分享的信息
-     * @param  int $feed_id 分享ID
+     * 获取指定分享的信息.
+     *
+     * @param int $feed_id 分享ID
+     *
      * @return mix 获取失败返回false，成功返回分享信息
      */
     public function get($feed_id)
@@ -393,8 +402,10 @@ class FeedModel extends Model
 
     /**
      * 获取指定分享的信息，用于资源模型输出???
-     * @param  int   $id     分享ID
-     * @param  bool  $forApi 是否提供API数据，默认为false
+     *
+     * @param int  $id     分享ID
+     * @param bool $forApi 是否提供API数据，默认为false
+     *
      * @return array 指定分享数据
      */
     public function getFeedInfo($id, $forApi = false)
@@ -440,11 +451,11 @@ class FeedModel extends Model
             $attach = model('Attach')->getAttachByIds($fd['attach_id']);
             foreach ($attach as $ak => $av) {
                 $_attach = array(
-                            'attach_id' => $av['attach_id'],
+                            'attach_id'   => $av['attach_id'],
                             'attach_name' => $av['name'],
-                            'attach_url' => getImageUrl($av['save_path'].$av['save_name']),
-                            'extension' => $av['extension'],
-                            'size' => $av['size'],
+                            'attach_url'  => getImageUrl($av['save_path'].$av['save_name']),
+                            'extension'   => $av['extension'],
+                            'size'        => $av['size'],
                         );
                 if ($data['type'] == 'postimage') {
                     $_attach['attach_small'] = getImageUrl($av['save_path'].$av['save_name'], 120, 120, true);
@@ -526,11 +537,13 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取分享列表
-     * @param  array  $map   查询条件
-     * @param  int    $limit 结果集数目，默认为10
-     * @param  string $order 排序字段
-     * @return array  分享列表数据
+     * 获取分享列表.
+     *
+     * @param array  $map   查询条件
+     * @param int    $limit 结果集数目，默认为10
+     * @param string $order 排序字段
+     *
+     * @return array 分享列表数据
      */
     public function getList($map, $limit = 10, $order = null, $max = null)
     {
@@ -548,11 +561,13 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取指定用户所关注人的所有分享，默认为当前登录用户
+     * 获取指定用户所关注人的所有分享，默认为当前登录用户.
+     *
      * @param string $where 查询条件
      * @param int    $limit 结果集数目，默认为10
      * @param int    $uid   指定用户ID，默认为空
      * @param  int    $fgid  关组组ID，默认为空
+     *
      * @return array  指定用户所关注人的所有分享，默认为当前登录用户
      */
     public function getFollowingFeed($where = '', $limit = 10, $uid = '', $fgid = '', $max = null)
@@ -580,6 +595,7 @@ class FeedModel extends Model
 
         return $feedlist;
     }
+
     public function getUnionFeed($where = '', $limit = 10, $uid = '', $fgid = '', $max = null)
     {
         $fgid = intval($fgid);
@@ -612,10 +628,12 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取指定用户收藏的分享列表，默认为当前登录用户
-     * @param  array $map   查询条件
-     * @param  int   $limit 结果集数目，默认为10
-     * @param  int   $uid   指定用户ID，默认为空
+     * 获取指定用户收藏的分享列表，默认为当前登录用户.
+     *
+     * @param array $map   查询条件
+     * @param int   $limit 结果集数目，默认为10
+     * @param int   $uid   指定用户ID，默认为空
+     *
      * @return array 指定用户收藏的分享列表，默认为当前登录用户
      */
     public function getCollectionFeed($map, $limit = 10, $uid = '')
@@ -631,12 +649,14 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取指定用户所关注人的分享列表
+     * 获取指定用户所关注人的分享列表.
+     *
      * @param array  $map   查询条件
      * @param int    $uid   用户ID
      * @param string $app   应用名称
      * @param int    $type  应用类型
      * @param int    $limit 结果集数目，默认为10
+     *
      * @return array  指定用户所关注人的分享列表
      */
     public function getFollowingList($map, $uid, $app, $type, $limit = 10)
@@ -661,13 +681,15 @@ class FeedModel extends Model
     }
 
     /**
-     * 查看指定用户的分享列表
-     * @param  array  $map   查询条件
-     * @param  int    $uid   用户ID
-     * @param  string $app   应用类型
-     * @param  string $type  分享类型
-     * @param  int    $limit 结果集数目，默认为10
-     * @return array  指定用户的分享列表数据
+     * 查看指定用户的分享列表.
+     *
+     * @param array  $map   查询条件
+     * @param int    $uid   用户ID
+     * @param string $app   应用类型
+     * @param string $type  分享类型
+     * @param int    $limit 结果集数目，默认为10
+     *
+     * @return array 指定用户的分享列表数据
      */
     public function getUserList($map, $uid, $app, $type, $limit = 10)
     {
@@ -695,8 +717,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取指定用户的最后一条分享数据
-     * @param  array $uids 用户ID
+     * 获取指定用户的最后一条分享数据.
+     *
+     * @param array $uids 用户ID
+     *
      * @return array 指定用户的最后一条分享数据
      */
     public function getLastFeed($uids)
@@ -724,8 +748,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取给定分享ID的分享信息
-     * @param  array $feed_ids 分享ID数组
+     * 获取给定分享ID的分享信息.
+     *
+     * @param array $feed_ids 分享ID数组
+     *
      * @return array 给定分享ID的分享信息
      */
     public function getFeeds($feed_ids)
@@ -754,7 +780,8 @@ class FeedModel extends Model
     }
 
     /**
-     * 清除指定用户指定分享的列表缓存
+     * 清除指定用户指定分享的列表缓存.
+     *
      * @param array $feed_ids 分享ID数组，默认为空
      * @param int   $uid      用户ID，默认为空
      */
@@ -781,10 +808,12 @@ class FeedModel extends Model
     }
 
     /**
-     * 更新指定分享的缓存
-     * @param  array  $feed_ids 分享ID数组，默认为空
-     * @param  string $type     操作类型，默认为update
-     * @return bool   true
+     * 更新指定分享的缓存.
+     *
+     * @param array  $feed_ids 分享ID数组，默认为空
+     * @param string $type     操作类型，默认为update
+     *
+     * @return bool true
      */
     public function updateFeedCache($feed_ids, $type = 'update')
     {
@@ -800,7 +829,8 @@ class FeedModel extends Model
     }
 
     /**
-     * 生成指定分享的缓存
+     * 生成指定分享的缓存.
+     *
      * @param array $value   分享相关数据
      * @param array $feed_id 分享ID数组
      */
@@ -847,8 +877,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 解析分享模板标签
-     * @param  array $_data 分享的原始数据
+     * 解析分享模板标签.
+     *
+     * @param array $_data 分享的原始数据
+     *
      * @return array 解析分享模板后的分享数据
      */
     private function __paseTemplate($_data)
@@ -863,11 +895,11 @@ class FeedModel extends Model
             $var['attachInfo'] = model('Attach')->getAttachByIds($var['attach_id']);
             foreach ($var['attachInfo'] as $ak => $av) {
                 $_attach = array(
-                            'attach_id' => $av['attach_id'],
+                            'attach_id'   => $av['attach_id'],
                             'attach_name' => $av['name'],
-                            'attach_url' => getImageUrl($av['save_path'].$av['save_name']),
-                            'extension' => $av['extension'],
-                            'size' => $av['size'],
+                            'attach_url'  => getImageUrl($av['save_path'].$av['save_name']),
+                            'extension'   => $av['extension'],
+                            'size'        => $av['size'],
                         );
                 if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
                     $_attach['attach_small'] = getImageUrl($av['save_path'].$av['save_name'], 120, 120, true);
@@ -920,10 +952,10 @@ class FeedModel extends Model
         $return['api_source'] = $var['sourceInfo'];
         $return['actions'] = array(
             'comment' => true,
-            'repost' => true,
-            'like' => false,
-            'favor' => true,
-            'delete' => true,
+            'repost'  => true,
+            'like'    => false,
+            'favor'   => true,
+            'delete'  => true,
         );
         //验证转发的原信息是否存在
         if (!$this->_notDel($_data['app'], $_data['type'], $_data['app_row_id'])) {
@@ -934,11 +966,13 @@ class FeedModel extends Model
     }
 
     /**
-     * 判断资源是否已被删除
-     * @param  string $app        应用名称
-     * @param  string $feedtype   动态类型
-     * @param  int    $app_row_id 资源ID
-     * @return bool   资源是否存在
+     * 判断资源是否已被删除.
+     *
+     * @param string $app        应用名称
+     * @param string $feedtype   动态类型
+     * @param int    $app_row_id 资源ID
+     *
+     * @return bool 资源是否存在
      */
     private function _notDel($app, $feedtype, $app_row_id)
     {
@@ -952,8 +986,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取所有分享节点列表 - 预留后台查看、编辑分享模板文件
-     * @param  bool  $ignore 从分享设置里面获取，默认为false
+     * 获取所有分享节点列表 - 预留后台查看、编辑分享模板文件.
+     *
+     * @param bool $ignore 从分享设置里面获取，默认为false
+     *
      * @return array 所有分享节点列表
      */
     public function getNodeList($ignore = false)
@@ -1002,8 +1038,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取分享模板的XML文件路径
-     * @param  bool   $set 是否重新生成分享模板XML文件
+     * 获取分享模板的XML文件路径.
+     *
+     * @param bool $set 是否重新生成分享模板XML文件
+     *
      * @return string 分享模板的XML文件路径
      */
     public function _getFeedXml($set = false)
@@ -1030,11 +1068,13 @@ class FeedModel extends Model
     }
 
     /**
-     * 分享操作，彻底删除、假删除、回复
+     * 分享操作，彻底删除、假删除、回复.
+     *
      * @param int    $feed_id 分享ID
      * @param string $type    分享操作类型，deleteFeed：彻底删除，delFeed：假删除，feedRecover：恢复
      * @param  string $title   知识内容，目前没没有该功能
      * @param  string $uid     删除分享的用户ID（区别超级管理员）
+     *
      * @return array 分享操作后的结果信息数组
      */
     public function doEditFeed($feed_id, $type, $title, $uid = null)
@@ -1115,7 +1155,8 @@ class FeedModel extends Model
     }
 
     /**
-     * 删除分享相关附件数据
+     * 删除分享相关附件数据.
+     *
      * @param array  $feedIds 分享ID数组
      * @param string $type    删除附件类型
      */
@@ -1135,8 +1176,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 审核通过分享
-     * @param  int   $feed_id 分享ID
+     * 审核通过分享.
+     *
+     * @param int $feed_id 分享ID
+     *
      * @return array 分享操作后的结果信息数组
      */
     public function doAuditFeed($feed_id)
@@ -1160,16 +1203,19 @@ class FeedModel extends Model
     }
 
     /*** 搜索引擎使用 ***/
+
     /**
-     * 搜索分享
+     * 搜索分享.
+     *
      * @param  string $key    关键字
      * @param string $type 搜索类型，following、all、space
      * @param  int    $loadId 载入分享ID，从此分享ID开始搜索
-     * @param  int   $limit  结果集数目
-     * @param  bool  $forApi 是否返回API数据，默认为false
+     * @param int  $limit  结果集数目
+     * @param bool $forApi 是否返回API数据，默认为false
+     *
      * @return array 搜索后的分享数据
      */
-    public function searchFeed($key, $type, $loadId, $limit, $forApi = false, $feed_type)
+    public function searchFeed($key, $type, $loadId, $limit, $forApi, $feed_type)
     {
         $page = intval($_REQUEST['p']);
         switch ($type) {
@@ -1182,10 +1228,10 @@ class FeedModel extends Model
                 $feedlist = $this->table($table)->where($where)->field('a.feed_id')->order('a.publish_time DESC')->findPage($limit);
                 break;
             case 'union':
-                $buid = $GLOBALS ['ts'] ['uid'];
+                $buid = $GLOBALS['ts']['uid'];
                 $table = "{$this->tablePrefix}feed AS a 
 				LEFT JOIN {$this->tablePrefix}feed_data AS c ON a.feed_id = c.feed_id";
-                $where = ! empty($loadId) ? " a.is_del = 0 AND a.is_audit = 1 AND a.feed_id <'{$loadId}'" : 'a.is_del = 0 AND a.is_audit = 1';
+                $where = !empty($loadId) ? " a.is_del = 0 AND a.is_audit = 1 AND a.feed_id <'{$loadId}'" : 'a.is_del = 0 AND a.is_audit = 1';
                 $where .= " AND c.feed_data LIKE '%".t($key)."%'";
                 $where .= " and (a.uid in (SELECT fid from ts_user_union WHERE uid=$buid) 
 		or a.uid in (SELECT u.fid from ts_user_union u LEFT JOIN ts_user_follow f ON u.uid=f.fid WHERE f.uid=$buid )) ";
@@ -1253,12 +1299,14 @@ class FeedModel extends Model
     }
 
     /**
-     * 数据库搜索分享
+     * 数据库搜索分享.
+     *
      * @param  string $key    关键字
-     * @param  string $type   分享类型，post、repost、postimage、postfile
-     * @param  int    $limit  结果集数目
-     * @param  bool   $forApi 是否返回API数据，默认为false
-     * @return array  搜索后的分享数据
+     * @param string $type   分享类型，post、repost、postimage、postfile
+     * @param int    $limit  结果集数目
+     * @param bool   $forApi 是否返回API数据，默认为false
+     *
+     * @return array 搜索后的分享数据
      */
     public function searchFeeds($key, $feed_type, $limit, $Stime, $Etime)
     {
@@ -1296,13 +1344,16 @@ class FeedModel extends Model
     }
 
     /*** API使用 ***/
+
     /**
-     * 获取全站最新的分享
+     * 获取全站最新的分享.
+     *
      * @param string $type     分享类型,原创post,转发repost,图片postimage,附件postfile,视频postvideo
      * @param int    $since_id 分享ID，从此分享ID开始，默认为0
      * @param int    $max_id   最大分享ID，默认为0
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
+     *
      * @return array  全站最新的分享
      */
     public function public_timeline($type, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $returnId = false)
@@ -1333,13 +1384,15 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取登录用户所关注人的最新分享
+     * 获取登录用户所关注人的最新分享.
+     *
      * @param string $type     分享类型,原创post,转发repost,图片postimage,附件postfile,视频postvideo
      * @param int    $mid      用户ID
      * @param int    $since_id 分享ID，从此分享ID开始，默认为0
      * @param int    $max_id   最大分享ID，默认为0
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
+     *
      * @return array  登录用户所关注人的最新分享
      */
     public function friends_timeline($type, $mid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $returnId = false)
@@ -1405,16 +1458,19 @@ class FeedModel extends Model
 
             return count($feed_ids);
         }
+
     /**
-     * 获取指定用户发布的分享列表
-     * @param  string $type      分享类型,原创post,转发repost,图片postimage,附件postfile,视频postvideo
-     * @param  int    $user_id   指定用户ID
-     * @param  string $user_name 指定用户名称
-     * @param  int    $since_id  分享ID，从此分享ID开始，默认为0
-     * @param  int    $max_id    最大分享ID，默认为0
-     * @param  int    $limit     结果集数目，默认为20
-     * @param  int    $page      分页数，默认为1
-     * @return array  指定用户发布的分享列表
+     * 获取指定用户发布的分享列表.
+     *
+     * @param string $type      分享类型,原创post,转发repost,图片postimage,附件postfile,视频postvideo
+     * @param int    $user_id   指定用户ID
+     * @param string $user_name 指定用户名称
+     * @param int    $since_id  分享ID，从此分享ID开始，默认为0
+     * @param int    $max_id    最大分享ID，默认为0
+     * @param int    $limit     结果集数目，默认为20
+     * @param int    $page      分页数，默认为1
+     *
+     * @return array 指定用户发布的分享列表
      */
     public function user_timeline($type, $user_id, $user_name, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
     {
@@ -1451,12 +1507,14 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取某条分享的被转发列表
+     * 获取某条分享的被转发列表.
+     *
      * @param string $row_id   被转发分享ID
      * @param int    $since_id 分享ID，从此分享ID开始，默认为0
      * @param int    $max_id   最大分享ID，默认为0
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
+     *
      * @return array  全站最新的分享
      */
     public function repost_timeline($row_id, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
@@ -1483,9 +1541,11 @@ class FeedModel extends Model
     }
 
     /**
-     * 格式化分享数据
-     * @param  array $feed_ids 分享ID数组
-     * @param  bool  $forApi   是否为API数据，默认为false
+     * 格式化分享数据.
+     *
+     * @param array $feed_ids 分享ID数组
+     * @param bool  $forApi   是否为API数据，默认为false
+     *
      * @return array 格式化后的分享数据
      */
     public function formatFeed($feed_ids, $forApi = false)
@@ -1554,10 +1614,12 @@ class FeedModel extends Model
     }
 
     /**
-     * 分享到分享
+     * 分享到分享.
+     *
      * @param string content 内容
      * @param int uid 分享者uid
      * @param mixed attach_ids 附件ID
+     *
      * @return int feed_id 分享ID
      */
     public function shareToFeed($content, $uid, $attach_ids, $from)
@@ -1593,13 +1655,16 @@ class FeedModel extends Model
 
         return $data;
     }
+
     /**
      * 获取带视频的发言
+     *
      * @param string $type     发言类型,原创post,转发repost,图片postimage,附件postfile,视频postvideo
      * @param int    $since_id 发言ID，从此发言ID开始，默认为0
      * @param int    $max_id   最大发言ID，默认为0
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
+     *
      * @return array  全站最新的发言
      */
     public function video_list($type, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $sql = '', $order = '')

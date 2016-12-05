@@ -1,20 +1,26 @@
 <?php
 /**
- * 调整关注用户分组Widget
+ * 调整关注用户分组Widget.
+ *
  * @example {:W('FollowGroup', array('uid'=>$_following['uid'], 'fid'=>$_following['fid'], 'follow_group_status' => $follow_group_status)}
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class FollowGroupWidget extends Widget
 {
     /**
      * 渲染关注用户分组调整模板
+     *
      * @example
      * $data['uid'] integer 用户ID
      * $data['fid'] integer 关注用户ID
      * $data['follow_group_status'] array 指定关注用户的分组信息
      * @data['tpl'] string 模板字段
+     *
      * @param  array  $data 配置的相关信息
+     *
      * @return string 渲染后的模板数据
      */
     public function render($data)
@@ -42,7 +48,7 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 渲染添加分组页面
+     * 渲染添加分组页面.
      */
     public function addgroup()
     {
@@ -50,7 +56,8 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 添加分组
+     * 添加分组.
+     *
      * @return array 添加分组状态和提示信息
      */
     public function doaddGroup()
@@ -82,7 +89,7 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 渲染编辑分组页面
+     * 渲染编辑分组页面.
      */
     public function editgroup()
     {
@@ -96,7 +103,8 @@ class FollowGroupWidget extends Widget
     }
 
     /**
-     * 验证分组个数
+     * 验证分组个数.
+     *
      * @return mixed 验证分组状态和提示信息
      */
     public function checkGroup()

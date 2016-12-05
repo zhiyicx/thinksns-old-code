@@ -1,17 +1,19 @@
 <?php
 /**
- * DIY页面类
- * @author Stream
+ * DIY页面类.
  *
+ * @author Stream
  */
 class PageModel extends Model
 {
     protected $tableName = 'diy_page';
 
     /**
-     * 返回页面详细信息
-     * @param  unknown_type $id
-     * @param  unknown_type $field
+     * 返回页面详细信息.
+     *
+     * @param unknown_type $id
+     * @param unknown_type $field
+     *
      * @return unknown
      */
     public function getPageInfo($map, $field = 'id,page_name,domain,canvas,manager,status,guest,seo_title,seo_keywords,seo_description')
@@ -20,20 +22,25 @@ class PageModel extends Model
 
         return $data;
     }
+
     /**
-     * 返回页面列表
+     * 返回页面列表.
+     *
      * @param array  $map
      * @param string $field
      */
-    public function getPageList($limit = 20, $map, $field = 'id,page_name,domain,canvas,manager,visit_count')
+    public function getPageList($limit, $map, $field = 'id,page_name,domain,canvas,manager,visit_count')
     {
         $list = $this->where($map)->field($field)->findPage($limit);
 
         return $list;
     }
+
     /**
-     * 添加页面
-     * @param  array $data
+     * 添加页面.
+     *
+     * @param array $data
+     *
      * @return bool
      */
     public function addPage($data)
@@ -61,9 +68,12 @@ class PageModel extends Model
 
         return $res;
     }
+
     /**
-     * 修改页面
-     * @param  array $data
+     * 修改页面.
+     *
+     * @param array $data
+     *
      * @return bool
      */
     public function savePage($data)
@@ -90,9 +100,12 @@ class PageModel extends Model
 
         return $res;
     }
+
     /**
-     * 删除页面
-     * @param  array $map
+     * 删除页面.
+     *
+     * @param array $map
+     *
      * @return bool
      */
     public function deletePage($map)
@@ -108,8 +121,9 @@ class PageModel extends Model
 
         return $res;
     }
+
     /**
-     * 保存页面数据
+     * 保存页面数据.
      */
     public function saveData($page, $layoutData, $widgetData)
     {
@@ -121,9 +135,12 @@ class PageModel extends Model
 
         return $result;
     }
+
     /**
-     * 返回管理员信息
-     * @param  array    $map
+     * 返回管理员信息.
+     *
+     * @param array $map
+     *
      * @return Ambigous <返回新的一维数组, multitype:Ambigous <array, string> >
      */
     public function getManagers($map)
@@ -132,16 +149,20 @@ class PageModel extends Model
 
         return explode(',', implode(',', getSubByKey($list, 'manager')));
     }
+
     /**
-     * 获取最后错误信息
+     * 获取最后错误信息.
+     *
      * @return string 最后错误信息
      */
     public function getLastError()
     {
         return $this->error;
     }
+
     /**
-     * 浏览量
+     * 浏览量.
+     *
      * @param unknown_type $pageId
      */
     public function addReader($pageId)

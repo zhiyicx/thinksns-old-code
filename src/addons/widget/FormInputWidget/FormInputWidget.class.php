@@ -1,7 +1,9 @@
 <?php
 /**
- * 表单输入框 Widget
+ * 表单输入框 Widget.
+ *
  * @example {:W('FormInput', array('type' =>'checkbox', 'name'=>'asd', 'default_value'=>'fefds', 'value' =>1564))}
+ *
  * @version TS3.0
  * $param array $data:
  * array(

@@ -1,8 +1,7 @@
 <?php
 /**
- * 中文转拼音类
+ * 中文转拼音类.
  * */
-
 class PinYinModel
 {
     /***
@@ -73,6 +72,7 @@ class PinYinModel
 
         return preg_replace('/[^a-z0-9]*/', '', $_Res);
     }
+
     private function _Pinyin($_Num, $_Data)
     {
         if ($_Num > 0 && $_Num < 160) {
@@ -89,6 +89,7 @@ class PinYinModel
             return $k;
         }
     }
+
     private function _U2_Utf8_Gb($_C)
     {
         $_String = '';

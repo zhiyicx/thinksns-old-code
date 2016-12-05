@@ -1,13 +1,16 @@
 <?php
 /**
- * 颜色板Widget
+ * 颜色板Widget.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class ColorWidget extends Widget
 {
     /**
-     * 渲染颜色板页面
+     * 渲染颜色板页面.
+     *
      * @example
      *
      * @return string 颜色板HTML相关信息

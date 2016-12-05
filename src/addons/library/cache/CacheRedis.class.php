@@ -12,16 +12,17 @@
 
 /**
  * Redis缓存驱动
- * 要求安装phpredis扩展：https://github.com/nicolasff/phpredis
+ * 要求安装phpredis扩展：https://github.com/nicolasff/phpredis.
+ *
  * @category   Extend
- * @package  Extend
- * @subpackage  Driver.Cache
+ *
  * @author    尘缘 <130775@qq.com>
  */
 class CacheRedis extends Cache
 {
     /**
-     * 架构函数
+     * 架构函数.
+     *
      * @param array $options 缓存参数
      */
     public function __construct($options = array())
@@ -31,9 +32,9 @@ class CacheRedis extends Cache
         }
         if (empty($options)) {
             $options = array(
-                'host' => C('REDIS_HOST') ? C('REDIS_HOST') : '127.0.0.1',
-                'port' => C('REDIS_PORT') ? C('REDIS_PORT') : 6379,
-                'timeout' => C('DATA_CACHE_TIMEOUT') ? C('DATA_CACHE_TIMEOUT') : false,
+                'host'       => C('REDIS_HOST') ? C('REDIS_HOST') : '127.0.0.1',
+                'port'       => C('REDIS_PORT') ? C('REDIS_PORT') : 6379,
+                'timeout'    => C('DATA_CACHE_TIMEOUT') ? C('DATA_CACHE_TIMEOUT') : false,
                 'persistent' => false,
             );
         }
@@ -42,15 +43,17 @@ class CacheRedis extends Cache
         $this->options['prefix'] = isset($options['prefix']) ? $options['prefix'] : C('DATA_CACHE_PREFIX');
         $this->options['length'] = isset($options['length']) ? $options['length'] : 0;
         $func = $options['persistent'] ? 'pconnect' : 'connect';
-        $this->handler = new Redis;
+        $this->handler = new Redis();
         $options['timeout'] === false ?
             $this->handler->$func($options['host'], $options['port']) :
             $this->handler->$func($options['host'], $options['port'], $options['timeout']);
     }
 
     /**
-     * 读取缓存
-     * @param  string $name 缓存变量名
+     * 读取缓存.
+     *
+     * @param string $name 缓存变量名
+     *
      * @return mixed
      */
     public function get($name)
@@ -61,10 +64,12 @@ class CacheRedis extends Cache
     }
 
     /**
-     * 写入缓存
-     * @param  string $name   缓存变量名
-     * @param  mixed  $value  存储数据
-     * @param  int    $expire 有效时间（秒）
+     * 写入缓存.
+     *
+     * @param string $name   缓存变量名
+     * @param mixed  $value  存储数据
+     * @param int    $expire 有效时间（秒）
+     *
      * @return boolen
      */
     public function set($name, $value, $expire = null)
@@ -88,8 +93,10 @@ class CacheRedis extends Cache
     }
 
     /**
-     * 删除缓存
-     * @param  string $name 缓存变量名
+     * 删除缓存.
+     *
+     * @param string $name 缓存变量名
+     *
      * @return boolen
      */
     public function rm($name)
@@ -98,7 +105,8 @@ class CacheRedis extends Cache
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
+     *
      * @return boolen
      */
     public function clear()

@@ -12,9 +12,7 @@
 // $Id$
 
 /**
- +------------------------------------------------------------------------------
- * 附件操作服务，参考XattachModel
- +------------------------------------------------------------------------------
+ * 附件操作服务，参考XattachModel.
  */
 
 //载入上传操作类
@@ -23,12 +21,12 @@ tsload(SITE_PATH.'/addons/library/UploadFile.class.php');
 class XattachModel
 {
     /**
-     * 上传附件
+     * 上传附件.
      *
      * @param string $attach_type 附件类型
      * @param array  $input_options 配置选项[不推荐修改, 默认使用后台的配置]
      */
-    public function upload($attach_type = 'attach', $input_options = array())
+    public function upload($attach_type = 'attach', $input_options = [])
     {
         $system_default = model('Xdata')->lget('attach');
         if (empty($system_default['attach_path_rule']) || empty($system_default['attach_max_size']) || empty($system_default['attach_allow_extension'])) {
@@ -40,7 +38,7 @@ class XattachModel
         }
 
         //载入默认规则
-        $default_options = array();
+        $default_options = [];
         $default_options['custom_path'] = date($system_default['attach_path_rule']);                //应用定义的上传目录规则：'Y/md/H/'
         $default_options['max_size'] = floatval($system_default['attach_max_size']) * 1000000;    //单位: 兆
         $default_options['allow_exts'] = $system_default['attach_allow_extension'];                //'jpg,gif,png,jpeg,bmp,zip,rar,doc,xls,ppt,docx,xlsx,pptx,pdf'
@@ -136,7 +134,7 @@ class XattachModel
     }
 
     //直接直接保存文件到附件表
-    public function addFile($attach_type = 'attach', $attach_file)
+    public function addFile($attach_type, $attach_file)
     {
 
         //获取系统配置
@@ -176,7 +174,7 @@ class XattachModel
             //读取附件类型
             if (function_exists('mime_content_type')) {
                 $file['type'] = mime_content_type($attach_file);
-            } elseif (in_array(strtolower($file['extension']), array('jpeg', 'jpg', 'gif', 'png', 'bmp'))) {
+            } elseif (in_array(strtolower($file['extension']), ['jpeg', 'jpg', 'gif', 'png', 'bmp'])) {
                 $file['type'] = 'image/'.$file['extension'];
             } else {
                 $file['type'] = 'text/'.$file['extension'];
@@ -184,7 +182,7 @@ class XattachModel
         }
 
         //载入默认规则
-        $options = array();
+        $options = [];
         $options['custom_path'] = date($system_default['attach_path_rule']);
         $options['save_path'] = UPLOAD_PATH.'/'.$options['custom_path'];
         $options['save_name'] = uniqid().'.'.$file['extension'];
@@ -233,7 +231,7 @@ class XattachModel
     }
 
     /**
-     * 下载附件
+     * 下载附件.
      *
      * @param int $aid 附件ID 为空时使用$_REQUEST['id']作为附件ID
      */
@@ -297,7 +295,7 @@ class XattachModel
             $attachIds[] = intval($v);
         }
 
-        $map['attach_id'] = array('in', array_map('intval', $attachIds));
+        $map['attach_id'] = ['in', array_map('intval', $attachIds)];
         $data = M('Attach')->where($map)->field($field)->findAll();
 
         return $data;

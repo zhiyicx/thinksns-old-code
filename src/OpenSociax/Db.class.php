@@ -1,10 +1,11 @@
 <?php
 /**
- * ThinkSNS 数据库中间层，只支持MySQL
+ * ThinkSNS 数据库中间层，只支持MySQL.
+ *
  * @author  liuxiaoqing <liuxiaoqing@zhishisoft.com>
+ *
  * @version TS v4
  */
-
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 // 定义MySQL查询输出封装为多结果，必须用循环处理
@@ -32,7 +33,7 @@ class Db extends Think
     // 错误信息
     protected $error = '';
     // 数据库连接ID 支持多个连接
-    protected $linkID = array();
+    protected $linkID = [];
     // 当前连接ID
     protected $_linkID = null;
     // 当前查询ID
@@ -44,11 +45,13 @@ class Db extends Think
     // SQL 执行时间记录
     protected $beginTime;
     // 数据库表达式
-    protected $comparison = array('eq' => '=', 'neq' => '!=', 'gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'notlike' => 'NOT LIKE', 'like' => 'LIKE');
+    protected $comparison = ['eq' => '=', 'neq' => '!=', 'gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'notlike' => 'NOT LIKE', 'like' => 'LIKE'];
     // 查询表达式
     protected $selectSql = 'SELECT%DISTINCT% %FIELDS% FROM %TABLE%%JOIN%%WHERE%%GROUP%%HAVING%%ORDER%%LIMIT%';
+
     /**
-     * 架构函数
+     * 架构函数.
+     *
      * @param array $config 数据库配置数组
      */
     public function __construct($config = '')
@@ -61,9 +64,10 @@ class Db extends Think
     }
 
     /**
-     * 获取数据库单例实例
+     * 获取数据库单例实例.
      *
      * @return object self
+     *
      * @author Seven Du <lovevipdsw@vip.qq.com>
      **/
     public static function getInstance($config = null)
@@ -76,8 +80,10 @@ class Db extends Think
     }
 
     /**
-     * 分析数据库配置信息，支持数组和DSN
+     * 分析数据库配置信息，支持数组和DSN.
+     *
      * @param  mixed  $db_config 数据库配置信息
+     *
      * @return string
      */
     private function parseConfig($db_config = '')
@@ -87,30 +93,27 @@ class Db extends Think
             $db_config = $this->parseDSN($db_config);
         } elseif (empty($db_config)) {
             // 如果配置为空，读取配置文件设置
-            $db_config = array(
-                'dbms' => C('DB_TYPE'),
+            $db_config = [
+                'dbms'     => C('DB_TYPE'),
                 'username' => C('DB_USER'),
                 'password' => C('DB_PWD'),
                 'hostname' => C('DB_HOST'),
                 'hostport' => C('DB_PORT'),
                 'database' => C('DB_NAME'),
-                'dsn' => C('DB_DSN'),
-                'params' => C('DB_PARAMS'),
-            );
+                'dsn'      => C('DB_DSN'),
+                'params'   => C('DB_PARAMS'),
+            ];
         }
 
         return $db_config;
     }
 
     /**
-     +----------------------------------------------------------
-     * 增加数据库连接(相同类型的)
+     * 增加数据库连接(相同类型的).
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param mixed $config  数据库连接信息
      * @param mixed $linkNum 创建的连接序号
-     +----------------------------------------------------------
-     +----------------------------------------------------------
      */
     public function addConnect($config, $linkNum = null)
     {
@@ -127,13 +130,10 @@ class Db extends Think
     }
 
     /**
-     +----------------------------------------------------------
-     * 切换数据库连接
+     * 切换数据库连接.
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param int $linkNum 创建的连接序号
-     +----------------------------------------------------------
-     +----------------------------------------------------------
      */
     public function switchConnect($linkNum)
     {
@@ -148,13 +148,10 @@ class Db extends Think
     }
 
     /**
-     +----------------------------------------------------------
-     * 初始化数据库连接
+     * 初始化数据库连接.
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param bool $master 主服务器
-     +----------------------------------------------------------
-     +----------------------------------------------------------
      */
     protected function initConnect($master = true)
     {
@@ -170,17 +167,14 @@ class Db extends Think
     }
 
     /**
-     +----------------------------------------------------------
-     * 连接分布式服务器
+     * 连接分布式服务器.
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param bool $master 主服务器
-     +----------------------------------------------------------
-     +----------------------------------------------------------
      */
     protected function multiConnect($master = false)
     {
-        static $_config = array();
+        static $_config = [];
         if (empty($_config)) {
             // 缓存分布式数据库配置解析
             foreach ($this->config as $key => $val) {
@@ -201,25 +195,27 @@ class Db extends Think
             // 读写操作不区分服务器
             $r = floor(mt_rand(0, count($_config['hostname']) - 1));   // 每次随机连接的数据库
         }
-        $db_config = array(
+        $db_config = [
             'username' => isset($_config['username'][$r]) ? $_config['username'][$r] : $_config['username'][0],
             'password' => isset($_config['password'][$r]) ? $_config['password'][$r] : $_config['password'][0],
             'hostname' => isset($_config['hostname'][$r]) ? $_config['hostname'][$r] : $_config['hostname'][0],
             'hostport' => isset($_config['hostport'][$r]) ? $_config['hostport'][$r] : $_config['hostport'][0],
             'database' => isset($_config['database'][$r]) ? $_config['database'][$r] : $_config['database'][0],
-            'dsn' => isset($_config['dsn'][$r]) ? $_config['dsn'][$r] : $_config['dsn'][0],
-            'params' => isset($_config['params'][$r]) ? $_config['params'][$r] : $_config['params'][0],
-        );
+            'dsn'      => isset($_config['dsn'][$r]) ? $_config['dsn'][$r] : $_config['dsn'][0],
+            'params'   => isset($_config['params'][$r]) ? $_config['params'][$r] : $_config['params'][0],
+        ];
 
         return $this->connect($db_config, $r);
     }
 
     /**
-     +----------------------------------------------------------
      * DSN解析
-     * 格式： mysql://username:passwd@localhost:3306/DbName
+     * 格式： mysql://username:passwd@localhost:3306/DbName.
+     *
      * @static
-     * @param  string $dsnStr
+     *
+     * @param string $dsnStr
+     *
      * @return array
      */
     public function parseDSN($dsnStr)
@@ -229,31 +225,31 @@ class Db extends Think
         }
         $info = parse_url($dsnStr);
         if ($info['scheme']) {
-            $dsn = array(
-            'dbms' => $info['scheme'],
+            $dsn = [
+            'dbms'     => $info['scheme'],
             'username' => isset($info['user']) ? $info['user'] : '',
             'password' => isset($info['pass']) ? $info['pass'] : '',
             'hostname' => isset($info['host']) ? $info['host'] : '',
             'hostport' => isset($info['port']) ? $info['port'] : '',
             'database' => isset($info['path']) ? substr($info['path'], 1) : '',
-            );
+            ];
         } else {
             preg_match('/^(.*?)\:\/\/(.*?)\:(.*?)\@(.*?)\:([0-9]{1, 6})\/(.*?)$/', trim($dsnStr), $matches);
-            $dsn = array(
-            'dbms' => $matches[1],
+            $dsn = [
+            'dbms'     => $matches[1],
             'username' => $matches[2],
             'password' => $matches[3],
             'hostname' => $matches[4],
             'hostport' => $matches[5],
             'database' => $matches[6],
-            );
+            ];
         }
 
         return $dsn;
     }
 
     /**
-     * 数据库调试 记录当前SQL
+     * 数据库调试 记录当前SQL.
      */
     protected function debug()
     {
@@ -265,7 +261,8 @@ class Db extends Think
     }
 
     /**
-     * 设置锁机制
+     * 设置锁机制.
+     *
      * @return string
      */
     protected function parseLock($lock = false)
@@ -278,8 +275,10 @@ class Db extends Think
     }
 
     /**
-     * set分析
-     * @param  array  $data
+     * set分析.
+     *
+     * @param array $data
+     *
      * @return string
      */
     protected function parseSet($data)
@@ -295,8 +294,10 @@ class Db extends Think
     }
 
     /**
-     * value分析
-     * @param  mixed  $value
+     * value分析.
+     *
+     * @param mixed $value
+     *
      * @return string
      */
     protected function parseValue(&$value)
@@ -313,8 +314,10 @@ class Db extends Think
     }
 
     /**
-     * field分析
-     * @param  mixed  $fields
+     * field分析.
+     *
+     * @param mixed $fields
+     *
      * @return string
      */
     protected function parseField($fields)
@@ -322,7 +325,7 @@ class Db extends Think
         if (is_array($fields)) {
             // 完善数组方式传字段名的支持
             // 支持 'field1'=>'field2' 这样的字段别名定义
-            $array = array();
+            $array = [];
             foreach ($fields as $key => $field) {
                 if (!is_numeric($key)) {
                     $array[] = $this->addSpecialChar($key).' AS '.$this->addSpecialChar($field);
@@ -341,8 +344,10 @@ class Db extends Think
     }
 
     /**
-     * table分析
-     * @param  mixed  $table
+     * table分析.
+     *
+     * @param mixed $table
+     *
      * @return string
      */
     protected function parseTable($tables)
@@ -350,14 +355,16 @@ class Db extends Think
         if (is_string($tables)) {
             $tables = explode(',', $tables);
         }
-        array_walk($tables, array(&$this, 'addSpecialChar'));
+        array_walk($tables, [&$this, 'addSpecialChar']);
 
         return implode(',', $tables);
     }
 
     /**
-     * where分析
-     * @param  mixed  $where
+     * where分析.
+     *
+     * @param mixed $where
+     *
      * @return string
      */
     protected function parseWhere($where)
@@ -399,7 +406,7 @@ class Db extends Think
                             }
                         } else {
                             $count = count($val);
-                            if (in_array(strtoupper(trim($val[$count - 1])), array('AND', 'OR', 'XOR'))) {
+                            if (in_array(strtoupper(trim($val[$count - 1])), ['AND', 'OR', 'XOR'])) {
                                 $rule = strtoupper(trim($val[$count - 1]));
                                 $count = $count - 1;
                             } else {
@@ -435,9 +442,11 @@ class Db extends Think
     }
 
     /**
-     * 特殊条件分析
-     * @param  string $key
-     * @param  mixed  $val
+     * 特殊条件分析.
+     *
+     * @param string $key
+     * @param mixed  $val
+     *
      * @return string
      */
     protected function parseThinkWhere($key, $val)
@@ -461,7 +470,7 @@ class Db extends Think
                 } else {
                     $op = ' AND ';
                 }
-                $array = array();
+                $array = [];
                 foreach ($where as $field => $data) {
                     $array[] = $this->addSpecialChar($field).' = '.$this->parseValue($data);
                 }
@@ -473,8 +482,10 @@ class Db extends Think
     }
 
     /**
-     * limit分析
-     * @param  mixed  $lmit
+     * limit分析.
+     *
+     * @param mixed $lmit
+     *
      * @return string
      */
     protected function parseLimit($limit)
@@ -483,8 +494,10 @@ class Db extends Think
     }
 
     /**
-     * join分析
-     * @param  mixed  $join
+     * join分析.
+     *
+     * @param mixed $join
+     *
      * @return string
      */
     protected function parseJoin($join)
@@ -508,14 +521,16 @@ class Db extends Think
     }
 
     /**
-     * order分析
-     * @param  mixed  $order
+     * order分析.
+     *
+     * @param mixed $order
+     *
      * @return string
      */
     protected function parseOrder($order)
     {
         if (is_array($order)) {
-            $array = array();
+            $array = [];
             foreach ($order as $key => $val) {
                 if (is_numeric($key)) {
                     $array[] = $this->addSpecialChar($val);
@@ -530,8 +545,10 @@ class Db extends Think
     }
 
     /**
-     * group分析
-     * @param  mixed  $group
+     * group分析.
+     *
+     * @param mixed $group
+     *
      * @return string
      */
     protected function parseGroup($group)
@@ -540,8 +557,10 @@ class Db extends Think
     }
 
     /**
-     * having分析
-     * @param  string $having
+     * having分析.
+     *
+     * @param string $having
+     *
      * @return string
      */
     protected function parseHaving($having)
@@ -550,8 +569,10 @@ class Db extends Think
     }
 
     /**
-     * distinct分析
-     * @param  mixed  $distinct
+     * distinct分析.
+     *
+     * @param mixed $distinct
+     *
      * @return string
      */
     protected function parseDistinct($distinct)
@@ -560,12 +581,14 @@ class Db extends Think
     }
 
     /**
-     * 插入记录
-     * @param  mixed $data    数据
-     * @param  array $options 参数表达式
+     * 插入记录.
+     *
+     * @param mixed $data    数据
+     * @param array $options 参数表达式
+     *
      * @return false | integer
      */
-    public function insert($data, $options = array())
+    public function insert($data, $options = [])
     {
         foreach ($data as $key => $val) {
             $value = $this->parseValue($val);
@@ -581,22 +604,24 @@ class Db extends Think
     }
 
     /**
-     * 通过Select方式插入记录
+     * 通过Select方式插入记录.
+     *
      * @param  string $fields 要插入的数据表字段名
      * @param  string $table  要插入的数据表名
-     * @param  array $option 查询数据参数
+     * @param array $option 查询数据参数
+     *
      * @return false | integer
      */
-    public function selectInsert($fields, $table, $options = array())
+    public function selectInsert($fields, $table, $options = [])
     {
         if (is_string($fields)) {
             $fields = explode(',', $fields);
         }
-        array_walk($fields, array($this, 'addSpecialChar'));
+        array_walk($fields, [$this, 'addSpecialChar']);
         $sql = 'INSERT INTO '.$this->parseTable($table).' ('.implode(',', $fields).') ';
         $sql .= str_replace(
-            array('%TABLE%', '%DISTINCT%', '%FIELDS%', '%JOIN%', '%WHERE%', '%GROUP%', '%HAVING%', '%ORDER%', '%LIMIT%'),
-            array(
+            ['%TABLE%', '%DISTINCT%', '%FIELDS%', '%JOIN%', '%WHERE%', '%GROUP%', '%HAVING%', '%ORDER%', '%LIMIT%'],
+            [
                 $this->parseTable($options['table']),
                 $this->parseDistinct(isset($options['distinct']) ? $options['distinct'] : false),
                 $this->parseField(isset($options['field']) ? $options['field'] : '*'),
@@ -606,16 +631,18 @@ class Db extends Think
                 $this->parseHaving(isset($options['having']) ? $options['having'] : ''),
                 $this->parseOrder(isset($options['order']) ? $options['order'] : ''),
                 $this->parseLimit(isset($options['limit']) ? $options['limit'] : ''),
-            ), $this->selectSql);
+            ], $this->selectSql);
         $sql .= $this->parseLock(isset($options['lock']) ? $options['lock'] : false);
 
         return $this->execute($sql);
     }
 
     /**
-     * 更新记录
-     * @param  mixed $data    数据
-     * @param  array $options 表达式
+     * 更新记录.
+     *
+     * @param mixed $data    数据
+     * @param array $options 表达式
+     *
      * @return false | integer
      */
     public function update($data, $options)
@@ -632,11 +659,13 @@ class Db extends Think
     }
 
     /**
-     * 删除记录
-     * @param  array $options 表达式
+     * 删除记录.
+     *
+     * @param array $options 表达式
+     *
      * @return false | integer
      */
-    public function delete($options = array())
+    public function delete($options = [])
     {
         $sql = 'DELETE FROM '
             .$this->parseTable($options['table'])
@@ -649,11 +678,13 @@ class Db extends Think
     }
 
     /**
-     * 查找记录
-     * @param  array $options 表达式
+     * 查找记录.
+     *
+     * @param array $options 表达式
+     *
      * @return array
      */
-    public function select($options = array())
+    public function select($options = [])
     {
         if (isset($options['page'])) {
             // 根据页数计算limit
@@ -663,8 +694,8 @@ class Db extends Think
             $options['limit'] = $offset.','.$listRows;
         }
         $sql = str_replace(
-            array('%TABLE%', '%DISTINCT%', '%FIELDS%', '%JOIN%', '%WHERE%', '%GROUP%', '%HAVING%', '%ORDER%', '%LIMIT%'),
-            array(
+            ['%TABLE%', '%DISTINCT%', '%FIELDS%', '%JOIN%', '%WHERE%', '%GROUP%', '%HAVING%', '%ORDER%', '%LIMIT%'],
+            [
                 $this->parseTable($options['table']),
                 $this->parseDistinct(isset($options['distinct']) ? $options['distinct'] : false),
                 $this->parseField(isset($options['field']) ? $options['field'] : '*'),
@@ -674,7 +705,7 @@ class Db extends Think
                 $this->parseHaving(isset($options['having']) ? $options['having'] : ''),
                 $this->parseOrder(isset($options['order']) ? $options['order'] : ''),
                 $this->parseLimit(isset($options['limit']) ? $options['limit'] : ''),
-            ), $this->selectSql);
+            ], $this->selectSql);
         $sql .= $this->parseLock(isset($options['lock']) ? $options['lock'] : false);
 
         return $this->query($sql);
@@ -682,8 +713,10 @@ class Db extends Think
 
     /**
      * 字段和表名添加`
-     * 保证指令中使用关键字不出错 针对mysql
-     * @param  mixed $value
+     * 保证指令中使用关键字不出错 针对mysql.
+     *
+     * @param mixed $value
+     *
      * @return mixed
      */
     protected function addSpecialChar(&$value)
@@ -699,7 +732,8 @@ class Db extends Think
     }
 
     /**
-     * 查询次数更新或者查询
+     * 查询次数更新或者查询.
+     *
      * @param mixed $times
      */
     public function Q($times = '')
@@ -715,7 +749,8 @@ class Db extends Think
     }
 
     /**
-     * 写入次数更新或者查询
+     * 写入次数更新或者查询.
+     *
      * @param mixed $times
      */
     public function W($times = '')
@@ -731,7 +766,8 @@ class Db extends Think
     }
 
     /**
-     * 获取最近一次查询的sql语句
+     * 获取最近一次查询的sql语句.
+     *
      * @return string
      */
     public function getLastSql()
@@ -740,7 +776,8 @@ class Db extends Think
     }
 
     /**
-     * 连接数据库方法
+     * 连接数据库方法.
+     *
      * @throws ThinkExecption
      */
     public function connect($config = '', $linkNum = 0)
@@ -780,7 +817,7 @@ class Db extends Think
     }
 
     /**
-     * 释放查询结果
+     * 释放查询结果.
      */
     public function free()
     {
@@ -790,10 +827,13 @@ class Db extends Think
 
     /**
      * 执行查询 主要针对 SELECT, SHOW 等指令
-     * 返回数据集
-     * @param  string         $str sql指令
-     * @return mixed
+     * 返回数据集.
+     *
+     * @param string $str sql指令
+     *
      * @throws ThinkExecption
+     *
+     * @return mixed
      */
     public function query($str)
     {
@@ -839,10 +879,13 @@ class Db extends Think
     }
 
     /**
-     * 执行语句 针对 INSERT, UPDATE 以及DELETE
-     * @param  string         $str sql指令
-     * @return int
+     * 执行语句 针对 INSERT, UPDATE 以及DELETE.
+     *
+     * @param string $str sql指令
+     *
      * @throws ThinkExecption
+     *
+     * @return int
      */
     public function execute($str)
     {
@@ -885,6 +928,7 @@ class Db extends Think
 
     /**
      * 启动事务
+     *
      * @throws ThinkExecption
      */
     public function startTrans()
@@ -899,14 +943,14 @@ class Db extends Think
             // mysql_query('START TRANSACTION', $this->_linkID);
         }
         $this->transTimes++;
-
-        return ;
     }
 
     /**
-     * 用于非自动提交状态下面的查询提交
-     * @return boolen
+     * 用于非自动提交状态下面的查询提交.
+     *
      * @throws ThinkExecption
+     *
+     * @return boolen
      */
     public function commit()
     {
@@ -923,9 +967,11 @@ class Db extends Think
     }
 
     /**
-     * 事务回滚
-     * @return boolen
+     * 事务回滚.
+     *
      * @throws ThinkExecption
+     *
+     * @return boolen
      */
     public function rollback()
     {
@@ -941,14 +987,16 @@ class Db extends Think
     }
 
     /**
-     * 获得所有的查询数据
-     * @return array
+     * 获得所有的查询数据.
+     *
      * @throws ThinkExecption
+     *
+     * @return array
      */
     private function getAll()
     {
         //返回数据集
-        $result = array();
+        $result = [];
         if ($this->numRows > 0) {
             while ($row = mysql_fetch_assoc($this->queryID)) {
                 $result[] = $row;
@@ -960,9 +1008,11 @@ class Db extends Think
     }
 
     /**
-     * 获取以传入的参数的数据结果集合
-     * @return array
+     * 获取以传入的参数的数据结果集合.
+     *
      * @throws ThinkExecption
+     *
+     * @return array
      */
     public function getAsFieldArray($field = '*', $nouse = '')
     {
@@ -972,7 +1022,7 @@ class Db extends Think
             return false;
         }
         //返回数据集
-        $result = array();
+        $result = [];
         if ($this->numRows > 0) {
             while ($row = mysql_fetch_assoc($this->queryID)) {
                 $result[] = $field == '*' ? $row : @$row[$field];
@@ -984,9 +1034,11 @@ class Db extends Think
     }
 
     /**
-     * 获取以hashkey作为键值的hash数组
-     * @return array
+     * 获取以hashkey作为键值的hash数组.
+     *
      * @throws ThinkExecption
+     *
+     * @return array
      */
     public function getHashList($hashKey = '', $hashValue = '*')
     {
@@ -996,7 +1048,7 @@ class Db extends Think
             return false;
         }
         //返回数据集
-        $result = array();
+        $result = [];
         if ($this->numRows > 0) {
             while ($row = mysql_fetch_assoc($this->queryID)) {
                 if (empty($hashKey)) {
@@ -1012,22 +1064,22 @@ class Db extends Think
     }
 
     /**
-     * 取得数据表的字段信息
+     * 取得数据表的字段信息.
      */
     public function getFields($tableName)
     {
         $result = $this->query('SHOW COLUMNS FROM '.$tableName);
-        $info = array();
+        $info = [];
         if ($result) {
             foreach ($result as $key => $val) {
-                $info[$val['Field']] = array(
-                    'name' => $val['Field'],
-                    'type' => $val['Type'],
+                $info[$val['Field']] = [
+                    'name'    => $val['Field'],
+                    'type'    => $val['Type'],
                     'notnull' => (bool) ($val['Null'] === ''), // not null is empty, null is yes
                     'default' => $val['Default'],
                     'primary' => (strtolower($val['Key']) == 'pri'),
                     'autoinc' => (strtolower($val['Extra']) == 'auto_increment'),
-                );
+                ];
             }
         }
 
@@ -1035,7 +1087,7 @@ class Db extends Think
     }
 
     /**
-     * 取得数据库的表信息
+     * 取得数据库的表信息.
      */
     public function getTables($dbName = '')
     {
@@ -1045,7 +1097,7 @@ class Db extends Think
             $sql = 'SHOW TABLES ';
         }
         $result = $this->query($sql);
-        $info = array();
+        $info = [];
         foreach ($result as $key => $val) {
             $info[$key] = current($val);
         }
@@ -1054,12 +1106,14 @@ class Db extends Think
     }
 
     /**
-     * 替换记录
-     * @param  mixed $data    数据
-     * @param  array $options 参数表达式
+     * 替换记录.
+     *
+     * @param mixed $data    数据
+     * @param array $options 参数表达式
+     *
      * @return false | integer
      */
-    public function replace($data, $options = array())
+    public function replace($data, $options = [])
     {
         foreach ($data as $key => $val) {
             $value = $this->parseValue($val);
@@ -1074,26 +1128,24 @@ class Db extends Think
     }
 
     /**
-     +----------------------------------------------------------
-     * 插入记录
+     * 插入记录.
      +----------------------------------------------------------
      +----------------------------------------------------------
      * @param mixed $datas   数据
      * @param array $options 参数表达式
      +----------------------------------------------------------
      * @return false | integer
-     +----------------------------------------------------------
      */
-    public function insertAll($datas, $options = array())
+    public function insertAll($datas, $options = [])
     {
         if (!is_array($datas[0])) {
             return false;
         }
         $fields = array_keys($datas[0]);
-        array_walk($fields, array($this, 'addSpecialChar'));
-        $values = array();
+        array_walk($fields, [$this, 'addSpecialChar']);
+        $values = [];
         foreach ($datas as $data) {
-            $value = array();
+            $value = [];
             foreach ($data as $key => $val) {
                 $val = $this->parseValue($val);
                 if (is_scalar($val)) { // 过滤非标量数据
@@ -1108,7 +1160,8 @@ class Db extends Think
     }
 
     /**
-     * 关闭数据库
+     * 关闭数据库.
+     *
      * @throws ThinkExecption
      */
     public function close()
@@ -1124,7 +1177,8 @@ class Db extends Think
 
     /**
      * 数据库错误信息
-     * 并显示当前的SQL语句
+     * 并显示当前的SQL语句.
+     *
      * @return string
      */
     public function error()
@@ -1138,8 +1192,10 @@ class Db extends Think
     }
 
     /**
-     * SQL指令安全过滤
-     * @param  string $str SQL字符串
+     * SQL指令安全过滤.
+     *
+     * @param string $str SQL字符串
+     *
      * @return string
      */
     public function escape_string($str)
@@ -1151,7 +1207,7 @@ class Db extends Think
     }
 
     /**
-     * 析构方法
+     * 析构方法.
      */
     public function __destruct()
     {

@@ -1,7 +1,9 @@
 <?php
 /**
- * TS插件 - 分享置顶
+ * TS插件 - 分享置顶.
+ *
  * @author 云脉网
+ *
  * @version TS3.0
  */
 class FeedTopAddons extends NormalAddons
@@ -15,28 +17,32 @@ class FeedTopAddons extends NormalAddons
     protected $tsVersion = '3.0';
 
     /**
-     * 获的改插件使用了那些钩子聚合类，那些钩子是需要进行排序的
+     * 获的改插件使用了那些钩子聚合类，那些钩子是需要进行排序的.
      */
     public function getHooksInfo()
     {
-        $hooks['list'] = array('FeedTopHooks');
+        $hooks['list'] = ['FeedTopHooks'];
 
         return $hooks;
     }
+
     /**
-     * 后台管理入口
+     * 后台管理入口.
+     *
      * @return array 管理相关数据
      */
     public function adminMenu()
     {
-        $menu = array();
+        $menu = [];
         $menu['config'] = '分享置顶管理';
 
         return $menu;
     }
+
     public function start()
     {
     }
+
     public function install()
     {
         // 插入数据表
@@ -53,6 +59,7 @@ class FeedTopAddons extends NormalAddons
 
         return true;
     }
+
     public function uninstall()
     {
         // 卸载数据表

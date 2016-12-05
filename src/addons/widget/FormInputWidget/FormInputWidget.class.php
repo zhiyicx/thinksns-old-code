@@ -1,7 +1,9 @@
 <?php
 /**
- * 表单输入框 Widget
+ * 表单输入框 Widget.
+ *
  * @example {:W('FormInput', array('type' =>'checkbox', 'name'=>'asd', 'default_value'=>'fefds', 'value' =>1564))}
+ *
  * @version TS3.0
  * $param array $data:
  * array(
@@ -21,7 +23,7 @@ class FormInputWidget extends Widget
      */
     public function render($data)
     {
-        $var = array('type' => 'input');
+        $var = ['type' => 'input'];
         $var['canChange'] = 1;
 
         //is_array($data) && $var = array_merge($var, array_filter($data));

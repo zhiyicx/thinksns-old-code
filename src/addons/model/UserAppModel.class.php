@@ -1,18 +1,22 @@
 <?php
 /**
- * 用户应用关联模型 - 数据对象模型
+ * 用户应用关联模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class UserAppModel extends Model
 {
     protected $tableName = 'user_app';
-    protected $fields = array(0 => 'user_app_id', 1 => 'app_id', 2 => 'uid', 3 => 'display_order', 4 => 'ctime', 5 => 'type', 6 => 'oauth_token', 7 => 'oauth_token_secret', 8 => 'inweb');
+    protected $fields = [0 => 'user_app_id', 1 => 'app_id', 2 => 'uid', 3 => 'display_order', 4 => 'ctime', 5 => 'type', 6 => 'oauth_token', 7 => 'oauth_token_secret', 8 => 'inweb'];
 
     /**
-     * 获取用户可用的应用列表
-     * @param  int   $uid   用户UID
-     * @param  int   $inweb 是否是Web端，默认为1
+     * 获取用户可用的应用列表.
+     *
+     * @param int $uid   用户UID
+     * @param int $inweb 是否是Web端，默认为1
+     *
      * @return array 用户可用的应用列表数据
      */
     public function getUserApp($uid, $inweb = 1)
@@ -23,7 +27,7 @@ class UserAppModel extends Model
         }
 
         if (($appList = model('Cache')->get('userApp_uapp_'.$uid.'_'.$inweb)) === false) {
-            $appList = array();
+            $appList = [];
             //$return = model('App')->getDefaultApp();
             $imap['a.uid'] = $uid;
             $imap['a.inweb'] = intval($inweb);
@@ -46,9 +50,11 @@ class UserAppModel extends Model
     }
 
     /**
-     * 获取指定用户所安装的应用ID数组
+     * 获取指定用户所安装的应用ID数组.
+     *
      * @param int $uid   用户UID
      * @param int $inweb 是否是Web端，默认为1
+     *
      * @return array 指定用户安装的应用ID数组
      */
     public function getUserAppIds($uid, $inweb = 1)
@@ -58,7 +64,7 @@ class UserAppModel extends Model
             return false;
         }
         $list = $this->getUserApp($uid, $inweb);
-        $r = array();
+        $r = [];
         foreach ($list as $v) {
             $r[] = $v['app_id'];
         }
@@ -67,8 +73,10 @@ class UserAppModel extends Model
     }
 
     /**
-     * 获取一个指定应用的使用情况
+     * 获取一个指定应用的使用情况.
+     *
      * @param int $appId 应用ID
+     *
      * @return array 指定应用的使用情况
      */
     public function getUsed($appId)
@@ -84,7 +92,8 @@ class UserAppModel extends Model
     }
 
     /**
-     * 清除指定应用使用情况的缓存
+     * 清除指定应用使用情况的缓存.
+     *
      * @param int $appId 应用ID
      */
     public function cleanUsed($appId)
@@ -93,10 +102,12 @@ class UserAppModel extends Model
     }
 
     /**
-     * 指定用户卸载指定应用
-     * @param  int  $uid   用户UID
-     * @param  int  $appId 应用ID
-     * @param  int  $inweb 是否是Web端，默认为1
+     * 指定用户卸载指定应用.
+     *
+     * @param int $uid   用户UID
+     * @param int $appId 应用ID
+     * @param int $inweb 是否是Web端，默认为1
+     *
      * @return bool 是否卸载成功
      */
     public function uninstall($uid, $appId, $inweb = 1)
@@ -127,10 +138,12 @@ class UserAppModel extends Model
     }
 
     /**
-     * 指定用户安装指定应用
+     * 指定用户安装指定应用.
+     *
      * @param int $uid   用户UID
      * @param int $appId 应用ID
      * @param int $inweb 是否是Web端，默认为1
+     *
      * @return bool 是否安装成功
      */
     public function install($uid, $appId, $inweb = 1)
@@ -164,10 +177,12 @@ class UserAppModel extends Model
     }
 
     /**
-     * 更新用户安装/卸载应用的缓存信息
+     * 更新用户安装/卸载应用的缓存信息.
+     *
      * @param int $uid   用户UID
      * @param int $appId 应用ID
      * @param  bool $install 是否是安装信息，默认为true
+     *
      * @return bool 是否更新成功
      */
     public function updateUserApp($uid, $appId, $install = true)
@@ -183,8 +198,10 @@ class UserAppModel extends Model
     }
 
     /**
-     * 清除指定用户的应用信息缓存
+     * 清除指定用户的应用信息缓存.
+     *
      * @param int $uids 用户UID
+     *
      * @return bool 是否清除成功
      */
     public function cleanCache($uids)

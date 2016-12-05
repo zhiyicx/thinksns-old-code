@@ -1,30 +1,32 @@
 <?php
 /**
- * 用户模块
- * @author Stream
+ * 用户模块.
  *
+ * @author Stream
  */
 class DiyUser extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签
+     * 是否是封闭的标签.
+     *
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
 
-    public $config = array();
+    public $config = [];
 
     public function getTagStatus()
     {
         return self::$TAG_CLOSED;
     }
+
     /* (non-PHPdoc)
      * @see TagsAbstract::getTemplateFile()
      */
     public function getTemplateFile($tpl = '')
     {
         //返回需要渲染的模板
-        $file = $this->attr ['style'];
+        $file = $this->attr['style'];
         if (!empty($tpl)) {
             $file = $tpl;
         }
@@ -51,9 +53,9 @@ class DiyUser extends TagsAbstract
             case 'follow'://粉丝最多
                 $list = model('UserData')->where("`key`='follower_count'")->field('uid')->order('`value`+0 desc')->limit($limit)->findAll();
 
-                $map['uid'] = array('in', getSubByKey($list, 'uid'));
+                $map['uid'] = ['in', getSubByKey($list, 'uid')];
                 $users = $userDao->getList($map, $limit, 'uid,uname');
-                $kusers = array();
+                $kusers = [];
                 foreach ($users as $us) {
                     $kusers[$us['uid']] = $us['uname'];
                 }
@@ -66,11 +68,11 @@ class DiyUser extends TagsAbstract
                 $list = $userDao->where('uid in ('.$attr['user'].')')->field('uid,uname')->findAll();
                 break;
         }
-        $followercount = array();
-        $followstate = array();
+        $followercount = [];
+        $followstate = [];
         if ($attr['style'] == 'down' || $attr['style'] == 'numdown') {
             $fids = getSubByKey($list, 'uid');
-            $follower_map['fid'] = array('IN', $fids);
+            $follower_map['fid'] = ['IN', $fids];
             // 粉丝数
             $follower = model('Follow')->field('COUNT(1) AS `count`,`fid`')->where($follower_map)->group('`fid`')->findAll();
             foreach ($follower as $v) {

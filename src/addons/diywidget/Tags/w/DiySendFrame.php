@@ -3,7 +3,8 @@
 class DiySendFrame extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签
+     * 是否是封闭的标签.
+     *
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
@@ -12,6 +13,7 @@ class DiySendFrame extends TagsAbstract
     {
         return self::$TAG_CLOSED;
     }
+
     /* (non-PHPdoc)
      * @see TagsAbstract::getTemplateFile()
      */

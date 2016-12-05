@@ -1,8 +1,7 @@
 <?php
 /**
- * 视频服务模型
+ * 视频服务模型.
  *
- * @package ThinkSNS\Addnons\Model\Video
  * @author Seven Du <lovevipdsw@vip.qq.com>
  **/
 // 原有的文件
@@ -17,7 +16,7 @@ class VideoModel extends Model
         $videoinfo = pathinfo($_FILES['video']['name']);
         $video_ext = $videoinfo['extension'];
 
-        $allowExts = $video_config['video_ext'] ? explode(',', $video_config['video_ext']) : array('mp4', 'flv');
+        $allowExts = $video_config['video_ext'] ? explode(',', $video_config['video_ext']) : ['mp4', 'flv'];
         // $uploadCondition = $_FILES['pic'] && $_FILES['video'] && in_array(strtolower($image_ext),$allowExts,true) && in_array(strtolower($video_ext),$allowExts,true);
         $uploadCondition = $_FILES['video'] && in_array(strtolower($video_ext), $allowExts, true);
         // return $_FILES['video'];
@@ -68,7 +67,7 @@ class VideoModel extends Model
                 if ($_FILES['pic']) {
                     $imageinfo = pathinfo($_FILES['pic']['name']);
                     $image_ext = $imageinfo['extension'];
-                    if (in_array(strtolower($image_ext), array('jpg', 'png', 'gif', 'jpeg'), true)) {
+                    if (in_array(strtolower($image_ext), ['jpg', 'png', 'gif', 'jpeg'], true)) {
                         @move_uploaded_file($_FILES['pic']['tmp_name'], $savePath.'/'.$image_name);
                     }
                 }
@@ -123,7 +122,7 @@ class VideoModel extends Model
         $video_config = model('Xdata')->get('admin_Content:video_config');
         $videoinfo = pathinfo($_FILES['Filedata']['name']);
         $video_ext = $videoinfo['extension'];
-        $allowExts = $video_config['video_ext'] ? explode(',', $video_config['video_ext']) : array('mp4');
+        $allowExts = $video_config['video_ext'] ? explode(',', $video_config['video_ext']) : ['mp4'];
         $uploadCondition = $_FILES['Filedata'] && in_array(strtolower($video_ext), $allowExts, true);
         //如果视频上传正确.
         if ($uploadCondition) {
@@ -312,7 +311,7 @@ class VideoModel extends Model
                     exec($command);
                     D('video_transfer')->where('transfer_id='.$v['transfer_id'])->setField('status', 1);
                     $feed_id = D('video_transfer')->where('transfer_id='.$v['transfer_id'])->getField('feed_id');
-                    model('Feed')->cleanCache(array($feed_id));
+                    model('Feed')->cleanCache([$feed_id]);
                 } else {
                     continue;
                 }
@@ -368,7 +367,7 @@ class VideoModel extends Model
         preg_match('/itemprop=\"image\" content=\"(.+?)\"/i', $content, $img);
         preg_match("/<title>(.*?)<\/title>/", $content, $title);
         $flash_url = 'http://static.video.qq.com/TPout.swf?vid='.$flashvar[1].'&auto=1';
-        $return = array();
+        $return = [];
         $return['title'] = $title[1];
         $return['image_url'] = $img[1];
         $return['flash_url'] = $flash_url;
@@ -391,7 +390,7 @@ class VideoModel extends Model
         preg_match_all('/(title:(.*)\)/is', $conetnt, $title);
         preg_match_all('/(videoPic:(.*)\)/is', $content, $images);
         $baseurl = 'http://img1.c0.letv.com/ptv/player/swfPlayer.swf?autoPlay=1&isPlayerAd=0&id=';
-        $return = array();
+        $return = [];
         $return['title'] = $title;
         $return['image_url'] = $image;
         $return['flash_url'] = $baseurl.$vid[0];
@@ -403,6 +402,7 @@ class VideoModel extends Model
      * 更具优酷播放页面地址，获取优酷单条视频信息地址
      *
      * @return return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getYoukuOutsideVideoInfo($link)
@@ -418,13 +418,13 @@ class VideoModel extends Model
         /* http://v.youku.com/v_show/id_XMTM1NzI5NjM1Ng==.html?firsttime=270&from=y1.9-4 */
         $sid = preg_replace('/https?\:\/\/v\.youku\.com\/v\_show\/id\_(.*?)\.html\??(.*)?/is', '\\1', $sid);
 
-        $conf = array();
+        $conf = [];
         $conf['video_url'] = urlencode($link);
         $conf['client_id'] = $config['youku_client_id'];
         /* # 兼容player地址 */
         $conf['video_id'] = urlencode($sid);
 
-        $_temp = array();
+        $_temp = [];
         foreach ($conf as $key => $value) {
             array_push($_temp, $key.'='.$value);
         }
@@ -441,9 +441,10 @@ class VideoModel extends Model
     }
 
     /**
-     * 根据土豆页面地址获取单条视频信息
+     * 根据土豆页面地址获取单条视频信息.
      *
      * @return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getTudouOutsideVideoInfo($link)
@@ -451,12 +452,12 @@ class VideoModel extends Model
         $url = 'http://api.tudou.com/v6/tool/repaste';
         $config = model('Xdata')->get('outside:video');
 
-        $conf = array();
+        $conf = [];
         $conf['app_key'] = $config['tudou_app_key'];
         $conf['url'] = urlencode($link);
         $conf['format'] = 'json';
 
-        $config = array();
+        $config = [];
         foreach ($conf as $key => $value) {
             array_push($config, $key.'='.$value);
         }
@@ -473,9 +474,10 @@ class VideoModel extends Model
     }
 
     /**
-     * 根据音悦台页面地址获取mv信息
+     * 根据音悦台页面地址获取mv信息.
      *
      * @return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getYinyuetaiOutsideVideoInfo($link)
@@ -483,12 +485,12 @@ class VideoModel extends Model
         $contents = file_get_contents($link);
         preg_match_all('/<[\s]*meta[\s]*property="?og\:([^>"]*)"?[\s]*content="?([^>"]*)"?[\s]*[\/]?[\s]*>/si', $contents, $match);
 
-        $data = array();
+        $data = [];
         foreach ($match['0'] as $key => $value) {
             $data[$match['1'][$key]] = $match['2'][$key];
         }
 
-        $return = array();
+        $return = [];
         $return['title'] = $data['title'];
         $return['image_url'] = $data['image'];
         $return['flash_url'] = $data['videosrc'];
@@ -497,14 +499,15 @@ class VideoModel extends Model
     }
 
     /**
-     * 获取外部视频信息
+     * 获取外部视频信息.
      *
      * @return array
+     *
      * @author Medz Seven <lovevipdsw@vip.qq.com>
      **/
     public function getOutsideVideoInfo($link, $host)
     {
-        $return = array();
+        $return = [];
         switch (strtolower($host)) {
             // # 优酷
             case 'youku.com':
@@ -541,7 +544,7 @@ class VideoModel extends Model
     {
         return $this->getOutsideVideoInfo($link, $host);
 
-        $return = array();
+        $return = [];
         if ($host == 'youku.com') {
             preg_match('/id_([\w\-=]+)/i', $link, $matchs);
             if (!empty($matchs[1])) {
@@ -641,19 +644,21 @@ class VideoModel extends Model
     }
 
     /**
-     * 删除视频信息，提供假删除功能
-     * @param  int    $id    视频ID
-     * @param  string $type  操作类型，若为delVideo则进行假删除操作，deleteVideo则进行彻底删除操作
-     * @param  string $title ???
-     * @return array  返回操作结果信息
+     * 删除视频信息，提供假删除功能.
+     *
+     * @param int    $id    视频ID
+     * @param string $type  操作类型，若为delVideo则进行假删除操作，deleteVideo则进行彻底删除操作
+     * @param string $title ???
+     *
+     * @return array 返回操作结果信息
      */
     public function doEditVideo($id, $type, $title)
     {
-        $return = array('status' => '0', 'data' => L('PUBLIC_ADMIN_OPRETING_ERROR'));        // 操作失败
+        $return = ['status' => '0', 'data' => L('PUBLIC_ADMIN_OPRETING_ERROR')];        // 操作失败
         if (empty($id)) {
             $return['data'] = L('视频ID不能为空');            // 附件ID不能为空
         } else {
-            $map['video_id'] = is_array($id) ? array('IN', $id) : intval($id);
+            $map['video_id'] = is_array($id) ? ['IN', $id] : intval($id);
             $save['is_del'] = ($type == 'delVideo') ? 1 : 0;       //TODO:1 为用户uid 临时为1
             if ($type == 'deleteVideo') {
                 // 彻底删除操作
@@ -665,7 +670,7 @@ class VideoModel extends Model
             }
             if ($res) {
                 //TODO:是否记录知识，以及后期缓存处理
-                $return = array('status' => 1, 'data' => L('PUBLIC_ADMIN_OPRETING_SUCCESS'));        // 操作成功
+                $return = ['status' => 1, 'data' => L('PUBLIC_ADMIN_OPRETING_SUCCESS')];        // 操作成功
             }
         }
 

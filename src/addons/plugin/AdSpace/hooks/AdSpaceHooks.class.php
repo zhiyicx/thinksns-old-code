@@ -1,13 +1,16 @@
 <?php
 /**
- * 广告位钩子
+ * 广告位钩子.
+ *
  * @author zivss <guolee226@gmail.com>
+ *
  * @version TS3.0
  */
 class AdSpaceHooks extends Hooks
 {
     /**
-     * 显示广告位钩子
+     * 显示广告位钩子.
+     *
      * @param array $param 钩子相关参数
      */
     public function show_ad_space($param)
@@ -48,13 +51,13 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 广告位插件
+     * 广告位插件.
      */
     public function config()
     {
         // 位置数组
         $placeArr = $this->_getPlaceData();
-        $placeArray = array();
+        $placeArray = [];
         foreach ($placeArr as $value) {
             $placeArray[$value['id']] = $value['name'];
         }
@@ -67,7 +70,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 添加广告位页面
+     * 添加广告位页面.
      */
     public function addAdSpace()
     {
@@ -84,7 +87,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 添加广告位操作
+     * 添加广告位操作.
      */
     public function doAddAdSpace()
     {
@@ -102,9 +105,9 @@ class AdSpaceHooks extends Hooks
                 $data['content'] = $_POST['code_form'];
                 break;
             case 3:
-                $picData = array();
+                $picData = [];
                 for ($i = 0; $i < count($_POST['banner']); $i++) {
-                    $picData[] = array('banner' => $_POST['banner'][$i], 'bannerurl' => $_POST['bannerurl'][$i]);
+                    $picData[] = ['banner' => $_POST['banner'][$i], 'bannerurl' => $_POST['bannerurl'][$i]];
                 }
                 $data['content'] = serialize($picData);
                 break;
@@ -115,12 +118,13 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 删除广告位操作
+     * 删除广告位操作.
+     *
      * @return json 是否删除成功
      */
     public function doDelAdSpace()
     {
-        $result = array();
+        $result = [];
         $ids = t($_POST['ids']);
         if (empty($ids)) {
             $result['status'] = 0;
@@ -139,7 +143,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 编辑广告位页面
+     * 编辑广告位页面.
      */
     public function editAdSpace()
     {
@@ -168,7 +172,7 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 编辑广告位操作
+     * 编辑广告位操作.
      */
     public function doEditAdSpace()
     {
@@ -187,9 +191,9 @@ class AdSpaceHooks extends Hooks
                 $data['content'] = $_POST['code_form'];
                 break;
             case 3:
-                $picData = array();
+                $picData = [];
                 for ($i = 0; $i < count($_POST['banner']); $i++) {
-                    $picData[] = array('banner' => $_POST['banner'][$i], 'bannerurl' => $_POST['bannerurl'][$i]);
+                    $picData[] = ['banner' => $_POST['banner'][$i], 'bannerurl' => $_POST['bannerurl'][$i]];
                 }
                 $data['content'] = serialize($picData);
                 break;
@@ -200,11 +204,11 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 移动广告位操作
+     * 移动广告位操作.
      */
     public function doMvAdSpace()
     {
-        $result = array();
+        $result = [];
         $id = intval($_POST['id']);
         $baseId = intval($_POST['baseId']);
         if ($id <= 0 || $baseId <= 0) {
@@ -225,7 +229,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 获取广告位配置信息
+     * 获取广告位配置信息.
+     *
      * @return array 广告位配置信息
      */
     private function _getPlaceData()
@@ -236,7 +241,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 通过键值获取相应的ID
+     * 通过键值获取相应的ID.
+     *
      * @return int 对应键值的ID
      */
     private function _getPlaceKey($key)
@@ -247,7 +253,8 @@ class AdSpaceHooks extends Hooks
     }
 
     /**
-     * 通过ID获取相应的广告位信息
+     * 通过ID获取相应的广告位信息.
+     *
      * @return array 对应的广告位信息
      */
     private function _getPlaceByID($id)
@@ -261,14 +268,14 @@ class AdSpaceHooks extends Hooks
             return $v;
         }
 
-        return array();
+        return [];
     }
 
     public function previewPic()
     {
         $params = t($_GET['params']);
         $params = explode(',', $params);
-        $content = array();
+        $content = [];
         foreach ($params as $key => &$val) {
             $attachInfo = model('Attach')->getAttachById($val);
             $tmp['bannerpic'] = getImageUrl($attachInfo['save_path'].$attachInfo['save_name']);

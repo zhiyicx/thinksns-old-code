@@ -1,19 +1,23 @@
 <?php
 /**
- * 收藏模型 - 数据对象模型
+ * 收藏模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class CollectionModel extends Model
 {
     protected $tableName = 'collection';
-    protected $fields = array('collection_id', 'uid', 'source_id', 'source_table_name', 'source_app', 'ctime');
+    protected $fields = ['collection_id', 'uid', 'source_id', 'source_table_name', 'source_app', 'ctime'];
 
-    private $collectionTables = array('feed', 'weiba_post');
+    private $collectionTables = ['feed', 'weiba_post'];
 
     /**
-     * 添加收藏记录
+     * 添加收藏记录.
+     *
      * @param  array $data 收藏相关数据
+     *
      * @return bool 是否收藏成功
      */
     public function addCollection(array $data)
@@ -79,10 +83,12 @@ class CollectionModel extends Model
     }
 
     /**
-     * 返回指定资源的收藏数目
-     * @param  int    $sid    资源ID
-     * @param  string $stable 资源表名
-     * @return int    指定资源的收藏数目
+     * 返回指定资源的收藏数目.
+     *
+     * @param int    $sid    资源ID
+     * @param string $stable 资源表名
+     *
+     * @return int 指定资源的收藏数目
      */
     public function getCollectionCount($sid, $stable)
     {
@@ -97,25 +103,27 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取收藏列表
-     * @param  array  $map   查询条件
-     * @param  int    $limit 结果集显示数目，默认为20
-     * @param  string $order 排序条件，默认为ctime DESC
-     * @return array  收藏列表数据
+     * 获取收藏列表.
+     *
+     * @param array  $map   查询条件
+     * @param int    $limit 结果集显示数目，默认为20
+     * @param string $order 排序条件，默认为ctime DESC
+     *
+     * @return array 收藏列表数据
      */
     public function getCollectionList($map, $limit = 20, $order = 'ctime DESC')
     {
         $list = $this->where($map)->order($order)->findPage($limit);
         foreach ($list['data'] as &$v) {
             $sourceInfo = model('Source')->getSourceInfo($v['source_table_name'], $v['source_id'], false, $v['source_app']);
-            $publish_time = array('publish_time' => $sourceInfo['ctime']);
+            $publish_time = ['publish_time' => $sourceInfo['ctime']];
             switch ($v['source_table_name']) {
                 case 'feed':
                     $data = model('Feed')->get($v['source_id']);
-                    $sourceData = array('source_data' => $data);
+                    $sourceData = ['source_data' => $data];
                     break;
                 default:
-                    $sourceData = array('source_data' => null);
+                    $sourceData = ['source_data' => null];
                     break;
             }
             $v = array_merge($sourceInfo, $v, $publish_time, $sourceData);
@@ -125,8 +133,10 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取收藏的种类，用于收藏的Tab
+     * 获取收藏的种类，用于收藏的Tab.
+     *
      * @param array $map 查询条件
+     *
      * @return array 收藏种类与其资源数目
      */
     public function getCollTab($map)
@@ -140,11 +150,13 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取指定收藏的信息
-     * @param  int    $sid    资源ID
-     * @param  string $stable 资源表名称
-     * @param  int    $uid    用户UID
-     * @return array  指定收藏的信息
+     * 获取指定收藏的信息.
+     *
+     * @param int    $sid    资源ID
+     * @param string $stable 资源表名称
+     * @param int    $uid    用户UID
+     *
+     * @return array 指定收藏的信息
      */
     public function getCollection($sid, $stable, $uid = '')
     {
@@ -168,11 +180,13 @@ class CollectionModel extends Model
     }
 
     /**
-     * 取消收藏
-     * @param  int    $sid    资源ID
-     * @param  string $stable 资源表名称
-     * @param  int    $uid    用户UID
-     * @return bool   是否取消收藏成功
+     * 取消收藏.
+     *
+     * @param int    $sid    资源ID
+     * @param string $stable 资源表名称
+     * @param int    $uid    用户UID
+     *
+     * @return bool 是否取消收藏成功
      */
     public function delCollection($sid, $stable, $uid = '')
     {
@@ -216,10 +230,10 @@ class CollectionModel extends Model
 
             return false;
         }
-        $where = array(
-            'source_id' => array('IN', $sid),
+        $where = [
+            'source_id'         => ['IN', $sid],
             'source_table_name' => t($stable),
-        );
+        ];
         $uids = $this->where($where)->field('uid')->getAsFieldArray('uid');
         if ($this->where($where)->delete()) {
             foreach ($uids as $uid) {
@@ -238,13 +252,16 @@ class CollectionModel extends Model
     }
 
     /*** API使用 ***/
+
     /**
-     * 获取收藏列表，API使用
-     * @param  int   $uid      用户UID
-     * @param  int   $since_id 主键起始ID，默认为0
-     * @param  int   $max_id   主键最大ID，默认为0
-     * @param  int   $limit    每页结果集数目，默认为20
-     * @param  int   $page     页数，默认为1
+     * 获取收藏列表，API使用.
+     *
+     * @param int $uid      用户UID
+     * @param int $since_id 主键起始ID，默认为0
+     * @param int $max_id   主键最大ID，默认为0
+     * @param int $limit    每页结果集数目，默认为20
+     * @param int $page     页数，默认为1
+     *
      * @return array 收藏列表数据
      */
     public function getCollectionForApi($uid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
@@ -270,12 +287,14 @@ class CollectionModel extends Model
     }
 
     /**
-     * 获取动态（分享）收藏列表，API使用
-     * @param  int   $uid      用户UID
-     * @param  int   $since_id 主键起始ID，默认为0
-     * @param  int   $max_id   主键最大ID，默认为0
-     * @param  int   $limit    每页结果集数目，默认为20
-     * @param  int   $page     页数，默认为1
+     * 获取动态（分享）收藏列表，API使用.
+     *
+     * @param int $uid      用户UID
+     * @param int $since_id 主键起始ID，默认为0
+     * @param int $max_id   主键最大ID，默认为0
+     * @param int $limit    每页结果集数目，默认为20
+     * @param int $page     页数，默认为1
+     *
      * @return array 收藏列表数据
      */
     public function getCollectionFeedForApi($uid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
@@ -298,32 +317,34 @@ class CollectionModel extends Model
     }
 
     /**
-     * 数据库搜索收藏分享
+     * 数据库搜索收藏分享.
+     *
      * @param  string $key   关键字
-     * @param  int   $limit 结果集数目，默认20
+     * @param int $limit 结果集数目，默认20
+     *
      * @return array 搜索的结果数据
      */
     public function searchCollections($key, $limit = 20)
     {
         if ($key === '') {
-            return array();
+            return [];
         }
         $map['a.`uid`'] = $GLOBALS['ts']['mid'];
-        $map['b.`feed_content`'] = array('LIKE', '%'.$key.'%');
+        $map['b.`feed_content`'] = ['LIKE', '%'.$key.'%'];
         $list = D()->table('`'.C('DB_PREFIX').'collection` AS a LEFT JOIN `'.C('DB_PREFIX').'feed_data` AS b ON a.`source_id` = b.`feed_id`')
                    ->field('a.*')
                    ->where($map)
                    ->findPage($limit);
         foreach ($list['data'] as &$v) {
             $sourceInfo = model('Source')->getSourceInfo($v['source_table_name'], $v['source_id'], false, $v['source_app']);
-            $publish_time = array('publish_time' => $sourceInfo['ctime']);
+            $publish_time = ['publish_time' => $sourceInfo['ctime']];
             switch ($v['source_table_name']) {
                 case 'feed':
                     $data = model('Feed')->get($v['source_id']);
-                    $sourceData = array('source_data' => $data);
+                    $sourceData = ['source_data' => $data];
                     break;
                 default:
-                    $sourceData = array('source_data' => null);
+                    $sourceData = ['source_data' => null];
                     break;
             }
             $v = array_merge($sourceInfo, $v, $publish_time, $sourceData);

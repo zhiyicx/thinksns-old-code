@@ -1,8 +1,11 @@
 <?php
 /**
- * 举报弹窗Widget
+ * 举报弹窗Widget.
+ *
  * @example {:W('Denouce',array())}
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class DenouceWidget extends Widget
@@ -18,7 +21,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 举报弹框
+     * 举报弹框.
+     *
      * @return string 弹窗页面HTML
      */
     public function index()
@@ -35,7 +39,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 判断资源是否已经被举报
+     * 判断资源是否已经被举报.
+     *
      * @return json 判断后的相关信息
      */
     public function isDenounce()
@@ -44,7 +49,7 @@ class DenouceWidget extends Widget
         $map['aid'] = t($_REQUEST['aid']);
         $map['uid'] = $GLOBALS['ts']['mid'];
         $count = model('Denounce')->where($map)->count();
-        $res = array();
+        $res = [];
         if ($count) {
             $res['status'] = 1;
             $res['data'] = '该信息已被举报！';
@@ -56,7 +61,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 格式化模板变量
+     * 格式化模板变量.
+     *
      * @return array 被举报的信息
      */
     public function getVar()
@@ -75,7 +81,8 @@ class DenouceWidget extends Widget
     }
 
     /**
-     * 提交举报
+     * 提交举报.
+     *
      * @return array 举报信息和操作状态
      */
     public function post()
@@ -99,9 +106,9 @@ class DenouceWidget extends Widget
             $return['data'] = '内容已被删除，举报失败';
             exit(json_encode($return));
         }
-        $return = array();
+        $return = [];
         if ($isDenounce = model('Denounce')->where($map)->count()) {
-            $return = array('status' => 0, 'data' => L('PUBLIC_REPORTING_INFO'));
+            $return = ['status' => 0, 'data' => L('PUBLIC_REPORTING_INFO')];
         } else {
             $map['content'] = h($_POST['content']);
             $map['reason'] = t($_POST['reason']);
@@ -116,9 +123,9 @@ class DenouceWidget extends Widget
                 foreach ($touid as $k => $v) {
                     model('Notify')->sendNotify($v['uid'], 'denouce_audit');
                 }
-                $return = array('status' => 1, 'data' => '您已经成功举报此信息');
+                $return = ['status' => 1, 'data' => '您已经成功举报此信息'];
             } else {
-                $return = array('status' => 0, 'data' => L('PUBLIC_REPORT_ERROR'));
+                $return = ['status' => 0, 'data' => L('PUBLIC_REPORT_ERROR')];
             }
         }
         exit(json_encode($return));

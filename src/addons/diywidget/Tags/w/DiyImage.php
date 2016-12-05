@@ -1,33 +1,36 @@
 <?php
 /**
- * 图片模块
- * @author Stream
+ * 图片模块.
  *
+ * @author Stream
  */
 class DiyImage extends TagsAbstract
 {
     /**
-     * 是否是封闭的标签
+     * 是否是封闭的标签.
+     *
      * @var unknown_type
      */
     public static $TAG_CLOSED = false;
 
-    public $config = array();
+    public $config = [];
 
     public function __construct()
     {
     }
+
     public function getTagStatus()
     {
         return self::$TAG_CLOSED;
     }
+
     /**
-     * 返回模板文件路径
+     * 返回模板文件路径.
      */
     public function getTemplateFile($tpl = '')
     {
         //返回需要渲染的模板
-        $file = $this->attr ['style'];
+        $file = $this->attr['style'];
         if (!empty($tpl)) {
             $file = $tpl;
         }
@@ -36,11 +39,11 @@ class DiyImage extends TagsAbstract
     }
 
     /**
-     * 这里返回的是模板中需要渲染的变量
+     * 这里返回的是模板中需要渲染的变量.
      */
     public function replace()
     {
-        $time = str_replace(array(' ', '.'), '', microtime());
+        $time = str_replace([' ', '.'], '', microtime());
         $var['image'] = $this->attr['image_list'];
         $var['effect'] = $this->attr['effect']; //动画可选 'none','scrollx', 'scrolly', 'fade'
         $var['autoPlay'] = $this->attr['autoPlay']; //是否自动播放

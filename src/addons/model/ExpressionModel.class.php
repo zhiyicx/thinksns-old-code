@@ -1,14 +1,18 @@
 <?php
 /**
- * 表情模型 - 业务逻辑模型
+ * 表情模型 - 业务逻辑模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class ExpressionModel
 {
     /**
-     * 获取当前所有的表情
+     * 获取当前所有的表情.
+     *
      * @param bool $flush 是否更新缓存，默认为false
+     *
      * @return array 返回表情数据
      */
     public function getAllExpression($flush = false)
@@ -24,7 +28,7 @@ class ExpressionModel
             $expression = new Dir($filepath);
             $expression_pkg = $expression->toArray();
 
-            $res = array();
+            $res = [];
             foreach ($expression_pkg as $value) {
                 /*
                 if(!is_utf8($value['filename'])){
@@ -44,8 +48,10 @@ class ExpressionModel
     }
 
     /**
-     * 将表情格式化成HTML形式
+     * 将表情格式化成HTML形式.
+     *
      * @param  string $data 内容数据
+     *
      * @return string 转换为表情链接的内容
      */
     public function parse($data)

@@ -1,19 +1,23 @@
 <?php
 /**
- * 用户组关联模型 - 数据对象模型
+ * 用户组关联模型 - 数据对象模型.
+ *
  * @author jason <yangjs17@yeah.net>
+ *
  * @version TS3.0
  */
 class UserGroupLinkModel extends Model
 {
     protected $tableName = 'user_group_link';
-    protected $fields = array(0 => 'id', 1 => 'uid', 2 => 'user_group_id');
+    protected $fields = [0 => 'id', 1 => 'uid', 2 => 'user_group_id'];
 
     /**
-     * 转移用户的用户组
-     * @param  string $uids          用户UID，多个用“，”分割
-     * @param  string $user_group_id 用户组ID，多个用“，”分割
-     * @return bool   是否转移成功
+     * 转移用户的用户组.
+     *
+     * @param string $uids          用户UID，多个用“，”分割
+     * @param string $user_group_id 用户组ID，多个用“，”分割
+     *
+     * @return bool 是否转移成功
      */
     public function domoveUsergroup($uids, $user_group_id)
     {
@@ -30,15 +34,15 @@ class UserGroupLinkModel extends Model
         if (!$uids || !$user_group_id) {
             return false;
         }
-        $map['uid'] = array('IN', $uids);
+        $map['uid'] = ['IN', $uids];
         // 认证用户组
         $veritfiedHash = model('UserGroup')->getHashUserGroupVertified();
         if (!empty($veritfiedHash)) {
-            $map['user_group_id'] = array('NOT IN', array_keys($veritfiedHash));
+            $map['user_group_id'] = ['NOT IN', array_keys($veritfiedHash)];
         }
         $this->where($map)->delete();
         foreach ($uids as $v) {
-            $save = array();
+            $save = [];
             $save['uid'] = $v;
             foreach ($user_group_id as $gv) {
                 $save['user_group_id'] = $gv;
@@ -54,8 +58,10 @@ class UserGroupLinkModel extends Model
     }
 
     /**
-     * 获取用户的用户组信息
-     * @param  array $uids 用户UID数组
+     * 获取用户的用户组信息.
+     *
+     * @param array $uids 用户UID数组
+     *
      * @return array 用户的用户组信息
      */
     public function getUserGroup($uids)
@@ -66,7 +72,7 @@ class UserGroupLinkModel extends Model
             return false;
         }
 
-        $return = array();
+        $return = [];
         foreach ($uids as $uid) {
             $return[$uid] = model('Cache')->get('user_group_'.$uid);
             if ($return[$uid] == false) {
@@ -81,8 +87,10 @@ class UserGroupLinkModel extends Model
     }
 
     /**
-     * 获取用户所在用户组详细信息
-     * @param  array $uids 用户UID数组
+     * 获取用户所在用户组详细信息.
+     *
+     * @param array $uids 用户UID数组
+     *
      * @return array 用户的用户组详细信息
      */
     public function getUserGroupData($uids)
@@ -94,7 +102,7 @@ class UserGroupLinkModel extends Model
         }
         $userGids = $this->getUserGroup($uids);
         //return $userGids;exit;
-        $uresult = array();
+        $uresult = [];
         foreach ($userGids as $ug) {
             if ($uresult) {
                 $ug && $uresult = array_merge($uresult, $ug);
@@ -104,12 +112,12 @@ class UserGroupLinkModel extends Model
         }
         //把所有用户组信息查询出来
         $ugresult = model('UserGroup')->getUserGroupByGids(array_unique($uresult));
-        $groupresult = array();
+        $groupresult = [];
         foreach ($ugresult as $ur) {
             $groupresult[$ur['user_group_id']] = $ur;
         }
         foreach ($userGids as $k => $v) {
-            $ugroup = array();
+            $ugroup = [];
             foreach ($userGids[$k] as $userg) {
                 $ugroup[] = $groupresult[$userg];
             }

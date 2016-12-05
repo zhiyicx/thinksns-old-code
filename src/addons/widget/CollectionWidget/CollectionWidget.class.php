@@ -1,8 +1,11 @@
 <?php
 /**
- * 收藏
+ * 收藏.
+ *
  * @example W('Collection',array('sid'=>1,'stable'=>'feed','sapp'=>'public','tpl'=>'simple'))
+ *
  * @author Jason
+ *
  * @version TS3.0
  */
 class CollectionWidget extends Widget
@@ -39,12 +42,13 @@ class CollectionWidget extends Widget
     }
 
     /**
-     * 添加收藏记录
+     * 添加收藏记录.
+     *
      * @return array 收藏状态和成功提示
      */
     public function addColl()
     {
-        $return = array('status' => 0, 'data' => L('PUBLIC_FAVORITE_FAIL'));
+        $return = ['status' => 0, 'data' => L('PUBLIC_FAVORITE_FAIL')];
         if (empty($_POST['sid']) || empty($_POST['stable'])) {
             $return['data'] = L('PUBLIC_RESOURCE_ERROR');
             echo json_encode($return);
@@ -60,12 +64,12 @@ class CollectionWidget extends Widget
         $map['is_del'] = 0;
         $isExist = model(ucfirst($data['source_table_name']))->where($map)->count();
         if (empty($isExist)) {
-            $return = array('status' => 0, 'data' => '内容已被删除，收藏失败');
+            $return = ['status' => 0, 'data' => '内容已被删除，收藏失败'];
             exit(json_encode($return));
         }
 
         if (model('Collection')->addCollection($data)) {
-            $return = array('status' => 1, 'data' => L('PUBLIC_FAVORITE_SUCCESS'));
+            $return = ['status' => 1, 'data' => L('PUBLIC_FAVORITE_SUCCESS')];
         } else {
             $return['data'] = model('Collection')->getError();
             empty($return['data']) && $return['data'] = L('PUBLIC_FAVORITE_FAIL');
@@ -74,19 +78,20 @@ class CollectionWidget extends Widget
     }
 
     /**
-     * 取消收藏
+     * 取消收藏.
+     *
      * @return array 成功取消的状态及错误提示
      */
     public function delColl()
     {
-        $return = array('status' => 0, 'data' => L('PUBLIC_EDLFAVORITE_ERROR'));
+        $return = ['status' => 0, 'data' => L('PUBLIC_EDLFAVORITE_ERROR')];
         if (empty($_POST['sid']) || empty($_POST['stable'])) {
             $return['data'] = L('PUBLIC_RESOURCE_ERROR');
             echo json_encode($return);
             exit();
         }
         if (model('Collection')->delCollection(intval($_POST['sid']), t($_POST['stable']))) {
-            $return = array('status' => 1, 'data' => L('PUBLIC_CANCEL_ERROR'));
+            $return = ['status' => 1, 'data' => L('PUBLIC_CANCEL_ERROR')];
         } else {
             $return['data'] = model('Collection')->getError();
             empty($return['data']) && $return['data'] = L('PUBLIC_EDLFAVORITE_ERROR');

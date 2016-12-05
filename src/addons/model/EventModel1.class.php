@@ -3,10 +3,12 @@
 include_once SITE_PATH.'/apps/event/Lib/Model/BaseModel.class.php';
 /**
  * EventModel
- * 活动主数据库模型
+ * 活动主数据库模型.
+ *
  * @uses BaseModel
- * @package
+ *
  * @version $id$
+ *
  * @copyright 2009-2011 SamPeng
  * @author SamPeng <sampeng87@gmail.com>
  * @license PHP Version 5.2 {@link www.sampeng.cn}
@@ -14,6 +16,7 @@ include_once SITE_PATH.'/apps/event/Lib/Model/BaseModel.class.php';
 class EventModel extends BaseModel
 {
     public $mid;
+
     public function getConfig($key = null)
     {
         $config = model('Xdata')->lget('event');
@@ -29,7 +32,8 @@ class EventModel extends BaseModel
             return $config;
         }
     }
-    public function getEventList($map = '', $order = 'id DESC', $mid)
+
+    public function getEventList($map, $order, $mid)
     {
         $this->mid = $mid;
         $result = $this->where($map)->order($order)->findPage($this->getConfig('limitpage'));
@@ -37,7 +41,7 @@ class EventModel extends BaseModel
         if (!empty($result['data'])) {
             $user = self::factoryModel('user');
                //$friendsId = $this->api->friend_get();
-               $map = array();
+               $map = [];
             $map['action'] = 'joinIn';
             $map['status'] = 1;
             //$map['uid']       = $friendsId?array( 'in',$friendsId):NULL;
@@ -56,9 +60,11 @@ class EventModel extends BaseModel
 
         return $result;
     }
+
     /**
      * appendContent
-     * 追加和反解析数据
+     * 追加和反解析数据.
+     *
      * @param mixed $data
      */
     public function appendContent($data)
@@ -97,20 +103,22 @@ class EventModel extends BaseModel
 
         return $data;
     }
+
     /**
      * checkRoll
-     * 检查权限
+     * 检查权限.
+     *
      * @param mixed $uid
      */
     public function checkMember($eventAdmin, $opts, $mid)
     {
-        $result = array(
-                        'admin' => false,
-                        'follow' => true,
-                        'canJoin' => true,
-                        'canAtt' => true,
+        $result = [
+                        'admin'     => false,
+                        'follow'    => true,
+                        'canJoin'   => true,
+                        'canAtt'    => true,
                         'hasMember' => false,
-                        );
+                        ];
         if ($mid == $eventAdmin) {
             $result['admin'] = true;
             $result['follow'] = false;
@@ -133,7 +141,8 @@ class EventModel extends BaseModel
 
     /**
      * doAddEvent
-     * 添加活动
+     * 添加活动.
+     *
      * @param mixed $map
      * @param mixed $feed
      */
@@ -184,7 +193,8 @@ class EventModel extends BaseModel
 
     /**
      * getEventContent
-     * 获得活动具体类容页
+     * 获得活动具体类容页.
+     *
      * @param mixed $eventId
      * @param mixed $uid
      * @param mixed $mid
@@ -206,7 +216,7 @@ class EventModel extends BaseModel
         //追加相册图片
         //$result['photolist'] = $photo->getPhotos( $eventId,10 );
         //追加参与者和关注者
-        $join = $att = array();
+        $join = $att = [];
         $att['action'] = 'attention';
         $att['eventId'] = $result['id'];
         $att['status'] = 1;
@@ -246,7 +256,8 @@ class EventModel extends BaseModel
 
     /**
      * factoryModel
-     * 工厂方法
+     * 工厂方法.
+     *
      * @param mixed $name
      * @static
      */
@@ -257,7 +268,8 @@ class EventModel extends BaseModel
 
     /**
      * doAddUser
-     * 添加用户行为
+     * 添加用户行为.
+     *
      * @param mixed $data
      * @param mixed $allow
      */
@@ -277,7 +289,7 @@ class EventModel extends BaseModel
             $contact_info = M('user_profile')->getField('data', "uid={$data['uid']} AND module='contact'");
             $contact_info = unserialize($contact_info);
 
-            $need_fields = array('手机', 'QQ', 'MSN');
+            $need_fields = ['手机', 'QQ', 'MSN'];
             foreach ($contact_fields as $field) {
                 if (in_array($field['fieldname'], $need_fields) && !empty($contact_info[$field['fieldkey']])) {
                     $contacts .= $field['fieldname'].':'.$contact_info[$field['fieldkey']].' ';
@@ -356,7 +368,8 @@ class EventModel extends BaseModel
 
     /**
      * doArgeeUser
-     * 同意申请
+     * 同意申请.
+     *
      * @param mixed $data
      */
     public function doArgeeUser($data)
@@ -381,7 +394,8 @@ class EventModel extends BaseModel
 
     /**
      * doDelUser
-     * 取消关注或参加
+     * 取消关注或参加.
+     *
      * @param mixed $data
      */
     public function doDelUser($data)
@@ -425,7 +439,7 @@ class EventModel extends BaseModel
 
     public function getMember($map, $uid)
     {
-        $user = self::factoryModel('user') ;
+        $user = self::factoryModel('user');
         $result = $user->getUserList($map, 20, true);
         $data = $result['data'];
         //修正成员状态
@@ -465,7 +479,8 @@ class EventModel extends BaseModel
 
     /**
      * getList
-     * 供后台管理获取列表的方法
+     * 供后台管理获取列表的方法.
+     *
      * @param mixed $order
      * @param mixed $limit
      */
@@ -482,7 +497,8 @@ class EventModel extends BaseModel
 
     /**
      * doDeleteEvent
-     * 删除活动
+     * 删除活动.
+     *
      * @param mixed $eventId
      */
     public function doDeleteEvent($eventId)
@@ -494,13 +510,13 @@ class EventModel extends BaseModel
         }
         //取出选项ID
         $optsIds = $this->field('uid,optsId')->where($eventId)->findAll();
-        $uIds = array();
+        $uIds = [];
         foreach ($optsIds as &$v) {
             //积分
             model('Credit')->setUserCredit($v['uid'], 'delete_event');
             $v = $v['optsId'];
         }
-        $opts_map['id'] = array('in', $optsIds);
+        $opts_map['id'] = ['in', $optsIds];
 
         //删除活动
         if ($this->where($eventId)->delete()) {
@@ -515,9 +531,11 @@ class EventModel extends BaseModel
 
         return false;
     }
+
     /**
      * getConfig
-     * 获取配置
+     * 获取配置.
+     *
      * @param mixed $index
      */
     /*public function getConfig( $index ){
@@ -527,7 +545,8 @@ class EventModel extends BaseModel
 
     /**
      * doIsHot
-     * 设置推荐
+     * 设置推荐.
+     *
      * @param mixed $map
      * @param mixed $act
      */
@@ -537,7 +556,7 @@ class EventModel extends BaseModel
             throw new ThinkException('不允许空条件操作数据库');
         }
         $optsIds = $this->where($map)->getField('optsId');
-        $map_opts['id'] = array('in', $optsIds);
+        $map_opts['id'] = ['in', $optsIds];
 
         switch ($act) {
             case 'recommend':   //推荐
@@ -557,7 +576,8 @@ class EventModel extends BaseModel
 
     /**
      * getHotList
-     * 推荐列表
+     * 推荐列表.
+     *
      * @param mixed $map
      * @param mixed $act
      */
@@ -567,7 +587,7 @@ class EventModel extends BaseModel
         foreach ($opts_ids as &$v) {
             $v = $v['id'];
         }
-        $event_map['optsId'] = array('in', $opts_ids);
+        $event_map['optsId'] = ['in', $opts_ids];
         $event_ids = $this->where($event_map)->findAll();
         $typeDao = self::factoryModel('type');
         foreach ($event_ids as &$v) {
@@ -581,7 +601,8 @@ class EventModel extends BaseModel
 
     /**
      * hasMember
-     * 判断是否是有这个成员
+     * 判断是否是有这个成员.
+     *
      * @param mixed $uid
      */
     public function hasMember($uid, $eventId)

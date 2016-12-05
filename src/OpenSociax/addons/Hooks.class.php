@@ -1,7 +1,9 @@
 <?php
 /**
- * 钩子抽象类
+ * 钩子抽象类.
+ *
  * @author SamPeng <penglingjun@zhishisoft.com>
+ *
  * @version TS v4
  */
 abstract class Hooks
@@ -13,17 +15,18 @@ abstract class Hooks
     protected $htmlPath;           // 插件HTML路径
 
     /**
-     * 初始化相关信息
+     * 初始化相关信息.
      */
     public function __construct()
     {
         $this->mid = $_SESSION['mid'];
         $this->model = model('AddonData');
-        $this->tVar = array();
+        $this->tVar = [];
     }
 
     /**
-     * 设置该插件的路径，不能进行重写
+     * 设置该插件的路径，不能进行重写.
+     *
      * @param string $path 路径地址
      * @param bool   $html 是否为HTML路径，默认为false
      */
@@ -38,6 +41,7 @@ abstract class Hooks
 
     /**
      * 将数据渲染到HTML页面，设置模板变量的值
+     *
      * @param string $name  Key值
      * @param string $value Value值
      */
@@ -47,10 +51,12 @@ abstract class Hooks
     }
 
     /**
-     * 渲染HTML页面
+     * 渲染HTML页面.
+     *
      * @param string $templateFile 模板文件路径
      * @param string $charset      字符集，默认为UTF8
      * @param  string $contentType  内容类型，默认为text/html
+     *
      * @return string HTML页面数据
      */
     public function fetch($templateFile = '', $charset = 'utf-8', $contentType = 'text/html')
@@ -67,10 +73,12 @@ abstract class Hooks
     }
 
     /**
-     * 显示指定HTML页面
+     * 显示指定HTML页面.
+     *
      * @param string $templateFile 模板文件路径
      * @param string $charset      字符集，默认为UTF8
      * @param  string $contentType  内容类型，默认为text/html
+     *
      * @return string HTML页面数据
      */
     public function display($templateFile = '', $charset = 'utf-8', $contentType = 'text/html')
@@ -79,7 +87,8 @@ abstract class Hooks
     }
 
     /**
-     * 错误提示方法
+     * 错误提示方法.
+     *
      * @param string $message 提示信息
      */
     protected function error($message)
@@ -89,7 +98,8 @@ abstract class Hooks
     }
 
     /**
-     * 成功提示方法
+     * 成功提示方法.
+     *
      * @param string $message 提示信息
      */
     protected function success($message)
@@ -99,7 +109,8 @@ abstract class Hooks
     }
 
     /**
-     * 跳转操作
+     * 跳转操作.
+     *
      * @param string $message 提示信息
      * @param int    $status  状态。1表示成功，0表示失败
      */
@@ -135,13 +146,15 @@ abstract class Hooks
             Log::save();
         }
         // 中止执行  避免出错后继续执行
-        exit ;
+        exit;
     }
 
     /**
-     * 获取插件目录下的Model模型文件
-     * @param  string $name  Model名称
-     * @param  string $class 类名后缀，默认为Model
+     * 获取插件目录下的Model模型文件.
+     *
+     * @param string $name  Model名称
+     * @param string $class 类名后缀，默认为Model
+     *
      * @return object 返回一个模型对象
      */
     protected function model($name, $class = 'Model')

@@ -1,13 +1,14 @@
 <?php
 /**
  * 如果一个页面上需要使用多个上传的wigdet 请传入参数 end(不同的值)用来区别
- * 如果有自己的上传模板,请传入tpl值用来区别
- * @author yKF48801
+ * 如果有自己的上传模板,请传入tpl值用来区别.
  *
+ * @author yKF48801
  */
 class UploadAttachWidget extends Widget
 {
     private static $rand = 1;
+
     public function render($data)
     {
         //默认参数
@@ -54,7 +55,7 @@ class UploadAttachWidget extends Widget
             //渲染模版
             $content = $this->renderFile(dirname(__FILE__).'/UploadAttach.html', $var);
         }
-        self::$rand ++;
+        self::$rand++;
 
         unset($var, $data);
         //输出数据

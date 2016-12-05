@@ -7,31 +7,35 @@ class sina
     private $_sina_akey;
     private $_sina_skey;
     private $_oauth;
+
     public function __construct()
     {
         $this->_sina_akey = SINA_WB_AKEY;
         $this->_sina_skey = SINA_WB_SKEY;
         $this->_oauth = new SaeTOAuthV2($this->_sina_akey, $this->_sina_skey);
     }
+
     public function getUrl($call_back = null)
     {
         if (empty($this->_sina_akey) || empty($this->_sina_skey)) {
             return false;
         }
         if (is_null($call_back)) {
-            $call_back = Addons::createAddonShow('Login', 'no_register_display', array('type' => 'sina', 'do' => 'bind'));
+            $call_back = Addons::createAddonShow('Login', 'no_register_display', ['type' => 'sina', 'do' => 'bind']);
         }
         $this->loginUrl = $this->_oauth->getAuthorizeURL($call_back);
 
         return $this->loginUrl;
     }
+
     //获取token信息
     public function getTokenInfo($access_token)
     {
-        return $this->_oauth->getTokenInfo($access_token) ;
+        return $this->_oauth->getTokenInfo($access_token);
     }
+
     //用户资料
-    public function userInfo($opt = array())
+    public function userInfo($opt = [])
     {
         $sinauid = $this->doClient($opt)->get_uid();
         $me = $this->doClient($opt)->show_user_by_id($sinauid['uid']);
@@ -46,6 +50,7 @@ class sina
 
         return $user;
     }
+
     private function doClient($opt)
     {
         if (isset($_SESSION['sina']['access_token'])) {
@@ -58,23 +63,24 @@ class sina
 
         return new SaeTClientV2($this->_sina_akey, $this->_sina_skey, $access_token, $refresh_token);
     }
+
     //验证用户
     public function checkUser()
     {
         if (isset($_REQUEST['code'])) {
-            $keys = array();
+            $keys = [];
             $keys['code'] = $_REQUEST['code'];
-            $keys['redirect_uri'] = U('public/Widget/displayAddons', array('type' => $_REQUEST['type'], 'addon' => 'Login', 'hook' => 'no_register_display'));
+            $keys['redirect_uri'] = U('public/Widget/displayAddons', ['type' => $_REQUEST['type'], 'addon' => 'Login', 'hook' => 'no_register_display']);
             try {
-                $token = $this->_oauth->getAccessToken('code', $keys) ;
+                $token = $this->_oauth->getAccessToken('code', $keys);
             } catch (OAuthException $e) {
                 $token = null;
             }
         } else {
-            $keys = array();
+            $keys = [];
             $keys['refresh_token'] = $_REQUEST['code'];
             try {
-                $token = $this->_oauth->getAccessToken('token', $keys) ;
+                $token = $this->_oauth->getAccessToken('token', $keys);
             } catch (OAuthException $e) {
                 $token = null;
             }
@@ -92,11 +98,13 @@ class sina
             return false;
         }
     }
+
     //发布一条分享
     public function update($text, $opt)
     {
         return $this->doClient($opt)->update($text);
     }
+
     //上传一个照片，并发布一条分享
     public function upload($text, $opt, $pic)
     {
@@ -106,6 +114,7 @@ class sina
             return $this->doClient($opt)->upload($text, $pic);
         }
     }
+
     //转发一条分享
     public function transpond($transpondId, $reId, $content = '', $opt = null)
     {
@@ -116,13 +125,14 @@ class sina
             $result = $this->doClient($opt)->repost($transpondId, $content);
         }
     }
+
     //保存数据
     public function saveData($data)
     {
         if (isset($data['id'])) {
-            return array('sinaId' => $data['id']);
+            return ['sinaId' => $data['id']];
         }
 
-        return array();
+        return [];
     }
 }

@@ -1,11 +1,12 @@
 <?php
     /**
      * BaseModel
-     * 心情的base类
+     * 心情的base类.
      *
      * @uses Model
-     * @package Model::Mini
+     *
      * @version $id$
+     *
      * @copyright 2009-2011 SamPeng
      * @author SamPeng <sampeng87@gmail.com>
      * @license PHP Version 5.2 {@link www.sampeng.cn}
@@ -14,10 +15,12 @@
     {
         /**
          * mid
-         * 访问者的id
+         * 访问者的id.
+         *
          * @var mixed
          */
         protected $mid;
+
         public function setMid($mid)
         {
             $this->mid = $mid;
@@ -25,7 +28,8 @@
 
         /**
          * DateToTimeStemp
-         * 时间换算成时间戳返回
+         * 时间换算成时间戳返回.
+         *
          * @param mixed $stime
          * @param mixed $etime
          */
@@ -48,7 +52,7 @@
                 $eday = substr($etime, 6, 2);
                 $etime = mktime(0, 0, 0, $emonth, $eday, $eyear);
 
-                return array('between', array($stime, $etime));
+                return ['between', [$stime, $etime]];
             }
 
             //如果输入时间是YYYYMM格式
@@ -57,12 +61,13 @@
             $start = $start_temp[0];
             $end = $end_temp[1];
 
-            return array('between', array($start, $end));
+            return ['between', [$start, $end]];
         }
 
         /**
          * paramData
-         * 处理归档查询的时间格式
+         * 处理归档查询的时间格式.
+         *
          * @param string $findTime 200903这样格式的参数
          * @static
          */
@@ -78,7 +83,7 @@
 
                 //判断时间.处理结束日期
                 switch (true) {
-                    case in_array($month, array(1, 3, 5, 7, 8, 10, 12)):
+                    case in_array($month, [1, 3, 5, 7, 8, 10, 12]):
                         $day = 31;
                         break;
                     case 2 == $month:
@@ -107,6 +112,6 @@
             }
 
             //fd( array( friendlyDate($start),friendlyDate($end) ) );
-            return array($start, $end);
+            return [$start, $end];
         }
     }

@@ -1,8 +1,11 @@
 <?php
 /**
- * 编辑器
+ * 编辑器.
+ *
  * @example W('Editor',array('width'=>300,'height'=>'200','contentName'=>'mycontent','value'=>'默认的值'))
+ *
  * @author jason
+ *
  * @version TS3.0
  */
 class EditorWidget extends Widget
@@ -17,7 +20,7 @@ class EditorWidget extends Widget
      */
     public function render($data)
     {
-        $var = array();
+        $var = [];
         $var['contentName'] = 'content';
         $var['width'] = '100%';
         !empty($data) && $var = array_merge($var, $data);

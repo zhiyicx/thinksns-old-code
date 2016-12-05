@@ -1,8 +1,8 @@
 <?php
 /**
- * 勋章数据模型类
- * @author Stream
+ * 勋章数据模型类.
  *
+ * @author Stream
  */
 class MedalModel extends Model
 {
@@ -25,7 +25,7 @@ class MedalModel extends Model
     public function getAllMedal()
     {
         $list = $this->findAll();
-        $keyidlist = array();
+        $keyidlist = [];
         if (is_array($list)) {
             foreach ($list as $v) {
                 $keyidlist[$v['id']] = $v['name'];
@@ -36,7 +36,8 @@ class MedalModel extends Model
     }
 
     /**
-     * 返回用户勋章
+     * 返回用户勋章.
+     *
      * @param unknown_type $uid
      */
     public function getMedalByUid($uid)
@@ -57,9 +58,11 @@ class MedalModel extends Model
     }
 
     /**
-     * 返回用户勋章列表
-     * @param  unknown_type $map
-     * @param  unknown_type $limit
+     * 返回用户勋章列表.
+     *
+     * @param unknown_type $map
+     * @param unknown_type $limit
+     *
      * @return unknown
      */
     public function getUserMedalList($map, $limit = 20)
@@ -72,14 +75,14 @@ class MedalModel extends Model
         $mids = getSubByKey($list['data'], 'medal_id');
 
         $users = model('User')->getUserInfoByUids($uids);
-        $unames = array();
+        $unames = [];
         foreach ($users as $n) {
             $unames[$n['uid']] = $n['uname'];
         }
 
-        $gmap['id'] = array('in', $mids);
+        $gmap['id'] = ['in', $mids];
         $medals = $this->where($gmap)->findAll();
-        $medalnames = array();
+        $medalnames = [];
         foreach ($medals as $m) {
             $src = explode('|', $m['src']);
             $medalnames[$m['id']]['src'] = $src[1];
@@ -96,14 +99,15 @@ class MedalModel extends Model
     }
 
     /**
-     * 为用户添加勋章
+     * 为用户添加勋章.
+     *
      * @param unknown_type $users
      * @param unknown_type $medalid
      */
     public function addUserMedal($users, $medalid, $desc)
     {
         $medalDao = D('medal_user');
-        $uname = array();
+        $uname = [];
         if (!is_array($users)) {
             return false;
         }

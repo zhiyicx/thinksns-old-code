@@ -1,8 +1,11 @@
 <?php
 /**
- * 报表图形Js图形Widget,用于生产各种图形报表
+ * 报表图形Js图形Widget,用于生产各种图形报表.
+ *
  * @example {:W('Plot', array('type'=>'pieChart', 'id'=>'1', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value1, 'color'=>$color, 'show'=>$show1))}
+ *
  * @author zivss
+ *
  * @version TS3.0
  **/
 class PlotWidget extends Widget
@@ -38,8 +41,10 @@ class PlotWidget extends Widget
     }
 
     /*** 私有方法 ***/
+
     /**
-     * Plot插件路由
+     * Plot插件路由.
+     *
      * @return 统计图信息
      */
     private function getPlotPlugins($type, $data)
@@ -63,7 +68,7 @@ class PlotWidget extends Widget
     }
 
     /**
-     * 未知，无显示
+     * 未知，无显示.
      */
     public function getZx($data)
     {
@@ -100,7 +105,8 @@ class PlotWidget extends Widget
     }
 
     /**
-     * 获取饼状图显示数据
+     * 获取饼状图显示数据.
+     *
      * @return array 饼状图信息
      */
     private function getPieChart($data)
@@ -125,7 +131,8 @@ class PlotWidget extends Widget
     }
 
     /**
-     * 获取折线图显示数据
+     * 获取折线图显示数据.
+     *
      * @return array 折线图信息
      */
     private function getPointLabels($data)
@@ -141,7 +148,8 @@ class PlotWidget extends Widget
     }
 
     /**
-     * 获取条形图显示数据
+     * 获取条形图显示数据.
+     *
      * @return array 条形图信息
      */
     private function getBarChart($data)

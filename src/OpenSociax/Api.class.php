@@ -28,7 +28,7 @@ class Api
     {
         //$this->mid = $_SESSION['mid'];
         //外部接口调用
-        if ($location == false && !defined('DEBUG')) {
+        if ($location == false && (!defined('DEBUG') || !DEBUG)) {
             $this->verifyUser();
         //本机调用
         } else {

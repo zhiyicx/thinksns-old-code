@@ -219,7 +219,7 @@ class FeedListWidget extends Widget
                     // 关键字匹配 采用搜索引擎兼容函数搜索 后期可能会扩展为搜索引擎
                     $list = model('Feed')->searchFeed($var['feed_key'], 'following', $var['loadId'], $this->limitnums);
                 } else {
-                    $where = '( a.is_audit=1 OR ( a.is_audit=0 AND a.uid='.$GLOBALS['ts']['mid'].') ) AND a.is_del = 0 ';
+                    $where = ' a.is_audit=1  AND a.is_del = 0 ';
                     if ($var['loadId'] > 0) { // 非第一次
                         $where .= " AND a.feed_id < '".intval($var['loadId'])."'";
                     }
@@ -265,7 +265,7 @@ class FeedListWidget extends Widget
                     // 关键字匹配 采用搜索引擎兼容函数搜索 后期可能会扩展为搜索引擎
                     $list = model('Feed')->searchFeed($var['feed_key'], 'all', $var['loadId'], $this->limitnums);
                 } else {
-                    $where = ' (is_audit=1 OR is_audit=0 AND uid='.$GLOBALS['ts']['mid'].') AND is_del = 0 ';
+                    $where = ' is_audit=1  AND is_del = 0 ';
                     if ($var['loadId'] > 0) { // 非第一次
                         $where .= " AND feed_id < '".intval($var['loadId'])."'";
                     }
@@ -285,7 +285,7 @@ class FeedListWidget extends Widget
                 }
                 break;
             case 'newfollowing': // 关注的人的最新分享
-                $where = '( a.is_audit=1 OR ( a.is_audit=0 AND a.uid='.$GLOBALS['ts']['mid'].') ) AND a.is_del = 0 ';
+                $where = ' a.is_audit=1 AND a.is_del = 0 ';
                 if ($var['maxId'] > 0) {
                     $where .= " AND a.feed_id > '".intval($var['maxId'])."'";
                     $list = model('Feed')->getFollowingFeed($where);
@@ -328,7 +328,7 @@ class FeedListWidget extends Widget
                 }
                 break;
             case 'channel':
-                $where = ' (c.is_audit=1 OR c.is_audit=0) AND c.is_del = 0 ';
+                $where = ' c.is_audit=1 AND c.is_del = 0 ';
                 if ($var['loadId'] > 0) { // 非第一次
                     $where .= " AND c.feed_id < '".intval($var['loadId'])."'";
                 }
@@ -344,7 +344,7 @@ class FeedListWidget extends Widget
                 $content['count'] = $list['count'];
                 break;
             case 'one':
-                $where = ' (is_audit=1 OR is_audit=0 AND uid='.$GLOBALS['ts']['mid'].') AND is_del = 0 AND feed_id = '.$var['feed_id'];
+                $where = ' is_audit=1 AND is_del = 0 AND feed_id = '.$var['feed_id'];
                 // 设定可查看的全站分享总数，可以提高大数据量下的查询效率
                 $max = null; //10000;
                 $list = model('Feed')->getList($where, $this->limitnums, '', $max);

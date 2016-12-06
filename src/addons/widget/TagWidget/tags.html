@@ -98,7 +98,12 @@ tagsTs.init = function()
  * @return void
  */
 tagsTs.add = function(tagName, category_id)
-{
+{	
+	var reg = /[^\u4e00-\u9fa5|\w]+/;
+	if(reg.test(tagName)) {
+		ui.error('标签名只能是汉字、字母、数字或下划线');
+		return false;
+	}
 	// 判断标签长度，控制为10个汉字
 	var tagLimit = 10;
 	if(getLength(tagName) > tagLimit) {

@@ -64,7 +64,11 @@ class TagModel extends Model
             if ($this->_app_table == 'user') {
                 $cmap['title'] = $names[$a_t_v['tag_id']];
                 $user_category_id = D('user_category')->where($cmap)->getField('user_category_id');
-                $result[$a_t_v['row_id']][$user_category_id] = $names[$a_t_v['tag_id']];
+                if (!$user_category_id) {
+                    $result[$a_t_v['row_id']]['-'.$a_t_v['tag_id']] = $names[$a_t_v['tag_id']];
+                } else {
+                    $result[$a_t_v['row_id']][$user_category_id] = $names[$a_t_v['tag_id']];
+                }
             } else {
                 $result[$a_t_v['row_id']][$a_t_v['tag_id']] = $names[$a_t_v['tag_id']];
             }

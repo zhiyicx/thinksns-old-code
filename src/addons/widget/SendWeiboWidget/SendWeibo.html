@@ -51,7 +51,7 @@
             </eq>
             <eq name="actions.file" value="true">
               <php>if(in_array('file',$weibo_type)):</php>
-              <a class="file-block" href="javascript:;" title="附件"> <i class="file"></i>附件
+              <a class="file-block" href="javascript:;" title="附件" id="checkIsUpImage"> <i class="file"></i>附件
               <form style='display:inline;padding:0;margin:0;border:0' >
                 <input event-node="insert_file" type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','all')" urlquery="attach_type=feed_file&upload_type=file" hidefocus="true">
               </form>
@@ -131,6 +131,14 @@ $(function (){
 			}
 		} , 300)
 	}
+
+  // 查看是否已添加图片
+  $('#checkIsUpImage').click(function() {
+    if ($('#attach_ids').val() != 'undefined' && $('#attach_ids').val() != '' && $('#attach_ids').val() != null && $('.wrap-layer').html() != '' && $('.wrap-layer').html() != 'undefined' && $('.wrap-layer').html() != null) {
+      ui.error( '不能同时发布图片和附件' )
+      return false;
+    }
+  })
 });
 
 setTimeout(function() {

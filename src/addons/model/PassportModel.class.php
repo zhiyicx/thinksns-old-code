@@ -396,11 +396,6 @@ class PassportModel
         cookie('TSV4_LOGGED_USER', null);    // 注销cookie
 
         Addons::hook('passport_logout_local', array('login' => $login, 'password' => $password));
-
-        //UC同步退出
-        if (UC_SYNC) {
-            echo $this->ucLogout();
-        }
     }
 
     /**

@@ -249,5 +249,4 @@ class App
             echo $rs;
         }
     }
-
 } //类定义结束

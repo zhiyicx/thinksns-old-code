@@ -554,9 +554,9 @@ abstract class Action
         $this->assign('appJsList', $this->appJsList);
         $this->assign('langJsList', $this->langJsList);
         Addons::hook('core_display_tpl', array(
-            'tpl' => $templateFile,
-            'vars' => $this->tVar,
-            'charset' => $charset,
+            'tpl'         => $templateFile,
+            'vars'        => $this->tVar,
+            'charset'     => $charset,
             'contentType' => $contentType,
             // 'display' => $display
         ));

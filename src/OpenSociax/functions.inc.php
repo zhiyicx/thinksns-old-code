@@ -301,15 +301,11 @@ function dump($var, $return = false)
  */
 function throw_exception($msg, $type = '')
 {
-    header('Content-Type:text/html; charset=UTF8');
-    if (defined('IS_CGI') && IS_CGI) {
-        exit($msg);
-    }
     if (class_exists($type, false)) {
         throw new $type($msg, $code, true);
-    } else {
-        die($msg);
-    } // 异常类型不存在则输出错误信息字串
+    }
+
+    throw new Exception($message, $type);
 }
 
 /**
@@ -1110,7 +1106,7 @@ function fetch($templateFile = '', $tvar = array(), $charset = 'utf-8', $content
     $templateCacheFile = C('TMPL_CACHE_PATH').'/'.APP_NAME.'_'.tsmd5($templateFile).'.php';
 
     //载入模版缓存
-    if ((!$ts['_debug'] && file_exists($templateCacheFile)) && (!defined('TS_APP_DEV') || TS_APP_DEV == false)) {
+    if ((isset($ts['_debug']) && !$ts['_debug'] && file_exists($templateCacheFile)) && (!defined('TS_APP_DEV') || TS_APP_DEV == false)) {
         //if(1==2){ //TODO  开发
         extract($tvar, EXTR_OVERWRITE);
         //载入模版缓存文件

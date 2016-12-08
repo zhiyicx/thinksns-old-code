@@ -34,26 +34,6 @@ class CacheFile extends Cache
         if (substr($this->options['temp'], -1) != '/') {
             $this->options['temp'] .= '/';
         }
-        $this->init();
-    }
-
-    /**
-     * 初始化检查.
-     *
-     * @return boolen
-     */
-    private function init()
-    {
-        $stat = @stat($this->options['temp']);
-        $dir_perms = $stat['mode'] & 0007777; // Get the permission bits.
-        $file_perms = $dir_perms & 0000777; // Remove execute bits for files.
-
-        // // 创建项目缓存目录
-        // if (!is_dir($this->options['temp'])) {
-        //     if (!  mkdir($this->options['temp']))
-        //         return false;
-        //      chmod($this->options['temp'], $dir_perms);
-        // }
     }
 
     /**

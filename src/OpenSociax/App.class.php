@@ -16,10 +16,6 @@ class App
      */
     public static function init()
     {
-        // 设定错误和异常处理
-        set_error_handler(array('App', 'appError'));
-        set_exception_handler(array('App', 'appException'));
-
         // Session初始化
         if (!session_id()) {
             session_start();
@@ -130,12 +126,6 @@ class App
 
         /* # 跳转移动版首页，以后有时间，可以做兼容跳转 */
         } elseif (
-            /* # 是否不是wap，强制访问pc SESSION记录 */
-            $_SESSION['wap_to_normal'] != 1 and
-            /* # 是否不是wap，强制访问pc SCOOKIE记录 */
-            cookie('wap_to_normal') != 1 and
-            /* # 是否请求参数带强制访问 */
-            $_REQUEST['wap_to_normal'] != 1 and
             /* # 默认iPad不跳转，目前iPad显示PC页面不宽 */
             !isiPad() and
             /* # 是否开启了移动端开关 */
@@ -260,38 +250,4 @@ class App
         }
     }
 
-    /**
-     * app异常处理.
-     */
-    public static function appException($e)
-    {
-        die('system_error:'.$e->__toString());
-    }
-
-    /**
-     * 自定义错误处理.
-     *
-     * @param int    $errno   错误类型
-     * @param string $errstr  错误信息
-     * @param string $errfile 错误文件
-     * @param int    $errline 错误行数
-     */
-    public static function appError($errno, $errstr, $errfile, $errline)
-    {
-        switch ($errno) {
-          case E_ERROR:
-          case E_USER_ERROR:
-            $errorStr = "[$errno] $errstr ".basename($errfile)." 第 $errline 行.";
-            //if(C('LOG_RECORD')) Log::write($errorStr,Log::ERR);
-            echo $errorStr;
-            break;
-          case E_STRICT:
-          case E_USER_WARNING:
-          case E_USER_NOTICE:
-          default:
-            $errorStr = "[$errno] $errstr ".basename($errfile)." 第 $errline 行.";
-            //Log::record($errorStr,Log::NOTICE);
-            break;
-      }
-    }
 } //类定义结束

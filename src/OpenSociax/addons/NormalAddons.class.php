@@ -18,12 +18,13 @@ abstract class NormalAddons extends AbstractAddons
     public function getHooksList($name)
     {
         $hooks = $this->getHooksInfo();
+        isset($hooks['sort']) || $hooks['sort'] = array();
+
         $hooksBase = get_class_methods('Hooks');
         $list = array();
         // 生成插件列表
         foreach ($hooks['list'] as $value) {
             $dirName = ADDON_PATH.DIRECTORY_SEPARATOR.'plugins';
-            tsload($this->path.DIRECTORY_SEPARATOR.'hooks'.DIRECTORY_SEPARATOR.$value.'.class.php');
             $hook = array_diff(get_class_methods($value), $hooksBase);
             foreach ($hook as $v) {
                 $list[$v][$name][] = $value;

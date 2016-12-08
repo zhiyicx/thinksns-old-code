@@ -94,7 +94,7 @@ abstract class Action
             //网站导航
             $this->site['site_top_nav'] = model('Navi')->getTopNav();
             $this->site['site_bottom_nav'] = model('Navi')->getBottomNav();
-            $this->site['site_bottom_child_nav'] = model('Navi')->getBottomChildNav($GLOBALS['ts']['site_bottom_nav']);
+            $this->site['site_bottom_child_nav'] = model('Navi')->getBottomChildNav(isset($GLOBALS['ts']['site_bottom_nav']) ? $GLOBALS['ts']['site_bottom_nav'] : array());
             if (!$this->mid) {
                 //游客导航
                 $this->site['site_guest_nav'] = model('Navi')->getGuestNav();
@@ -130,13 +130,6 @@ abstract class Action
             exit();
         }
         $GLOBALS['time_run_detail']['action_init_site_closed'] = microtime(true);
-
-        //检查是否启用IP控制
-        // if (!isIpAccess('ipaccess') && APP_NAME !='admin') {
-        //     $this->site['site_closed'] = 0;
-        //     $this->page404('你的IP地址已被禁止'); exit();
-        // }
-        // $GLOBALS['time_run_detail']['action_init_site_ipaccess'] = microtime(true);
 
         //检查是否启用rewrite
         if (isset($this->site['site_rewrite_on'])) {
@@ -247,13 +240,11 @@ abstract class Action
         }
 
         //当前登录者uid
-        $GLOBALS['ts']['mid'] = $this->mid = intval($_SESSION['mid']);
+        $GLOBALS['ts']['mid'] = $GLOBALS['ts']['uid'] = $this->mid = intval($_SESSION['mid']);
 
-        //当前访问对象的uid
-        $GLOBALS['ts']['uid'] = $this->uid = intval($_REQUEST['uid'] == 0 ? $this->mid : $_REQUEST['uid']);
-
-        // 验证站点访问权限
-        // 验证应用访问权限
+        if (isset($_REQUEST['uid']) && $_REQUEST['uid'] > 0) {
+            $GLOBALS['ts']['uid'] = (int) $_REQUEST['uid'];
+        }
 
         // 获取用户基本资料
         if ($this->mid > 0 || $this->uid > 0) {
@@ -562,7 +553,13 @@ abstract class Action
         $this->assign('appCssList', $this->appCssList);
         $this->assign('appJsList', $this->appJsList);
         $this->assign('langJsList', $this->langJsList);
-        Addons::hook('core_display_tpl', array('tpl' => $templateFile, 'vars' => $this->tVar, 'charset' => $charset, 'contentType' => $contentType, 'display' => $display));
+        Addons::hook('core_display_tpl', array(
+            'tpl' => $templateFile,
+            'vars' => $this->tVar,
+            'charset' => $charset,
+            'contentType' => $contentType,
+            // 'display' => $display
+        ));
         $content = fetch($templateFile, $this->tVar, $charset, $contentType);
         $this->buildHtml($content);
 

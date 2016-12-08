@@ -7,11 +7,6 @@
 
 @ini_set('magic_quotes_runtime', 0);
 
-/* # 设置时区 */
-if (function_exists('date_default_timezone_set')) {
-    date_default_timezone_set('Asia/Shanghai');
-}
-
 $time_include_start = microtime(true);
 $mem_include_start = memory_get_usage();
 
@@ -224,7 +219,7 @@ function tsconfig($name = null, $value = null)
 function tshook($name, $params = array())
 {
     global $ts;
-    $hooks = $ts['_config']['hooks'][$name];
+    $hooks = isset($ts['_config']['hooks'][$name]) ? $ts['_config']['hooks'][$name] : array();
     if ($hooks) {
         foreach ($hooks as $call) {
             if (is_callable($call)) {

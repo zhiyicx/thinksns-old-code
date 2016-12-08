@@ -1466,16 +1466,4 @@ class Model extends Think
 
         return $error;
     }
-
-    /**
-     * 清理缓存.
-     *
-     * @param mixed $param
-     *
-     * @return bool
-     */
-    public function cleanCache($param)
-    {
-        return true;
-    }
 }

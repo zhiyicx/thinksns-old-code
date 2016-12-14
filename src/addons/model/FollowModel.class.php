@@ -74,7 +74,7 @@ class FollowModel extends Model
      * @param int $uid
      *                 发起操作的用户ID
      * @param int $fid
-     *                   被关注的用户ID或被关注的话题ID
+     *                 被关注的用户ID或被关注的话题ID
      *
      * @return bool 是否关注成功
      */
@@ -199,9 +199,9 @@ class FollowModel extends Model
      * @param int   $uid
      *                    用户ID
      * @param array $fids
-     *                     需关注用户ID数组
+     *                    需关注用户ID数组
      *
-     * @return bool  是否双向关注成功
+     * @return bool 是否双向关注成功
      */
     public function eachDoFollow($uid, $fids)
     {
@@ -261,7 +261,7 @@ class FollowModel extends Model
      * @param int $uid
      *                 发起操作的用户ID
      * @param int $fid
-     *                   被取消关注的用户ID或被取消关注的话题ID
+     *                 被取消关注的用户ID或被取消关注的话题ID
      *
      * @return bool 是否取消关注成功
      */
@@ -333,9 +333,9 @@ class FollowModel extends Model
      * 获取指定用户的关注列表 分页.
      *
      * @param int $uid
-     *                 用户ID
+     *                   用户ID
      * @param int $gid
-     *                      关注组ID，默认为空
+     *                   关注组ID，默认为空
      * @param int $limit
      *                   结果集数目，默认为10
      *
@@ -381,9 +381,9 @@ class FollowModel extends Model
      * 获取指定用户的关注列表 不分页.
      *
      * @param int $uid
-     *                 用户ID
+     *                   用户ID
      * @param int $gid
-     *                      关注组ID，默认为空
+     *                   关注组ID，默认为空
      * @param int $limit
      *                   结果集数目，默认为10
      *
@@ -533,7 +533,7 @@ class FollowModel extends Model
      * @param array $fids
      *                           用户ID数组
      * @param array $follow_data
-     *                            关注状态数据
+     *                           关注状态数据
      *
      * @return array 格式化后的用户关注状态数据
      */
@@ -741,15 +741,15 @@ class FollowModel extends Model
      * 数据库搜索关注用户.
      *
      * @param string $key
-     *                       关键字
+     *                      关键字
      * @param string $type
-     *                       关键字，following,follower
-     * @param int $limit
-     *                   结果集数目
-     * @param int $uid
-     *                   指定用户UID
-     * @param int $gid
-     *                   分组ID
+     *                      关键字，following,follower
+     * @param int    $limit
+     *                      结果集数目
+     * @param int    $uid
+     *                      指定用户UID
+     * @param int    $gid
+     *                      分组ID
      *
      * @return array 搜索后的数据
      */

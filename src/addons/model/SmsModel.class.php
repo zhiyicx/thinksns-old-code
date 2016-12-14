@@ -405,8 +405,8 @@ class SmsModel extends Model
     /**
      * 发送验证码
      *
-     * @param int $phone 要发送到的手机号码
-     * @param  bool $sendLock 发送锁，默认关闭
+     * @param int  $phone    要发送到的手机号码
+     * @param bool $sendLock 发送锁，默认关闭
      *
      * @return bool
      *
@@ -484,9 +484,9 @@ class SmsModel extends Model
     /**
      * 发送短息消息.
      *
-     * @param int $phone 手机号码
-     * @param  string $message  短信内容
-     * @param  bool   $sendLock 时间锁， 默认关闭
+     * @param int    $phone    手机号码
+     * @param string $message  短信内容
+     * @param bool   $sendLock 时间锁， 默认关闭
      *
      * @return bool
      *

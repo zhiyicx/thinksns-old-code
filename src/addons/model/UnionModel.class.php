@@ -701,15 +701,15 @@ class UnionModel extends Model
      * 数据库搜索联盟用户.
      *
      * @param string $key
-     *                       关键字
+     *                      关键字
      * @param string $type
-     *                       关键字，unioning,unioner
-     * @param int $limit
-     *                   结果集数目
-     * @param int $uid
-     *                   指定用户UID
-     * @param int $gid
-     *                   分组ID
+     *                      关键字，unioning,unioner
+     * @param int    $limit
+     *                      结果集数目
+     * @param int    $uid
+     *                      指定用户UID
+     * @param int    $gid
+     *                      分组ID
      *
      * @return array 搜索后的数据
      */

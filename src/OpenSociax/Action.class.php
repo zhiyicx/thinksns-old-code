@@ -569,7 +569,7 @@ abstract class Action
     /**
      *  输出静态化内容.
      *
-     * @param  string $content 模板内容
+     * @param string $content 模板内容
      *
      * @return boolen
      */
@@ -665,10 +665,10 @@ abstract class Action
     /**
      * Action跳转(URL重定向） 支持指定模块和延时跳转.
      *
-     * @param string $url 跳转的URL表达式
+     * @param string $url    跳转的URL表达式
      * @param array  $params 其它URL参数
-     * @param int    $delay 延时跳转的时间 单位为秒
-     * @param string $msg   跳转提示信息
+     * @param int    $delay  延时跳转的时间 单位为秒
+     * @param string $msg    跳转提示信息
      */
     protected function redirect($url, $params = array(), $delay = 0, $msg = '')
     {

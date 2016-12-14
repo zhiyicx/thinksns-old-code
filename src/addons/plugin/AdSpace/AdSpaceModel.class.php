@@ -14,9 +14,9 @@ class AdSpaceModel extends Model
     /**
      * 添加广告位数据.
      *
-     * @param  array $data 广告位相关数据
+     * @param array $data 广告位相关数据
      *
-     * @return bool  是否插入成功
+     * @return bool 是否插入成功
      */
     public function doAddAdSpace($data)
     {
@@ -78,8 +78,8 @@ class AdSpaceModel extends Model
     /**
      * 编辑广告位操作.
      *
-     * @param int $id 广告位ID
-     * @param  array $data 广告位相关数据
+     * @param int   $id   广告位ID
+     * @param array $data 广告位相关数据
      *
      * @return bool 是否编辑成功
      */

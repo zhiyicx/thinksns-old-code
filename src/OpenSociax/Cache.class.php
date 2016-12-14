@@ -36,8 +36,8 @@ class Cache
     /**
      * 连接缓存.
      *
-     * @param string $type 缓存类型
-     * @param  array  $options 配置数组
+     * @param string $type    缓存类型
+     * @param array  $options 配置数组
      *
      * @return object
      */

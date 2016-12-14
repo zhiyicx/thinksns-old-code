@@ -179,9 +179,9 @@ class UserAppModel extends Model
     /**
      * 更新用户安装/卸载应用的缓存信息.
      *
-     * @param int $uid   用户UID
-     * @param int $appId 应用ID
-     * @param  bool $install 是否是安装信息，默认为true
+     * @param int  $uid     用户UID
+     * @param int  $appId   应用ID
+     * @param bool $install 是否是安装信息，默认为true
      *
      * @return bool 是否更新成功
      */

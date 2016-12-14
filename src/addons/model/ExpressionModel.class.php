@@ -50,7 +50,7 @@ class ExpressionModel
     /**
      * 将表情格式化成HTML形式.
      *
-     * @param  string $data 内容数据
+     * @param string $data 内容数据
      *
      * @return string 转换为表情链接的内容
      */

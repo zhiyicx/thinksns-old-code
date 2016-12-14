@@ -165,7 +165,7 @@ abstract class AbstractAddons implements AddonsInterface
      *
      * @param string $templateFile 模板文件路径
      * @param string $charset      字符集，默认为UTF8
-     * @param  string $contentType  内容类型，默认为text/html
+     * @param string $contentType  内容类型，默认为text/html
      *
      * @return string HTML页面数据
      */
@@ -181,7 +181,7 @@ abstract class AbstractAddons implements AddonsInterface
      *
      * @param string $templateFile 模板文件路径
      * @param string $charset      字符集，默认为UTF8
-     * @param  string $contentType  内容类型，默认为text/html
+     * @param string $contentType  内容类型，默认为text/html
      *
      * @return string HTML页面数据
      */

@@ -251,7 +251,7 @@ class RelatedUserModel extends Model
      * @param string $type  类型字符串
      * @param int    $limit 显示个数
      *
-     * @return array  指定类型的关联用户
+     * @return array 指定类型的关联用户
      */
     public function getRelatedUserByType($type, $limit)
     {

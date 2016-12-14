@@ -14,9 +14,9 @@ class FeedTopModel extends Model
     /**
      * 添加分享置顶数据.
      *
-     * @param  array $data 广告位相关数据
+     * @param array $data 广告位相关数据
      *
-     * @return bool  是否插入成功
+     * @return bool 是否插入成功
      */
     public function doAddFeedTop($data)
     {

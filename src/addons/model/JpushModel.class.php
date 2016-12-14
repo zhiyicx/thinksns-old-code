@@ -21,11 +21,11 @@ class JpushModel extends Model
     /**
      * 推送消息.
      *
-     * @param array $uids 用户uid
-     * @param string $alert 消息内容
-     * @param array $extras
-     * @param int   $type
-     * @param int   $rose
+     * @param array  $uids   用户uid
+     * @param string $alert  消息内容
+     * @param array  $extras
+     * @param int    $type
+     * @param int    $rose
      *
      * @return array|bool
      */

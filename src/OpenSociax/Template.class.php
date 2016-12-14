@@ -158,7 +158,7 @@ class Template
     /**
      * 编译模板文件内容.
      *
-     * @param  mixed  $tmplContent 模板内容
+     * @param mixed $tmplContent 模板内容
      *
      * @return string
      */
@@ -187,7 +187,7 @@ class Template
      * 模板解析入口
      * 支持普通标签和TagLib解析 支持自定义标签库.
      *
-     * @param  string $content 要解析的模板内容
+     * @param string $content 要解析的模板内容
      *
      * @return string
      */
@@ -336,7 +336,7 @@ class Template
     /**
      * 替换页面中的literal标签.
      *
-     * @param  string       $content 模板内容
+     * @param string $content 模板内容
      *
      * @return string|false
      */
@@ -374,7 +374,7 @@ class Template
      * 搜索模板页面中包含的TagLib库
      * 并返回列表.
      *
-     * @param  string       $content 模板内容
+     * @param string $content 模板内容
      *
      * @return string|false
      */
@@ -394,9 +394,9 @@ class Template
     /**
      * TagLib库解析.
      *
-     * @param string $tagLib 要解析的标签库
-     * @param  string $content 要解析的模板内容
-     * @param boolen $hide 是否隐藏标签库前缀
+     * @param string $tagLib  要解析的标签库
+     * @param string $content 要解析的模板内容
+     * @param boolen $hide    是否隐藏标签库前缀
      *
      * @return string
      */
@@ -481,10 +481,10 @@ class Template
      * 解析标签库的标签
      * 需要调用对应的标签库文件解析类.
      *
-     * @param string $tagLib 标签库名称
-     * @param string $tag    标签名
-     * @param string $attr   标签属性
-     * @param  string       $content 标签内容
+     * @param string $tagLib  标签库名称
+     * @param string $tag     标签名
+     * @param string $attr    标签属性
+     * @param string $content 标签内容
      *
      * @return string|false
      */
@@ -510,7 +510,7 @@ class Template
      * 模板标签解析
      * 格式： {TagName:args [|content] }.
      *
-     * @param  string $tagStr 标签内容
+     * @param string $tagStr 标签内容
      *
      * @return string
      */
@@ -822,8 +822,8 @@ class Template
     /**
      * 加载公共模板并缓存 和当前模板在同一路径，否则使用相对路径.
      *
-     * @param  string $tmplPublicName 公共模板文件名
-     * @param array $vars 要传递的变量列表
+     * @param string $tmplPublicName 公共模板文件名
+     * @param array  $vars           要传递的变量列表
      *
      * @return string
      */

@@ -212,7 +212,7 @@ class UserModel extends Model
      * @param int    $limit
      *                      结果集数目，默认为20
      * @param string $field
-     *                       需要显示的字段，多个字段之间使用“,”分割，默认显示全部
+     *                      需要显示的字段，多个字段之间使用“,”分割，默认显示全部
      * @param string $order
      *                      排序条件，默认uid DESC
      *
@@ -235,7 +235,7 @@ class UserModel extends Model
      * @param int    $limit
      *                      结果集数目，默认为20
      * @param string $field
-     *                       需要显示的字段，多个字段之间使用“,”分割，默认显示全部
+     *                      需要显示的字段，多个字段之间使用“,”分割，默认显示全部
      * @param string $order
      *                      排序条件，默认uid DESC
      *
@@ -318,7 +318,7 @@ class UserModel extends Model
      * @param string $uname
      *                      昵称信息
      *
-     * @return array  指定昵称用户的相关信息
+     * @return array 指定昵称用户的相关信息
      */
     public function getUserInfoByName($userName, array $map = array())
     {
@@ -346,7 +346,7 @@ class UserModel extends Model
      * @param string $email
      *                      用户邮箱
      *
-     * @return array  指定昵称用户的相关信息
+     * @return array 指定昵称用户的相关信息
      */
     public function getUserInfoByEmail($email, array $map)
     {
@@ -374,7 +374,7 @@ class UserModel extends Model
      * @param string $domain
      *                       用户个性域名
      *
-     * @return array  指定昵称用户的相关信息
+     * @return array 指定昵称用户的相关信息
      */
     public function getUserInfoByDomain($domain, array $map)
     {
@@ -496,7 +496,7 @@ class UserModel extends Model
      * 添加用户.
      *
      * @param array $user
-     *                     新用户的相关信息|新用户对象
+     *                    新用户的相关信息|新用户对象
      *
      * @return bool 是否添加成功
      */
@@ -748,7 +748,7 @@ class UserModel extends Model
      * @param array $uids
      *                    用户UID数组
      *
-     * @return bool  是否清除缓存成功
+     * @return bool 是否清除缓存成功
      */
     public function cleanCache($uids)
     {
@@ -777,7 +777,7 @@ class UserModel extends Model
      * @param int $uid
      *                 指定用户UID
      * @param int $num
-     *                    感兴趣人的个数
+     *                 感兴趣人的个数
      *
      * @return array 感兴趣人的UID数组
      */
@@ -1014,9 +1014,9 @@ class UserModel extends Model
      * 搜索用户.
      *
      * @param string $key
-     *                        关键字
-     * @param int $follow
-     *                        关注状态值
+     *                       关键字
+     * @param int    $follow
+     *                       关注状态值
      * @param int    $limit
      *                       结果集数目，默认为100
      * @param int    $max_id
@@ -1024,7 +1024,7 @@ class UserModel extends Model
      * @param string $type
      *                       类型
      * @param int    $noself
-     *                        搜索结果是否包含登录用户，默认为0
+     *                       搜索结果是否包含登录用户，默认为0
      *
      * @return array 用户列表数据
      */
@@ -1097,15 +1097,15 @@ class UserModel extends Model
      * 搜索用户.
      *
      * @param string $key
-     *                        关键字
-     * @param int $max_id
-     *                    主键最大值
-     * @param int $follow
-     *                        关注状态值
-     * @param int $limit
-     *                    结果集数目，默认为100
-     * @param int $noself
-     *                        搜索结果是否包含登录用户，默认为0
+     *                       关键字
+     * @param int    $max_id
+     *                       主键最大值
+     * @param int    $follow
+     *                       关注状态值
+     * @param int    $limit
+     *                       结果集数目，默认为100
+     * @param int    $noself
+     *                       搜索结果是否包含登录用户，默认为0
      *
      * @return array 用户列表数据
      */
@@ -1160,8 +1160,8 @@ class UserModel extends Model
      *
      * @param string|int $identifier
      *                                    标示符内容
-     * @param string $identifier_type
-     *                                标示符类型. (uid, uname, email, domain之一)
+     * @param string     $identifier_type
+     *                                    标示符类型. (uid, uname, email, domain之一)
      */
     public function getUserByIdentifier($identifier, $identifier_type = 'uid')
     {
@@ -1372,8 +1372,8 @@ class UserModel extends Model
     /**
      * 验证这个邮箱是否可以被修改入用户数据.
      *
-     * @param  string $email  输入的邮箱地址
-     * @param int $userID 排除的用户ID
+     * @param string $email  输入的邮箱地址
+     * @param int    $userID 排除的用户ID
      *
      * @return bool
      *

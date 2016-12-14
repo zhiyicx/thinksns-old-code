@@ -15,7 +15,7 @@ class PermissionModel
      *
      * @param string $action 动作节点
      *
-     * @return bool   是否具有该动作节点的权限
+     * @return bool 是否具有该动作节点的权限
      */
     public function check($action)
     {
@@ -59,7 +59,7 @@ class PermissionModel
     /**
      * 设置自定义组信息.
      *
-     * @param  string $group 自定义用户组名称，例如：群组内成员必须设置为member，否则按其当前用户组权限判断
+     * @param string $group 自定义用户组名称，例如：群组内成员必须设置为member，否则按其当前用户组权限判断
      *
      * @return object 配置后的权限对象
      */
@@ -122,9 +122,9 @@ class PermissionModel
     /**
      * 清除权限缓存.
      *
-     * @param  string $key 权限相关Key值
+     * @param string $key 权限相关Key值
      *
-     * @return bool   是否清除缓存成功
+     * @return bool 是否清除缓存成功
      */
     public function cleanCache($key = '')
     {
@@ -210,7 +210,7 @@ class PermissionModel
     /**
      * 获取指定用户组的权限.
      *
-     * @param  string $key 用户组ID或者特殊应用下面的appname_appgroupname
+     * @param string $key 用户组ID或者特殊应用下面的appname_appgroupname
      *
      * @return array 指定用户组的权限信息
      */

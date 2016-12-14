@@ -414,9 +414,9 @@ class CommentModel extends Model
     /**
      * 评论处理方法，包含彻底删除、假删除与恢复功能.
      *
-     * @param int    $id   评论ID
-     * @param string $type 操作类型，delComment假删除、deleteComment彻底删除、commentRecover恢复
-     * @param  string $title 提示语言所附加的内容
+     * @param int    $id    评论ID
+     * @param string $type  操作类型，delComment假删除、deleteComment彻底删除、commentRecover恢复
+     * @param string $title 提示语言所附加的内容
      *
      * @return array 评论处理后，返回的数组操作信息
      */
@@ -504,7 +504,7 @@ class CommentModel extends Model
     /**
      * 检测数据安全性.
      *
-     * @param  array $data 待检测的数据
+     * @param array $data 待检测的数据
      *
      * @return array 验证后的数据
      */

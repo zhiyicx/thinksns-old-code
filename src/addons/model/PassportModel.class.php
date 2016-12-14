@@ -151,7 +151,7 @@ class PassportModel
     /**
      * 根据标示符（email或uid）和未加密的密码获取本地用户（密码为null时不参与验证）.
      *
-     * @param  string      $login    标示符内容（为数字时：标示符类型为uid，其他：标示符类型为email）
+     * @param string      $login    标示符内容（为数字时：标示符类型为uid，其他：标示符类型为email）
      * @param string|bool $password 未加密的密码
      *
      * @return array|bool 成功获取用户数据时返回用户信息数组，否则返回false
@@ -435,7 +435,7 @@ class PassportModel
      * 加密函数.
      *
      * @param string $txt 需加密的字符串
-     * @param  string $key 加密密钥，默认读取SECURE_CODE配置
+     * @param string $key 加密密钥，默认读取SECURE_CODE配置
      *
      * @return string 加密后的字符串
      */
@@ -453,8 +453,8 @@ class PassportModel
     /**
      * 解密函数.
      *
-     * @param  string $txt 待解密的字符串
-     * @param  string $key 解密密钥，默认读取SECURE_CODE配置
+     * @param string $txt 待解密的字符串
+     * @param string $key 解密密钥，默认读取SECURE_CODE配置
      *
      * @return string 解密后的字符串
      */

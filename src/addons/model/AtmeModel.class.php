@@ -100,10 +100,10 @@ class AtmeModel extends Model
     /**
      * 添加@Me数据.
      *
-     * @param  string $content    @Me的相关内容
-     * @param int   $row_id     资源ID
-     * @param array $extra_uids 额外@用户ID
-     * @param array $less_uids  去除@用户ID
+     * @param string $content    @Me的相关内容
+     * @param int    $row_id     资源ID
+     * @param array  $extra_uids 额外@用户ID
+     * @param array  $less_uids  去除@用户ID
      *
      * @return int 添加成功后的@ID
      */
@@ -229,10 +229,10 @@ class AtmeModel extends Model
     /**
      * 获取@内容中的@用户.
      *
-     * @param  string $content    @Me的相关内容
-     * @param array $extra_uids 额外@用户UID
-     * @param int   $row_id     资源ID
-     * @param array $less_uids  去除@用户ID
+     * @param string $content    @Me的相关内容
+     * @param array  $extra_uids 额外@用户UID
+     * @param int    $row_id     资源ID
+     * @param array  $less_uids  去除@用户ID
      *
      * @return array 用户UID数组
      */
@@ -305,9 +305,9 @@ class AtmeModel extends Model
     /**
      * 删除@Me数据.
      *
-     * @param  string $content    @Me的相关内容
-     * @param int   $row_id     资源ID
-     * @param array $extra_uids 额外@用户UID
+     * @param string $content    @Me的相关内容
+     * @param int    $row_id     资源ID
+     * @param array  $extra_uids 额外@用户UID
      *
      * @return bool 是否删除成功
      */

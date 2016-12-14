@@ -213,7 +213,7 @@ class TagLib
     /**
      * TagLib标签属性分析 返回标签属性数组.
      *
-     * @param  string $tagStr 标签内容
+     * @param string $tagStr 标签内容
      *
      * @return array
      */
@@ -244,7 +244,7 @@ class TagLib
     /**
      * 解析条件表达式.
      *
-     * @param  string $condition 表达式标签内容
+     * @param string $condition 表达式标签内容
      *
      * @return array
      */

@@ -82,7 +82,7 @@ class Db extends Think
     /**
      * 分析数据库配置信息，支持数组和DSN.
      *
-     * @param  mixed  $db_config 数据库配置信息
+     * @param mixed $db_config 数据库配置信息
      *
      * @return string
      */
@@ -606,9 +606,9 @@ class Db extends Think
     /**
      * 通过Select方式插入记录.
      *
-     * @param  string $fields 要插入的数据表字段名
-     * @param  string $table  要插入的数据表名
-     * @param array $option 查询数据参数
+     * @param string $fields 要插入的数据表字段名
+     * @param string $table  要插入的数据表名
+     * @param array  $option 查询数据参数
      *
      * @return false | integer
      */

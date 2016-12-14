@@ -37,8 +37,8 @@ class UserPrivacyModel extends Model
     /**
      * 保存指定用户的隐私配置.
      *
-     * @param int $uid 用户UID
-     * @param  array $data 隐私配置相关数据
+     * @param int   $uid  用户UID
+     * @param array $data 隐私配置相关数据
      *
      * @return bool 是否保存成功
      */

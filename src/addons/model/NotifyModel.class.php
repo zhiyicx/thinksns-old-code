@@ -185,10 +185,10 @@ class NotifyModel extends Model
     /**
      * 发送消息入口，对已注册用户发送的消息都可以通过此函数.
      *
-     * @param array  $toUid 接收消息的用户ID数组
-     * @param string $node  节点Key值
+     * @param array  $toUid  接收消息的用户ID数组
+     * @param string $node   节点Key值
      * @param array  $config 配置数据
-     * @param intval $from 消息来源用户的UID
+     * @param intval $from   消息来源用户的UID
      */
     public function sendNotify($toUid, $node, $config, $from)
     {
@@ -282,8 +282,8 @@ class NotifyModel extends Model
     /**
      * 获取指定节点的详细信息.
      *
-     * @param string $node 节点Key值
-     * @param  array  $config 配置数据
+     * @param string $node   节点Key值
+     * @param array  $config 配置数据
      *
      * @return array 指定节点的详细信息
      */
@@ -301,7 +301,7 @@ class NotifyModel extends Model
     /**
      * 发送邮件，添加到消息队列数据表中.
      *
-     * @param  array $data 消息的相关数据
+     * @param array $data 消息的相关数据
      *
      * @return mix 添加失败返回false，添加成功返回新数据的ID
      */
@@ -338,7 +338,7 @@ class NotifyModel extends Model
     /**
      * 发送系统消息，给指定用户.
      *
-     * @param  array $data 发送系统消息相关数据
+     * @param array $data 发送系统消息相关数据
      *
      * @return mix 发送失败返回false，发送成功返回新的消息ID
      */
@@ -407,8 +407,8 @@ class NotifyModel extends Model
     /**
      * 发送系统消息，给用户组或全站用户.
      *
-     * @param array $user_group 用户组ID
-     * @param  string $content    发送信息内容
+     * @param array  $user_group 用户组ID
+     * @param string $content    发送信息内容
      *
      * @return bool 是否发送成功
      */
@@ -444,8 +444,8 @@ class NotifyModel extends Model
     /**
      * 发送系统消息，给用户组或全站用户 - 并发送邮件.
      *
-     * @param array $user_group 用户组ID
-     * @param  string $content    发送信息内容
+     * @param array  $user_group 用户组ID
+     * @param string $content    发送信息内容
      *
      * @return bool 是否发送成功
      */
@@ -542,7 +542,7 @@ class NotifyModel extends Model
      * @param string|int|array $receive 接收人ID 多个时以英文的","分割或传入数组
      * @param string           $type    通知类型, 必须与模版的类型相同, 使用下划线分割应用.
      *                                  如$type = "weibo_follow"定位至/apps/weibo/Language/cn/notify.php的"weibo_follow"
-     * @param array $data
+     * @param array            $data
      */
     public function sendIn($receive, $type, $data)
     {

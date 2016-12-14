@@ -11,7 +11,7 @@ class SameUserWidget extends Widget
     /**
      * 渲染具有相同资料项的人页面.
      *
-     * @param  array  $data 配置相关数据
+     * @param array $data 配置相关数据
      *
      * @return string 渲染页面的HTML
      */

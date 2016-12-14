@@ -16,7 +16,7 @@ class CollectionModel extends Model
     /**
      * 添加收藏记录.
      *
-     * @param  array $data 收藏相关数据
+     * @param array $data 收藏相关数据
      *
      * @return bool 是否收藏成功
      */
@@ -319,8 +319,8 @@ class CollectionModel extends Model
     /**
      * 数据库搜索收藏分享.
      *
-     * @param  string $key   关键字
-     * @param int $limit 结果集数目，默认20
+     * @param string $key   关键字
+     * @param int    $limit 结果集数目，默认20
      *
      * @return array 搜索的结果数据
      */

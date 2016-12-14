@@ -16,9 +16,9 @@ class AddonDataModel extends XdataModel
      * 写入插件参数列表.
      *
      * @param string $addonName 插件名称
-     * @param  array  $data      插件相关数据
+     * @param array  $data      插件相关数据
      *
-     * @return bool   是否写入成功
+     * @return bool 是否写入成功
      */
     public function lputAddons($addonName, $data = array())
     {
@@ -40,11 +40,11 @@ class AddonDataModel extends XdataModel
     /**
      * 写入单个插件数据.
      *
-     * @param string $key   要存储的参数list:key
-     * @param string $value 要存储的参数的值
-     * @param  bool   $replace false为插入新参数，ture为更新已有参数，默认为true
+     * @param string $key     要存储的参数list:key
+     * @param string $value   要存储的参数的值
+     * @param bool   $replace false为插入新参数，ture为更新已有参数，默认为true
      *
-     * @return bool   是否写入成功
+     * @return bool 是否写入成功
      */
     public function putAddons($key, $value = '', $replace = false)
     {

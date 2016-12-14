@@ -14,9 +14,9 @@ class AnnouncementModel extends Model
     /**
      * 保存公告数据.
      *
-     * @param  array $data 公告所需数据，用户UID、公告标题、公告内容、相关附件、创建时间
+     * @param array $data 公告所需数据，用户UID、公告标题、公告内容、相关附件、创建时间
      *
-     * @return int   返回成功的公告ID
+     * @return int 返回成功的公告ID
      */
     public function saveAnnoun($data)
     {
@@ -45,7 +45,7 @@ class AnnouncementModel extends Model
     /**
      * 删除公告.
      *
-     * @param  int $id 公告ID
+     * @param int $id 公告ID
      *
      * @return int 是否删除成功
      */

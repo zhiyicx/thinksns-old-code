@@ -206,9 +206,9 @@ class AppModel extends Model
      * 批量获取应用信息.
      *
      * @param array $list
-     *                     应用列表数组，其中必须包含app_id字段值
-     * @param bool $used
-     *                     是否获取应用的使用情况，默认false
+     *                    应用列表数组，其中必须包含app_id字段值
+     * @param bool  $used
+     *                    是否获取应用的使用情况，默认false
      *
      * @return array 应用信息数组
      */
@@ -235,7 +235,7 @@ class AppModel extends Model
      * @param array  $map
      *                          查询条件
      *
-     * @return array  安装应用的信息
+     * @return array 安装应用的信息
      */
     public function getAppHash($hashKey = 'app_id', $hashValue = 'app_alias', $map = array())
     {
@@ -300,7 +300,7 @@ class AppModel extends Model
      * @param int  $app_id
      *                     应用ID
      * @param bool $used
-     *                       是否获取应用的使用情况，默认false
+     *                     是否获取应用的使用情况，默认false
      *
      * @return array 返回指定应用的相关信息
      */
@@ -379,7 +379,7 @@ class AppModel extends Model
      * @param array $ids
      *                   应用ID数组
      *
-     * @return bool  是否清除缓存
+     * @return bool 是否清除缓存
      */
     public function cleanCache($ids)
     {
@@ -465,7 +465,7 @@ class AppModel extends Model
      * @param bool   $using_lowercase
      *                                返回键值为大写还是小写，默认为小写
      *
-     * @return array  指定应用的相关信息
+     * @return array 指定应用的相关信息
      */
     public function __getAppInfo($path_name, $using_lowercase = true)
     {
@@ -490,7 +490,7 @@ class AppModel extends Model
      * 保存应用信息数据.
      *
      * @param array $data
-     *                     应用相关数据
+     *                    应用相关数据
      *
      * @return bool 是否保存成功
      */
@@ -581,7 +581,7 @@ class AppModel extends Model
      * @param int    $app_id
      *                         应用ID
      *
-     * @return bool   指定应用是否安装
+     * @return bool 指定应用是否安装
      */
     public function isAppNameExist($app_name = '', $app_id = '')
     {

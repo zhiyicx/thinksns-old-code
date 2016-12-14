@@ -43,9 +43,9 @@ class TagModel extends Model
     /**
      * 通过指定的应用资源ID，获取应用的内容标签.
      *
-     * @param  array|int $row_ids 应用内容编号
+     * @param array|int $row_ids 应用内容编号
      *
-     * @return array     标签内容列表
+     * @return array 标签内容列表
      */
     public function getAppTags($row_ids, $isUserTag = false)
     {
@@ -84,9 +84,9 @@ class TagModel extends Model
     /**
      * 设置指定应用下的应用内容标签.
      *
-     * @param  int   $row_id 应用内容编号
-     * @param array $tags 标签
-     * @param int   $max  最多标签数量
+     * @param int   $row_id 应用内容编号
+     * @param array $tags   标签
+     * @param int   $max    最多标签数量
      *
      * @return bool 是否设置成功
      */
@@ -132,8 +132,8 @@ class TagModel extends Model
     /**
      * 一次添加多个应用内容的标签.
      *
-     * @param  int    $row_id 应用内容编号
-     * @param string $tags 标签
+     * @param int    $row_id 应用内容编号
+     * @param string $tags   标签
      *
      * @return bool 是否添加成功
      */
@@ -160,8 +160,8 @@ class TagModel extends Model
     /**
      * 添加应用内容的标签.
      *
-     * @param  int    $row_id 应用内容编号
-     * @param string $tag 标签
+     * @param int    $row_id 应用内容编号
+     * @param string $tag    标签
      *
      * @return bool 是否添加成功
      */
@@ -208,7 +208,7 @@ class TagModel extends Model
     /**
      * 删除应用内容的标签.
      *
-     * @param  int  $row_id 应用内容编号
+     * @param int $row_id 应用内容编号
      * @param int $tag_id 标签编号
      *
      * @return bool 是否删除成功
@@ -300,7 +300,7 @@ class TagModel extends Model
      * @param string $order 排序条件，默认tag_id DESC
      * @param int    $limit 结果集数目，默认为20
      *
-     * @return array  全局标签列表
+     * @return array 全局标签列表
      */
     public function getTagList($map = null, $field = null, $order = 'tag_id DESC', $limit = 20)
     {
@@ -428,7 +428,7 @@ class TagModel extends Model
     /**
      * 删除应用指定资源的标签信息.
      *
-     * @param  int $row_id 应用内容编号
+     * @param int $row_id 应用内容编号
      *
      * @return int 0表示删除失败，1表示删除成功
      */

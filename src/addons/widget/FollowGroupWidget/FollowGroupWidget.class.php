@@ -19,7 +19,7 @@ class FollowGroupWidget extends Widget
      * $data['follow_group_status'] array 指定关注用户的分组信息
      * @data['tpl'] string 模板字段
      *
-     * @param  array  $data 配置的相关信息
+     * @param array $data 配置的相关信息
      *
      * @return string 渲染后的模板数据
      */

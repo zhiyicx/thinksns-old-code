@@ -90,7 +90,7 @@ tsdefine('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
 /**
  * 载入文件 去重\缓存.
  *
- * @param  string $filename 载入的文件名
+ * @param string $filename 载入的文件名
  *
  * @return bool
  */
@@ -164,8 +164,8 @@ function tsmd5($str)
 /**
  * 载入配置 修改自ThinkPHP:C函数 为了不与tp冲突
  *
- * @param  string              $name  配置名/文件名.
- * @param  string|array|object $value 配置赋值
+ * @param string              $name  配置名/文件名.
+ * @param string|array|object $value 配置赋值
  *
  * @return void|null
  */

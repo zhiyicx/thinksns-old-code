@@ -22,9 +22,9 @@ class XdataModel extends Model
      * 写入参数列表.
      *
      * @param string $listName 参数列表list
-     * @param  array  $listData 存入的数据，形式为key=>value
+     * @param array  $listData 存入的数据，形式为key=>value
      *
-     * @return bool   是否写入成功
+     * @return bool 是否写入成功
      */
     public function lput($listName = '', $listData = array())
     {
@@ -89,11 +89,11 @@ class XdataModel extends Model
     /**
      * 写入单个数据.
      *
-     * @param string $key   要存储的参数list:key
-     * @param string $value 要存储的参数的值
-     * @param  bool   $replace false为插入新参数，ture为更新已有参数，默认为true
+     * @param string $key     要存储的参数list:key
+     * @param string $value   要存储的参数的值
+     * @param bool   $replace false为插入新参数，ture为更新已有参数，默认为true
      *
-     * @return bool   是否写入成功
+     * @return bool 是否写入成功
      */
     public function put($key, $value = '', $replace = true)
     {
@@ -141,8 +141,8 @@ class XdataModel extends Model
     /**
      * 传入的key参数为直接要获取的的key值
      *
-     * @param  string $key        在配置中的key值 [必须]
-     * @param  string $systemKey  在system_data表中的key值 [必须]
+     * @param string $key        在配置中的key值 [必须]
+     * @param string $systemKey  在system_data表中的key值 [必须]
      * @param string $systemList 在system_data表中的list值 默认为Config
      *
      * @return string 获取key对应的值
@@ -206,9 +206,9 @@ class XdataModel extends Model
     /**
      * 解析过滤输入.
      *
-     * @param  string|object|array $input 输入的数据
+     * @param string|object|array $input 输入的数据
      *
-     * @return array               解析过滤后的输入数据
+     * @return array 解析过滤后的输入数据
      */
     protected function _parse_keys($input = '')
     {
@@ -229,7 +229,7 @@ class XdataModel extends Model
     /**
      * 过滤key值
      *
-     * @param  string $key 只允许格式，数字字母下划线，list:key不允许出现html代码和这些符号 ' " & * % ^ $ ? ->
+     * @param string $key 只允许格式，数字字母下划线，list:key不允许出现html代码和这些符号 ' " & * % ^ $ ? ->
      *
      * @return string 过滤后的key值
      */

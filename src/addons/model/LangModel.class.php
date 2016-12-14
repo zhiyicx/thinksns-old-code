@@ -64,8 +64,8 @@ class LangModel extends Model
     /**
      * 更改语言配置内容.
      *
-     * @param  array $data 语言配置内容
-     * @param int $sid 语言资源ID
+     * @param array $data 语言配置内容
+     * @param int   $sid  语言资源ID
      *
      * @return int 是否更改成功，1表示成功；0表示失败
      */

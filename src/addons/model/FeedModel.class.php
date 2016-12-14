@@ -19,10 +19,10 @@ class FeedModel extends Model
     /**
      * 添加分享.
      *
-     * @param int    $uid  操作用户ID
-     * @param string $app  分享应用类型，默认为public
-     * @param string $type 分享类型，
-     * @param  array  $data      分享相关数据
+     * @param int    $uid       操作用户ID
+     * @param string $app       分享应用类型，默认为public
+     * @param string $type      分享类型，
+     * @param array  $data      分享相关数据
      * @param int    $app_id    应用资源ID，默认为0
      * @param string $app_table 应用资源表名，默认为feed
      * @param array  $extUid    额外用户ID，默认为null
@@ -245,7 +245,7 @@ class FeedModel extends Model
      * @param int    $page
      *                         分页数，默认为1
      *
-     * @return array  全站最新的分享
+     * @return array 全站最新的分享
      */
     public function recommend_timeline($type, $mid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $returnId = false)
     {
@@ -334,10 +334,10 @@ class FeedModel extends Model
     /**
      * 截取分享内容，将分享中的URL替换成{ts_urlX}进行字符数目统计
      *
-     * @param  string $content   分享内容
+     * @param string $content   分享内容
      * @param string $weiboNums 分享截取数目，默认为0
      *
-     * @return array  格式化后的分享内容，body与content
+     * @return array 格式化后的分享内容，body与content
      */
     public function formatFeedContent($content, $weiboNums = 0)
     {
@@ -566,9 +566,9 @@ class FeedModel extends Model
      * @param string $where 查询条件
      * @param int    $limit 结果集数目，默认为10
      * @param int    $uid   指定用户ID，默认为空
-     * @param  int    $fgid  关组组ID，默认为空
+     * @param int    $fgid  关组组ID，默认为空
      *
-     * @return array  指定用户所关注人的所有分享，默认为当前登录用户
+     * @return array 指定用户所关注人的所有分享，默认为当前登录用户
      */
     public function getFollowingFeed($where = '', $limit = 10, $uid = '', $fgid = '', $max = null)
     {
@@ -657,7 +657,7 @@ class FeedModel extends Model
      * @param int    $type  应用类型
      * @param int    $limit 结果集数目，默认为10
      *
-     * @return array  指定用户所关注人的分享列表
+     * @return array 指定用户所关注人的分享列表
      */
     public function getFollowingList($map, $uid, $app, $type, $limit = 10)
     {
@@ -1072,8 +1072,8 @@ class FeedModel extends Model
      *
      * @param int    $feed_id 分享ID
      * @param string $type    分享操作类型，deleteFeed：彻底删除，delFeed：假删除，feedRecover：恢复
-     * @param  string $title   知识内容，目前没没有该功能
-     * @param  string $uid     删除分享的用户ID（区别超级管理员）
+     * @param string $title   知识内容，目前没没有该功能
+     * @param string $uid     删除分享的用户ID（区别超级管理员）
      *
      * @return array 分享操作后的结果信息数组
      */
@@ -1207,11 +1207,11 @@ class FeedModel extends Model
     /**
      * 搜索分享.
      *
-     * @param  string $key    关键字
-     * @param string $type 搜索类型，following、all、space
-     * @param  int    $loadId 载入分享ID，从此分享ID开始搜索
-     * @param int  $limit  结果集数目
-     * @param bool $forApi 是否返回API数据，默认为false
+     * @param string $key    关键字
+     * @param string $type   搜索类型，following、all、space
+     * @param int    $loadId 载入分享ID，从此分享ID开始搜索
+     * @param int    $limit  结果集数目
+     * @param bool   $forApi 是否返回API数据，默认为false
      *
      * @return array 搜索后的分享数据
      */
@@ -1301,7 +1301,7 @@ class FeedModel extends Model
     /**
      * 数据库搜索分享.
      *
-     * @param  string $key    关键字
+     * @param string $key    关键字
      * @param string $type   分享类型，post、repost、postimage、postfile
      * @param int    $limit  结果集数目
      * @param bool   $forApi 是否返回API数据，默认为false
@@ -1354,7 +1354,7 @@ class FeedModel extends Model
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
      *
-     * @return array  全站最新的分享
+     * @return array 全站最新的分享
      */
     public function public_timeline($type, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $returnId = false)
     {
@@ -1393,7 +1393,7 @@ class FeedModel extends Model
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
      *
-     * @return array  登录用户所关注人的最新分享
+     * @return array 登录用户所关注人的最新分享
      */
     public function friends_timeline($type, $mid, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $returnId = false)
     {
@@ -1515,7 +1515,7 @@ class FeedModel extends Model
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
      *
-     * @return array  全站最新的分享
+     * @return array 全站最新的分享
      */
     public function repost_timeline($row_id, $since_id = 0, $max_id = 0, $limit = 20, $page = 1)
     {
@@ -1665,7 +1665,7 @@ class FeedModel extends Model
      * @param int    $limit    结果集数目，默认为20
      * @param int    $page     分页数，默认为1
      *
-     * @return array  全站最新的发言
+     * @return array 全站最新的发言
      */
     public function video_list($type, $since_id = 0, $max_id = 0, $limit = 20, $page = 1, $sql = '', $order = '')
     {

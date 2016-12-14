@@ -14,9 +14,9 @@ class UserGroupModel extends Model
     /**
      * 添加或修改用户组信息.
      *
-     * @param  array $d 相关用户组信息
+     * @param array $d 相关用户组信息
      *
-     * @return int   相关用户组ID
+     * @return int 相关用户组ID
      */
     public function addUsergroup($d)
     {
@@ -84,7 +84,7 @@ class UserGroupModel extends Model
     /**
      * 返回用户组信息.
      *
-     * @param  int   $gid 用户组ID，默认为空字符串 - 显示全部用户组信息
+     * @param int $gid 用户组ID，默认为空字符串 - 显示全部用户组信息
      *
      * @return array 用户组信息
      */

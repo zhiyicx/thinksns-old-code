@@ -59,8 +59,8 @@ class LogsModel extends Model
     /**
      * 记录知识.
      *
-     * @param  string $content    知识内容
-     * @param int $isAdminLog 是否是管理员知识，默认为1
+     * @param string $content    知识内容
+     * @param int    $isAdminLog 是否是管理员知识，默认为1
      *
      * @return mix 添加失败返回false，添加成功返回知识ID
      */
@@ -247,7 +247,7 @@ class LogsModel extends Model
     /**
      * 渲染知识模板变量.
      *
-     * @param  array $_data 知识相关数据
+     * @param array $_data 知识相关数据
      *
      * @return array 渲染后的知识模板变量
      */

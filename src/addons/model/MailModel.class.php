@@ -34,7 +34,7 @@ class MailModel
     /**
      * 测试发送邮件.
      *
-     * @param  array $data 邮件相关内容数据
+     * @param array $data 邮件相关内容数据
      *
      * @return bool 是否发送成功
      */

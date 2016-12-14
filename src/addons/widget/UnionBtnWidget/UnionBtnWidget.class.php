@@ -19,7 +19,7 @@ class UnionBtnWidget extends Widget
      * $data['union_state'] array 当前用户与目标用户的联盟状态，array('unioning'=>1,'unioner'=>0)
      * $data['isrefresh'] integer 操作成功后是否刷新页面
      *
-     * @param  array  $data 渲染的相关配置参数
+     * @param array $data 渲染的相关配置参数
      *
      * @return string 渲染后的模板数据
      */

@@ -11,7 +11,7 @@ class RelatedUserWidget extends Widget
     /**
      * 渲染可能感兴趣的人页面.
      *
-     * @param  array  $data 配置相关数据
+     * @param array $data 配置相关数据
      *
      * @return string 渲染页面的HTML
      */
@@ -50,7 +50,7 @@ class RelatedUserWidget extends Widget
     /**
      * 获取用户的相关数据.
      *
-     * @param  array $data 配置相关数据
+     * @param array $data 配置相关数据
      *
      * @return array 显示所需数据
      */

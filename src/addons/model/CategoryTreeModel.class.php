@@ -264,7 +264,7 @@ class CategoryTreeModel extends Model
      *
      * @param int    $pid   父级分类ID
      * @param string $title 分类名称
-     * @param  array  $extra 插入数据时，带入的相关信息
+     * @param array  $extra 插入数据时，带入的相关信息
      *
      * @return bool 添加分类是否成功
      */
@@ -301,7 +301,7 @@ class CategoryTreeModel extends Model
      *
      * @param int    $cid   分类ID
      * @param string $title 分类名称
-     * @param  array  $extra 插入数据时，带入的相关信息
+     * @param array  $extra 插入数据时，带入的相关信息
      *
      * @return bool 更新分类是否成功
      */
@@ -426,8 +426,8 @@ class CategoryTreeModel extends Model
     /**
      * 存储分类配置项操作.
      *
-     * @param int $cid 分类ID
-     * @param  array $extra 分类配置数据数组
+     * @param int   $cid   分类ID
+     * @param array $extra 分类配置数据数组
      *
      * @return bool 是否存储成功
      */

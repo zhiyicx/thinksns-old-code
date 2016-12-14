@@ -14,7 +14,7 @@ class XarticleModel extends Model
     /**
      * 保存公告数据.
      *
-     * @param  array    $data 公告相关数据
+     * @param array $data 公告相关数据
      *
      * @return bool|int 若成功返回公告ID，失败返回false
      */
@@ -55,7 +55,7 @@ class XarticleModel extends Model
     /**
      * 删除指定公告操作.
      *
-     * @param  int $id 公告ID
+     * @param int $id 公告ID
      *
      * @return int 0表示删除失败，1表示删除成功
      */

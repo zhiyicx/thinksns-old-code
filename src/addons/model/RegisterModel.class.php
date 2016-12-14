@@ -90,7 +90,7 @@ class RegisterModel extends Model
      * 验证邮箱内容的正确性.
      *
      * @param string $email
-     *                           输入邮箱的信息
+     *                          输入邮箱的信息
      * @param string $old_email
      *                          原始邮箱的信息
      *
@@ -195,7 +195,7 @@ class RegisterModel extends Model
     /**
      * 验证昵称内容的正确性.
      *
-     * @param  string $name     输入昵称的信息
+     * @param string $name     输入昵称的信息
      * @param string $old_name 原始昵称的信息
      *
      * @return bool 是否验证成功
@@ -408,7 +408,7 @@ class RegisterModel extends Model
     /**
      * 获取激活码
      *
-     * @param  array  $user_info 用户的相关信息
+     * @param array $user_info 用户的相关信息
      *
      * @return string 激活码
      */

@@ -36,7 +36,7 @@ class UserProfileModel extends Model
      * @param array  $map   查询条件
      * @param string $order 排序条件
      *
-     * @return array  用户资料配置信息
+     * @return array 用户资料配置信息
      */
     public function getUserProfileSetting($map = null, $order = 'field_key, display_order ASC')
     {
@@ -57,7 +57,7 @@ class UserProfileModel extends Model
      * @param array  $map   查询条件
      * @param string $order 排序条件
      *
-     * @return array  用户资料配置信息的树形结构，已分类进行树形分类
+     * @return array 用户资料配置信息的树形结构，已分类进行树形分类
      */
     public function getUserProfileSettingTree($map = null, $order = 'field_key, display_order ASC')
     {
@@ -70,7 +70,7 @@ class UserProfileModel extends Model
     /**
      * 删除指定的资料配置字段.
      *
-     * @param  array $filed_ids 配置字段ID数组
+     * @param array $filed_ids 配置字段ID数组
      *
      * @return bool 是否删除成功
      */
@@ -314,8 +314,8 @@ class UserProfileModel extends Model
     /**
      * 生成用户字段配置的树形结构，递归方法.
      *
-     * @param  array $setting    用户字段配置信息
-     * @param int $parent_key 父级的Key值
+     * @param array $setting    用户字段配置信息
+     * @param int   $parent_key 父级的Key值
      *
      * @return array 用户字段配置的树形结构
      */

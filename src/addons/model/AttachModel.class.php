@@ -15,10 +15,10 @@ class AttachModel extends Model
     /**
      * 通过附件ID获取附件数据 - 不分页型.
      *
-     * @param array $ids 附件ID数组
-     * @param  string $field 附件数据显示字段，默认为显示全部
+     * @param array  $ids   附件ID数组
+     * @param string $field 附件数据显示字段，默认为显示全部
      *
-     * @return array  相关附件数据
+     * @return array 相关附件数据
      */
     public function getAttachByIds($ids, $field = '*')
     {
@@ -163,9 +163,9 @@ class AttachModel extends Model
     /**
      * 上传附件.
      *
-     * @param  array $data          附件相关信息
-     * @param  array $input_options 配置选项[不推荐修改, 默认使用后台的配置]
-     * @param bool $thumb 是否启用缩略图
+     * @param array $data          附件相关信息
+     * @param array $input_options 配置选项[不推荐修改, 默认使用后台的配置]
+     * @param bool  $thumb         是否启用缩略图
      *
      * @return array 上传的附件的信息
      */

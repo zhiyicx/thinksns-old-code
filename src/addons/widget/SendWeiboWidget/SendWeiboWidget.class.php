@@ -22,7 +22,7 @@ class SendWeiboWidget extends Widget
      * $data['cancomment'] integer 是否可以评论
      *$data['channelID']  发布到某个频道的id
      *
-     * @param  array  $data 发布分享框的配置参数
+     * @param array $data 发布分享框的配置参数
      *
      * @return string 渲染后的模板内容
      */

@@ -240,10 +240,10 @@ abstract class Action
         }
 
         //当前登录者uid
-        $GLOBALS['ts']['mid'] = $GLOBALS['ts']['uid'] = $this->mid = intval($_SESSION['mid']);
+        $GLOBALS['ts']['mid'] = $GLOBALS['ts']['uid'] = $this->uid = $this->mid = intval($_SESSION['mid']);
 
         if (isset($_REQUEST['uid']) && $_REQUEST['uid'] > 0) {
-            $GLOBALS['ts']['uid'] = (int) $_REQUEST['uid'];
+            $this->uid = $GLOBALS['ts']['uid'] = (int) $_REQUEST['uid'];
         }
 
         // 获取用户基本资料

@@ -309,9 +309,13 @@ class VideoModel extends Model
                     $savePath = SITE_PATH.$v['savePath'];
                     $command = $ffmpegpath.' -y -i '.$sourceSavePath.'/'.$v['video_source_name'].' -vcodec libx264 '.$savePath.'/'.$v['video_name'];
                     exec($command);
-                    D('video_transfer')->where('transfer_id='.$v['transfer_id'])->setField('status', 1);
-                    $feed_id = D('video_transfer')->where('transfer_id='.$v['transfer_id'])->getField('feed_id');
-                    model('Feed')->cleanCache(array($feed_id));
+
+                    if (file_exists($savePath.'/'.$v['video_name'])) {
+                        D('video_transfer')->where('transfer_id='.$v['transfer_id'])->setField('status', 1);
+                        $feed_id = D('video_transfer')->where('transfer_id='.$v['transfer_id'])->getField('feed_id');
+                        model('Feed')->cleanCache(array($feed_id));
+                    }
+
                 } else {
                     continue;
                 }

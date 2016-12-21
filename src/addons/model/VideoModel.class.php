@@ -315,7 +315,6 @@ class VideoModel extends Model
                         $feed_id = D('video_transfer')->where('transfer_id='.$v['transfer_id'])->getField('feed_id');
                         model('Feed')->cleanCache(array($feed_id));
                     }
-
                 } else {
                     continue;
                 }

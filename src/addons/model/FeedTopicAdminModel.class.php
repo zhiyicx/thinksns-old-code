@@ -49,9 +49,11 @@ class FeedTopicAdminModel extends Model
             // $isessence = $v['essence']?'是':'否';
             // $topic_list['data'][$k]['essence'] = '<a href="javascript:void(0);" onclick="admin.setTopic(2,'.$v['topic_id'].','.intval($v['essence']).')">'.$isessence.'</a>';
             $islock = $v['lock'] ? '取消屏蔽' : '屏蔽';
+            $isrecommend = $v['recommend'] == 1 ? '取消推荐' : '推荐';
             // 操作数据
             $topic_list['data'][$k]['DOACTION'] = '<a href="javascript:void(0);" onclick="admin.setTopic(3,'.$v['topic_id'].','.intval($v['lock']).')">'.$islock.'</a> - ';
-            $topic_list['data'][$k]['DOACTION'] .= '<a href="'.U('admin/Content/editTopic', array('topic_id' => $v['topic_id'], 'tabHash' => 'editTopic')).'">编辑</a>';
+            $topic_list['data'][$k]['DOACTION'] .= '<a href="'.U('admin/Content/editTopic', array('topic_id' => $v['topic_id'], 'tabHash' => 'editTopic')).'">编辑</a> - ';
+            $topic_list['data'][$k]['DOACTION'] = '<a href="javascript:void(0);" onclick="admin.setTopic(1,'.$v['topic_id'].','.intval($v['lock']).')">'.$isrecommend.'</a>';
             //$listData['data'][$k]['DOACTION'] .= '<a href="javascript:void(0)" onclick="admin.deleteUser(\''.$v['uid'].'\')">'.L('PUBLIC_STREAM_DELETE').'</a>';
         }
 

@@ -19,7 +19,7 @@ $ts['_router'] = array();    //路由配置
 
 tsdefine('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
 tsdefine('IS_WIN', strstr(PHP_OS, 'WIN') ? 1 : 0);
-tsdefine('IS_HTTPS', 0);
+tsdefine('IS_HTTPS', isset($_SERVER['HTTPS']) || $_SERVER['REQUEST_SCHEME'] != 'http');
 
 // # 设置API版本常量
 if (isset($_REQUEST['api_version'])) {
@@ -52,7 +52,9 @@ if (!defined('__ROOT__')) {
 tsdefine('ROOT_FILE', basename(_PHP_FILE_) == 'api.php' ? 'index.php' : basename(_PHP_FILE_));
 tsdefine('CORE_PATH', dirname(__FILE__));
 
-tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
+// tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
+// 先使用响应式地址看下是否有什么地方报错～没有则全面使用
+tsdefine('SITE_URL', '//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
 
 tsdefine('CONF_PATH', SITE_PATH.'/config');
 

@@ -234,7 +234,8 @@ class FeedListWidget extends Widget
                     }
                     // 设定可查看的关注分享总数，可以提高大数据量下的查询效率
                     $max = null; //1000;
-                    $list = model('Feed')->getFollowingFeed($where, $this->limitnums, '', $var['fgid'], $max);
+                    //$list = model('Feed')->getFollowingFeed($where, $this->limitnums, '', $var['fgid'], $max);（旧代码）
+                    $list = model('Feed')->getFollowingFeedNew($where, $this->limitnums, intval($var ['loadId']), '', $var ['fgid']);
                 }
                 break;
             case 'union': // 我的人脉
@@ -281,7 +282,8 @@ class FeedListWidget extends Widget
 
                     // 设定可查看的全站分享总数，可以提高大数据量下的查询效率
                     $max = null; //10000;
-                    $list = model('Feed')->getList($where, $this->limitnums, '', $max);
+                    //$list = model('Feed')->getList($where, $this->limitnums, '', $max);（旧代码）
+                    $list = model('Feed')->getListNew($where, $this->limitnums, intval($var ['loadId']), 'feed_id', 'DESC');
                 }
                 break;
             case 'newfollowing': // 关注的人的最新分享
@@ -384,7 +386,8 @@ class FeedListWidget extends Widget
                 // $GLOBALS ['ts'] ['uid']
                 // );
 
-                $list = model('Feed')->getList($map, 10, 'feed_id desc,recommend_time desc');
+                //$list = model('Feed')->getList($map, 10, 'feed_id desc,recommend_time desc');(旧代码)
+                $list = model('Feed')->getListNew($map, $this->limitnums, intval($var ['loadId']), 'feed_id', 'DESC');
                 $content['count'] = $list['count'];
                 break;
             case 'weiba': // 推荐

@@ -1796,4 +1796,155 @@ class FeedModel extends Model
 
         return $this->formatFeed($rec_ids, true);
     }
+
+    /**
+     * 新的获取微博列表
+     * @param $map
+     * @param int $limit
+     * @param int $begin_id
+     * @param string $orderField
+     * @param string $orderASC
+     * @return mixed
+     */
+    public function getListNew($map, $limit = 10, $begin_id = 0, $orderField = 'feed_id' ,$orderASC = 'DESC')
+    {
+        $list = $this->where($map)->field('feed_id')->order(($orderField . ' ' . $orderASC))->findPage($limit);
+        $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $begin_id, $limit, $orderField, $orderASC);
+
+        return $list;
+    }
+
+    /**
+     * 获取微博数据
+     * @param $feedIds
+     * @param $begin_id
+     * @param $limit
+     * @param $orderField
+     * @param $orderASC
+     * @return mixed
+     */
+    public function getFeedList($feedIds, $begin_id, $limit, $orderField, $orderASC)
+    {
+        $objList = \Ts\Models\Feed::whereIn('feed_id', $feedIds)
+            ->orderBy($orderField, $orderASC)
+            ->skip($begin_id)
+            ->take($limit)
+            ->get();
+        // dump($objList->toArray());
+        $list = $this->getListArray($objList);
+        unset($objList);
+
+        return $list;
+    }
+
+    /**
+     * 获取指定用户所关注人的所有分享，默认为当前登录用户
+     * @param  string $where 查询条件
+     * @param  int    $limit 结果集数目，默认为10
+     * @param  int    $uid   指定用户ID，默认为空
+     * @param  int    $fgid  关组组ID，默认为空
+     * @return array  指定用户所关注人的所有分享，默认为当前登录用户
+     */
+    public function getFollowingFeedNew($where = '', $limit = 10, $begin_id = 0, $uid = '', $fgid = '')
+    {
+        $fgid = intval($fgid);
+        $uid = intval($uid);
+        $buid = empty($uid) ? $_SESSION['mid'] : $uid;
+        $table = "{$this->tablePrefix}feed AS a LEFT JOIN {$this->tablePrefix}user_follow AS b ON a.uid=b.fid AND b.uid = {$buid}";
+        // 加上自己的信息，若不需要屏蔽下语句
+        $_where = !empty($where) ? "(a.uid = '{$buid}' OR b.uid = '{$buid}') AND ($where)" : "(a.uid = '{$buid}' OR b.uid = '{$buid}')";
+        // 若填写了关注分组
+        if (!empty($fgid)) {
+            $table .= " LEFT JOIN {$this->tablePrefix}user_follow_group_link AS c ON a.uid = c.fid AND c.uid ='{$buid}' ";
+            $_where .= ' AND c.follow_group_id = '.intval($fgid);
+        }
+        $list = $this->table($table)->where($_where)->field('a.feed_id')->order('a.feed_id DESC')->findPage($limit);
+
+        $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $begin_id, $limit, 'feed_id', 'DESC');
+
+        return $list;
+    }
+
+    /**
+     * 获取微博缓存数据
+     * @param $objList
+     * @return mixed
+     */
+    public function getListArray($objList)
+    {
+        $list = $objList->toArray();
+        foreach ($list as $key => &$value) {
+            if (!empty($value_cache = model('Cache')->get('fd_'.$value['feed_id'], $value))) {
+                $value = $value_cache;
+                unset($value_cache);
+            } else {
+                $value['client_ip'] = $value['data']['client_ip'];
+                $value['feed_data'] = $value['data']['feed_data'];
+                $_data = $var = unserialize($value['feed_data']);
+
+                if (!empty($_data['attach_id'])) {
+                    $var['attachInfo'] = $objList[$key]->getImagesAttribute();
+                    foreach ($var['attachInfo'] as $ak => $av) {
+                        $_attach = array(
+                            'attach_id' => $_data['attach_id'][$ak],
+                            'attach_url' => $av['src'],
+                            'extension' => '',
+                            'size' => '',
+                        );
+                        if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
+                            $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
+                            $_attach['attach_medium'] = getImageUrl($av['src'], 240);
+                            $_attach['attach_middle'] = getImageUrl($av['src'], 740);
+                        }
+                        $var['attachInfo'][$ak] = $_attach;
+                    }
+                }
+
+                $user = model('User')->getUserInfo($value['uid']);
+                $var['actor'] = "<a href='{$user['space_url']}' class='name' event-node='face_card' uid='{$user['uid']}'>{$user['uname']}</a>";
+                $var['actor_uid'] = $user['uid'];
+                $var['actor_uname'] = $user['uname'];
+                $var['feedid'] = $value['feed_id'];
+                if (!empty($_data['app_row_id'])) {
+                    empty($_data['app_row_table']) && $_data['app_row_table'] = 'feed';
+                    $var['sourceInfo'] = model('Source')->getSourceInfo($_data['app_row_table'], $_data['app_row_id'], false, $_data['app']);
+                    $var['sourceInfo']['groupData'] = model('UserGroupLink')->getUserGroupData($var['sourceInfo']['source_user_info']['uid']);
+                }
+
+                // 解析Feed模版
+                $feed_template_file = APPS_PATH.'/'.$_data['app'].'/Conf/'.$_data['type'].'.feed.php';
+                if (!file_exists($feed_template_file)) {
+                    $feed_template_file = APPS_PATH.'/public/Conf/post.feed.php';
+                }
+
+                $feed_content = fetch($feed_template_file, $var);
+                $value['info'] = null;
+                $value['title'] = $var['actor'];
+                $value['body'] = ($value['type'] != 'weiba_post') ? parse_html($feed_content) : $feed_content;
+                //输出模版解析后信息
+                $value['content_txt'] = $_data['body'];
+                //$value['attach_info'] = $var['attachInfo'];
+                $value['api_source'] = $var['sourceInfo'];
+                $value['actions'] = array(
+                    'comment' => true,
+                    'repost' => true,
+                    'like' => false,
+                    'favor' => true,
+                    'delete' => true,
+                );
+                $value['user_info'] = $user;
+                $value['actor_groupData'] = $var['actor_groupData'];
+                $value['GroupData'] = model('UserGroupLink')->getUserGroupData($value['uid']);
+                unset($value['images'], $value['video'], $value['data']);
+
+                //model('Cache')->set('fd_'.$value['feed_id'], $value);            // 1分钟缓存
+                //验证转发的原信息是否存在
+                if (!$this->_notDel($_data['app'], $_data['type'], $_data['app_row_id'])) {
+                    $value['body'] = L('PUBLIC_INFO_ALREADY_DELETE_TIPS');                // 此信息已被删除〜
+                }
+            }
+        }
+
+        return $list;
+    }
 }

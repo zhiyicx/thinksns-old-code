@@ -1809,7 +1809,7 @@ class FeedModel extends Model
     public function getListNew($map, $limit = 10, $begin_id = 0, $orderField = 'feed_id' ,$orderASC = 'DESC')
     {
         $list = $this->where($map)->field('feed_id')->order(($orderField . ' ' . $orderASC))->findPage($limit);
-        $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $begin_id, $limit, $orderField, $orderASC);
+        $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $limit, $orderField, $orderASC);
 
         return $list;
     }
@@ -1823,11 +1823,11 @@ class FeedModel extends Model
      * @param $orderASC
      * @return mixed
      */
-    public function getFeedList($feedIds, $begin_id, $limit, $orderField, $orderASC)
+    public function getFeedList($feedIds, $limit, $orderField, $orderASC)
     {
         $objList = \Ts\Models\Feed::whereIn('feed_id', $feedIds)
             ->orderBy($orderField, $orderASC)
-            ->skip($begin_id)
+            //->skip($begin_id)
             ->take($limit)
             ->get();
         // dump($objList->toArray());
@@ -1845,7 +1845,7 @@ class FeedModel extends Model
      * @param  int    $fgid  关组组ID，默认为空
      * @return array  指定用户所关注人的所有分享，默认为当前登录用户
      */
-    public function getFollowingFeedNew($where = '', $limit = 10, $begin_id = 0, $uid = '', $fgid = '')
+    public function getFollowingFeedNew($where = '', $limit = 10, $uid = '', $fgid = '')
     {
         $fgid = intval($fgid);
         $uid = intval($uid);
@@ -1858,9 +1858,13 @@ class FeedModel extends Model
             $table .= " LEFT JOIN {$this->tablePrefix}user_follow_group_link AS c ON a.uid = c.fid AND c.uid ='{$buid}' ";
             $_where .= ' AND c.follow_group_id = '.intval($fgid);
         }
-        $list = $this->table($table)->where($_where)->field('a.feed_id')->order('a.feed_id DESC')->findPage($limit);
+        //$list = $this->table($table)->where($_where)->field('a.feed_id')->order('a.feed_id DESC')->findPage($limit);
+        $list = $this->table($table)->where($_where)->field('a.feed_id')->limit($limit)->findAll();
+        if (!$list) {
+            return null;
+        }
 
-        $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $begin_id, $limit, 'feed_id', 'DESC');
+        $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $limit, 'feed_id', 'DESC');
 
         return $list;
     }

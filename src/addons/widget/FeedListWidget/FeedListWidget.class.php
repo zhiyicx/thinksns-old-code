@@ -235,7 +235,7 @@ class FeedListWidget extends Widget
                     // 设定可查看的关注分享总数，可以提高大数据量下的查询效率
                     $max = null; //1000;
                     //$list = model('Feed')->getFollowingFeed($where, $this->limitnums, '', $var['fgid'], $max);（旧代码）
-                    $list = model('Feed')->getFollowingFeedNew($where, $this->limitnums, '', $var ['fgid']);
+                    $list = model('Feed')->getFollowingFeedNew($where, $this->limitnums, '', $var['fgid']);
                 }
                 break;
             case 'union': // 我的人脉

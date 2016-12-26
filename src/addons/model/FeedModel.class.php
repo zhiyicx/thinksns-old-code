@@ -1798,29 +1798,33 @@ class FeedModel extends Model
     }
 
     /**
-     * 新的获取微博列表
+     * 新的获取微博列表.
+     *
      * @param $map
-     * @param int $limit
-     * @param int $begin_id
+     * @param int    $limit
+     * @param int    $begin_id
      * @param string $orderField
      * @param string $orderASC
+     *
      * @return mixed
      */
-    public function getListNew($map, $limit = 10, $begin_id = 0, $orderField = 'feed_id' ,$orderASC = 'DESC')
+    public function getListNew($map, $limit = 10, $begin_id = 0, $orderField = 'feed_id', $orderASC = 'DESC')
     {
-        $list = $this->where($map)->field('feed_id')->order(($orderField . ' ' . $orderASC))->findPage($limit);
+        $list = $this->where($map)->field('feed_id')->order(($orderField.' '.$orderASC))->findPage($limit);
         $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $begin_id, $limit, $orderField, $orderASC);
 
         return $list;
     }
 
     /**
-     * 获取微博数据
+     * 获取微博数据.
+     *
      * @param $feedIds
      * @param $begin_id
      * @param $limit
      * @param $orderField
      * @param $orderASC
+     *
      * @return mixed
      */
     public function getFeedList($feedIds, $begin_id, $limit, $orderField, $orderASC)
@@ -1838,12 +1842,14 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取指定用户所关注人的所有分享，默认为当前登录用户
-     * @param  string $where 查询条件
-     * @param  int    $limit 结果集数目，默认为10
-     * @param  int    $uid   指定用户ID，默认为空
-     * @param  int    $fgid  关组组ID，默认为空
-     * @return array  指定用户所关注人的所有分享，默认为当前登录用户
+     * 获取指定用户所关注人的所有分享，默认为当前登录用户.
+     *
+     * @param string $where 查询条件
+     * @param int    $limit 结果集数目，默认为10
+     * @param int    $uid   指定用户ID，默认为空
+     * @param int    $fgid  关组组ID，默认为空
+     *
+     * @return array 指定用户所关注人的所有分享，默认为当前登录用户
      */
     public function getFollowingFeedNew($where = '', $limit = 10, $begin_id = 0, $uid = '', $fgid = '')
     {
@@ -1866,8 +1872,10 @@ class FeedModel extends Model
     }
 
     /**
-     * 获取微博缓存数据
+     * 获取微博缓存数据.
+     *
      * @param $objList
+     *
      * @return mixed
      */
     public function getListArray($objList)
@@ -1886,10 +1894,10 @@ class FeedModel extends Model
                     $var['attachInfo'] = $objList[$key]->getImagesAttribute();
                     foreach ($var['attachInfo'] as $ak => $av) {
                         $_attach = array(
-                            'attach_id' => $_data['attach_id'][$ak],
+                            'attach_id'  => $_data['attach_id'][$ak],
                             'attach_url' => $av['src'],
-                            'extension' => '',
-                            'size' => '',
+                            'extension'  => '',
+                            'size'       => '',
                         );
                         if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
                             $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
@@ -1927,10 +1935,10 @@ class FeedModel extends Model
                 $value['api_source'] = $var['sourceInfo'];
                 $value['actions'] = array(
                     'comment' => true,
-                    'repost' => true,
-                    'like' => false,
-                    'favor' => true,
-                    'delete' => true,
+                    'repost'  => true,
+                    'like'    => false,
+                    'favor'   => true,
+                    'delete'  => true,
                 );
                 $value['user_info'] = $user;
                 $value['actor_groupData'] = $var['actor_groupData'];

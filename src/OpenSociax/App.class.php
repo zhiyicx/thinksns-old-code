@@ -89,7 +89,7 @@ class App
     public static function execApp()
     {
         //防止CSRF
-        if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' && stripos($_SERVER['HTTP_REFERER'], SITE_URL) !== 0 && $_SERVER['HTTP_USER_AGENT'] !== 'Shockwave Flash' && (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'adobe flash player') === false) && MODULE_NAME != 'Weixin') {
+        if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' && stripos($_SERVER['HTTP_REFERER'], SITE_URL) === false && $_SERVER['HTTP_USER_AGENT'] !== 'Shockwave Flash' && (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'adobe flash player') === false) && MODULE_NAME != 'Weixin') {
             exit('illegal request.');
         }
 

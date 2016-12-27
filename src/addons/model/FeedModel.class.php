@@ -1808,7 +1808,7 @@ class FeedModel extends Model
      *
      * @return mixed
      */
-    public function getListNew($map, $limit = 10, $begin_id = 0, $orderField = 'feed_id', $orderASC = 'DESC')
+    public function getListNew($map, $limit = 10, $orderField = 'feed_id', $orderASC = 'DESC')
     {
         $list = $this->where($map)->field('feed_id')->order(($orderField.' '.$orderASC))->findPage($limit);
         if (empty($list['data'])) {

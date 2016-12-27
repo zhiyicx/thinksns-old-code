@@ -19,7 +19,7 @@ $ts['_router'] = array();    //路由配置
 
 tsdefine('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
 tsdefine('IS_WIN', strstr(PHP_OS, 'WIN') ? 1 : 0);
-tsdefine('IS_HTTPS', isset($_SERVER['HTTPS']) || $_SERVER['REQUEST_SCHEME'] != 'http');
+tsdefine('IS_HTTPS', 0);
 
 // # 设置API版本常量
 if (isset($_REQUEST['api_version'])) {

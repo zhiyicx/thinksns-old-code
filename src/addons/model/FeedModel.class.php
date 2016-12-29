@@ -1868,11 +1868,10 @@ class FeedModel extends Model
             $_where .= ' AND c.follow_group_id = '.intval($fgid);
         }
         //$list = $this->table($table)->where($_where)->field('a.feed_id')->order('a.feed_id DESC')->findPage($limit);
-        $list = $this->table($table)->where($_where)->field('a.feed_id')->limit($limit)->findAll();
-        if (!$list) {
+        $list = $this->table($table)->where($_where)->order('feed_id DESC')->field('a.feed_id')->findPage($limit);
+        if (!$list['data']) {
             return;
         }
-
         $list['data'] = $this->getFeedList(getSubByKey($list['data'], 'feed_id'), $limit, 'feed_id', 'DESC');
 
         return $list;

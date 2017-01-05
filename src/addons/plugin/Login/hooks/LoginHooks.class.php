@@ -4,33 +4,36 @@ class LoginHooks extends Hooks
 {
     //站点配置
     private static $validLogin = array(
-            'sina'   => array('sina_wb_akey', 'sina_wb_skey'),
-            'qzone'  => array('qzone_key', 'qzone_secret'),
-            'qq'     => array('qq_key', 'qq_secret'),
-            'renren' => array('renren_key', 'renren_secret'),
-            'baidu'  => array('baidu_key', 'baidu_secret'),
-            'taobao' => array('taobao_key', 'taobao_secret'),
-        );
+        'sina'   => array('sina_wb_akey', 'sina_wb_skey'),
+        'qzone'  => array('qzone_key', 'qzone_secret'),
+        'qq'     => array('qq_key', 'qq_secret'),
+        'renren' => array('renren_key', 'renren_secret'),
+        'baidu'  => array('baidu_key', 'baidu_secret'),
+        'taobao' => array('taobao_key', 'taobao_secret'),
+        'weixin' => array('weixin_key', 'weixin_secret'),
+    );
     //可同步发布动态的站点
     private static $validPublish = array('sina', 'qq', 'qzone'); // 暂时关闭人人网同步-不知道哪里抽风审核不过
     //应用名称
     private static $validAlias = array(
-            'sina'   => '新浪分享',
-            'qzone'  => 'QQ互联',
-            'qq'     => '腾讯分享',
-            'renren' => '人人网',
-            'baidu'  => '百度',
-            'taobao' => '淘宝网',
-        );
+        'sina'   => '新浪分享',
+        'qzone'  => 'QQ互联',
+        'qq'     => '腾讯分享',
+        'renren' => '人人网',
+        'baidu'  => '百度',
+        'taobao' => '淘宝网',
+        'weixin' => '微信',
+    );
     //应用申请地址
     private static $validApply = array(
-            'sina'   => 'http://open.weibo.com/',
-            'qzone'  => 'http://connect.qq.com',
-            'qq'     => 'http://open.t.qq.com/websites/',
-            'renren' => 'http://dev.renren.com',
-            'baidu'  => 'http://developer.baidu.com',
-            'taobao' => 'http://open.taobao.com',
-        );
+        'sina'   => 'http://open.weibo.com/',
+        'qzone'  => 'http://connect.qq.com',
+        'qq'     => 'http://open.t.qq.com/websites/',
+        'renren' => 'http://dev.renren.com',
+        'baidu'  => 'http://developer.baidu.com',
+        'taobao' => 'http://open.taobao.com',
+        'weixin' => '',
+    );
 
     //异步提交JS
     public function public_head()
@@ -114,6 +117,9 @@ class LoginHooks extends Hooks
             $html = '<div class="third-party">';
             $html .= '<dl>';
             foreach ($platform as $key => $value) {
+                if ($key == 'weixin') {
+                    $key = $key.'_';
+                }
                 $html .= sprintf('<dd><a href="%s" class="ico-%s"></a></dd>', $value, $key);
             }
             $html .= '</dl>';
@@ -176,7 +182,7 @@ class LoginHooks extends Hooks
             }
         }
 
-       // Session::pause();
+        // Session::pause();
     }
 
     public function no_register_do($param)
@@ -192,15 +198,15 @@ class LoginHooks extends Hooks
             return;
         }
         switch ($_REQUEST['connectMod']) {
-        case 'bind':
-            $this->_bindaccunt($type, $result);
-            break;
-        case 'createNew':
-            $this->_register($type, $result);
-            break;
-        default:
-            $result['status'] = 0;
-            $result['info'] = '非法参数';
+            case 'bind':
+                $this->_bindaccunt($type, $result);
+                break;
+            case 'createNew':
+                $this->_register($type, $result);
+                break;
+            default:
+                $result['status'] = 0;
+                $result['info'] = '非法参数';
         }
         // Session::pause();
     }
@@ -410,18 +416,18 @@ class LoginHooks extends Hooks
 
         //if(!empty($sync)){
 
-            $result = array();
-            // foreach($sync as $key=>$v){
-            //     $sync[$key] = "'{$v}'";
-            // }
-            //
-            $opt = M('login')->where('uid='.intval($data['uid']).' and is_sync=1')->findAll();
+        $result = array();
+        // foreach($sync as $key=>$v){
+        //     $sync[$key] = "'{$v}'";
+        // }
+        //
+        $opt = M('login')->where('uid='.intval($data['uid']).' and is_sync=1')->findAll();
 
-            // Url格式化问题
-            $formatContent = model('Feed')->formatFeedContent($content, 128);
+        // Url格式化问题
+        $formatContent = model('Feed')->formatFeedContent($content, 128);
         $content = $formatContent['body'];
-            //content需要截取成128字
-            $content = getShort($content, 128, '..');
+        //content需要截取成128字
+        $content = getShort($content, 128, '..');
         $content = str_ireplace('[SITE_URL]', SITE_URL, $content);
         foreach ($opt as $v) {
             if ($v['type'] == 'location') {
@@ -446,19 +452,19 @@ class LoginHooks extends Hooks
                     $syncData = $platform->update($content.' '.$feed_url, $v);
 
                     return;
-                }
-                //记录发的新分享到数据库
-                if (empty($result)) {
-                    $result = $platform->saveData($syncData);
-                } else {
-                    $result = array_merge($result, $platform->saveData($syncData));
-                }
+            }
+            //记录发的新分享到数据库
+            if (empty($result)) {
+                $result = $platform->saveData($syncData);
+            } else {
+                $result = array_merge($result, $platform->saveData($syncData));
+            }
         }
-            // if(!empty($result)){
-            //     $dao = M('login_weibo');
-            //     $result['weiboId'] = $id;
-            //     $dao->add($result);
-            // }
+        // if(!empty($result)){
+        //     $dao = M('login_weibo');
+        //     $result['weiboId'] = $id;
+        //     $dao->add($result);
+        // }
         //}
     }
 
@@ -523,7 +529,7 @@ class LoginHooks extends Hooks
         if ($_GET['do'] == 'bind') {
             $this->_bindPublish($type, $param['res']);
 
-        //当前操作如果是登录
+            //当前操作如果是登录
         } else {
             $type = t($_GET['type']);
             $this->_loadTypeLogin($type);
@@ -547,7 +553,7 @@ class LoginHooks extends Hooks
                 // 未在本站找到用户信息, 删除用户站外信息,让用户重新登录
                 if (empty($user)) {
                     D('Login')->where('type_uid='.$userinfo['id']." AND type='{$type}'")->delete();
-                //已经绑定过，执行登录操作，设置token
+                    //已经绑定过，执行登录操作，设置token
                 } else {
                     if ($info['oauth_token'] == '') {
                         $syncdata['login_id'] = $info['login_id'];
@@ -598,16 +604,38 @@ class LoginHooks extends Hooks
         }
         if (count(array_filter($check)) == count($data[$type]) && in_array($type, $platform_options['open'])) {
             $this->_loadTypeLogin($type);
-            $object = new $type ();
+            if ($type == 'weixin') {
+                $this->login_wxpc_other();
+            } else {
+                $object = new $type ();
+                $url = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type));
+                $url = $object->getUrl($url);
+                redirect($url);
+                //if(!$url){
+                //dump($type.'-login-error:'.$object->getError());
+                //}
+                exit;
+            }
+            /*$object = new $type ();
             $url = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type));
             $url = $object->getUrl($url);
-           // if(!$url){
-                //dump($type.'-login-error:'.$object->getError());
-            //}
-            redirect($url);
+            exit;
+            redirect($url);*/
         }
 
         // Session::pause();
+    }
+
+    //微信登录
+    public function login_wxpc_other()
+    {
+        $platform_options = model('AddonData')->lget('login');
+        $wxapi['appid'] = $platform_options['weixin_key'];
+        $wxapi['secret'] = $platform_optionsg['weixin_secret'];
+        $callbackurl = Addons::createAddonShow('Login', 'no_register_display', array('type' => 'weixin'));
+        $jumpurl = 'https://open.weixin.qq.com/connect/qrconnect?appid='.$wxapi['appid'].'&redirect_uri='.urlencode($callbackurl).'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+        redirect($jumpurl);
+        exit;
     }
 
     private function _bindPublish($type, &$result)

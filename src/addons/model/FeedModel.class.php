@@ -1837,7 +1837,7 @@ class FeedModel extends Model
             //->skip($begin_id)
             ->take($limit)
             ->get();
-        // dump($objList->toArray());
+
         $list = $this->getListArray($objList);
         unset($objList);
 
@@ -1886,75 +1886,177 @@ class FeedModel extends Model
      */
     public function getListArray($objList)
     {
-        $list = $objList->toArray();
-        foreach ($list as $key => &$value) {
-            if (!empty($value_cache = model('Cache')->get('fd_'.$value['feed_id'], $value))) {
-                $value = $value_cache;
-                unset($value_cache);
-            } else {
-                $value['client_ip'] = $value['data']['client_ip'];
-                $value['feed_data'] = $value['data']['feed_data'];
-                $_data = $var = unserialize($value['feed_data']);
-
-                if (!empty($_data['attach_id'])) {
-                    $var['attachInfo'] = $objList[$key]->getImagesAttribute();
-                    foreach ($var['attachInfo'] as $ak => $av) {
-                        $_attach = array(
-                            'attach_id'  => $_data['attach_id'][$ak],
-                            'attach_url' => $av['src'],
-                            'extension'  => '',
-                            'size'       => '',
-                        );
-                        if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
-                            $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
-                            $_attach['attach_medium'] = getImageUrl($av['src'], 240);
-                            $_attach['attach_middle'] = getImageUrl($av['src'], 740);
+        if (is_array($objList)) {
+            foreach ($objList as $key => $value) {
+                $list[$key] = $objList[$key]->toArray();
+                if (!empty($value_cache = model('Cache')->get('fd_'.$value['feed_id'], $value))) {
+                    $list[$key] = $value_cache;
+                    unset($value_cache);
+                } else {
+                    $list[$key]['client_ip'] = $list[$key]['data']['client_ip'];
+                    $list[$key]['feed_data'] = $objList[$key]->data->feed_data;
+                    $_data = $var = unserialize($list[$key]['feed_data']);
+                    //解析图片
+                    if (!empty($_data['attach_id'])) {
+                        $var['attachInfo'] = $objList[$key]->getImagesAttribute();
+                        foreach ($var['attachInfo'] as $ak => $av) {
+                            $_attach = array(
+                                'attach_id' => $_data['attach_id'][$ak],
+                                'attach_url' => $av['src'],
+                                'extension' => '',
+                                'size' => '',
+                            );
+                            if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
+                                $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
+                                $_attach['attach_medium'] = getImageUrl($av['src'], 240);
+                                $_attach['attach_middle'] = getImageUrl($av['src'], 740);
+                            }
+                            $var['attachInfo'][$ak] = $_attach;
                         }
-                        $var['attachInfo'][$ak] = $_attach;
+                    }
+                    // 解析视频
+                    if (!empty($var['video_id']) && !$var['flashimg']) {
+                        $video_config = model('Xdata')->get('admin_Content:video_config');
+                        $video_server = $video_config['video_server'] ? $video_config['video_server'] : SITE_URL;
+
+                        $var['flashimg'] = $video_server.$var['image_path']; //'__THEME__/image/video.png';\
+                        if ($var['transfer_id'] && !D('video_transfer')->where('transfer_id='.$var['transfer_id'])->getField('status')) {
+                            $var['transfering'] = 1;
+                        }
+                        $var['flashvar'] = !$var['transfering'] ? $video_server.$var['video_mobile_path'] : $video_server.$var['video_path'];
+                        $var['flashvar_part'] = $video_server.$var['video_part_path'];
+                        $var['flash_width'] = $var['image_width'] ? $var['image_width'] : 430;
+                        $var['flash_height'] = $var['image_height'] ? $var['image_height'] : 400;
+                    }
+
+                    $user = model('User')->getUserInfo($list[$key]['uid']);
+                    $var['actor'] = "<a href='{$user['space_url']}' class='name' event-node='face_card' uid='{$user['uid']}'>{$user['uname']}</a>";
+                    $var['actor_uid'] = $user['uid'];
+                    $var['actor_uname'] = $user['uname'];
+                    $var['feedid'] = $list[$key]['feed_id'];
+                    if (!empty($_data['app_row_id'])) {
+                        empty($_data['app_row_table']) && $_data['app_row_table'] = 'feed';
+                        $var['sourceInfo'] = model('Source')->getSourceInfo($_data['app_row_table'], $_data['app_row_id'], false, $_data['app']);
+                        $var['sourceInfo']['groupData'] = model('UserGroupLink')->getUserGroupData($var['sourceInfo']['source_user_info']['uid']);
+                    }
+
+                    // 解析Feed模版
+                    $feed_template_file = APPS_PATH.'/'.$_data['app'].'/Conf/'.$_data['type'].'.feed.php';
+                    if (!file_exists($feed_template_file)) {
+                        $feed_template_file = APPS_PATH.'/public/Conf/post.feed.php';
+                    }
+
+                    $feed_content = fetch($feed_template_file, $var);
+                    $list[$key]['info'] = null;
+                    $list[$key]['title'] = $var['actor'];
+                    $list[$key]['body'] = ($list[$key]['type'] != 'weiba_post') ? parse_html($feed_content) : $feed_content;
+                    //输出模版解析后信息
+                    $list[$key]['content_txt'] = $_data['body'];
+                    //$list[$key]['attach_info'] = $var['attachInfo'];
+                    $list[$key]['api_source'] = $var['sourceInfo'];
+                    $list[$key]['actions'] = array(
+                        'comment' => true,
+                        'repost' => true,
+                        'like' => false,
+                        'favor' => true,
+                        'delete' => true,
+                    );
+                    $list[$key]['user_info'] = $user;
+                    $list[$key]['actor_groupData'] = $var['actor_groupData'];
+                    $list[$key]['GroupData'] = model('UserGroupLink')->getUserGroupData($list[$key]['uid']);
+                    unset($list[$key]['images'], $list[$key]['video'], $list[$key]['data']);
+                    model('Cache')->set('fd_'.$list[$key]['feed_id'], $list[$key]);            // 1分钟缓存
+                    //验证转发的原信息是否存在
+                    if (!$this->_notDel($_data['app'], $_data['type'], $_data['app_row_id'])) {
+                        $list[$key]['body'] = L('PUBLIC_INFO_ALREADY_DELETE_TIPS');                // 此信息已被删除〜
                     }
                 }
+            }
+        } else {
+            $list = $objList->toArray();
+            foreach ($list as $key => &$value) {
+                if (!empty($value_cache = model('Cache')->get('fd_'.$value['feed_id'], $value))) {
+                    $value = $value_cache;
+                    unset($value_cache);
+                } else {
+                    $value['client_ip'] = $value['data']['client_ip'];
+                    $value['feed_data'] = $objList[$key]->data->feed_data;
+                    $_data = $var = unserialize($value['feed_data']);
 
-                $user = model('User')->getUserInfo($value['uid']);
-                $var['actor'] = "<a href='{$user['space_url']}' class='name' event-node='face_card' uid='{$user['uid']}'>{$user['uname']}</a>";
-                $var['actor_uid'] = $user['uid'];
-                $var['actor_uname'] = $user['uname'];
-                $var['feedid'] = $value['feed_id'];
-                if (!empty($_data['app_row_id'])) {
-                    empty($_data['app_row_table']) && $_data['app_row_table'] = 'feed';
-                    $var['sourceInfo'] = model('Source')->getSourceInfo($_data['app_row_table'], $_data['app_row_id'], false, $_data['app']);
-                    $var['sourceInfo']['groupData'] = model('UserGroupLink')->getUserGroupData($var['sourceInfo']['source_user_info']['uid']);
-                }
+                    if (!empty($_data['attach_id'])) {
+                        $var['attachInfo'] = $objList[$key]->getImagesAttribute();
+                        foreach ($var['attachInfo'] as $ak => $av) {
+                            $_attach = array(
+                                'attach_id' => $_data['attach_id'][$ak],
+                                'attach_url' => $av['src'],
+                                'extension' => '',
+                                'size' => '',
+                            );
+                            if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
+                                $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
+                                $_attach['attach_medium'] = getImageUrl($av['src'], 240);
+                                $_attach['attach_middle'] = getImageUrl($av['src'], 740);
+                            }
+                            $var['attachInfo'][$ak] = $_attach;
+                        }
+                    }
+                    // 解析视频
+                    if (!empty($var['video_id']) && !$var['flashimg']) {
+                        $video_config = model('Xdata')->get('admin_Content:video_config');
+                        $video_server = $video_config['video_server'] ? $video_config['video_server'] : SITE_URL;
 
-                // 解析Feed模版
-                $feed_template_file = APPS_PATH.'/'.$_data['app'].'/Conf/'.$_data['type'].'.feed.php';
-                if (!file_exists($feed_template_file)) {
-                    $feed_template_file = APPS_PATH.'/public/Conf/post.feed.php';
-                }
+                        $var['flashimg'] = $video_server.$var['image_path']; //'__THEME__/image/video.png';\
+                        if ($var['transfer_id'] && !D('video_transfer')->where('transfer_id='.$var['transfer_id'])->getField('status')) {
+                            $var['transfering'] = 1;
+                        }
+                        $var['flashvar'] = !$var['transfering'] ? $video_server.$var['video_mobile_path'] : $video_server.$var['video_path'];
+                        $var['flashvar_part'] = $video_server.$var['video_part_path'];
+                        $var['flash_width'] = $var['image_width'] ? $var['image_width'] : 430;
+                        $var['flash_height'] = $var['image_height'] ? $var['image_height'] : 400;
+                    }
 
-                $feed_content = fetch($feed_template_file, $var);
-                $value['info'] = null;
-                $value['title'] = $var['actor'];
-                $value['body'] = ($value['type'] != 'weiba_post') ? parse_html($feed_content) : $feed_content;
-                //输出模版解析后信息
-                $value['content_txt'] = $_data['body'];
-                //$value['attach_info'] = $var['attachInfo'];
-                $value['api_source'] = $var['sourceInfo'];
-                $value['actions'] = array(
-                    'comment' => true,
-                    'repost'  => true,
-                    'like'    => false,
-                    'favor'   => true,
-                    'delete'  => true,
-                );
-                $value['user_info'] = $user;
-                $value['actor_groupData'] = $var['actor_groupData'];
-                $value['GroupData'] = model('UserGroupLink')->getUserGroupData($value['uid']);
-                unset($value['images'], $value['video'], $value['data']);
+                    $user = model('User')->getUserInfo($value['uid']);
+                    $var['actor'] = "<a href='{$user['space_url']}' class='name' event-node='face_card' uid='{$user['uid']}'>{$user['uname']}</a>";
+                    $var['actor_uid'] = $user['uid'];
+                    $var['actor_uname'] = $user['uname'];
+                    $var['feedid'] = $value['feed_id'];
+                    if (!empty($_data['app_row_id'])) {
+                        empty($_data['app_row_table']) && $_data['app_row_table'] = 'feed';
+                        $var['sourceInfo'] = model('Source')->getSourceInfo($_data['app_row_table'], $_data['app_row_id'], false, $_data['app']);
+                        $var['sourceInfo']['groupData'] = model('UserGroupLink')->getUserGroupData($var['sourceInfo']['source_user_info']['uid']);
+                    }
 
-                //model('Cache')->set('fd_'.$value['feed_id'], $value);            // 1分钟缓存
-                //验证转发的原信息是否存在
-                if (!$this->_notDel($_data['app'], $_data['type'], $_data['app_row_id'])) {
-                    $value['body'] = L('PUBLIC_INFO_ALREADY_DELETE_TIPS');                // 此信息已被删除〜
+                    // 解析Feed模版
+                    $feed_template_file = APPS_PATH.'/'.$_data['app'].'/Conf/'.$_data['type'].'.feed.php';
+                    if (!file_exists($feed_template_file)) {
+                        $feed_template_file = APPS_PATH.'/public/Conf/post.feed.php';
+                    }
+
+                    $feed_content = fetch($feed_template_file, $var);
+                    $value['info'] = null;
+                    $value['title'] = $var['actor'];
+                    $value['body'] = ($value['type'] != 'weiba_post') ? parse_html($feed_content) : $feed_content;
+                    //输出模版解析后信息
+                    $value['content_txt'] = $_data['body'];
+                    //$value['attach_info'] = $var['attachInfo'];
+                    $value['api_source'] = $var['sourceInfo'];
+                    $value['actions'] = array(
+                        'comment' => true,
+                        'repost' => true,
+                        'like' => false,
+                        'favor' => true,
+                        'delete' => true,
+                    );
+                    $value['user_info'] = $user;
+                    $value['actor_groupData'] = $var['actor_groupData'];
+                    $value['GroupData'] = model('UserGroupLink')->getUserGroupData($value['uid']);
+                    unset($value['images'], $value['video'], $value['data']);
+
+                    model('Cache')->set('fd_'.$value['feed_id'], $value);            // 1分钟缓存
+                    //验证转发的原信息是否存在
+                    if (!$this->_notDel($_data['app'], $_data['type'], $_data['app_row_id'])) {
+                        $value['body'] = L('PUBLIC_INFO_ALREADY_DELETE_TIPS');                // 此信息已被删除〜
+                    }
                 }
             }
         }

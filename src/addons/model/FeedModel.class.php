@@ -1901,10 +1901,10 @@ class FeedModel extends Model
                         $var['attachInfo'] = $objList[$key]->getImagesAttribute();
                         foreach ($var['attachInfo'] as $ak => $av) {
                             $_attach = array(
-                                'attach_id' => $_data['attach_id'][$ak],
+                                'attach_id'  => $_data['attach_id'][$ak],
                                 'attach_url' => $av['src'],
-                                'extension' => '',
-                                'size' => '',
+                                'extension'  => '',
+                                'size'       => '',
                             );
                             if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
                                 $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
@@ -1956,10 +1956,10 @@ class FeedModel extends Model
                     $list[$key]['api_source'] = $var['sourceInfo'];
                     $list[$key]['actions'] = array(
                         'comment' => true,
-                        'repost' => true,
-                        'like' => false,
-                        'favor' => true,
-                        'delete' => true,
+                        'repost'  => true,
+                        'like'    => false,
+                        'favor'   => true,
+                        'delete'  => true,
                     );
                     $list[$key]['user_info'] = $user;
                     $list[$key]['actor_groupData'] = $var['actor_groupData'];
@@ -1987,10 +1987,10 @@ class FeedModel extends Model
                         $var['attachInfo'] = $objList[$key]->getImagesAttribute();
                         foreach ($var['attachInfo'] as $ak => $av) {
                             $_attach = array(
-                                'attach_id' => $_data['attach_id'][$ak],
+                                'attach_id'  => $_data['attach_id'][$ak],
                                 'attach_url' => $av['src'],
-                                'extension' => '',
-                                'size' => '',
+                                'extension'  => '',
+                                'size'       => '',
                             );
                             if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
                                 $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
@@ -2042,10 +2042,10 @@ class FeedModel extends Model
                     $value['api_source'] = $var['sourceInfo'];
                     $value['actions'] = array(
                         'comment' => true,
-                        'repost' => true,
-                        'like' => false,
-                        'favor' => true,
-                        'delete' => true,
+                        'repost'  => true,
+                        'like'    => false,
+                        'favor'   => true,
+                        'delete'  => true,
                     );
                     $value['user_info'] = $user;
                     $value['actor_groupData'] = $var['actor_groupData'];

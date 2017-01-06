@@ -604,23 +604,13 @@ class LoginHooks extends Hooks
         }
         if (count(array_filter($check)) == count($data[$type]) && in_array($type, $platform_options['open'])) {
             $this->_loadTypeLogin($type);
-            if ($type == 'weixin') {
-                $this->login_wxpc_other();
-            } else {
-                $object = new $type ();
-                $url = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type));
-                $url = $object->getUrl($url);
-                redirect($url);
-                //if(!$url){
-                //dump($type.'-login-error:'.$object->getError());
-                //}
-                exit;
-            }
-            /*$object = new $type ();
+            $object = new $type ();
             $url = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type));
             $url = $object->getUrl($url);
-            exit;
-            redirect($url);*/
+            //if(!$url){
+                //dump($type.'-login-error:'.$object->getError());
+            //}
+            redirect($url);
         }
 
         // Session::pause();

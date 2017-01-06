@@ -21,7 +21,7 @@
 
 <input type="hidden" value="" name="user_tags" id="user_category_pop" <php>if($required):</php>event-node="input_user_tag"<php>endif;</php> />
 <php>$config = model('Xdata')->get('admin_Config:register');
-        $tag_num = $config['tag_num'];</php>
+        $tag_num = $config['tag_num'] ? : 5;</php>
 <script type="text/javascript">
 var tag_num = '<?php echo $tag_num; ?>';
 var checkUserCategory = function(obj){

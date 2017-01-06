@@ -31,18 +31,28 @@ class weixin
     //用户资料
     public function userInfo()
     {
-        if ($_SESSION['weixin']['openid']) {
-            $user = M('login')->where("type_uid='{$_SESSION['weixin']['openid']}' AND type=weixin")->find();
-            if ($user && $user['uid'] > 0) {
-                $data['id'] = $user['uid'];
-                $arr_un_in = M('user')->where(array('uid' => $user['uid']))->field('uname')->find();
-                $data['uname'] = $arr_un_in['uname'];
-                $data['userface'] = getUserFace($user['uid'], 'm');
+        if ($_SESSION['weixin']['openid'] && $_SESSION['weixin']['access_token']['oauth_token']) {
+            https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID
+            $token_url = 'https://api.weixin.qq.com/sns/userinfo?'
+                .'&access_token='.$_SESSION['weixin']['access_token']['oauth_token']
+                .'&openid='.$_SESSION['weixin']['openid'];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $token_url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($ch);
+            $res = json_decode($result, true);
+            if ($res) {
+                $data['id'] = $res['unionid'];
+                $data['uname'] = $res['nickname'];
+                $data['userface'] = $res['headimgurl'];
+            } else {
+                return false;
             }
 
             return $data;
         } else {
-            //用接口获取数据
             return false;
         }
     }

@@ -39,6 +39,7 @@ class weixin
                 $data['uname'] = $arr_un_in['uname'];
                 $data['userface'] = getUserFace($user['uid'], 'm');
             }
+
             return $data;
         } else {
             //用接口获取数据
@@ -77,6 +78,7 @@ class weixin
             return false;
         }
     }
+
     /****************************************************************************
     ************TODO 以下还未修改
     ****************************************************************************/
@@ -104,13 +106,13 @@ class weixin
         $rrObj = new RenrenRestApiService();
 
         $params = array('name'         => getShort($opt['feed_content'], 30),
-            'description'  => $opt['feed_content'],
-            'url'          => $opt['feed_url'],
-            'image'        => $opt['pic_url'],
-            'action_name'  => $GLOBALS['ts']['site']['site_name'],
-            'action_link'  => $opt['feed_url'],
-            'message'      => '分享',
-            'access_token' => $access_token, );
+            'description'              => $opt['feed_content'],
+            'url'                      => $opt['feed_url'],
+            'image'                    => $opt['pic_url'],
+            'action_name'              => $GLOBALS['ts']['site']['site_name'],
+            'action_link'              => $opt['feed_url'],
+            'message'                  => '分享',
+            'access_token'             => $access_token, );
         $res = $rrObj->rr_post_curl('feed.publishFeed', $params);
 
         return true;

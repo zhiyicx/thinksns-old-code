@@ -32,7 +32,7 @@ class LoginHooks extends Hooks
         'renren' => 'http://dev.renren.com',
         'baidu'  => 'http://developer.baidu.com',
         'taobao' => 'http://open.taobao.com',
-        'weixin' => '',
+        'weixin' => 'https://open.weixin.qq.com',
     );
 
     //异步提交JS

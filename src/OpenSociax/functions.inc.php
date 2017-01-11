@@ -3505,7 +3505,7 @@ function _parse_expressionApi($data)
     $pkg = $ts['site']['expression'];
     $pkg = $pkg ? $pkg : 'new';
     if ($info) {
-        return preg_replace("/\[.+?\]/i", "<img class=\"emot\" style=\"width:20px;\" src='".THEME_URL."/image/expression/{$pkg}/".$info['filename']."' />", $data[0]);
+        return preg_replace("/\[.+?\]/i", "<img class=\"emot\" style=\"width:20px;\" src='".THEME_URL."/static/image/expression/{$pkg}/".$info['filename']."' />", $data[0]);
     } else {
         return $data[0];
     }

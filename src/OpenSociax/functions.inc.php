@@ -3488,3 +3488,25 @@ function getExchangeConfig($type = 'gold')
 
     return $return;
 }
+
+/**
+ * 表情替换 [给api接口表情转换img标签使用].
+ *
+ * @param array $data
+ */
+function _parse_expressionApi($data)
+{
+    if (preg_match('/#.+#/i', $data[0])) {
+        return $data[0];
+    }
+    $allexpression = model('Expression')->getAllExpression();
+    $info = $allexpression[$data[0]];
+    global $ts;
+    $pkg = $ts['site']['expression'];
+    $pkg = $pkg ? $pkg : 'new';
+    if ($info) {
+        return preg_replace("/\[.+?\]/i", "<img class=\"emot\" style=\"width:20px;\" src='".THEME_URL."/image/expression/{$pkg}/".$info['filename']."' />", $data[0]);
+    } else {
+        return $data[0];
+    }
+}

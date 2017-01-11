@@ -134,10 +134,15 @@ $(function (){
 
   // 查看是否已添加图片
   $('#checkIsUpImage').click(function() {
-    if ($('#attach_ids').val() != 'undefined' && $('#attach_ids').val() != '' && $('#attach_ids').val() != null && $('.wrap-layer').html() != '' && $('.wrap-layer').html() != 'undefined' && $('.wrap-layer').html() != null) {
-      ui.error( '不能同时发布图片和附件' )
+    if ($('#postvideourl').val() != 'undefined' && $('#postvideourl').val() != '' && $('#postvideourl').val() != null) {
+      ui.error( '不能同时发布图片、视频和附件' )
       return false;
     }
+    if ($('#attach_ids').val() != 'undefined' && $('#attach_ids').val() != '' && $('#attach_ids').val() != null) {
+      ui.error( '不能同时发布图片、视频和附件' )
+      return false;
+    }
+    return true;
   })
 });
 

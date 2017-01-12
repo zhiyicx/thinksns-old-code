@@ -138,7 +138,7 @@ $(function (){
       ui.error( '不能同时发布图片、视频和附件' )
       return false;
     }
-    if ($('#attach_ids').val() != 'undefined' && $('#attach_ids').val() != '' && $('#attach_ids').val() != null) {
+    if ($('#attach_ids').val() != 'undefined' && $('#attach_ids').val() != '' && $('#attach_ids').val() != null && $('.img-list').html() != '' && $('.img-list').html() != null && $('.img-list').html() != 'undefined') {
       ui.error( '不能同时发布图片、视频和附件' )
       return false;
     }

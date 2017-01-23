@@ -153,7 +153,7 @@ class ShareModel
                 D($data['curtable'])->setInc('repost_count', "`{$pk}`={$data['curid']}", 1);
                 D($data['curtable'])->cleanCache($data['curid']);
             }
-            if ( $data['type'] != 'weiba_post' && $data['app_name'] != 'weiba' ) {//转发帖子不清除缓存（不存在weibapost的方法  将会报错）
+            if ($data['type'] != 'weiba_post' && $data['app_name'] != 'weiba') {//转发帖子不清除缓存（不存在weibapost的方法  将会报错）
                 D($data['type'], $data['app_name'])->cleanCache($data['sid']);
             }
         } else {

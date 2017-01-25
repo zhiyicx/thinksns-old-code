@@ -97,7 +97,8 @@ class Api
                     $this->mid = (int) $login;
                     $_SESSION['mid'] = $this->mid;
                 }
-            } 
+            }
+
             return;
         }
 

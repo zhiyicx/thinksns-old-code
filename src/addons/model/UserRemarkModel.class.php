@@ -24,11 +24,17 @@ class UserRemarkModel extends Model
             return false;
         }
 
-        if ($this->where($data)->find()) {
-            $rs = $this->where($data)->save(array('remark' => $remark));
+        // 备注为空时删除备注
+        if ($remark == '') {
+            $this->where($data)->delete();
+            $rs = 1;
         } else {
-            $data['remark'] = $remark;
-            $rs = $this->add($data);
+            if ($this->where($data)->find()) {
+                $rs = $this->where($data)->save(array('remark' => $remark));
+            } else {
+                $data['remark'] = $remark;
+                $rs = $this->add($data);
+            }
         }
         //清理缓存
         D('User')->cleanCache($uid);

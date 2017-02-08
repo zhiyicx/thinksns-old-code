@@ -1290,7 +1290,7 @@ class UserModel extends Model
             }
         }
         // 获取相关注用户uid
-        $map['fid']=array('in', $uid_array);
+        $map['fid'] = array('in', $uid_array);
         $map['_logic'] = 'or';
         $where['_complex'] = $map;
         $_uids = D('user_follow')->where($where)->field('uid,fid')->findAll();
@@ -1303,7 +1303,7 @@ class UserModel extends Model
 
         foreach ($tableArr as $table) {
             $vo = explode(':', $table);
-            $sql = 'DELETE FROM '.$prefix.$vo [0].' WHERE '.$vo [1].' IN ('.$uidStr.')';
+            $sql = 'DELETE FROM '.$prefix.$vo[0].' WHERE '.$vo[1].' IN ('.$uidStr.')';
             $this->execute($sql);
         }
 

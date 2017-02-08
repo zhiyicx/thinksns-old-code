@@ -760,6 +760,9 @@ class UserModel extends Model
             model('Cache')->rm('ui_'.$uid);
             static_cache('user_info_'.$uid, false);
 
+            model('Cache')->rm('ui_new_'.$uid);
+            static_cache('user_info_new_'.$uid, false);
+
             $keys = model('Cache')->get('getUserDataByCache_keys_'.$uid);
             foreach ($keys as $k) {
                 model('Cache')->rm($k);
@@ -1286,18 +1289,38 @@ class UserModel extends Model
                 D('feed_topic')->where('topic_id='.$v['topic_id'])->setDec('count');
             }
         }
-        unset($map);
+        // 获取相关注用户uid
+        $map['fid']=array('in', $uid_array);
+        $map['_logic'] = 'or';
+        $where['_complex'] = $map;
+        $_uids = D('user_follow')->where($where)->field('uid,fid')->findAll();
+        $_uids_ = array_unique(array_merge(getSubByKey($_uids, 'uid'), getSubByKey($_uids, 'fid')));
 
         $tableStr = $this->_getUserField();
         $tableArr = explode('|', $tableStr);
         $uidStr = implode(',', $uid_array);
         $prefix = C('DB_PREFIX');
+
         foreach ($tableArr as $table) {
             $vo = explode(':', $table);
-
-            $sql = 'DELETE FROM '.$prefix.$vo[0].' WHERE '.$vo[1].' IN ('.$uidStr.')';
+            $sql = 'DELETE FROM '.$prefix.$vo [0].' WHERE '.$vo [1].' IN ('.$uidStr.')';
             $this->execute($sql);
         }
+
+        // 更新粉丝关注数
+        unset($where['_complex']);
+        $where['_complex']['uid'] = array('in', $_uids_);
+        $uids = D('user_follow')->where($where)->field('uid,count(`fid`) as following_count')->group('uid')->findAll();
+        unset($where['_complex']);
+        $where['_complex']['fid'] = array('in', $_uids_);
+        $fids = D('user_follow')->where($where)->field('fid,count(`uid`) as follower_count')->group('fid')->findAll();
+        foreach ($uids as $v) {
+            model('UserData')->setKeyValue($v['uid'], 'following_count', $v['following_count']);
+        }
+        foreach ($fids as $v) {
+            model('UserData')->setKeyValue($v['fid'], 'follower_count', $v['follower_count']);
+        }
+        unset($map, $where, $uids, $fids, $_uids_);
 
         return $return;
     }

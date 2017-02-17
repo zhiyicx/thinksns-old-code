@@ -7,8 +7,8 @@
  * @version TS3.0
  */
 return array(
-
     'home_middle'       => array('id' => '1', 'name' => '朋友圈首页中部', 'key' => 'home_middle', 'width' => 700, 'bottom' => 20),
+    'home_weibo_top'    => array('id' => '2', 'name' => '朋友圈首页顶部', 'key' => 'home_weibo_top', 'width' => 1000, 'bottom' => 20, 'height' => 72),
     'home_right_bottom' => array('id' => '3', 'name' => '朋友圈首页右下', 'key' => 'home_right_bottom', 'width' => 240),
     'topic_right'       => array('id' => '4', 'name' => '话题右下', 'key' => 'topic_right', 'width' => 240),
     'weiba_right'       => array('id' => '12', 'name' => '微吧首页右下', 'key' => 'weiba_right', 'width' => 240, 'top' => 10),

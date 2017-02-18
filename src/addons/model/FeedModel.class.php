@@ -1889,7 +1889,7 @@ class FeedModel extends Model
         if (is_array($objList)) {
             foreach ($objList as $key => $value) {
                 $list[$key] = $objList[$key]->toArray();
-                $value_cache = model('Cache')->get('fd_'.$value['feed_id'], $value)；
+                $value_cache = model('Cache')->get('fd_'.$value['feed_id'], $value);
                 if (!empty($value_cache)) {
                     $list[$key] = $value_cache;
                     unset($value_cache);

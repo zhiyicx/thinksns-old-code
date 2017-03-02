@@ -3510,3 +3510,20 @@ function _parse_expressionApi($data)
         return $data[0];
     }
 }
+
+/**
+ * 获取友好的数据格式
+ *
+ */
+function get_friend_num($num)
+{
+    if($num >= 10000 && $num < 1000000){
+        $friend_num = round( $num / 1000 , 1).'K';
+    }elseif ($num >= 1000000){
+        $friend_num = round( $num / 10000 , 1).'W';
+    }else{
+        $friend_num = $num;
+    }
+
+    return $friend_num;
+}

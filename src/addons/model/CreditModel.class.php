@@ -276,6 +276,12 @@ class CreditModel extends Model
         if ($type == 'reset') {
             foreach ($this->creditType as $v) {
                 $creditUser[$v['name']] = $creditSet[$v['name']];
+                //记录
+                if ($creditSet[$v['name']] != 0) {
+                    $c = $creditSet[$v['name']];
+                    $change[] = $v['alias'].'<font color="red">'.$c.'</font>';
+                    $detail[$v['name']] = "$c";
+                }
             }
         } else {
             $change = array();
@@ -295,7 +301,6 @@ class CreditModel extends Model
                 }
             }
         }
-
         $creditUser['uid'] || $creditUser['uid'] = $uid;
         $creditUser['type'] = $creditSet['type'] ? intval($creditSet) : 1;
         if ($creditUserDao->where('uid='.$creditUser['uid'])->count()) {

@@ -3526,3 +3526,19 @@ function get_friend_num($num)
 
     return $friend_num;
 }
+
+/**
+* 删除指定的HTML标签及其中内容，暂时只支持单标签清理
+*
+* @param array $tags 去除的标签
+* @param string $str 内容
+* @return string -- 返回处理完的字符串
+*/
+function strip_html_tags($tags,$str){ 
+        $html=array();
+        foreach ($tags as $tag) {
+            $html[]="/(<(?:\/".$tag."|".$tag.")[^>]*>)/i";
+        }
+        $data=preg_replace($html, '', $str); 
+        return $data;
+}

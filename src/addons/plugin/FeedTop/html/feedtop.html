@@ -4,7 +4,7 @@ $canfeedshare = CheckPermission('core_normal','feed_share');
 </php>
 <php>foreach($data as $vl){</php>
 	<php>$cancomment_old = empty($vl['feed_info']['app_row_id'])  ? 0 : 1;</php>
-	<div class="feed_lists clearfix">
+	<div class="feed_lists feed_top clearfix">
 	<dl class="feed_list"  id ='feed_top_{$vl['feed_info']['feed_id']}' model-node='feed_list'>
         <dt class="face"> <a href="{$vl['feed_info']['user_info']['space_url']}"><img src="{$vl['feed_info']['user_info']['avatar_middle']}"  event-node="face_card" uid='{$vl['feed_info']['user_info']['uid']}'></a><php>if($vl['feed_info']['user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vl['feed_info']['user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vl['feed_info']['user_info']['group_icon_only']['user_group_name']}" src="{$vl['feed_info']['user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php></dt>
 			<dd class="content clearfix"> 

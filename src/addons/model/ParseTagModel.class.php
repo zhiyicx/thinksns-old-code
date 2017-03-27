@@ -97,7 +97,7 @@ class ParseTagModel
                     list($dir, $file) = explode(':', $tagName);
                     $file = ucfirst($file);
                     require_once $path;
-                    $fileObjct = new $file ();
+                    $fileObjct = new $file();
                     if ($fileObjct->getTagStatus() || !empty($value)) {
                         $value = $fileObjct->replaceTag($attrSet, $value, $tagInfo);
                     } else {
@@ -119,7 +119,7 @@ class ParseTagModel
                     continue;
                 }
                 require_once $path;
-                $fileObjct = new $file ();
+                $fileObjct = new $file();
                 if ($fileObjct->getTagStatus() || !empty($value)) {
                     $value = $fileObjct->replaceTag($attrSet, $value, $tagInfo);
                 } else {
@@ -160,7 +160,7 @@ class ParseTagModel
             $file = ucfirst($file);
 
             require_once self::$tags[strtolower($tagName)];
-            $this->fileObject = new $file ();
+            $this->fileObject = new $file();
             ob_start();
             ob_implicit_flush(0);
             include $this->fileObject->getTemplateFile($tpl);
@@ -199,7 +199,7 @@ class ParseTagModel
         list($dir, $file) = explode(':', $tagName);
         $file = ucfirst($file);
         include_once $path;
-        $this->fileObject = new $file ();
+        $this->fileObject = new $file();
         $fileObjcet = $this->fileObject;
         //先对封闭式的标签进行过滤:<w:blog a="1" b="2" c="3" />这样的形式
         //		if( !$this->scope && !$fileObjct->getTagStatus()) 杨德升修改

@@ -312,7 +312,7 @@ class LoginHooks extends Hooks
             // Session::start();
             $_SESSION['weibo_bind_target_url'] = U('public/Index/index');
             $this->_loadTypeLogin($type);
-            $platform = new $type ();
+            $platform = new $type();
             $call_back_url = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type, 'do' => 'bind'));
             $url = $platform->getUrl($call_back_url);
             // Session::pause();
@@ -533,7 +533,7 @@ class LoginHooks extends Hooks
         } else {
             $type = t($_GET['type']);
             $this->_loadTypeLogin($type);
-            $platform = new $type ();
+            $platform = new $type();
             $platform->checkUser('login');
             $userinfo = $platform->userInfo();
             // var_dump($userinfo);exit();
@@ -604,7 +604,7 @@ class LoginHooks extends Hooks
         }
         if (count(array_filter($check)) == count($data[$type]) && in_array($type, $platform_options['open'])) {
             $this->_loadTypeLogin($type);
-            $object = new $type ();
+            $object = new $type();
             $url = Addons::createAddonShow('Login', 'no_register_display', array('type' => $type));
             $url = $object->getUrl($url);
             //if(!$url){
@@ -632,7 +632,7 @@ class LoginHooks extends Hooks
     {
         // Session::start();
         $this->_loadTypeLogin($type);
-        $obj = new $type ();
+        $obj = new $type();
         $obj->checkUser('bind');
         if (!isset(self::$validPublish[$_SESSION['open_platform_type']])) {
             $result['status'] = 0;
@@ -690,7 +690,7 @@ class LoginHooks extends Hooks
 
         $type = $_POST['type'];
         $this->_loadTypeLogin($type);
-        $platform = new $type ();
+        $platform = new $type();
         $userinfo = $platform->userInfo();
 
         // 检查是否成功获取用户信息
@@ -789,7 +789,7 @@ class LoginHooks extends Hooks
 
         $type = $_POST['type'];
         $this->_loadTypeLogin($type);
-        $platform = new $type ();
+        $platform = new $type();
         $userinfo = $platform->userInfo();
 
         // 检查是否成功获取用户信息

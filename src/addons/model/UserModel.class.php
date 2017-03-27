@@ -1346,7 +1346,7 @@ class UserModel extends Model
 
             $dao = D($className.'Protocol', $className, false);
             if (method_exists($dao, $type)) {
-                $dao->$type ($uid_array);
+                $dao->$type($uid_array);
             }
             unset($dao);
         }

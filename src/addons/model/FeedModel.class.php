@@ -1908,9 +1908,9 @@ class FeedModel extends Model
                                 'size'       => '',
                             );
                             if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
-                                $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
-                                $_attach['attach_medium'] = getImageUrl($av['src'], 240);
-                                $_attach['attach_middle'] = getImageUrl($av['src'], 740);
+                                $_attach['attach_small'] = getImageUrl($av['path'], 120, 120, true);
+                                $_attach['attach_medium'] = getImageUrl($av['path'], 240);
+                                $_attach['attach_middle'] = getImageUrl($av['path'], 740);
                             }
                             $var['attachInfo'][$ak] = $_attach;
                         }
@@ -1995,9 +1995,9 @@ class FeedModel extends Model
                                 'size'       => '',
                             );
                             if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
-                                $_attach['attach_small'] = getImageUrl($av['src'], 120, 120, true);
-                                $_attach['attach_medium'] = getImageUrl($av['src'], 240);
-                                $_attach['attach_middle'] = getImageUrl($av['src'], 740);
+                                $_attach['attach_small'] = getImageUrl($av['path'], 120, 120, true);
+                                $_attach['attach_medium'] = getImageUrl($av['path'], 240);
+                                $_attach['attach_middle'] = getImageUrl($av['path'], 740);
                             }
                             $var['attachInfo'][$ak] = $_attach;
                         }

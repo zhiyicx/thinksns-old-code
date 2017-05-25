@@ -87,7 +87,7 @@ class AvatarModel
             $original_file_info = $cloud->getFileInfo($original_file_name);
             if ($original_file_info) {
                 $filemtime = @intval($original_file_info['date']);
-                $avatar_url['avatar_original'] = getImageUrl($original_file_name);
+                $avatar_url['avatar_original'] = getImageUrl($original_file_name).'?v'.$filemtime;
                 $avatar_url['avatar_big'] = getImageUrl($original_file_name).'!big.avatar.jpg?v'.$filemtime;
                 $avatar_url['avatar_middle'] = getImageUrl($original_file_name).'!middle.avatar.jpg?v'.$filemtime;
                 $avatar_url['avatar_small'] = getImageUrl($original_file_name).'!small.avatar.jpg?v'.$filemtime;

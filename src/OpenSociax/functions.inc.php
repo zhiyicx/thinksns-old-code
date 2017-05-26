@@ -3547,12 +3547,14 @@ function strip_html_tags($tags, $str)
 }
 
 /**
- * 截取字符串（表情算一个字符）新加
+ * 截取字符串（表情算一个字符）新加.
  *
  * @param $str
- * @param int $length
+ * @param int    $length
  * @param string $ext
+ *
  * @return string
+ *
  * @author zsy
  */
 function getShortInEmoji($str, $length = 40, $ext = '')
@@ -3589,12 +3591,14 @@ function getShortInEmoji($str, $length = 40, $ext = '')
 }
 
 /**
- * 图像裁剪（新加）
+ * 图像裁剪（新加）.
  *
  * @param $source_path   string 原图路径
  * @param $target_width  string 需要裁剪的宽
  * @param $target_height string 需要裁剪的高
+ *
  * @return bool|string
+ *
  * @author zsy
  */
 function imagecropper($source_path, $target_width, $target_height = 'auto')
@@ -3613,8 +3617,7 @@ function imagecropper($source_path, $target_width, $target_height = 'auto')
     }
     $fileName = $fileName.$imgName;
     unset($sourceArr, $imgNameArr);
-    if(file_exists(SITE_PATH.$fileName)) {
-
+    if (file_exists(SITE_PATH.$fileName)) {
         return SITE_URL.$fileName;
     }
     $source_mime = $source_info['mime'];
@@ -3622,32 +3625,28 @@ function imagecropper($source_path, $target_width, $target_height = 'auto')
     $target_ratio = $target_height / $target_width;
 
     // 源图过高
-    if ($source_ratio > $target_ratio)
-    {
+    if ($source_ratio > $target_ratio) {
         $cropped_width = $source_width;
         $cropped_height = $source_width * $target_ratio;
         $source_x = 0;
         $source_y = ($source_height - $cropped_height) / 2;
     }
     // 源图过宽
-    elseif ($source_ratio < $target_ratio)
-    {
+    elseif ($source_ratio < $target_ratio) {
         $cropped_width = $source_height / $target_ratio;
         $cropped_height = $source_height;
         $source_x = ($source_width - $cropped_width) / 2;
         $source_y = 0;
     }
     // 源图适中
-    else
-    {
+    else {
         $cropped_width = $source_width;
         $cropped_height = $source_height;
         $source_x = 0;
         $source_y = 0;
     }
 
-    switch ($source_mime)
-    {
+    switch ($source_mime) {
         case 'image/gif':
             $source_image = imagecreatefromgif($source_path);
             break;
@@ -3677,8 +3676,7 @@ function imagecropper($source_path, $target_width, $target_height = 'auto')
     //$randNumber = mt_rand(00000, 99999). mt_rand(000, 999);
     //$fileName = substr(md5($randNumber), 8, 16) .".png";
 
-    switch ($source_mime)
-    {
+    switch ($source_mime) {
         case 'image/gif':
             imagegif($target_image, SITE_PATH.$fileName);
             break;

@@ -299,8 +299,7 @@ class CommentWidget extends Widget
                 ->updateReply(-1);
         }
         if (!empty($comment_id)) {
-            if(model('Comment')->deleteComment($comment_id, $this->mid)) {
-
+            if (model('Comment')->deleteComment($comment_id, $this->mid)) {
                 return true;
             }
         }

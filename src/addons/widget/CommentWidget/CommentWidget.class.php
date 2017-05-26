@@ -58,6 +58,7 @@ class CommentWidget extends Widget
             $data['table'] = t($_POST['table']);
             $data['canrepost'] = intval($_POST['canrepost']);
         }
+        $_POST['tpl'] && $data['tpl'] = t($_POST['tpl']);
         // empty ( $data ) && $data = $_POST;
         is_array($data) && $var = array_merge($var, $data);
         $var['app_uid'] = intval($var['app_uid']);
@@ -235,6 +236,13 @@ class CommentWidget extends Widget
                 $this->_upateToweiba($data);
             }
 
+            // 同步到问答
+            if ($data['app'] == 'wenda' && $data['table'] == 'question_answer') {
+                \Apps\Wenda\Model\Answer::getInstance()
+                    ->setAnswerId($data['row_id'])
+                    ->updateReply();
+            }
+
             // 去掉回复用户@
             $lessUids = array();
             if (!empty($data['to_uid'])) {
@@ -284,8 +292,17 @@ class CommentWidget extends Widget
             }
         }
 
+        // 同步到问答
+        if ($comment['app'] == 'wenda' && $comment['table'] == 'question_answer') {
+            \Apps\Wenda\Model\Answer::getInstance()
+                ->setAnswerId($comment['row_id'])
+                ->updateReply(-1);
+        }
         if (!empty($comment_id)) {
-            return model('Comment')->deleteComment($comment_id, $this->mid);
+            if(model('Comment')->deleteComment($comment_id, $this->mid)) {
+
+                return true;
+            }
         }
 
         return false;

@@ -59,21 +59,42 @@ class CollectionWidget extends Widget
         $data['source_app'] = t($_POST['sapp']);
 
         // 验证资源是否已经被删除
-        $key = $data['source_table_name'].'_id';
+        $source = model('Source')->getSourceInfo($data['source_table_name'], $data['source_id'], false, $data['source_app']);
+        /*$key = $data['source_table_name'].'_id';
         $map[$key] = $data['source_id'];
         $map['is_del'] = 0;
-        $isExist = model(ucfirst($data['source_table_name']))->where($map)->count();
-        if (empty($isExist)) {
+        $isExist = model(ucfirst($data['source_table_name']))->where($map)->count();*/
+        if (empty($source)) {
             $return = array('status' => 0, 'data' => '内容已被删除，收藏失败');
             exit(json_encode($return));
         }
-
-        if (model('Collection')->addCollection($data)) {
-            $return = array('status' => 1, 'data' => L('PUBLIC_FAVORITE_SUCCESS'));
+        if ($data['source_app'] == 'wenda') {
+            if ($data['source_table_name'] == 'question_answer') {
+                $type = 2;
+            } elseif ($data['source_table_name'] == 'question') {
+                $type = 1;
+            }
+            if (\Apps\Wenda\Model\ProFile::getInstance()
+                ->setRowId($data['source_id'])
+                ->setType($type)
+                ->setUid($this->mid)
+                ->setFrom(0)
+                ->setCTime()
+                ->collect()) {
+                $return = array('status' => 1, 'data' => L('PUBLIC_FAVORITE_SUCCESS'));
+            } else {
+                $return['data'] = \Apps\Wenda\Model\ProFile::getInstance()->getError();
+                empty($return['data']) && $return['data'] = L('PUBLIC_FAVORITE_FAIL');
+            }
         } else {
-            $return['data'] = model('Collection')->getError();
-            empty($return['data']) && $return['data'] = L('PUBLIC_FAVORITE_FAIL');
+            if (model('Collection')->addCollection($data)) {
+                $return = array('status' => 1, 'data' => L('PUBLIC_FAVORITE_SUCCESS'));
+            } else {
+                $return['data'] = model('Collection')->getError();
+                empty($return['data']) && $return['data'] = L('PUBLIC_FAVORITE_FAIL');
+            }
         }
+
         exit(json_encode($return));
     }
 
@@ -90,11 +111,25 @@ class CollectionWidget extends Widget
             echo json_encode($return);
             exit();
         }
-        if (model('Collection')->delCollection(intval($_POST['sid']), t($_POST['stable']))) {
-            $return = array('status' => 1, 'data' => L('PUBLIC_CANCEL_ERROR'));
+        if ($_POST['stable'] == 'question' || $_POST['stable'] == 'question_answer') {
+            $type = $_POST['stable'] == 'question' ? 1 : ($_POST['stable'] == 'question_answer' ? 2 : 0);
+            if (\Apps\Wenda\Model\ProFile::getInstance()
+                ->setRowId($_POST['sid'])
+                ->setType($type)
+                ->setUid($this->mid)
+                ->unCollect()) {
+                $return = array('status' => 1, 'data' => L('PUBLIC_CANCEL_ERROR'));
+            } else {
+                $return['data'] = \Apps\Wenda\Model\ProFile::getInstance()->getError();
+                empty($return['data']) && $return['data'] = L('PUBLIC_EDLFAVORITE_ERROR');
+            }
         } else {
-            $return['data'] = model('Collection')->getError();
-            empty($return['data']) && $return['data'] = L('PUBLIC_EDLFAVORITE_ERROR');
+            if (model('Collection')->delCollection(intval($_POST['sid']), t($_POST['stable']))) {
+                $return = array('status' => 1, 'data' => L('PUBLIC_CANCEL_ERROR'));
+            } else {
+                $return['data'] = model('Collection')->getError();
+                empty($return['data']) && $return['data'] = L('PUBLIC_EDLFAVORITE_ERROR');
+            }
         }
         exit(json_encode($return));
     }

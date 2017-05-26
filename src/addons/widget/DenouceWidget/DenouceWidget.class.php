@@ -29,8 +29,9 @@ class DenouceWidget extends Widget
     {
         // 获取相关数据
         $var = $this->getVar();
+        //dump($var);
         // TODO
-        if ($var['source']['app'] != 'public' && $var['source']['is_repost'] == 0) {
+        if ($var['source']['app'] != 'public' && $var['source']['is_repost'] == 0 && $var['type'] != 'question' && $var['type'] != 'question_answer') {
             $var['source']['source_content'] = $var['source']['api_source']['source_content'];
         }
         $content = $this->renderFile(dirname(__FILE__).'/index.html', $var);
@@ -94,7 +95,10 @@ class DenouceWidget extends Widget
         // 判断资源是否删除
 
         $fmap['is_del'] = 0;
-        if ($_POST['from'] == 'weiba_post') {
+        if ($_POST['from'] == 'question') {
+            $isExist = \Apps\Wenda\Model\Question::getInstance()
+                ->setQuestionId($_POST['aid'])->hasQuestionById();
+        } elseif ($_POST['from'] == 'weiba_post') {
             $fmap['post_id'] = intval($_POST['aid']);
             $isExist = M('weiba_post')->where($fmap)->count();
         } else {
@@ -115,9 +119,14 @@ class DenouceWidget extends Widget
             $map['source_url'] = str_replace(SITE_URL, '[SITE_URL]', t($_POST['source_url']));
             $map['ctime'] = time();
             if ($id = model('Denounce')->add($map)) {
-                //添加积分
-                model('Credit')->setUserCredit($_POST['uid'], 'report_weibo');
-                model('Credit')->setUserCredit($_POST['fuid'], 'reported_weibo');
+                if ($_POST['from'] == 'question') {
+                    //添加问题举报人数
+                    \Apps\Wenda\Model\Question::getInstance()->setQuestionId($_POST['aid'])->updateReport();
+                } else {
+                    //添加积分
+                    model('Credit')->setUserCredit($_POST['uid'], 'report_weibo');
+                    model('Credit')->setUserCredit($_POST['fuid'], 'reported_weibo');
+                }
 
                 $touid = D('user_group_link')->where('user_group_id=1')->field('uid')->findAll();
                 foreach ($touid as $k => $v) {

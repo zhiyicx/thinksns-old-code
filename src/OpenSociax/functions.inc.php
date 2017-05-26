@@ -3545,3 +3545,157 @@ function strip_html_tags($tags, $str)
 
     return $data;
 }
+
+/**
+ * 截取字符串（表情算一个字符）新加
+ *
+ * @param $str
+ * @param int $length
+ * @param string $ext
+ * @return string
+ * @author zsy
+ */
+function getShortInEmoji($str, $length = 40, $ext = '')
+{
+    $str = htmlspecialchars($str);
+    $str = strip_tags($str);
+    $str = htmlspecialchars_decode($str);
+    $strlenth = 0;
+    $output = '';
+    preg_match_all("/(\<img.*?src=\".*?\/resources\/theme\/stv1\/_static\/js\/um\/dialogs\/emotion\/.*?\".*?\>)|[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/", $str, $match);
+    foreach ($match[0] as $v) {
+        preg_match("/[\xe0-\xef][\x80-\xbf]{2}/", $v, $matchs);
+        if (!empty($matchs[0])) {
+            $strlenth += 1;
+        } elseif (strstr($v, 'img')) {
+            $strlenth += 0.8; // 表情为 1
+        } elseif (is_numeric($v)) {
+            //$strlenth +=  0.545;  // 字符像素宽度比例 汉字为1
+            $strlenth += 0.5;    // 字符字节长度比例 汉字为1
+        } else {
+            //$strlenth +=  0.475;  // 字符像素宽度比例 汉字为1
+            $strlenth += 0.5;    // 字符字节长度比例 汉字为1
+        }
+
+        if ($strlenth > $length) {
+            $output .= $ext;
+            break;
+        }
+
+        $output .= $v;
+    }
+
+    return $output;
+}
+
+/**
+ * 图像裁剪（新加）
+ *
+ * @param $source_path   string 原图路径
+ * @param $target_width  string 需要裁剪的宽
+ * @param $target_height string 需要裁剪的高
+ * @return bool|string
+ * @author zsy
+ */
+function imagecropper($source_path, $target_width, $target_height = 'auto')
+{
+    $source_info = getimagesize($source_path);
+    $source_width = $source_info[0];
+    $source_height = $source_info[1];
+
+    // 判断是否存在截图
+    $sourceArr = explode('/', $source_path);
+    $imgNameArr = explode('.', $sourceArr[count($sourceArr) - 1]);
+    $imgName = $imgNameArr[0].'_'.$target_width.'_'.$target_height.'.'.$imgNameArr[1];
+    $fileName = '/data/compress/'.date('Y').'/'.date('md').'/'.date('H').'/';
+    if (!is_dir($fileName)) {
+        mk_dir(SITE_PATH.$fileName, 0777);
+    }
+    $fileName = $fileName.$imgName;
+    unset($sourceArr, $imgNameArr);
+    if(file_exists(SITE_PATH.$fileName)) {
+
+        return SITE_URL.$fileName;
+    }
+    $source_mime = $source_info['mime'];
+    $source_ratio = $source_height / $source_width;
+    $target_ratio = $target_height / $target_width;
+
+    // 源图过高
+    if ($source_ratio > $target_ratio)
+    {
+        $cropped_width = $source_width;
+        $cropped_height = $source_width * $target_ratio;
+        $source_x = 0;
+        $source_y = ($source_height - $cropped_height) / 2;
+    }
+    // 源图过宽
+    elseif ($source_ratio < $target_ratio)
+    {
+        $cropped_width = $source_height / $target_ratio;
+        $cropped_height = $source_height;
+        $source_x = ($source_width - $cropped_width) / 2;
+        $source_y = 0;
+    }
+    // 源图适中
+    else
+    {
+        $cropped_width = $source_width;
+        $cropped_height = $source_height;
+        $source_x = 0;
+        $source_y = 0;
+    }
+
+    switch ($source_mime)
+    {
+        case 'image/gif':
+            $source_image = imagecreatefromgif($source_path);
+            break;
+
+        case 'image/jpeg':
+            $source_image = imagecreatefromjpeg($source_path);
+            break;
+
+        case 'image/png':
+            $source_image = imagecreatefrompng($source_path);
+            break;
+
+        default:
+            return false;
+            break;
+    }
+
+    $target_image = imagecreatetruecolor($target_width, $target_height);
+    $cropped_image = imagecreatetruecolor($cropped_width, $cropped_height);
+
+    // 裁剪
+    imagecopy($cropped_image, $source_image, 0, 0, $source_x, $source_y, $cropped_width, $cropped_height);
+    // 缩放
+    imagecopyresampled($target_image, $cropped_image, 0, 0, 0, 0, $target_width, $target_height, $cropped_width, $cropped_height);
+
+    //保存图片到本地(两者选一)
+    //$randNumber = mt_rand(00000, 99999). mt_rand(000, 999);
+    //$fileName = substr(md5($randNumber), 8, 16) .".png";
+
+    switch ($source_mime)
+    {
+        case 'image/gif':
+            imagegif($target_image, SITE_PATH.$fileName);
+            break;
+
+        case 'image/jpeg':
+            imagejpeg($target_image, SITE_PATH.$fileName);
+            break;
+
+        case 'image/png':
+            imagepng($target_image, SITE_PATH.$fileName);
+            break;
+
+        default:
+            return false;
+            break;
+    }
+    imagedestroy($target_image);
+
+    return SITE_URL.$fileName;
+}

@@ -145,6 +145,32 @@ class SourceModel
                 $info['pic_url_medium'] = $editorImage['pic_url_medium'];
                 $info['pic_url'] = $editorImage['pic_url'];
                 break;
+            case 'question':
+                $info = \Apps\Wenda\Model\Question::getInstance()
+                    ->setQuestionId($row_id)
+                    ->getQuestionById();
+                unset($info['tags']);
+                $info['source_user_info'] = model('User')->getUserInfo($info['uid']);
+
+                $info['source_url'] = U('Wenda/Index/question', array('question_id' => $row_id));
+                $info['source_body'] = $info['title'].'<a href="'.$info['source_url'].'"></a>';
+                $info['source_content'] = ($info['source_user_info'] !== false) ? ('发表问题：'.$info['title']) : '内容已被删除';
+                break;
+            case 'question_answer':
+                $info = \Apps\Wenda\Model\Answer::getInstance()
+                    ->setAnswerId($row_id)
+                    ->getAnswerAdminById();
+                $info['source_user_info'] = model('User')->getUserInfo($info['uid']);
+                $info['source_url'] = U('Wenda/Index/question', array('question_id' => $info['question_id']));
+                //$info['source_body'] = preg_replace('#width=\"\d*\".+height=\"\d*\"#', 'width="100%"', $info['content']);
+                $info['source_body'] = getShort(t($info['content']), 100).''.'<a href="'.$info['source_url'].'"></a>';
+                $info['source_content'] = ($info['source_user_info'] !== false) ? ('回答内容：'.$info['source_body']) : '内容已被删除';
+                // 获取编辑器中的图片内容
+                $editorImage = $this->getEditorImages($info['content']);
+                $info['pic_url_small'] = $editorImage['pic_url_small'];
+                $info['pic_url_medium'] = $editorImage['pic_url_medium'];
+                $info['pic_url'] = $editorImage['pic_url'];
+                break;
             default:
                 // 单独的内容，通过此路径获取资源信息
                 // 通过应用下的{$appname}ProtocolModel.Class.php模型里的getSourceInfo方法，来写各应用的来源数据获取方法

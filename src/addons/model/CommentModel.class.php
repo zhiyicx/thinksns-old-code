@@ -337,6 +337,10 @@ class CommentModel extends Model
     {
         $ids = is_array($ids) ? $ids : explode(',', $ids);
         $map = array();
+        if (!$ids) {
+
+            return false;
+        }
         $map['comment_id'] = array('IN', $ids);
         $comments = $this->field('comment_id, app,`table`, row_id, app_uid, uid')->where($map)->findAll();
         if (empty($comments)) {

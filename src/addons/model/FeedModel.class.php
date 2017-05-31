@@ -77,7 +77,7 @@ class FeedModel extends Model
         $data['app_row_id'] = $app_id;
         $data['app_row_table'] = $app_table;
         $data['publish_time'] = time();
-        $data['from'] = isset($data['from']) ? intval($data['from']) : getVisitorClient();
+        $data['from'] = isset($data['from']) ?: $_REQUEST['from'] ?: getVisitorClient();
         $data['is_del'] = $data['comment_count'] = $data['repost_count'] = 0;
         $data['is_repost'] = $is_repost;
 

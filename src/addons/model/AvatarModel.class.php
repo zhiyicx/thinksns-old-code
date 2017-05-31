@@ -463,7 +463,17 @@ class AvatarModel
             ),
         );
         $context = stream_context_create($opts);
+
         $imageData = file_get_contents($src, false, $context);
+        if (strlen($imageData) == 0) {
+            $ch = curl_init();
+            $timeout = 5;
+            curl_setopt($ch, CURLOPT_URL, $src);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+            $imageData = curl_exec($ch);
+            curl_close($ch);
+        }
 
         $filemtime = microtime(true);
 

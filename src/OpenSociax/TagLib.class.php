@@ -78,7 +78,8 @@ class TagLib
      */
     public function load()
     {
-        $array = (array) (simplexml_load_file($this->xml));
+        $xml = file_get_contents($this->xml);
+        $array = (array) (simplexml_load_string($xml));
         if ($array !== false) {
             $this->parse = $array;
             $this->valid = true;

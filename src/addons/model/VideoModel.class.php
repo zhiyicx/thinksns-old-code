@@ -125,6 +125,14 @@ class VideoModel extends Model
     public function upload_by_web($from = 0)
     {
         set_time_limit(0);
+
+        if (! isset($_FILES['Filedata'])) {
+            return array(
+                'status' => 0,
+                'message' => '上传文件到服务器失败',
+            );
+        }
+
         $video = $_FILES['Filedata'];
         $ext = pathinfo($video['name'], PATHINFO_EXTENSION);
 

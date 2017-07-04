@@ -115,96 +115,90 @@ class VideoModel extends Model
         return $result;
     }
 
+    /**
+     * Upload video by web.
+     *
+     * @param integer $from
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function upload_by_web($from = 0)
     {
-        // $imageinfo = pathinfo($_FILES['pic']['name']);
-        // $image_ext = $imageinfo['extension'];
-        $video_config = model('Xdata')->get('admin_Content:video_config');
-        $videoinfo = pathinfo($_FILES['Filedata']['name']);
-        $video_ext = $videoinfo['extension'];
-        $allowExts = $video_config['video_ext'] ? explode(',', $video_config['video_ext']) : array('mp4');
-        $uploadCondition = $_FILES['Filedata'] && in_array(strtolower($video_ext), $allowExts, true);
-        //如果视频上传正确.
-        if ($uploadCondition) {
-            $savePath = SITE_PATH.$this->_getSavePath(); //网页视频文件夹
-            $sourceSavePath = $savePath.'/source';  //源文件文件夹
-            $partSavePath = $savePath.'/part';  //视频片段文件夹
-            if (!file_exists($sourceSavePath)) {
-                mkdir($sourceSavePath, 0777, true);
-            }
-            if (!file_exists($partSavePath)) {
-                mkdir($partSavePath, 0777, true);
-            }
-            $filename = uniqid();   //文件名称
-            $image_name = $filename.'.jpg';
-            $video_source_name = $filename.'.'.$video_ext;  //源视频名称
-            $video_name = $filename.'.mp4';  //视频名称
-            if (@move_uploaded_file($_FILES['Filedata']['tmp_name'], $sourceSavePath.'/'.$video_source_name)) {
-                //上传到source文件夹
+        set_time_limit(0);
+        $video = $_FILES['Filedata'];
+        $ext = pathinfo($video['name'], PATHINFO_EXTENSION);
 
-                set_time_limit(0);
-                if (PATH_SEPARATOR == ':') {  //Linux
-                    $ffmpegpath = $video_config['ffmpeg_path'];
-                } else {     //Windows
-                    $ffmpegpath = SITE_PATH.$video_config['ffmpeg_path'];
-                }
-                //处理视频格式--转为h264格式
-                if ($video_config['video_transfer_async']) {  //后台处理
-                    $transfer['sourceSavePath'] = $this->_getSavePath().'/source';
-                    $transfer['video_source_name'] = $video_source_name;
-                    $transfer['savePath'] = $this->_getSavePath();
-                    $transfer['video_name'] = $video_name;
-                    $transfer['ctime'] = time();
-                    $transfer['status'] = 0;
-                    $transfer['uid'] = intval($_SESSION['mid']);
-                    $transfer_id = D('video_transfer')->add($transfer);
-                } else {
-                    $command = $ffmpegpath.' -y -i '.$sourceSavePath.'/'.$video_source_name.' -vcodec libx264 '.$savePath.'/'.$video_name;
-                    exec($command);
-                }
-
-                //获取时长
-                $result['timeline'] = $this->get_video_timeline($ffmpegpath, $sourceSavePath.'/'.$video_source_name);
-                //截图
-                $this->get_video_image($ffmpegpath, $sourceSavePath.'/'.$video_source_name, $savePath.'/'.$image_name);
-                //截取视频前5秒
-                $this->get_video_part($ffmpegpath, $sourceSavePath.'/'.$video_name, $partSavePath.'/'.$video_name);
-
-                // # 临时解决方案 #medz
-                $result['video_path'] = $this->_getSavePath().'/source/'.$video_name;
-                // $result['video_path']   = $this->_getSavePath().'/'.$video_name;
-                $result['video_mobile_path'] = $this->_getSavePath().'/'.$video_name;
-                $result['video_part_path'] = $this->_getSavePath().'/part/'.$video_name;
-                $result['size'] = intval($_FILES['Filedata']['size']);
-                $result['name'] = t($_FILES['Filedata']['name']);
-                $result['ctime'] = time();
-                $result['uid'] = intval($_SESSION['mid']);
-                $result['extension'] = $video_ext;
-                $result['image_path'] = $this->_getSavePath().'/'.$image_name;
-                $result['transfer_id'] = $transfer_id;
-
-                if ($image_info = getimagesize($savePath.'/'.$image_name)) {
-                    $result['image_width'] = $image_info[0];
-                    $result['image_height'] = $image_info[1];
-                }
-                $result['from'] = $from;
-                $video_id = $this->add($result);
-                if ($transfer_id) {
-                    D('video_transfer')->where('transfer_id='.$transfer_id)->setField('video_id', $video_id);
-                }
-                $result['image_path'] = SITE_URL.$this->_getSavePath().'/'.$image_name;
-                $result['video_id'] = intval($video_id);
-                $result['status'] = 1;
-            } else {
-                $result['status'] = 0;
-                $result['message'] = '上传失败';
-            }
-        } else {
-            $result['status'] = 0;
-            $result['message'] = '上传失败';
+        if (! in_array(strtolower($ext), $exts = array('mp4', 'ogg'))) {
+            return array(
+                'status' => 0,
+                'message' => '上传格式错误，只允许上传：'.implode(',', $exts),
+            );
+        } elseif ($video['error'] !== UPLOAD_ERR_OK) {
+            return array(
+                'status' => 0,
+                'message' => '文件上传错误，错误码：'.$video['error'],
+            );
         }
 
-        return $result;
+        $path = $this->_getSavePath();
+        $savePath = SITE_PATH.$path;
+        $filename = uniqid();
+        $imageName = $filename.'.jpg';
+        $videoName = $filename.'.'.$ext;
+
+        if (!file_exists($savePath)) {
+            @mkdir($savePath, 0777, true);
+        }
+
+        $videoPath = $savePath.'/'.$videoName;
+        $videoImagePath = $savePath.'/'.$imageName;
+
+        if (! move_uploaded_file($video['tmp_name'], $videoPath)) {
+            return array(
+                'status' => 0,
+                'message' => '保存文件失败！'
+            );
+        }
+
+        $config = model('Xdata')->get('admin_Content:video_config');
+        $ffmpegPath = isset($config['ffmpeg_path']) ? $config['ffmpeg_path'] : null;
+
+        // 截取首帧视频图像
+        $this->get_video_image($ffmpegPath, $videoPath, $videoImagePath);
+
+        $data = array(
+            'uid' => isset($_SESSION['mid']) ? intval($_SESSION['mid']) : 0,
+            'ctime' => time(),
+            'name' => $video['name'],
+            'size' => $video['size'],
+            'timeline' => intval($this->get_video_timeline($ffmpegPath, $videoPath)),
+            'extension' => $ext,
+            'video_path' => $path.'/'.$videoName,
+            'video_part_path' => $path.'/'.$videoName,
+            'video_mobile_path' => $path.'/'.$videoName,
+            'image_path' => null,
+            'image_width' => 0,
+            'image_height' => 0,
+            'save_domain' => 0,
+            'private' => 0,
+            'from' => intval($from),
+            'is_del' => 0,
+            'transfer_id' => 0,
+        );
+
+        if (file_exists($videoImagePath)) {
+            $data['image_path'] = $path.'/'.$imageName;
+
+            $imageInfo = getimagesize($videoImagePath);
+            $data['image_width'] = isset($imageInfo[0]) ? $imageInfo[0] : 0;
+            $data['image_height'] = isset($imageInfo[1]) ? $imageInfo[1] : 0;
+        }
+
+        $data['video_id'] = $this->add($data);
+        $data['status'] = 1;
+        $data['message'] = '上传成功';
+
+        return $data;
     }
 
     public function timeline_format($num)

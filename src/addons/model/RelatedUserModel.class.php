@@ -138,7 +138,7 @@ class RelatedUserModel extends Model
                 !empty($data) && $relatedUseInfo = array_merge($relatedUseInfo, $data);
             }
             // 添加缓存
-            // model('Cache')->set('related_user_'.$GLOBALS['ts']['mid'], $relatedUseInfo, 24 * 60 * 60);
+             model('Cache')->set('related_user_'.$GLOBALS['ts']['mid'], $relatedUseInfo, 24 * 60 * 60);
         }
 
         srand((float) microtime() * 1000000);

@@ -53,7 +53,7 @@ class FeedTopicAdminModel extends Model
             // 操作数据
             $topic_list['data'][$k]['DOACTION'] = '<a href="javascript:void(0);" onclick="admin.setTopic(3,'.$v['topic_id'].','.intval($v['lock']).')">'.$islock.'</a> - ';
             $topic_list['data'][$k]['DOACTION'] .= '<a href="'.U('admin/Content/editTopic', array('topic_id' => $v['topic_id'], 'tabHash' => 'editTopic')).'">编辑</a> - ';
-            $topic_list['data'][$k]['DOACTION'] .= '<a href="javascript:void(0);" onclick="admin.setTopic(1,'.$v['topic_id'].','.intval($v['lock']).')">'.$isrecommend.'</a>';
+            $topic_list['data'][$k]['DOACTION'] .= '<a href="javascript:void(0);" onclick="admin.setTopic(1,'.$v['topic_id'].','.intval($v['recommend']).')">'.$isrecommend.'</a>';
             //$listData['data'][$k]['DOACTION'] .= '<a href="javascript:void(0)" onclick="admin.deleteUser(\''.$v['uid'].'\')">'.L('PUBLIC_STREAM_DELETE').'</a>';
         }
 

@@ -362,6 +362,8 @@ class CommentModel extends Model
             }*/
             if ($c_v['app'] == 'public') {
                 $_comments[$c_v['table']][$c_v['row_id']][] = $c_v['comment_id'];
+            } elseif ($c_v['app'] == 'Information') {
+
             } else {
                 $tmp = model('Feed')->getFeedInfo($c_v['row_id']);
                 $_comments[$c_v['app']][$tmp['app_row_id']] = $c_v['comment_id'];

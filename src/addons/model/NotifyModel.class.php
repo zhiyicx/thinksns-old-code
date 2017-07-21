@@ -224,6 +224,19 @@ class NotifyModel extends Model
                 }
             }
         }
+
+        if ($userInfo && $node != 'atme' && $node != 'comment') {
+            // 发推送信息（判断用户是否打开点赞推送）
+            $pushUids = getSubByKey($userInfo, 'uid');
+            if ($pushUids) {
+                $author = model('User')->getUserInfo($from);
+                $pushArray['type'] = '4'; // 推送类型？1：评论，2：点赞，3：@我的，4：消息，5：新粉丝
+                $pushArray['content'] = $data['body'];
+                $pushArray['uname'] = $author['uname'];
+
+                model('Jpush')->push($pushUids, $data['title'], $pushArray);
+            }
+        }
     }
 
     public function sendNotifyChangeEmail($toUid, $node, $config, $email)
@@ -566,5 +579,41 @@ class NotifyModel extends Model
         }
 
         return $sendto;
+    }
+
+    /**
+     * 发送系统消息，给指定用户
+     * @param  array $data 发送系统消息相关数据
+     * @return boolean   发送失败返回false，发送成功返回新的消息ID
+     */
+    public function sendSystemMessageJpush($uids, $data)
+    {
+        !is_array($uids) && $uids = explode(',', $uids);
+        $uids = array_unique(array_filter($uids));
+        if (!$uids) {
+            return false;
+        }
+
+        $s['node'] = t($data['node']);
+        $s['appname'] = t($data['appname']);
+        $s['is_read'] = 0;
+        $s['title'] = t($data['title']);
+        $s['body'] = h($data['body']);
+        $s['ctime'] = time();
+        $s['from_uid'] = 0;
+
+        foreach ($uids as $v) {
+            $s['uid'] = $v;
+            D('')->table($this->tablePrefix.'notify_message')->add($s);
+            model('UserData')->updateKey('unread_system_message', 1, true, $s['uid']);
+            unset($s['uid']);
+        }
+        // 发推送信息
+        $pushArray['type'] = '4'; // 推送类型？1：评论，2：点赞，3：@我的，4：消息，5：新粉丝 TODO 目前只有消息
+        $pushArray['content'] =  $s['body'];
+
+        model('Jpush')->push($uids, $data['title'], $pushArray);
+
+        return true;
     }
 }

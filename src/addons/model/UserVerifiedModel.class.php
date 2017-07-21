@@ -63,4 +63,114 @@ class UserVerifiedModel extends Model
             S('user_verified_'.$uid, null);
         }
     }
+
+    /**
+     * 获取用户认证状态
+     *
+     * @param $uids
+     * @return array
+     * @author zsy
+     */
+    public function getVerified($uids)
+    {
+        !is_array($uids) && $uids = explode(',', $uids);
+        $verifieds = $this->where(['uid' => ['in', $uids]])->field('id, uid, usergroup_id, verified')->findAll();
+
+        $data = [];
+        foreach ($verifieds as $verified) {
+            $data[$verified['uid']] = $verified;
+        }
+
+        $return = [];
+        foreach ($uids as $v) {
+            if (!$data[$v]) {
+                $return[$v] = [
+                    'id' => 0,
+                    'usergroup_id' => 0,
+                    'verified' => -1
+                ];
+            } else {
+                $return[$v] = [
+                    'id' => $data[$v]['id'],
+                    'usergroup_id' => $data[$v]['usergroup_id'],
+                    'verified' => ($data[$v]['verified'] == 1 ? 1 : ($data[$v]['verified'] == -1 ? 2: 0))
+                ];
+            }
+        }
+
+       return $return;
+    }
+
+    /**
+     * 获取用户认证详情
+     *
+     * @param $uids
+     * @return array
+     * @author zsy
+     */
+    public function getVerifyInfo($uids)
+    {
+        !is_array($uids) && $uids = explode(',', $uids);
+        if (empty($uids)) {
+
+            return [];
+        }
+        $map['uid'] = array('IN', $uids);
+        $verifieds = $this->where($map)->findAll();
+
+        $data = [];
+        foreach ($verifieds as $verified) {
+            $data[$verified['uid']] = $verified;
+        }
+
+        $return = [];
+        foreach ($uids as $v) {
+            if (!$data[$v]) {
+                $return[$v] = [
+                    'id' => 0,
+                    'usergroup_id' => 0,
+                    'verified' => -1
+                ];
+            } else {
+                // 获取认证组
+                $group_ = \Ts\Models\UserGroup::where('user_group_id', $data[$v]['usergroup_id'])->select('user_group_id', 'user_group_name', 'user_group_icon', 'is_authenticate')->first();
+                $group = [
+                    'user_group_id' => $group_->user_group_id,
+                    'user_group_name' => $group_->user_group_name,
+                    'user_group_icon' => $group_->icon,
+                    'is_authenticate' => $group_->is_authenticate,
+                ];
+
+                // 获取认证附件
+                $attachIds = array_filter(explode('|', $data[$v]['attach_id']));
+                if (!$attachIds) {
+                    $attach = [];
+                } else {
+                    $attach_ = \Ts\Models\Attach::whereIn('attach_id', $attachIds)->select('save_path', 'save_name')->get();
+                    foreach ($attach_ as $kk => $vv) {
+                        $attach[$kk] = $vv->path;
+                    }
+                }
+
+                $return[$v] = [
+                    'id' => $data[$v]['id'],
+                    'verified' => ($data[$v]['verified'] == 1 ? 1 : ($data[$v]['verified'] == -1 ? 2: 0)),
+                    'usergroup' => $group,
+                    'user_verified_category' => D('user_verified_category')->where('user_verified_category_id='.$data[$v]['user_verified_category_id'])->field('user_verified_category_id,title')->find(),
+                    'company' => $data[$v]['company'],
+                    'realname' => $data[$v]['realname'],
+                    'idcard' => $data[$v]['idcard'],
+                    'phone' => $data[$v]['phone'],
+                    'info' => $data[$v]['info'],
+                    'attach_id' => array_values($attach),
+                    'reason' => $data[$v]['reason'],
+                ];
+
+                unset($attach, $attach_, $attachIds);
+            }
+        }
+
+
+        return $return;
+    }
 }

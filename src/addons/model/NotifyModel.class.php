@@ -225,10 +225,13 @@ class NotifyModel extends Model
             }
         }
 
-        if ($userInfo && $node != 'atme' && $node != 'comment') {
+        if ($userInfo && $node != 'atme' && $node != 'comment' && $node != 'digg') {
             // 发推送信息（判断用户是否打开点赞推送）
             $pushUids = getSubByKey($userInfo, 'uid');
             if ($pushUids) {
+                foreach ($pushUids as $s) {
+                    model('UserData')->updateKey('unread_system_message', 1, true, $s);
+                }
                 $author = model('User')->getUserInfo($from);
                 $pushArray['type'] = '4'; // 推送类型？1：评论，2：点赞，3：@我的，4：消息，5：新粉丝
                 $pushArray['content'] = $data['body'];

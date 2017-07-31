@@ -146,9 +146,10 @@ class UserVerifiedModel extends Model
                 if (!$attachIds) {
                     $attach = [];
                 } else {
-                    $attach_ = \Ts\Models\Attach::whereIn('attach_id', $attachIds)->select('save_path', 'save_name')->get();
+                    $attach_ = \Ts\Models\Attach::whereIn('attach_id', $attachIds)->select('attach_id', 'save_path', 'save_name')->get();
                     foreach ($attach_ as $kk => $vv) {
-                        $attach[$kk] = $vv->path;
+                        $attach[$kk]['attach_id'] = $vv->attach_id;
+                        $attach[$kk]['url'] = $vv->path;
                     }
                 }
 

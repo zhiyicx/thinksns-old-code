@@ -2065,4 +2065,15 @@ class FeedModel extends Model
 
         return $list;
     }
+
+    public function UpdateFeed($feed_ids)
+    {
+        foreach ($feed_ids as $v) {
+            $data['digg_count'] = model('FeedDigg')->where(array('feed_id' => $v))->count();
+            $data['comment_count'] = model('Comment')->where(array('row_id' => $v, 'table' => 'feed', 'is_del' => 0))->count();
+            $this->where(array('feed_id' => $v))->save($data);
+        }
+
+        $this->cleanCache($feed_ids);
+    }
 }

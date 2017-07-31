@@ -1296,6 +1296,23 @@ class UserModel extends Model
         $_uids = D('user_follow')->where($where)->field('uid,fid')->findAll();
         $_uids_ = array_unique(array_merge(getSubByKey($_uids, 'uid'), getSubByKey($_uids, 'fid')));
 
+        // 删除微博相关点赞/评论数据
+        $feedIdDiggs =  Model('FeedDigg')->where(array('uid' => array('in', $uid_array)))->field('feed_id')->findAll();
+        $feedIdComments =  Model('Comment')->where(array('uid' => array('in', $uid_array), 'table' => 'feed'))->field('feed_id')->findAll();
+        $feedIds = array_merge((array)getSubByKey($feedIdDiggs, 'feed_id'), (array)getSubByKey($feedIdComments, 'row_id'));
+        if ($feedIds) {
+            Model('FeedDigg')->where(array('uid' => array('in', $uid_array)))->delete();
+            Model('Comment')->where(array('uid' => array('in', $uid_array), 'table' => 'feed'))->delete();
+            model('Feed')->UpdateFeed($feedIds);
+        }
+
+        // 清除帖子相关点赞/评论数据
+        $postDiggs = M('weiba_post_digg')->where(array('uid' => array('in', $uid_array)))->field('post_id')->findAll();
+        $postComments = M('weiba_reply')->where(array('uid' => array('in', $uid_array)))->field('post_id')->findAll();
+        // 清除微吧相关成员/帖子数
+        $weibaFollower = M('weiba_follower')->where(['follower_uid' => ['in', $uid_array]])->field('weiba_id')->findAll();
+        $weibaPost = M('weiba_post')->where(['post_uid' => ['in', $uid_array]])->field('weiba_id')->findAll();
+
         $tableStr = $this->_getUserField();
         $tableArr = explode('|', $tableStr);
         $uidStr = implode(',', $uid_array);
@@ -1306,6 +1323,39 @@ class UserModel extends Model
             $sql = 'DELETE FROM '.$prefix.$vo[0].' WHERE '.$vo[1].' IN ('.$uidStr.')';
             $this->execute($sql);
         }
+
+        // 清除帖子相关点赞/评论数据
+        $postIds = array_unique(array_merge((array)getSubByKey($postDiggs, 'post_id'), (array)getSubByKey($postComments, 'post_id')));
+        foreach ($postIds as $v) {
+            $weibaReply = M('weiba_reply')->where(array('post_id' => $v))->field('reply_id, digg_count')->findAll();
+            foreach ($weibaReply as $vv) {
+                $vv_count = M('weiba_reply_digg')->where(['row_id' => $vv['reply_id']])->count();
+                if ($vv_count != $vv['digg_count']) {
+                    M('weiba_reply')->where(['reply_id' => $vv['reply_id']])->save(['digg_count' => $vv_count]);
+                }
+
+                unset($vv_count);
+            }
+            $data['reply_all_count'] = $data['reply_count'] = count($weibaReply);
+            $data['praise'] = M('weiba_post_digg')->where(array('post_id' => $v))->count();
+            D('weiba_post')->where(array('post_id' => $v))->save($data);
+        }
+        // 清除微吧成员信息
+        $weibaIds = array_unique(array_merge((array)getSubByKey($weibaFollower, 'weiba_id'), (array)getSubByKey($weibaPost, 'weiba_id')));
+        if ($weibaIds) {
+            foreach ($weibaIds as $v) {
+                $w_data['follower_count'] = M('weiba_follow')->where(['weiba_id' => $v])->count();
+                $w_data['thread_count'] = M('weiba_post')->where(['weiba_id' => $v, 'is_del' => '0'])->count();
+                M('weiba')->where(['weiba_id' => $v])->save($w_data);
+
+                unset($w_data);
+            }
+        }
+
+        // 删除相关标签
+        Models\AppTag::where('table', 'user')
+            ->whereIn('row_id', $uid_array)
+            ->delete();
 
         // 更新粉丝关注数
         unset($where['_complex']);

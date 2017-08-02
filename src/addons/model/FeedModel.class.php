@@ -164,10 +164,10 @@ class FeedModel extends Model
         $feed_data = Capsule::table('feed_data')
             ->insert(array(
                 'feed_id'      => $feed_id,
-                'feed_data'    => serialize($data),
+                'feed_data'    => formatEmoji(true, serialize($data)),
                 'client_ip'    => get_client_ip(),
                 'client_port'  => get_client_port(),
-                'feed_content' => $data['body'],
+                'feed_content' => formatEmoji(true, $data['body']),
             ));
         // 添加分享成功后
         if ($feed_id && $feed_data) {
@@ -1896,7 +1896,7 @@ class FeedModel extends Model
                 } else {
                     $list[$key]['client_ip'] = $list[$key]['data']['client_ip'];
                     $list[$key]['feed_data'] = $objList[$key]->data->feed_data;
-                    $_data = $var = unserialize(formatEmoji(true, $list[$key]['feed_data']));
+                    $_data = $var = unserialize(formatEmoji(false, $list[$key]['feed_data']));
                     //解析图片
                     if (!empty($_data['attach_id'])) {
                         $var['attachInfo'] = $objList[$key]->getImagesAttribute();
@@ -1983,7 +1983,7 @@ class FeedModel extends Model
                 } else {
                     $value['client_ip'] = $value['data']['client_ip'];
                     $value['feed_data'] = $objList[$key]->data->feed_data;
-                    $_data = $var = unserialize(formatEmoji(true, $value['feed_data']));
+                    $_data = $var = unserialize(formatEmoji(false, $value['feed_data']));
 
                     if (!empty($_data['attach_id'])) {
                         $var['attachInfo'] = $objList[$key]->getImagesAttribute();

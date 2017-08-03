@@ -1295,6 +1295,13 @@ class UserModel extends Model
         $where['_complex'] = $map;
         $_uids = D('user_follow')->where($where)->field('uid,fid')->findAll();
         $_uids_ = array_unique(array_merge(getSubByKey($_uids, 'uid'), getSubByKey($_uids, 'fid')));
+        // 更新粉丝关注数
+        unset($where['_complex']);
+        $where['_complex']['uid'] = array('in', $_uids_);
+        $uids_ = D('user_follow')->where($where)->field('uid')->group('uid')->findAll();
+        unset($where['_complex']);
+        $where['_complex']['fid'] = array('in', $_uids_);
+        $fids_ = D('user_follow')->where($where)->field('fid')->group('fid')->findAll();
 
         // 删除微博相关点赞/评论数据
         $feedIdDiggs =  Model('FeedDigg')->where(array('uid' => array('in', $uid_array)))->field('feed_id')->findAll();
@@ -1310,7 +1317,7 @@ class UserModel extends Model
         $postDiggs = M('weiba_post_digg')->where(array('uid' => array('in', $uid_array)))->field('post_id')->findAll();
         $postComments = M('weiba_reply')->where(array('uid' => array('in', $uid_array)))->field('post_id')->findAll();
         // 清除微吧相关成员/帖子数
-        $weibaFollower = M('weiba_follower')->where(['follower_uid' => ['in', $uid_array]])->field('weiba_id')->findAll();
+        $weibaFollower = M('weiba_follow')->where(['follower_uid' => ['in', $uid_array]])->field('weiba_id')->findAll();
         $weibaPost = M('weiba_post')->where(['post_uid' => ['in', $uid_array]])->field('weiba_id')->findAll();
 
         $tableStr = $this->_getUserField();
@@ -1358,19 +1365,19 @@ class UserModel extends Model
             ->delete();
 
         // 更新粉丝关注数
-        unset($where['_complex']);
-        $where['_complex']['uid'] = array('in', $_uids_);
-        $uids = D('user_follow')->where($where)->field('uid,count(`fid`) as following_count')->group('uid')->findAll();
-        unset($where['_complex']);
-        $where['_complex']['fid'] = array('in', $_uids_);
-        $fids = D('user_follow')->where($where)->field('fid,count(`uid`) as follower_count')->group('fid')->findAll();
-        foreach ($uids as $v) {
-            model('UserData')->setKeyValue($v['uid'], 'following_count', $v['following_count']);
+        $uf_where['uid'] = array('in', $uids_);
+        $uids = D('user_follow')->where($uf_where)->field('uid,count(`fid`) as following_count')->order('field(`uid`, '.implode(',', $uids_).')')->group('uid')->findAll();
+        unset($uf_where);
+        $uf_where['fid'] = array('in', $fids_);
+        $fids = D('user_follow')->where($uf_where)->field('fid,count(`uid`) as follower_count')->order('field(`fid`, '.implode(',', $fids_).')')->group('fid')->findAll();
+
+        foreach ($uids_ as $k => $v) {
+            model('UserData')->setKeyValue($v, 'following_count', $uids[$k]['following_count']);
         }
-        foreach ($fids as $v) {
-            model('UserData')->setKeyValue($v['fid'], 'follower_count', $v['follower_count']);
+        foreach ($fids_ as $k => $v) {
+            model('UserData')->setKeyValue($v, 'follower_count', $fids[$k]['follower_count']);
         }
-        unset($map, $where, $uids, $fids, $_uids_);
+        unset($map, $where, $uids, $uf_where, $fids, $uids_, $fids_, $_uids_);
 
         return $return;
     }
@@ -1410,7 +1417,7 @@ class UserModel extends Model
         $sql = "SELECT TABLE_NAME,COLUMN_NAME FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA='$dbName' AND COLUMN_NAME LIKE '%uid%'";
         $list = M()->query($sql);
         if (empty($list)) {
-            $str .= '|atme:uid|attach:uid|blog:uid|blog_category:uid|channel:uid|channel_follow:uid|check_info:uid|collection:uid|comment:app_uid|comment:uid|comment:to_uid|credit_user:uid|denounce:uid|denounce:fuid|develop:uid|diy_page:uid|diy_widget:uid|event:uid|event_photo:uid|event_user:uid|feed:uid|feedback:uid|find_password:uid|invite_code:inviter_uid|invite_code:receiver_uid|login:uid|login:type_uid|login_logs:uid|login_record:uid|medal_user:uid|message_content:from_uid|message_list:from_uid|message_member:member_uid|notify_email:uid|notify_message:uid|online:uid|online_logs:uid|online_logs_bak:uid|poster:uid|sitelist_site:uid|survey_answer:uid|task_receive:uid|task_user:uid|template_record:uid|tipoff:uid|tipoff:bonus_uid|tipoff_log:uid|tips:uid|user:uid|user_app:uid|user_blacklist:uid|user_blacklist:fid|user_category_link:uid|user_change_style:uid|user_credit_history:uid|user_data:uid|user_department:uid|user_follow:uid|user_follow:fid|user_follow_group:uid|user_follow_group_link:uid|user_group_link:uid|user_official:uid|user_online:uid|user_privacy:uid|user_profile:uid|user_verified:uid|vote:uid|vote_user:uid|vtask:uid|vtask:bonus_uid|vtask_log:uid|weiba:uid|weiba:admin_uid|weiba_apply:follower_uid|weiba_apply:manager_uid|weiba_favorite:uid|weiba_favorite:post_uid|weiba_follow:follower_uid|weiba_log:uid|weiba_post:post_uid|weiba_reply:post_uid|weiba_reply:uid|weiba_reply:to_uid|x_article:uid|x_logs:uid';
+            $str .= '|atme:uid|attach:uid|blog:uid|blog_category:uid|channel:uid|channel_follow:uid|check_info:uid|collection:uid|comment:app_uid|comment:uid|comment:to_uid|credit_user:uid|denounce:uid|denounce:fuid|develop:uid|diy_page:uid|diy_widget:uid|event:uid|event_photo:uid|event_user:uid|feed:uid|feedback:uid|find_password:uid|invite_code:inviter_uid|invite_code:receiver_uid|login:uid|login:type_uid|login_logs:uid|login_record:uid|medal_user:uid|message_content:from_uid|message_list:from_uid|message_member:member_uid|notify_email:uid|notify_message:uid|online:uid|online_logs:uid|online_logs_bak:uid|poster:uid|sitelist_site:uid|survey_answer:uid|task_receive:uid|task_user:uid|template_record:uid|tipoff:uid|tipoff:bonus_uid|tipoff_log:uid|tips:uid|user:uid|user_app:uid|user_blacklist:uid|user_blacklist:fid|user_category_link:uid|user_change_style:uid|user_credit_history:uid|user_data:uid|user_department:uid|user_follow:uid|user_follow_group:uid|user_follow_group_link:uid|user_group_link:uid|user_official:uid|user_online:uid|user_privacy:uid|user_profile:uid|user_verified:uid|vote:uid|vote_user:uid|vtask:uid|vtask:bonus_uid|vtask_log:uid|weiba:uid|weiba:admin_uid|weiba_apply:follower_uid|weiba_apply:manager_uid|weiba_favorite:uid|weiba_favorite:post_uid|weiba_follow:follower_uid|weiba_log:uid|weiba_post:post_uid|weiba_reply:post_uid|weiba_reply:uid|weiba_reply:to_uid|x_article:uid|x_logs:uid';
         } else {
             $prefix = C('DB_PREFIX');
             foreach ($list as $vo) {

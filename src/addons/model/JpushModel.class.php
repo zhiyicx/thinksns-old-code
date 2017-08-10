@@ -75,6 +75,9 @@ class JpushModel extends Model
                 ->iosNotification($alert, array(
                     'extras' => $extras
                 ))
+                ->androidNotification($alert, array(
+                    'extras' => $extras
+                ))
                 ->message($alert, array(
                     'msg_content' => $title,
                     'extras' => $extras

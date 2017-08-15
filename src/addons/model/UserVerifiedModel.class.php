@@ -149,7 +149,7 @@ class UserVerifiedModel extends Model
                     $attach_ = \Ts\Models\Attach::whereIn('attach_id', $attachIds)->select('attach_id', 'save_path', 'save_name')->get();
                     foreach ($attach_ as $kk => $vv) {
                         $attach[$kk]['attach_id'] = $vv->attach_id;
-                        $attach[$kk]['url'] = $vv->path;
+                        $attach[$kk]['url'] = $vv->path ?: ($vv->attach_id> 0 ? getImageUrlByAttachId($vv->attach_id) : '');
                     }
                 }
 

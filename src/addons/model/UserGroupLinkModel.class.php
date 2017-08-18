@@ -77,7 +77,7 @@ class UserGroupLinkModel extends Model
             $return[$uid] = model('Cache')->get('user_group_'.$uid);
             if ($return[$uid] == false) {
                 $map['uid'] = $uid;
-                $list = $this->where($map)->findAll();
+                $list = $this->where($map)->field('distinct user_group_id, uid')->findAll();
                 $return[$uid] = getSubByKey($list, 'user_group_id');
                 model('Cache')->set('user_group_'.$uid, $return[$uid]);
             }

@@ -196,7 +196,7 @@ class UserModel extends Model
                 'IN',
                 $uids,
         );
-        $userGroupLink = D('user_group_link')->where($gmap)->findAll();
+        $userGroupLink = D('user_group_link')->where($gmap)->field('distinct user_group_id, uid')->findAll();
         foreach ($userGroupLink as $v) {
             $userGroupHash[$v['uid']][] = $v['user_group_id'];
         }

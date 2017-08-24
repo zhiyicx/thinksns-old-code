@@ -1299,9 +1299,11 @@ class UserModel extends Model
         unset($where['_complex']);
         $where['_complex']['uid'] = array('in', $_uids_);
         $uids_ = D('user_follow')->where($where)->field('uid')->group('uid')->findAll();
+        $uids_ = getSubByKey($uids_, 'uid');
         unset($where['_complex']);
         $where['_complex']['fid'] = array('in', $_uids_);
         $fids_ = D('user_follow')->where($where)->field('fid')->group('fid')->findAll();
+        $fids_ = getSubByKey($fids_, 'fid');
 
         // 删除微博相关点赞/评论数据
         $feedIdDiggs =  Model('FeedDigg')->where(array('uid' => array('in', $uid_array)))->field('feed_id')->findAll();

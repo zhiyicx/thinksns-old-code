@@ -176,4 +176,28 @@ class FeedTopicModel extends Model
         // }
         // return false;
     }
+
+    /**
+     * 判断内容中话题是否被锁定
+     *
+     * @param $content
+     * @return bool
+     * @author zsy
+     */
+    public function isLock($content) {
+        $content = str_replace('＃', '#', $content);
+        preg_match_all("/#([^#]*[^#^\s][^#]*)#/is", $content, $arr);
+        $arr = array_unique($arr[1]);
+        foreach ($arr as &$v) {
+            $v = '"'.t($v).'"';
+        }
+
+        if ($this->where(['topic_name' => ['in', $arr], 'lock' => '1'])->count() < 1) {
+
+            return false;
+        }
+
+        return true;
+    }
+
 }

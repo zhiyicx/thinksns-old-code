@@ -3697,3 +3697,47 @@ function imagecropper($source_path, $target_width, $target_height = 'auto')
 
     return SITE_URL.$fileName;
 }
+
+/**
+ * 敏感词判断
+ *
+ * @param $content
+ * @return bool|mixed
+ * @author zsy
+ */
+function sensitiveWord($content)
+{
+    $obj = \Ts\Models\SensitiveWord::select('word', 'replace', 'type')->get();
+    if (!$obj) {
+
+        return $content;
+    }
+    $prohibits = [];
+    $replace = [];
+    foreach ($obj as $v) {
+        if ($v->type == 1) {
+            $prohibits[] = [
+                'word' => $v->word,
+                'type' => $v->type,
+            ];
+        } elseif ($v->type == 3) {
+            $replace[] = [
+                'word' => $v->word,
+                'replace' => $v->replace,
+                'type' => $v->type,
+            ];
+        }
+    }
+
+    if (str_replace(getSubByKey($prohibits, 'word'), '**', $content) != $content) {
+
+        return false;
+    }
+
+    foreach ($replace as $v) {
+        $content = str_replace($v['word'], $v['replace'], $content);
+        return $content;
+    }
+
+    return $content;
+}

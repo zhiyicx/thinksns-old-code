@@ -1413,7 +1413,7 @@ class UserModel extends Model
 
     private function _getUserField()
     {
-        $str = 'user_follow:fid'; // 特殊情况下的配置
+        $str = 'user_follow:fid|user_blacklist:fid'; // 特殊情况下的配置
 
         $dbName = C('DB_NAME');
         $sql = "SELECT TABLE_NAME,COLUMN_NAME FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA='$dbName' AND COLUMN_NAME LIKE '%uid%'";

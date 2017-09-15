@@ -600,7 +600,7 @@ class NotifyModel extends Model
         $s['node'] = t($data['node']);
         $s['appname'] = t($data['appname']);
         $s['is_read'] = 0;
-        $s['title'] = t($data['title']);
+        $s['title'] = getShort(t($data['title']), 50, '...');
         $s['body'] = h($data['body']);
         $s['ctime'] = time();
         $s['from_uid'] = 0;
@@ -613,7 +613,7 @@ class NotifyModel extends Model
         }
         // 发推送信息
         $pushArray['type'] = '4'; // 推送类型？1：评论，2：点赞，3：@我的，4：消息，5：新粉丝 TODO 目前只有消息
-        $pushArray['content'] =  $s['body'];
+        $pushArray['content'] =  getShort(t($s['body']), 100, '...');
 
         model('Jpush')->push($uids, $data['title'], $pushArray);
 

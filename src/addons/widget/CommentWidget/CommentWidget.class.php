@@ -216,7 +216,7 @@ class CommentWidget extends Widget
         //兼容旧方法
         if (empty($data['app_detail_summary'])) {
             $source = model('Source')->getSourceInfo($data['table'], $data['row_id'], false, $data['app']);
-            $data['app_detail_summary'] = $source['source_body'];
+            $data['app_detail_summary'] = formatEmoji(true, $source['source_body']);
             $data['app_detail_url'] = $source['source_url'];
             $data['app_uid'] = $source['source_user_info']['uid'];
         } else {

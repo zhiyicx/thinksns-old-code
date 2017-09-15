@@ -60,10 +60,6 @@ class CollectionWidget extends Widget
 
         // 验证资源是否已经被删除
         $source = model('Source')->getSourceInfo($data['source_table_name'], $data['source_id'], false, $data['source_app']);
-        /*$key = $data['source_table_name'].'_id';
-        $map[$key] = $data['source_id'];
-        $map['is_del'] = 0;
-        $isExist = model(ucfirst($data['source_table_name']))->where($map)->count();*/
         if (empty($source)) {
             $return = array('status' => 0, 'data' => '内容已被删除，收藏失败');
             exit(json_encode($return));

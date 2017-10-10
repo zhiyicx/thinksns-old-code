@@ -325,7 +325,16 @@ abstract class Action
             $GLOBALS['time_run_detail']['action_init_user_data'] = microtime(true);
 
             $GLOBALS['time_run_detail']['action_init_user_disable'] = microtime(true);
-
+            // 判断用户是否禁用
+            $isDisable = model('DisableUser')->isDisableUser($this->mid);
+            if ($isDisable) {
+                $this->error = '此用户已被禁用';
+                unset($_SESSION['mid'], $_SESSION['SITE_KEY']); // 注销session
+                cookie('TSV4_LOGGED_USER', null);    // 注销cookie
+                $url = $_SERVER['HTTP_REFERER'];
+                header('Location: '.$url);
+                return false;
+            }
             //oauth_token
             $login = D('login')->where('uid='.$this->mid." AND type='location'")->find();
             if (!$login) {

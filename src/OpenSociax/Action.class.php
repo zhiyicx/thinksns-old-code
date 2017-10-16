@@ -245,7 +245,14 @@ abstract class Action
         if (isset($_REQUEST['uid']) && $_REQUEST['uid'] > 0) {
             $this->uid = $GLOBALS['ts']['uid'] = (int) $_REQUEST['uid'];
         }
-
+        // 判断用户是否被删除
+        $user = D('User')->where(['uid'=>$this->mid])->find();
+        if ($user == null) {
+            $this->error = '此用户已被删除';
+            unset($_SESSION['mid'], $_SESSION['SITE_KEY']); // 注销session
+            cookie('TSV4_LOGGED_USER', null);    // 注销cookie
+            return false;
+        }
         // 获取用户基本资料
         if ($this->mid > 0 || $this->uid > 0) {
             $GLOBALS['ts']['user'] = !empty($this->mid) ? $this->user = model('User')->getUserInfo($this->mid) : array();

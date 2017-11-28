@@ -1639,7 +1639,7 @@ function replaceUrl($content)
 {
     //$content = preg_replace_callback('/((?:https?|ftp):\/\/(?:[a-zA-Z0-9][a-zA-Z0-9\-]*)*(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’,，。]*)?)/u', '_parse_url', $content);
     $content = str_replace('[SITE_URL]', SITE_URL, $content);
-    $content = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u', '_parse_url', $content);
+    $content = preg_replace_callback('/((http|https|Http|Https):\/\/|www.|Www.|WWW.)*(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(\/[a-zA-Z0-9&%_\.\/-~-]*)?/', '_parse_url', $content);
 
     return $content;
 }

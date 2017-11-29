@@ -415,7 +415,7 @@ class AvatarModel
         } else {
 
             //切割原图
-            require_once SITE_PATH.'/addons/library/phpthumb/ThumbLib.inc.php';
+            require_once SITE_PATH.'/src/vendor/zhiyicx/thinksns-old-code/src/addons/library/phpthumb/ThumbLib.inc.php';
             $thumb = PhpThumbFactory::create(UPLOAD_PATH.'/'.$facedata['picurl']);
             $res = $thumb->crop($x1, $y1, $w, $h);
 

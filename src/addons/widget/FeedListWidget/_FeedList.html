@@ -35,7 +35,7 @@ $admintaskrecom = CheckPermission('vtask_admin','vtask_recommend');
         <?php endif; ?>
         <span class="title-from hidden"><i class="ico-weiba"></i>发表在 </span>
       </p>
-      <div class="contents clearfix">{$vl.body|format=true}</div>
+      <div class="contents clearfix" onclick="seeFend({$vl['feed_id']},{$vl['uid']},event)">{$vl.body|format=true}</div>
       <p class="info">
         <span class="right">
           <php>if(in_array('comment',$weibo_premission)):</php>
@@ -159,7 +159,13 @@ $.fn.highlight=function(z){
         });
     return this;
 }
-
+function seeFend(feed_id,uid,e) {
+    e = e || window.event;
+    if(e.target.tagName == 'A') {
+        return
+    }
+    window.location.href = U('public/Profile/feed')+'&feed_id='+feed_id+'&uid='+uid;
+}
 $(document).ready(function(){
   if(!'{$topic_id}' && '{$feed_key}'){
   	var key3 = '{$feed_key}';

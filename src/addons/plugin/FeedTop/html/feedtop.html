@@ -38,7 +38,7 @@ $canfeedshare = CheckPermission('core_normal','feed_share');
                   <span class="title-from hidden"><i class="ico-weiba"></i>发表在 </span>
 				</p>
 				
-				<div class="contents clearfix">
+				<div class="contents clearfix" onclick="seeFend({$vl['feed_info']['feed_id']},{$vl['feed_info']['uid']},event)">
 							
 				{$vl['feed_info']['body']|format=true}</div>
 				 <p class="info"> 
@@ -114,7 +114,13 @@ $canfeedshare = CheckPermission('core_normal','feed_share');
 var rm_feed_top = function(feed_id) {
 	$("#feed_top_"+feed_id).fadeOut(1000);
 };
-
+function seeFend(feed_id,uid,e) {
+    e = e || window.event;
+    if(e.target.tagName == 'A') {
+        return
+    }
+    window.location.href = U('public/Profile/feed')+'&feed_id='+feed_id+'&uid='+uid;
+}
 function close_feed_top(feed_id){
 	$.post("{:Addons::createAddonUrl('FeedTop', 'close_feed_top')}",{feed_id:feed_id},function(txt){
 		if(txt==1){

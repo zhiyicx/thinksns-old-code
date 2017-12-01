@@ -633,6 +633,12 @@ class WebMessageModel
         // TODO 私信隐私检查
         // 准备消息数据
         $data['from_uid'] = $this->userId;
+        //获取所属用户组权限
+        $userGroupId = D('UserGroupLink')->where(['uid'=>$this->userId])->getField('user_group_id');
+        $permission = model('Permission')->getGroupPermission($userGroupId);
+        if(empty($permission["core"]['normal']['send_message'])){//是否可以发私信
+            return ['send_message'=>'所属用户组禁止发私信！'];
+        }
         $data['type'] = $type;
         $data['list_id'] = $roomId;
         $data['mtime'] = time();

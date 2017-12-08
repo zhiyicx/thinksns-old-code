@@ -1899,20 +1899,33 @@ class FeedModel extends Model
                     $_data = $var = unserialize(formatEmoji(false, $list[$key]['feed_data']));
                     //解析图片
                     if (!empty($_data['attach_id'])) {
-                        $var['attachInfo'] = $objList[$key]->getImagesAttribute();
-                        foreach ($var['attachInfo'] as $ak => $av) {
-                            $_attach = array(
-                                'attach_id'  => $_data['attach_id'][$ak],
-                                'attach_url' => $av['src'],
-                                'extension'  => '',
-                                'size'       => '',
-                            );
-                            if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
-                                $_attach['attach_small'] = getImageUrl($av['path'], 120, 120, true);
-                                $_attach['attach_medium'] = getImageUrl($av['path'], 240);
-                                $_attach['attach_middle'] = getImageUrl($av['path'], 740);
+                        if ($_data['type'] == 'postimage') {
+                            $var['attachInfo'] = $objList[$key]->getImagesAttribute();
+                            foreach ($var['attachInfo'] as $ak => $av) {
+                                $_attach = array(
+                                    'attach_id' => $_data['attach_id'][$ak],
+                                    'attach_url' => $av['src'],
+                                    'extension' => '',
+                                    'size' => '',
+                                );
+                                if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
+                                    $_attach['attach_small'] = getImageUrl($av['path'], 120, 120, true);
+                                    $_attach['attach_medium'] = getImageUrl($av['path'], 240);
+                                    $_attach['attach_middle'] = getImageUrl($av['path'], 740);
+                                }
+                                $var['attachInfo'][$ak] = $_attach;
                             }
-                            $var['attachInfo'][$ak] = $_attach;
+                        } elseif ($_data['type'] == 'postfile') {
+                            $var['attach_info'] = $objList[$key]->postfile();
+                            foreach ($var['attach_info']['files'] as $ak => $av) {
+                                $_attach = array(
+                                    'attach_id'  => $_data['attach_id'][$ak],
+                                    'attach_name' => $av['name'],
+                                    'extension' => $av['extension'],
+                                    'size'       => $av['size'],
+                                );
+                                $var['attachInfo'][$ak] = $_attach;
+                            }
                         }
                     }
                     // 解析视频
@@ -1986,20 +1999,33 @@ class FeedModel extends Model
                     $_data = $var = unserialize(formatEmoji(false, $value['feed_data']));
 
                     if (!empty($_data['attach_id'])) {
-                        $var['attachInfo'] = $objList[$key]->getImagesAttribute();
-                        foreach ($var['attachInfo'] as $ak => $av) {
-                            $_attach = array(
-                                'attach_id'  => $_data['attach_id'][$ak],
-                                'attach_url' => $av['src'],
-                                'extension'  => '',
-                                'size'       => '',
-                            );
-                            if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
-                                $_attach['attach_small'] = getImageUrl($av['path'], 120, 120, true);
-                                $_attach['attach_medium'] = getImageUrl($av['path'], 240);
-                                $_attach['attach_middle'] = getImageUrl($av['path'], 740);
+                        if ($_data['type'] == 'postimage') {
+                            $var['attachInfo'] = $objList[$key]->getImagesAttribute();
+                            foreach ($var['attachInfo'] as $ak => $av) {
+                                $_attach = array(
+                                    'attach_id' => $_data['attach_id'][$ak],
+                                    'attach_url' => $av['src'],
+                                    'extension' => '',
+                                    'size' => '',
+                                );
+                                if ($_data['type'] == 'postimage' || $_data['type'] == 'postvideo') {
+                                    $_attach['attach_small'] = getImageUrl($av['path'], 120, 120, true);
+                                    $_attach['attach_medium'] = getImageUrl($av['path'], 240);
+                                    $_attach['attach_middle'] = getImageUrl($av['path'], 740);
+                                }
+                                $var['attachInfo'][$ak] = $_attach;
                             }
-                            $var['attachInfo'][$ak] = $_attach;
+                        } elseif ($_data['type'] == 'postfile') {
+                            $var['attach_info'] = $objList[$key]->postfile();
+                            foreach ($var['attach_info']['files'] as $ak => $av) {
+                                $_attach = array(
+                                    'attach_id'  => $_data['attach_id'][$ak],
+                                    'attach_name' => $av['name'],
+                                    'extension' => $av['extension'],
+                                    'size'       => $av['size'],
+                                );
+                                $var['attachInfo'][$ak] = $_attach;
+                            }
                         }
                     }
                     // 解析视频

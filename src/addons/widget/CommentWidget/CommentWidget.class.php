@@ -229,9 +229,14 @@ class CommentWidget extends Widget
         $data['comment_id'] = model('Comment')->addComment($data);
         $return['sql'] = D()->getLastSql();
         if ($data['comment_id']) {
-            $talkbox = intval($_POST['talkbox']);
-            $return['status'] = 1;
-            $return['data'] = $this->parseComment($data, $talkbox);
+            if($filterContentStatus['type'] == 2){
+                $return['status'] = 1000;
+                $return['data'] = '评论内容包含审核关键词，需审核后展示！';
+            }else{
+                $talkbox = intval($_POST['talkbox']);
+                $return['status'] = 1;
+                $return['data'] = $this->parseComment($data, $talkbox);
+            }
 
             // 同步到微吧
             if ($data['app'] == 'weiba') {

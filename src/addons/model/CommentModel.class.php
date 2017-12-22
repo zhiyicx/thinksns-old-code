@@ -237,12 +237,14 @@ class CommentModel extends Model
             $scream = explode('//', $data['content']);
             model('Atme')->setAppName('Public')->setAppTable('comment')->addAtme(trim($scream[0]), $res, null, $lessUids);
             // 被评论内容的“评论统计数”加1，同时可检测出app，table，row_id的有效性
-            $pk = D($add['table'])->getPk();
-            $where = "`{$pk}`={$add['row_id']}";
-            D($add['table'])->setInc('comment_count', $where);
+            if($filterStatus['type'] != 2){ //内容是否需要审核
+                $pk = D($add['table'])->getPk();
+                $where = "`{$pk}`={$add['row_id']}";
+                D($add['table'])->setInc('comment_count', $where);
 
-            D($add['app'])->setInc('commentCount', $where);
-            D($add['app'])->setInc('comment_all_count', $where);
+                D($add['app'])->setInc('commentCount', $where);
+                D($add['app'])->setInc('comment_all_count', $where);
+            }
             //评论时间
             M($add['app'])->where('feed_id='.$add['row_id'])->setField('rTime', time());
             // 给应用UID添加一个未读的评论数 原作者
@@ -383,31 +385,35 @@ class CommentModel extends Model
         $res = $this->where($map)->save($data);
 
         if ($res) {
-            // 更新统计数目
-               foreach ($_comments as $_c_k => $_c_v) {
-                   foreach ($_c_v as $_c_v_k => $_c_v_v) {
-                       // 应用表格“评论统计”统一使用comment_count字段名
-                    $field = D($_c_k)->getPK();
-                       if (empty($field)) {
-                           $field = $_c_k.'_id';
-                       }
-                       D($_c_k)->setDec('comment_count', "`{$field}`={$_c_v_k}", count($_c_v_v));
-                    //兼容旧app评论
-                    D($_c_k)->setDec('commentCount', "`{$field}`={$_c_v_k}", count($_c_v_v));
-                       D($_c_k)->setDec('comment_all_count', "`{$field}`={$_c_v_k}", count($_c_v_v));
-                    //dump(D($_c_k)->getLastSql());
-                    if ($app_name == 'feed' || $app_name == 'public') {
-                        model($_c_k)->cleanCache($_c_v_k);
+            foreach ($comments as $v) {
+                if ($v['is_audit'] == 1) {
+                    // 更新统计数目
+                    foreach ($_comments as $_c_k => $_c_v) {
+                        foreach ($_c_v as $_c_v_k => $_c_v_v) {
+                            // 应用表格“评论统计”统一使用comment_count字段名
+                            $field = D($_c_k)->getPK();
+                            if (empty($field)) {
+                                $field = $_c_k . '_id';
+                            }
+                            D($_c_k)->setDec('comment_count', "`{$field}`={$_c_v_k}", count($_c_v_v));
+                            //兼容旧app评论
+                            D($_c_k)->setDec('commentCount', "`{$field}`={$_c_v_k}", count($_c_v_v));
+                            D($_c_k)->setDec('comment_all_count', "`{$field}`={$_c_v_k}", count($_c_v_v));
+                            //dump(D($_c_k)->getLastSql());
+                            if ($app_name == 'feed' || $app_name == 'public') {
+                                model($_c_k)->cleanCache($_c_v_k);
+                            }
+                        }
                     }
-                   }
-               }
 
-            //删除积分
-            if ($app_name == 'weiba') {
-                model('Credit')->setUserCredit($uid, 'delete_topic_comment');
-            }
-            if ($app_name == 'public') {
-                model('Credit')->setUserCredit($uid, 'delete_weibo_comment');
+                    //删除积分
+                    if ($app_name == 'weiba') {
+                        model('Credit')->setUserCredit($uid, 'delete_topic_comment');
+                    }
+                    if ($app_name == 'public') {
+                        model('Credit')->setUserCredit($uid, 'delete_weibo_comment');
+                    }
+                }
             }
         }
 
@@ -467,15 +473,18 @@ class CommentModel extends Model
         $comment = $this->field('comment_id, app,`table`, row_id, app_uid, uid')->where($map)->find();
         $save['is_del'] = 0;
         if ($this->where($map)->save($save)) {
-            D($comment['table'])->setInc('comment_count', '`'.$comment['table'].'_id`='.$comment['row_id']);
-            // 删除分享缓存
-            switch ($comment['table']) {
-                case 'feed':
-                    $feedIds = $this->where($map)->getAsFieldArray('row_id');
-                    model('Feed')->cleanCache($feedIds);
-                    break;
+            foreach ($comment as $v) {
+                if ($v['is_audit'] == 1) {
+                    D($comment['table'])->setInc('comment_count', '`' . $comment['table'] . '_id`=' . $comment['row_id']);
+                    // 删除分享缓存
+                    switch ($comment['table']) {
+                        case 'feed':
+                            $feedIds = $this->where($map)->getAsFieldArray('row_id');
+                            model('Feed')->cleanCache($feedIds);
+                            break;
+                    }
+                }
             }
-
             return true;
         }
 
@@ -498,6 +507,16 @@ class CommentModel extends Model
             $map['comment_id'] = is_array($comment_id) ? array('IN', $comment_id) : intval($comment_id);
             $save['is_audit'] = 1;
             $res = $this->where($map)->save($save);
+            $comment_id = is_array($comment_id) ? $comment_id : [$comment_id];
+            foreach ($comment_id as $v){
+                $add = $this->where(['comment_id'=>$v])->find();
+                $pk = D($add['table'])->getPk();
+                $where = "`{$pk}`={$add['row_id']}";
+                D($add['table'])->setInc('comment_count', $where);
+                D($add['app'])->setInc('commentCount', $where);
+                D($add['app'])->setInc('comment_all_count', $where);
+                model('Feed')->cleanCache($add['row_id']);
+            }
             if ($res) {
                 $return = array('status' => 1);
             }

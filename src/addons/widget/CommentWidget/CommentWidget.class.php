@@ -102,6 +102,7 @@ class CommentWidget extends Widget
             $map['row_id'] = intval($var['row_id']); // 必须存在
             if (!empty($map['row_id'])) {
                 // 分页形式数据
+                $map['is_audit'] = 1;
                 $var['list'] = model('Comment')->getCommentList($map, 'comment_id '.t($var['order']), intval($var['limit']));
             }
         } // 渲染模版
@@ -145,6 +146,7 @@ class CommentWidget extends Widget
             $var['app_name'] = t($_POST['app_name']);
             $var['table'] = t($_POST['table']);
             $var['row_id'] = intval($_POST['row_id']);
+            $map['is_audit'] = 1;//获取已审评论列表
             $var['list'] = model('Comment')->getCommentList($map, 'comment_id '.$var['order'], $var['limit']);
         }
         $content = $this->renderFile(dirname(__FILE__).'/commentList.html', $var);

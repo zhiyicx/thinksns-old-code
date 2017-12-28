@@ -220,17 +220,23 @@ class PassportModel
             $login_error_time = intval($login_error_time) + 1;
             // cookie('login_error_time', $login_error_time);
             model('UserData')->setKeyValue($uid, 'login_error_time', $login_error_time);
-
-            $this->error = '密码输入错误，您还可以输入'.(6 - $login_error_time).'次';            // 密码错误
-
-            if ($login_error_time >= 6) {
+            //获取锁定配置
+            $lock = model('Xdata')->get('admin_User:setLock');
+            $inputNum = intval($lock['inputNum'])?:6;//输入次数
+            $this->error = '密码输入错误，您还可以输入'.($inputNum - $login_error_time).'次';            // 密码错误
+            if ($login_error_time >= $inputNum) {
+                //获取锁定时间
+                if(is_numeric($lock['lockTime'])){
+                    $lockTime = intval($lock['lockTime']);
+                }else{
+                    $lockTime = 60;
+                }
                 // 记录锁定账号时间
-                $save['locktime'] = time() + 60 * 60;
+                $save['locktime'] = time() + 60 * $lockTime;
                 $save['ip'] = get_client_ip();
                 $save['ctime'] = time();
-                $m['uid'] = $save['uid'] = $uid;
-
-                $this->error = L('PUBLIC_ACCOUNT_LOCK');        // 您输入的密码错误次数过多，帐号将被锁定1小时
+                $m['uid'] = $save['uid'] = $user['uid'];
+                $this->error = '您输入的密码错误次数过多，帐号将被锁定'.$lockTime.'分钟';        // 您输入的密码错误次数过多，帐号将被锁定1小时
                 // 发送锁定通知
                 model('Notify')->sendNotify($uid, 'user_lock');
 

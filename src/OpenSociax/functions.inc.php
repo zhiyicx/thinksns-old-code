@@ -2324,7 +2324,8 @@ function showTreeCategory($data, $stable, $left, $delParam, $level = 0, $ext = '
         if ($isFold) {
             $html .= '<a href="javascript:;" onclick="admin.foldCategory('.$val['id'].')"><img id="img_'.$val['id'].'" src="'.__THEME__.'/admin/image/on.png" /></a>';
         }
-        $html .= '<span>'.$val['title'].'</span></div><div class="c2">';
+        $sensitive_category = $stable=='sensitive_category'?'(id：'.$val['id'].')':'';
+        $html .= '<span>'.$val['title'].$sensitive_category.'</span></div><div class="c2">';
         if ($level == 0 || $times < $level) {
             $html .= '<a href="javascript:;" onclick="admin.addTreeCategory('.$val['id'].', \''.$stable.'\', '.$limit.');">添加子分类</a>&nbsp;-&nbsp;';
         }

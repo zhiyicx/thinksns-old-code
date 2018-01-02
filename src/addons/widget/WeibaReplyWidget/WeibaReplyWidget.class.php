@@ -208,8 +208,13 @@ class WeibaReplyWidget extends Widget
             if ($data['attach_info']['attach_type'] == 'weiba_comment_image' || $data['attach_info']['attach_type'] == 'feed_image') {
                 $data['attach_info']['attach_url'] = getImageUrl($data['attach_info']['save_path'].$data['attach_info']['save_name'], 590);
             }
-            $return['status'] = 1;
-            $return['data'] = $this->parseReply($data);
+            if($filterContentStatus['type'] == 2){
+                $return['status'] = 1000;
+                $return['data'] = '评论内容包含审核关键词，需审核后展示！';
+            }else {
+                $return['status'] = 1;
+                $return['data'] = $this->parseReply($data);
+            }
         }
         echo json_encode($return);
         exit();

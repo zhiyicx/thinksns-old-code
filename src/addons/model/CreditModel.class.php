@@ -458,9 +458,9 @@ class CreditModel extends Model
         $add['uid'] = intval($data['toUid']);
         $add['des'] = t($data['desc']);
         if(!empty($add['des'])){
-            $add2['action'] = getUserName(intval($data['fromUid'])).' 转入'.'--'.$add['des'];
+            $add['action'] = getUserName(intval($data['fromUid'])).' 转入'.'--'.$add['des'];
         }else{
-            $add2['action'] = getUserName(intval($data['fromUid'])).' 转入';
+            $add['action'] = getUserName(intval($data['fromUid'])).' 转入';
         }
         $add['change'] = intval($data['num']);
         $add['ctime'] = time();
@@ -470,9 +470,9 @@ class CreditModel extends Model
         $add2['uid'] = intval($data['fromUid']);
         $add2['change'] = -1 * intval($data['num']);
         if(!empty($add['des'])){
-            $add2['action'] = '转给 '.getUserName($add2['uid']).' - '.$add['des'];
+            $add2['action'] = '转给 '.getUserName($add['uid']).' - '.$add['des'];
         }else{
-            $add2['action'] = '转给 '.getUserName($add2['uid']);
+            $add2['action'] = '转给 '.getUserName($add['uid']);
         }
         $add2['detail'] = '{"score":"'.$add2['change'].'"}';
         M('credit_user')->where("uid={$add2['uid']}")->save(array('score' => $score2 - $add['change']));

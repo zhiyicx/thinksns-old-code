@@ -462,21 +462,22 @@ class CreditModel extends Model
         }else{
             $add['action'] = getUserName(intval($data['fromUid'])).' 转入';
         }
-        $add['change'] = intval($data['num']);
+        $add['change'] = '积分<font color="red">+'.intval($data['num']).'</font>';
         $add['ctime'] = time();
-        $add['detail'] = '{"score":"'.$add['change'].'"}';
+        $add['detail'] = '{"score":"+'.intval($data['num']).'"}';
 
         $add2 = $add;
         $add2['uid'] = intval($data['fromUid']);
-        $add2['change'] = -1 * intval($data['num']);
+        $add2['change'] = '积分<font color="red">'.-1 * intval($data['num']).'</font>';
         if(!empty($add['des'])){
             $add2['action'] = '转给 '.getUserName($add['uid']).' - '.$add['des'];
         }else{
             $add2['action'] = '转给 '.getUserName($add['uid']);
         }
-        $add2['detail'] = '{"score":"'.$add2['change'].'"}';
-        M('credit_user')->where("uid={$add2['uid']}")->save(array('score' => $score2 - $add['change']));
-        M('credit_user')->where("uid={$add['uid']}")->save(array('score' => $score + $add['change']));
+        $add2['detail'] = '{"score":"-'.intval($data['num']).'"}';
+        $add2['reason'] = $add['uid'];//收款人用户id
+        M('credit_user')->where("uid={$add2['uid']}")->save(array('score' => $score2 - intval($data['num'])));
+        M('credit_user')->where("uid={$add['uid']}")->save(array('score' => $score + intval($data['num'])));
         //转账对象积分变动记录
         //当前用户积分变动记录
         D('credit_record')->add($add) && D('credit_record')->add($add2);

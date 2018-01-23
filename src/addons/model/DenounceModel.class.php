@@ -46,14 +46,18 @@ class DenounceModel extends Model
      *
      * @return mix 删除失败返回false，成功返回删除的资源ID
      */
-    public function deleteDenounce($ids, $state)
+    public function deleteDenounce($ids, $state=0)
     {
         $weiboIds = $this->_getWeiboIdsByDenounce($ids);
         $weibo_map['feed_id'] = array('IN', $weiboIds);
-        $weibo_set = model('Feed')->where($weibo_map)->save(array('is_del' => 1));
+        //$weibo_set = model('Feed')->where($weibo_map)->save(array('is_del' => 1));
         if ($state == 0) {
+            //假删除
+            model('Feed')->doEditFeed($weiboIds, 'delFeed', L('PUBLIC_STREAM_DELETE'));
             $result = $this->where($this->_paramMaps($ids))->save(array('state' => '1'));
         } elseif ($state == 1) {
+            //真删除
+            model('Feed')->doEditFeed($weiboIds, 'deleteFeed', L('PUBLIC_REMOVE_COMPLETELY'));
             $result = $this->where($this->_paramMaps($ids))->delete();
         }
 
@@ -71,7 +75,8 @@ class DenounceModel extends Model
     {
         $weiboIds = $this->_getWeiboIdsByDenounce($ids);
         $weibo_map['feed_id'] = array('IN', $weiboIds);
-        $weibo_set = model('Feed')->where($weibo_map)->save(array('is_del' => 0));
+        //$weibo_set = model('Feed')->where($weibo_map)->save(array('is_del' => 0));
+        model('Feed')->doEditFeed($weiboIds, 'feedRecover', L('PUBLIC_RECOVER'));
         // 删除举报信息
         $result = $this->where($this->_paramMaps($ids))->delete();
 

@@ -62,13 +62,11 @@ class RelatedGroupWidget extends Widget
         $var['uid'] = isset($data['uid']) ? intval($data['uid']) : $GLOBALS['ts']['mid'];
         // 显示相关人数
         $var['limit'] = isset($data['limit']) ? intval($data['limit']) : 4;
-
-        //$key = '_getRelatedGroup_' . $var ['uid'] . '_' . $var ['limit'] . '_' . date ( 'Ymd' );
-        //$var ['Group'] = S ( $key );
-        //if ($var ['Group'] == false || intval ( $_REQUEST ['rel'] ) == 1) {
-            $var['Group'] = D('Weiba', 'weiba')->interestingWeiba($var['uid'], $var['limit']);
-            //S ( $key, $var ['Group'], 86400 );
-        //}
+        //    $var['Group'] = D('Weiba', 'weiba')->interestingWeiba($var['uid'], $var['limit']);
+        $map['recommend'] = 1;
+        $map['status'] = 1;
+        $map['is_del'] = 0;
+        $var['Group'] = D('weiba')->where($map)->order('rand()')->findPage($var['limit']);
         //dump($var);exit;
         return $var;
     }

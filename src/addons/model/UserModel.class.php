@@ -526,7 +526,19 @@ class UserModel extends Model
         } elseif (empty($user['email'])) {
             unset($user['email']);
         }
-
+        //其他格式
+        $res = preg_match("/^[\x{4e00}-\x{9fa5}A-Za-z0-9_\.]+$/u", $user['uname']) !== 0;
+        if ($res) {
+            $length = get_str_length($user['uname']);
+            $res = ($length >= 2 && $length <= 10);
+            if (!$res) {
+                $this->error = L('PUBLIC_NICKNAME_LIMIT', array('nums' => '2-10'));// 昵称长度必须在2-10个汉字之间
+                return false;
+            }
+        } else {
+            $this->error = '昵称仅支持中英文，数字，下划线';
+            return false;
+        }
         $user['login_salt'] = rand(10000, 99999); // # 用户盐值
         $user['ctime'] = time();             // # 注册时间
         $user['reg_ip'] = get_client_ip();    // # 用户客户端注册IP

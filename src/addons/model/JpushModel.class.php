@@ -48,8 +48,6 @@ class JpushModel extends Model
             ->setMessage($alert, $alert, '', $extras)
             ->setOptions(0, null, null, static::$apns_production, null)//True 表示推送生产环境，False 表示要推送开发环境
             ->send();
-        var_dump($result);
-        exit;
 
         if ($result == null) {
             return false;

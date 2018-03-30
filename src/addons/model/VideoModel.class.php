@@ -9,10 +9,13 @@ class VideoModel extends Model
 {
     public function upload($from = 0, $timeline = 0)
     {
-        // $imageinfo = pathinfo($_FILES['pic']['name']);
-        // $image_ext = $imageinfo['extension'];
         $video_config = model('Xdata')->get('admin_Content:video_config');
-
+        if (! isset($_FILES['Filedata'])) {
+            return array(
+                'status' => 0,
+                'message' => '上传文件到服务器失败',
+            );
+        }
         $videoinfo = pathinfo($_FILES['video']['name']);
         $video_ext = $videoinfo['extension'];
 

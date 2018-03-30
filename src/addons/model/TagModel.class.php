@@ -458,8 +458,10 @@ class TagModel extends Model
             $data['table'] = $this->_app_table;
             $data['row_id'] = $row_id;
             foreach ($tagIds as $value) {
-                $data['tag_id'] = intval($value);
-                D('app_tag')->add($data);
+                if (intval($value)) {
+                    $data['tag_id'] = intval($value);
+                    D('app_tag')->add($data);
+                }
             }
         }
     }

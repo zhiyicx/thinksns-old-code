@@ -32,6 +32,12 @@ class DiggWidget extends Widget
     public function addDigg()
     {
         $feed_id = intval($_POST['feed_id']);
+        if(!$feed_id) {
+            exit(json_encode([
+                'status' => 0,
+                'info' => L('PUBLIC_INFO_ALREADY_DELETE_TIPS')
+            ]));
+        }
         $result = model('FeedDigg')->addDigg($feed_id, $this->mid);
         if ($result) {
             $res['status'] = 1;
@@ -46,6 +52,12 @@ class DiggWidget extends Widget
     public function delDigg()
     {
         $feed_id = intval($_POST['feed_id']);
+        if(!$feed_id) {
+            exit(json_encode([
+                'status' => 0,
+                'info' => L('PUBLIC_INFO_ALREADY_DELETE_TIPS')
+            ]));
+        }
         $result = model('FeedDigg')->delDigg($feed_id, $this->mid);
         if ($result) {
             $res['status'] = 1;

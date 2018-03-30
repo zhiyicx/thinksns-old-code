@@ -49,13 +49,13 @@ class CollectionWidget extends Widget
     public function addColl()
     {
         $return = array('status' => 0, 'data' => L('PUBLIC_FAVORITE_FAIL'));
-        if (empty($_POST['sid']) || empty($_POST['stable'])) {
+        $sid = intval($_POST['sid']);
+        if (!$sid || empty($_POST['stable'])) {
             $return['data'] = L('PUBLIC_RESOURCE_ERROR');
-            echo json_encode($return);
-            exit();
+            exit(json_encode($return));
         }
         $data['source_table_name'] = t($_POST['stable']);
-        $data['source_id'] = intval($_POST['sid']);
+        $data['source_id'] = $sid;
         $data['source_app'] = t($_POST['sapp']);
 
         // 验证资源是否已经被删除
@@ -102,15 +102,15 @@ class CollectionWidget extends Widget
     public function delColl()
     {
         $return = array('status' => 0, 'data' => L('PUBLIC_EDLFAVORITE_ERROR'));
-        if (empty($_POST['sid']) || empty($_POST['stable'])) {
+        $sid = intval($_POST['sid']);
+        if (!$sid || empty($_POST['stable'])) {
             $return['data'] = L('PUBLIC_RESOURCE_ERROR');
-            echo json_encode($return);
-            exit();
+            exit(json_encode($return));
         }
         if ($_POST['stable'] == 'question' || $_POST['stable'] == 'question_answer') {
             $type = $_POST['stable'] == 'question' ? 1 : ($_POST['stable'] == 'question_answer' ? 2 : 0);
             if (\Apps\Wenda\Model\ProFile::getInstance()
-                ->setRowId($_POST['sid'])
+                ->setRowId($sid)
                 ->setType($type)
                 ->setUid($this->mid)
                 ->unCollect()) {
@@ -120,7 +120,7 @@ class CollectionWidget extends Widget
                 empty($return['data']) && $return['data'] = L('PUBLIC_EDLFAVORITE_ERROR');
             }
         } else {
-            if (model('Collection')->delCollection(intval($_POST['sid']), t($_POST['stable']))) {
+            if (model('Collection')->delCollection(intval($sid), t($_POST['stable']))) {
                 $return = array('status' => 1, 'data' => L('PUBLIC_CANCEL_ERROR'));
             } else {
                 $return['data'] = model('Collection')->getError();

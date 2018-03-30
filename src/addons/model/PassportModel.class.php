@@ -217,6 +217,11 @@ class PassportModel
         }
 
         if ($password && md5(md5($password).$user['login_salt']) != $user['password']) {
+            $mtime = model('UserData')->where(['uid'=>$uid,'key'=>'login_error_time'])->getField('mtime');
+            if(strtotime("-1 day") > strtotime($mtime)){
+                model('UserData')->setKeyValue($user['uid'], 'login_error_time', 0);
+                $login_error_time = 0;
+            }
             $login_error_time = intval($login_error_time) + 1;
             // cookie('login_error_time', $login_error_time);
             model('UserData')->setKeyValue($uid, 'login_error_time', $login_error_time);

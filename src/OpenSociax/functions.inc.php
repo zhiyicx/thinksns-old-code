@@ -305,7 +305,7 @@ function throw_exception($msg, $type = '')
         throw new $type($msg, $code, true);
     }
 
-    throw new Exception($message, $type);
+    throw new Exception($msg, (int) $type);
 }
 
 /**

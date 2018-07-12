@@ -10,7 +10,7 @@ class VideoModel extends Model
     public function upload($from = 0, $timeline = 0)
     {
         $video_config = model('Xdata')->get('admin_Content:video_config');
-        if (! isset($_FILES['Filedata'])) {
+        if (! isset($_FILES['video'])) {
             return array(
                 'status' => 0,
                 'message' => '上传文件到服务器失败',

@@ -9,13 +9,10 @@ class VideoModel extends Model
 {
     public function upload($from = 0, $timeline = 0)
     {
+        // $imageinfo = pathinfo($_FILES['pic']['name']);
+        // $image_ext = $imageinfo['extension'];
         $video_config = model('Xdata')->get('admin_Content:video_config');
-        if (! isset($_FILES['video'])) {
-            return array(
-                'status' => 0,
-                'message' => '上传文件到服务器失败',
-            );
-        }
+
         $videoinfo = pathinfo($_FILES['video']['name']);
         $video_ext = $videoinfo['extension'];
 
@@ -37,7 +34,11 @@ class VideoModel extends Model
             $filename = uniqid();    //文件名称
             $image_name = $filename.'.jpg';
             $video_source_name = $filename.'.'.$video_ext;   //源视频名称
-            $video_name = $filename.'.mp4';   //视频名称
+            if($video_ext == 'amr' || $video_ext == 'mp3'){
+                $video_name = $filename.'.mp3';  //视频名称
+            }else{
+                $video_name = $filename.'.mp4';  //视频名称
+            }
             if (@move_uploaded_file($_FILES['video']['tmp_name'], $sourceSavePath.'/'.$video_source_name)) {
                 //上传视频到源视频文件夹
 
@@ -75,16 +76,38 @@ class VideoModel extends Model
                     }
                 }
 
-                //如果图片未上传或上传失败
-                if (!file_exists($savePath.'/'.$image_name)) {
-                    $this->get_video_image($ffmpegpath, $sourceSavePath.'/'.$video_name, $savePath.'/'.$image_name);
+                if($video_ext == 'mp4'){
+                    //如果图片未上传或上传失败
+                    if (!file_exists($savePath.'/'.$image_name)) {
+                        $this->get_video_image($ffmpegpath, $sourceSavePath.'/'.$video_name, $savePath.'/'.$image_name);
+                    }
+                    //截取视频前5秒
+                    $this->get_video_part($ffmpegpath, $sourceSavePath.'/'.$video_name, $partSavePath.'/'.$video_name);
+                    if ($image_info = getimagesize($savePath.'/'.$image_name)) {
+                        $result['image_width'] = $image_info[0];
+                        $result['image_height'] = $image_info[1];
+                    }
+                    $result['timeline'] = $timeline ? intval($timeline) : $this->get_video_timeline($ffmpegpath, $sourceSavePath.'/'.$video_name);
+                    $result['video_path'] = $this->_getSavePath().'/source/'.$video_source_name;
+                }elseif($video_ext != 'mp4'){
+                    $res = 1;
+                    $file = SITE_PATH.$this->_getSavePath().'/source/'.$video_source_name;
+                    $dest = SITE_PATH.$this->_getSavePath().'/source/'.$filename.'.mp3';
+                    $command = "$ffmpegpath -i ".$file." ".$dest." 2>&1";
+                    exec($command, $return, $res);
+                    if($res == 0){
+                        $result['video_path'] = $this->_getSavePath().'/source/'.$filename.'.mp3';
+                    }else{
+                        $result['status'] = 0;
+                        $result['msg'] = '音频转码失败，因浏览器兼容性可能导致无法播放';
+                        return $result;
+                    }
+                    $result['timeline'] = $timeline ? intval($timeline) : 0;
+                }else{
+                    $result['video_path'] = $this->_getSavePath().'/source/'.$video_source_name;
+                    $result['timeline'] = $timeline ? intval($timeline) : $this->get_video_timeline($ffmpegpath, $sourceSavePath.'/'.$video_name);
                 }
-                //截取视频前5秒
-                $this->get_video_part($ffmpegpath, $sourceSavePath.'/'.$video_name, $partSavePath.'/'.$video_name);
-                // $result['video_path']   = $from==2 ? $this->_getSavePath().'/'.$video_name : $this->_getSavePath().'/source/'.$video_name;
-
-                $result['video_path'] = $this->_getSavePath().'/source/'.$video_name;
-                $result['video_mobile_path'] = $this->_getSavePath().'/'.$video_name;
+                $result['video_mobile_path'] = $this->_getSavePath().'/source/'.$video_name;
                 $result['video_part_path'] = $this->_getSavePath().'/part/'.$video_name;
                 $result['size'] = intval($_FILES['video']['size']);
                 $result['name'] = t($_FILES['video']['name']);
@@ -138,8 +161,9 @@ class VideoModel extends Model
 
         $video = $_FILES['Filedata'];
         $ext = pathinfo($video['name'], PATHINFO_EXTENSION);
-
-        if (! in_array(strtolower($ext), $exts = array('mp4', 'ogg'))) {
+        $video_config = model('Xdata')->get('admin_Content:video_config');
+        $allowExts = $video_config['video_ext'] ? explode(',', $video_config['video_ext']) : array('mp4');
+        if (! in_array(strtolower($ext), $exts = $allowExts)) {
             return array(
                 'status' => 0,
                 'message' => '上传格式错误，只允许上传：'.implode(',', $exts),
@@ -151,50 +175,34 @@ class VideoModel extends Model
             );
         }
 
-        // $path = $this->_getSavePath();
-        // $savePath = SITE_PATH.$path;
-        $savePath = SITE_PATH.$this->_getSavePath();   //网页视频文件夹
-        $sourceSavePath = $savePath.'/source';    //源视频文件夹
-        $partSavePath = $savePath.'/part';  //视频片段文件夹
-        if (!file_exists($sourceSavePath)) {
-            mkdir($sourceSavePath, 0777, true);
-        }
-        if (!file_exists($partSavePath)) {
-            mkdir($partSavePath, 0777, true);
-        }
+        $path = $this->_getSavePath();
+        $savePath = SITE_PATH.$path;
         $filename = uniqid();
         $imageName = $filename.'.jpg';
-        $video_source_name = $filename . '.' . $ext;
-        $video_name = $filename.'.mp4';
+        $videoName = $filename.'.'.$ext;
 
-        $videoPath = $sourceSavePath . '/' .$video_name;
+        if (!file_exists($savePath)) {
+            @mkdir($savePath, 0777, true);
+        }
+
+        $videoPath = $savePath.'/'.$videoName;
         $videoImagePath = $savePath.'/'.$imageName;
 
-        if (!move_uploaded_file($video['tmp_name'], $videoPath)) {
+        if (! move_uploaded_file($video['tmp_name'], $videoPath)) {
             return array(
                 'status' => 0,
                 'message' => '保存文件失败！'
             );
         }
 
-        $config = model('Xdata')->get('admin_Content:video_config');
-        $ffmpegPath = isset($config['ffmpeg_path']) ? $config['ffmpeg_path'] : null;
-
+        if (PATH_SEPARATOR == ':') {  //Linux
+            $ffmpegPath = isset($video_config['ffmpeg_path']) ? $video_config['ffmpeg_path'] : null;
+        } else {     //Windows
+            $ffmpegPath = SITE_PATH.$video_config['ffmpeg_path'];
+        }
         // 截取首帧视频图像
         $this->get_video_image($ffmpegPath, $videoPath, $videoImagePath);
-        //处理视频格式--转为h264格式
-        if ($config['video_transfer_async']) {  //后台处理
-            $transfer['sourceSavePath'] = $this->_getSavePath().'/source';
-            $transfer['video_source_name'] = $video_source_name;
-            $transfer['savePath'] = $this->_getSavePath();
-            $transfer['video_name'] = $video_name;
-            $transfer['ctime'] = time();
-            $transfer['status'] = 0;
-            $transfer['uid'] = intval($_SESSION['mid']);
-            $transfer_id = D('video_transfer')->add($transfer);
-        } else {
-            $this->mobile_video_codec($ffmpegpath, $sourceSavePath, $video_source_name, $savePath, $video_name);
-        }
+
         $data = array(
             'uid' => isset($_SESSION['mid']) ? intval($_SESSION['mid']) : 0,
             'ctime' => time(),
@@ -202,9 +210,9 @@ class VideoModel extends Model
             'size' => $video['size'],
             'timeline' => intval($this->get_video_timeline($ffmpegPath, $videoPath)),
             'extension' => $ext,
-            'video_path' => $this->_getSavePath().'/source/'.$video_name,
-            'video_part_path' => $this->_getSavePath().'/part/'.$video_name,
-            'video_mobile_path' => $this->_getSavePath().'/'.$video_name,
+            'video_path' => $path.'/'.$videoName,
+            'video_part_path' => $path.'/'.$videoName,
+            'video_mobile_path' => $path.'/'.$videoName,
             'image_path' => null,
             'image_width' => 0,
             'image_height' => 0,
@@ -212,11 +220,11 @@ class VideoModel extends Model
             'private' => 0,
             'from' => intval($from),
             'is_del' => 0,
-            'transfer_id' => $transfer_id ? $transfer_id : 0,
+            'transfer_id' => 0,
         );
 
         if (file_exists($videoImagePath)) {
-            $data['image_path'] = $this->_getSavePath().'/'.$imageName;
+            $data['image_path'] = $path.'/'.$imageName;
 
             $imageInfo = getimagesize($videoImagePath);
             $data['image_width'] = isset($imageInfo[0]) ? $imageInfo[0] : 0;
@@ -224,9 +232,6 @@ class VideoModel extends Model
         }
 
         $data['video_id'] = $this->add($data);
-        if ($transfer_id) {
-            D('video_transfer')->where('transfer_id='.$transfer_id)->setField('video_id', $data['video_id']);
-        }
         $data['status'] = 1;
         $data['message'] = '上传成功';
 
@@ -244,7 +249,7 @@ class VideoModel extends Model
 
     public function mobile_video_codec($ffmpegpath, $sourceSavePath, $video_source_name, $savePath, $video_name)
     {
-        $command = $ffmpegpath.' -y -i '.$sourceSavePath.'/'.$video_source_name.' -r 15 -b:v 800K -vcodec libx264 -vf transpose=1 -metadata:s:v:0 rotate=0 '.$savePath.'/'.$video_name;
+        $command = $ffmpegpath.' -y -i '.$sourceSavePath.'/'.$video_source_name.' -vcodec libx264 -vf transpose=1 -metadata:s:v:0 rotate=0 '.$savePath.'/'.$video_name;
         exec($command);
     }
 
@@ -269,7 +274,7 @@ class VideoModel extends Model
         return $timeline;
     }
 
-    public function get_video_image($ffmpegpath, $input, $output, $fromdurasec = '05')
+    public function get_video_image($ffmpegpath, $input, $output, $fromdurasec = '01')
     {
         if (!file_exists($input)) {
             return false;
@@ -320,19 +325,20 @@ class VideoModel extends Model
     public function video_transfer()
     {
         $video_list = D('video_transfer')->where('status=0')->order('transfer_id Asc')->limit(3)->findAll();
+        // dump($video_list);exit;
         if ($video_list) {
             set_time_limit(0);
             $video_config = model('Xdata')->get('admin_Content:video_config');
             if (PATH_SEPARATOR == ':') {  //Linux
                 $ffmpegpath = $video_config['ffmpeg_path'];
             } else {     //Windows
-                $ffmpegpath = $video_config['ffmpeg_path'];
+                $ffmpegpath = SITE_PATH.$video_config['ffmpeg_path'];
             }
             foreach ($video_list as $k => $v) {
                 if (file_exists(SITE_PATH.$v['sourceSavePath'].'/'.$v['video_source_name'])) {
                     $sourceSavePath = SITE_PATH.$v['sourceSavePath'];
-                    $savePath       = SITE_PATH.$v['savePath'];
-                    $command        = $ffmpegpath.' -y -i '.$sourceSavePath.'/'.$v['video_source_name'].' -r 15 -b:v 800K -vcodec libx264 '.$savePath.'/'.$v['video_name'];
+                    $savePath = SITE_PATH.$v['savePath'];
+                    $command = $ffmpegpath.' -y -i '.$sourceSavePath.'/'.$v['video_source_name'].' -vcodec libx264 '.$savePath.'/'.$v['video_name'];
                     exec($command);
 
                     if (file_exists($savePath.'/'.$v['video_name'])) {

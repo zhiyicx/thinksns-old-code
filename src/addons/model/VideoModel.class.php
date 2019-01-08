@@ -89,7 +89,7 @@ class VideoModel extends Model
                     }
                     $result['timeline'] = $timeline ? intval($timeline) : $this->get_video_timeline($ffmpegpath, $sourceSavePath.'/'.$video_name);
                     $result['video_path'] = $this->_getSavePath().'/source/'.$video_source_name;
-                }elseif($video_ext != 'mp4'){
+                }elseif($video_ext != 'mp3'){
                     $res = 1;
                     $file = SITE_PATH.$this->_getSavePath().'/source/'.$video_source_name;
                     $dest = SITE_PATH.$this->_getSavePath().'/source/'.$filename.'.mp3';

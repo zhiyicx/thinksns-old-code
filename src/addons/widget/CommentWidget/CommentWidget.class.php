@@ -307,7 +307,10 @@ class CommentWidget extends Widget
                 ->updateReply(-1);
         }
         if (!empty($comment_id)) {
-            if (model('Comment')->deleteComment($comment_id, $this->mid)) {
+            $fid = D('comment')->where('comment_id='.$comment_id)->getField('row_id');
+            if(model('Comment')->deleteComment($comment_id, $this->mid)){
+                D('feed')->where('feed_id='.$fid)->setDec('comment_count');
+                model('Cache')->clear();
                 return true;
             }
         }

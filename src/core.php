@@ -56,22 +56,23 @@ tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags(isset($_SER
 // 先使用响应式地址看下是否有什么地方报错～没有则全面使用
 // tsdefine('SITE_URL', '//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
 tsdefine('SITE_PATH', __ROOT__);
-tsdefine('CONF_PATH', SITE_PATH.'/config');
+tsdefine('CONF_PATH', __ROOT__.'/config');
 
-tsdefine('APPS_PATH', SITE_PATH.'/apps');
+tsdefine('APPS_PATH', __ROOT__.'/apps');
 tsdefine('APPS_URL', SITE_URL.'/apps');    // 应用内部图标 等元素
 
 tsdefine('ADDON_PATH', dirname(__FILE__).'/addons');
 
-tsdefine('DATA_PATH', SITE_PATH.'/data');
+tsdefine('DATA_PATH', __ROOT__.'/data');
 tsdefine('DATA_URL', SITE_URL.'/data');
 
-tsdefine('UPLOAD_PATH', SITE_PATH.'/data/upload');
+tsdefine('UPLOAD_PATH', __ROOT__.'/data/upload');
 tsdefine('UPLOAD_URL', SITE_URL.'/data/upload');
 
-tsdefine('PUBLIC_PATH', SITE_PATH.'/public');
+tsdefine('PUBLIC_PATH', __ROOT__.'/public');
 tsdefine('PUBLIC_URL', SITE_URL.'/public');
-
+tsdefine('TS_ROOT', __ROOT__);
+tsdefine('TS_STORAGE', __ROOT__.'/storage');
 tsdefine('CORE_RUN_PATH', TS_ROOT.TS_STORAGE.'/temp');
 tsdefine('LOG_PATH', TS_ROOT.TS_STORAGE.'/logs/');
 

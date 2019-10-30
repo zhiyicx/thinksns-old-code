@@ -52,7 +52,7 @@ if (!defined('__ROOT__')) {
 tsdefine('ROOT_FILE', basename(_PHP_FILE_) == 'api.php' ? 'index.php' : basename(_PHP_FILE_));
 tsdefine('CORE_PATH', dirname(__FILE__));
 
-tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
+tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'thinksns.io').__ROOT__);
 // 先使用响应式地址看下是否有什么地方报错～没有则全面使用
 // tsdefine('SITE_URL', '//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
 

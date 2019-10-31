@@ -6,7 +6,7 @@
  */
 
 @ini_set('magic_quotes_runtime', 0);
-
+die(__FILE__);
 $time_include_start = microtime(true);
 $mem_include_start = memory_get_usage();
 
@@ -28,7 +28,7 @@ if (isset($_REQUEST['api_version'])) {
     tsdefine('API_VERSION', $apiVersion);
     unset($apiVersion);
 } else {
-    tsdefine('API_VERSION', 'thinksns');
+    tsdefine('API_VERSION', '4.6.1');
 }
 
 // 当前文件名

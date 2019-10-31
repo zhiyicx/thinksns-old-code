@@ -75,7 +75,8 @@ tsdefine('TS_ROOT', __ROOT__);
 tsdefine('TS_STORAGE', __ROOT__.'/storage');
 tsdefine('CORE_RUN_PATH', TS_ROOT.TS_STORAGE.'/temp');
 tsdefine('LOG_PATH', TS_ROOT.TS_STORAGE.'/logs/');
-
+tsdefine('NOW_TIME', $_SERVER['REQUEST_TIME']);
+tsdefine('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
 //注册AUTOLOAD方法
 if (function_exists('spl_autoload_register')) {
     spl_autoload_register(function ($classname) {

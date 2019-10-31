@@ -6,7 +6,7 @@
  */
 
 @ini_set('magic_quotes_runtime', 0);
-die(__FILE__);
+
 $time_include_start = microtime(true);
 $mem_include_start = memory_get_usage();
 

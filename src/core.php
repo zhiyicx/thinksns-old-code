@@ -55,28 +55,27 @@ tsdefine('CORE_PATH', dirname(__FILE__));
 tsdefine('SITE_URL', (IS_HTTPS ? 'https:' : 'http:').'//'.strip_tags(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'thinksns.io').__ROOT__);
 // 先使用响应式地址看下是否有什么地方报错～没有则全面使用
 // tsdefine('SITE_URL', '//'.strip_tags($_SERVER['HTTP_HOST']).__ROOT__);
-tsdefine('SITE_PATH', __ROOT__);
-tsdefine('CONF_PATH', __ROOT__.'/config');
-
-tsdefine('APPS_PATH', __ROOT__.'/apps');
+tsdefine('SITE_PATH', dirname(dirname(dirname(dirname(__FILE__)))));
+tsdefine('CONF_PATH', SITE_PATH.'/config');
+tsdefine('APPS_PATH', SITE_PATH.'/apps');
 tsdefine('APPS_URL', SITE_URL.'/apps');    // 应用内部图标 等元素
 
 tsdefine('ADDON_PATH', dirname(__FILE__).'/addons');
 
-tsdefine('DATA_PATH', __ROOT__.'/data');
+tsdefine('DATA_PATH', SITE_PATH.'/data');
 tsdefine('DATA_URL', SITE_URL.'/data');
 
-tsdefine('UPLOAD_PATH', __ROOT__.'/data/upload');
+tsdefine('UPLOAD_PATH', SITE_PATH.'/data/upload');
 tsdefine('UPLOAD_URL', SITE_URL.'/data/upload');
-
-tsdefine('PUBLIC_PATH', __ROOT__.'/public');
+tsdefine('TS_APPLICATION', SITE_PATH.'/apps');
+tsdefine('PUBLIC_PATH', SITE_PATH.'/public');
 tsdefine('PUBLIC_URL', SITE_URL.'/public');
-tsdefine('TS_ROOT', __ROOT__);
-tsdefine('TS_STORAGE', __ROOT__.'/storage');
+tsdefine('TS_ROOT', SITE_PATH);
+tsdefine('TS_STORAGE', SITE_PATH.'/storage');
 tsdefine('CORE_RUN_PATH', TS_ROOT.TS_STORAGE.'/temp');
 tsdefine('LOG_PATH', TS_ROOT.TS_STORAGE.'/logs/');
 tsdefine('NOW_TIME', $_SERVER['REQUEST_TIME']);
-tsdefine('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
+tsdefine('REQUEST_METHOD', isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET');
 //注册AUTOLOAD方法
 if (function_exists('spl_autoload_register')) {
     spl_autoload_register(function ($classname) {
@@ -85,7 +84,7 @@ if (function_exists('spl_autoload_register')) {
 }
 
 tsdefine('NOW_TIME', $_SERVER['REQUEST_TIME']);
-tsdefine('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
+tsdefine('REQUEST_METHOD', isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET');
 tsdefine('IS_GET', REQUEST_METHOD == 'GET' ? true : false);
 tsdefine('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
 
@@ -209,7 +208,7 @@ function tsconfig($name = null, $value = null)
         return $ts['_config'] = array_merge((array) $ts['_config'], array_change_key_case($name));
     }
 
-     // 避免非法参数
+    // 避免非法参数
 }
 
 /**

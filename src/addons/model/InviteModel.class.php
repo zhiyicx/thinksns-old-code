@@ -331,7 +331,7 @@ class InviteModel extends Model
                     }
                 }
             }
-            if ($res && ($v != $oldEmail) && model('User')->where('`email`="'.mysql_escape_string($v).'"')->find()) {
+            if ($res && ($v != $oldEmail) && model('User')->where('`email`="'.mysqli_escape_string($v).'"')->find()) {
                 $this->error = L('PUBLIC_ACCOUNT_REGISTERED');            // 该用户已注册
                 return false;
             }

@@ -71,11 +71,11 @@ if (strtolower(ini_get('session.save_handler')) == 'files') {
 session_start();
 
 //参数处理 If already slashed, strip.
-if (get_magic_quotes_gpc()) {
+// if (get_magic_quotes_gpc()) {
     $_GET = stripslashes_deep($_GET);
     $_POST = stripslashes_deep($_POST);
     $_COOKIE = stripslashes_deep($_COOKIE);
-}
+// }
 
 //解析关键参数 todo:参数过滤 preg_match("/^([a-zA-Z_\/0-9]+)$/i", $ts, $url);
 $_REQUEST = array_merge($_GET, $_POST);

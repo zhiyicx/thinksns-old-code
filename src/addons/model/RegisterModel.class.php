@@ -44,7 +44,7 @@ class RegisterModel extends Model
             // !$res && $this->_error =L('PUBLIC_EMAIL_SUFFIX_FORBIDDEN');			// 邮箱后缀不允许注册
             !$res && $this->_error = '该邮箱后缀不允许注册';            // 邮箱后缀不允许注册
         }
-        if ($res && ($email != $old_email) && $this->_user_model->where('`email`="'.mysql_escape_string($email).'"')->find()) {
+        if ($res && ($email != $old_email) && $this->_user_model->where('`email`="'.mysqli_escape_string($email).'"')->find()) {
             $this->_error = L('PUBLIC_ACCOUNT_REGISTERED');            // 该用户已注册
             $res = false;
         }
@@ -128,7 +128,7 @@ class RegisterModel extends Model
         if (!$res) {
             $this->_error = '无效的手机号';
         }
-        if ($res && $this->_user_model->where('`phone`="'.mysql_escape_string($phone).'"')->find() and $phone != $old_phone) {
+        if ($res && $this->_user_model->where('`phone`="'.mysqli_escape_string($phone).'"')->find() and $phone != $old_phone) {
             $this->_error = '该手机号已被注册';
             $res = false;
         }

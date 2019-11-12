@@ -137,9 +137,7 @@ function createRsaLinkstring($para)
     $arg = substr($arg, 0, count($arg) - 2);
 
     //如果存在转义字符，那么去掉转义
-    if (get_magic_quotes_gpc()) {
-        $arg = stripslashes($arg);
-    }
+    $arg = stripslashes($arg);
 
     return $arg;
 }

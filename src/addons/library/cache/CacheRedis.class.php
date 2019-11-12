@@ -23,7 +23,8 @@ class CacheRedis extends Cache
     /**
      * 架构函数.
      *
-     * @param array $options 缓存参数
+     * @param  array  $options  缓存参数
+     * @throws Exception
      */
     public function __construct($options = array())
     {
@@ -70,7 +71,7 @@ class CacheRedis extends Cache
      * @param mixed  $value  存储数据
      * @param int    $expire 有效时间（秒）
      *
-     * @return boolen
+     * @return bool
      */
     public function set($name, $value, $expire = null)
     {
@@ -97,17 +98,17 @@ class CacheRedis extends Cache
      *
      * @param string $name 缓存变量名
      *
-     * @return boolen
+     * @return int
      */
     public function rm($name)
     {
-        return $this->handler->delete($this->options['prefix'].$name);
+        return (bool) $this->handler->del($this->options['prefix'].$name);
     }
 
     /**
      * 清除缓存.
      *
-     * @return boolen
+     * @return bool
      */
     public function clear()
     {

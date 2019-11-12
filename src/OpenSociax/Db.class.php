@@ -788,22 +788,22 @@ class Db extends Think
             }
             // 处理不带端口号的socket连接情况
             $host = $config['hostname'].($config['hostport'] ? ":{$config['hostport']}" : '');
-            if ($this->pconnect) {
-                $this->linkID[$linkNum] = mysql_pconnect($host, $config['username'], $config['password'], CLIENT_MULTI_RESULTS);
-            } else {
-                $this->linkID[$linkNum] = mysql_connect($host, $config['username'], $config['password'], true, CLIENT_MULTI_RESULTS);
+            // if ($this->pconnect) {
+            //     $this->linkID[$linkNum] = mysqli_pconnect($host, $config['username'], $config['password'], CLIENT_MULTI_RESULTS);
+            // } else {
+                $this->linkID[$linkNum] = mysqli_connect($host, $config['username'], $config['password'], true, CLIENT_MULTI_RESULTS);
+            // }
+            if (!$this->linkID[$linkNum] || (!empty($config['database']) && !mysqli_select_db($this->linkID[$linkNum], $config['database']))) {
+                throw_exception(mysqli_error($this->linkID[$linkNum]));
             }
-            if (!$this->linkID[$linkNum] || (!empty($config['database']) && !mysql_select_db($config['database'], $this->linkID[$linkNum]))) {
-                throw_exception(mysql_error());
-            }
-            $dbVersion = mysql_get_server_info($this->linkID[$linkNum]);
+            $dbVersion = mysqli_get_server_info($this->linkID[$linkNum]);
             if ($dbVersion >= '4.1') {
                 //使用UTF8存取数据库 需要mysql 4.1.0以上支持
-                mysql_query("SET NAMES '".C('DB_CHARSET')."'", $this->linkID[$linkNum]);
+                mysqli_query($this->linkID[$linkNum],"SET NAMES '".C('DB_CHARSET')."'", $this->linkID[$linkNum]);
             }
             //设置 sql_model
             if ($dbVersion > '5.0.1') {
-                mysql_query("SET sql_mode=''", $this->linkID[$linkNum]);
+                mysqli_query($this->linkID[$linkNum], "SET sql_mode=''", $this->linkID[$linkNum]);
             }
             // 标记连接成功
             $this->connected = true;
@@ -998,10 +998,10 @@ class Db extends Think
         //返回数据集
         $result = array();
         if ($this->numRows > 0) {
-            while ($row = mysql_fetch_assoc($this->queryID)) {
+            while ($row = mysqli_fetch_assoc($this->queryID)) {
                 $result[] = $row;
             }
-            mysql_data_seek($this->queryID, 0);
+            mysqli_data_seek($this->queryID, 0);
         }
         // var_dump($result);
         return $result;
@@ -1024,10 +1024,10 @@ class Db extends Think
         //返回数据集
         $result = array();
         if ($this->numRows > 0) {
-            while ($row = mysql_fetch_assoc($this->queryID)) {
+            while ($row = mysqli_fetch_assoc($this->queryID)) {
                 $result[] = $field == '*' ? $row : @$row[$field];
             }
-            mysql_data_seek($this->queryID, 0);
+            mysqli_data_seek($this->queryID, 0);
         }
 
         return $result;
@@ -1050,14 +1050,14 @@ class Db extends Think
         //返回数据集
         $result = array();
         if ($this->numRows > 0) {
-            while ($row = mysql_fetch_assoc($this->queryID)) {
+            while ($row = mysqli_fetch_assoc($this->queryID)) {
                 if (empty($hashKey)) {
                     $reuslt[] = $hashValue == '*' ? $row : @$row[$hashValue];
                 } else {
                     $result[$row[$hashKey]] = $hashValue == '*' ? $row : @$row[$hashValue];
                 }
             }
-            mysql_data_seek($this->queryID, 0);
+            mysqli_data_seek($this->queryID, 0);
         }
 
         return $result;
